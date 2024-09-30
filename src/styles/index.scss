@@ -1,0 +1,198 @@
+@import "react-loading-skeleton/dist/skeleton.css";
+//
+@import "./_wp-global";
+//
+@import "./_theme_colors";
+@import "./_theme_custom";
+//
+@import "./header";
+@import "./_single";
+//
+@import "./_tiptap";
+@import "./_tiptap_MenuBar";
+@import "./_tiptap_MenuItem";
+
+.container {
+    max-width: 1140px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+:root {
+    --prod-global-rate-color: #7e68a2;
+    --prod-global-rate-background: #f4f2f6;
+    --prod-global-count-color: #8e80a6;
+    --prod-global-count-background-color: #f4f2f9;
+
+    --prod1-rate-color: #F18618;
+    --prod1-rate-background: #fff8db;
+    --prod1-count-color: #f69b02;
+    --prod1-count-background-color: #fef3c7;
+    --prod1-tag-color: #074786;
+
+    --prod2-rate-color: #5a7397;
+    --prod2-rate-background: #f1f5f9;
+    --prod2-count-color: #828fa1;
+    --prod2-count-background-color: #f1f5f9;
+    --prod2-tag-color: #fd9aa4;
+
+    --prod3-rate-color: #ca8753;
+    --prod3-rate-background: #fff8ed;
+    --prod3-count-color: #d19465;
+    --prod3-count-background-color: #fff2e0;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --h1-font-size: 46px;
+        --h1-line-height: 56px;
+        --h2-font-size: 36px;
+        --h2-line-height: 44px;
+        --h3-font-size: 28px;
+        --h3-line-height: 36px;
+        --h4-font-size: 24px;
+        --h4-line-height: 32px;
+        --h5-font-size: 20px;
+        --h5-line-height: 28px;
+        --text-font-size: 18px;
+        --text-line-height: 28px;
+    }
+}
+
+@media (max-width: 1023px) {
+    :root {
+        --h1-font-size: 36px;
+        --h1-line-height: 46px;
+        --h2-font-size: 28px;
+        --h2-line-height: 36px;
+        --h3-font-size: 24px;
+        --h3-line-height: 32px;
+        --h4-font-size: 18px;
+        --h4-line-height: 24px;
+        --h5-font-size: 16px;
+        --h5-line-height: 24px;
+        --text-font-size: 16px;
+        --text-line-height: 26px;
+    }
+}
+
+
+body {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+    background-color: #F9FAFBF2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 600;
+}
+
+h1 {
+    font-size: var(--h1-font-size);
+    line-height: var(--h1-line-height);
+}
+
+h2 {
+    font-size: var(--h2-font-size);
+    line-height: var(--h2-line-height);
+}
+
+h3 {
+    font-size: var(--h3-font-size);
+    line-height: var(--h3-line-height);
+}
+
+h4 {
+    font-size: var(--h4-font-size);
+    line-height: var(--h4-line-height);
+}
+
+h5 {
+    font-size: var(--h5-font-size);
+    line-height: var(--h5-line-height);
+}
+
+h6 {
+    font-size: var(--h6-font-size);
+    line-height: var(--h6-line-height);
+}
+
+p {
+    font-size: var(--text-font-size);
+    line-height: var(--text-line-height);
+}
+
+.prod-item-1 {
+    color: var(--prod1-primary-color);
+}
+
+.prod-item-1 .heading-poligon {
+    background-color: var(--prod1-rate-background);
+    color: var(--prod1-rate-color);
+}
+
+.prod-item-1 .hex-wrap {
+    background-color: var(--prod1-count-background-color);
+    color: var(--prod1-count-color);
+}
+
+.prod-item-1 .hex-wrap::before {
+    border-bottom: 15.125px solid var(--prod1-count-background-color);
+}
+
+.prod-item-1 .hex-wrap::after {
+    border-top: 15.125px solid var(--prod1-count-background-color);
+}
+
+.prod-item-1 .prod-heading-tag {
+    background-color: var(--prod1-tag-color);
+}
+
+.prod-item-1 .prod-heading-tag::after {
+    border-right: 6px solid var(--prod1-tag-color);
+}
+
+
+
+.prod-item-2 {
+    color: var(--prod2-primary-color);
+}
+
+.prod-item-2 .heading-poligon {
+    background-color: var(--prod2-rate-background);
+    color: var(--prod2-rate-color);
+}
+
+.prod-item-2 .hex-wrap {
+    background-color: var(--prod2-count-background-color);
+    color: var(--prod2-count-color);
+}
+
+.prod-item-2 .hex-wrap::before {
+    border-bottom: 15.125px solid var(--prod2-count-background-color);
+}
+
+.prod-item-2 .hex-wrap::after {
+    border-top: 15.125px solid var(--prod2-count-background-color);
+}
+
+.prod-item-2 .prod-heading-tag {
+    background-color: var(--prod2-tag-color);
+}
+
+.prod-item-2 .prod-heading-tag::after {
+    border-right: 6px solid var(--prod2-tag-color);
+}
+
+button {
+    outline: none;
+}
