@@ -16,6 +16,13 @@ const Star = ({ filled }: any) => (
 
 const Rating = ({ rating }: any) => {
   const renderStar = (index: any) => {
+    if(rating > 5) {
+      if(rating == 9.9) {
+        rating = 5
+      }else {
+        rating = Math.floor((rating / 2) * 10) / 10 - 0.2
+      }
+    }
     if (rating >= index + 1) {
       return <Star key={index} filled />;
     } else if (rating > index && rating < index + 1) {

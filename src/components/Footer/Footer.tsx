@@ -45,48 +45,46 @@ export default function Footer({ menuItems }: Props) {
 	}
 
 	return (
-		<footer
-			className="border-t border-neutral-900/10 bg-white dark:border-transparent dark:bg-neutral-900"
-			aria-labelledby="footer-heading"
-		>
-			<h2 id="footer-heading" className="sr-only">
-				Footer
-			</h2>
-			<div className="mx-auto max-w-7xl px-6 pb-8 pt-20 sm:pt-24 lg:px-8 lg:pt-28">
-				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
-					<div className="grid grid-cols-2 gap-8 md:grid-cols-4 xl:col-span-2">
-						{menus.map(renderMenuItem)}
+		<footer className='bg-[#1C202C]'>
+			<div className='container grid grid-cols-2 md:grid-cols-3'>
+				<div className='text-white py-10 col-span-1'>
+					<h5>Categories</h5>
+					<ul className='text-sm text-[#b6c4d2] mt-5 flex flex-col gap-4'>
+						<li><Link href={"/"}>Monitors</Link></li>
+						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
+						<li><Link href={"/"}>Drills</Link></li>
+						<li><Link href={"/"}>Robotic-Vacuums</Link></li>
+						<li><Link href={"/"}>Gaming-Chairs</Link></li>
+						<li><Link href={"/"}>Earbuds</Link></li>
+					</ul>
+				</div>
+				<div className='text-white py-10 col-span-1'>
+					<h5>Contact</h5>
+					<ul className='text-sm text-[#b6c4d2] mt-5 flex flex-col gap-4'>
+						<li><Link href={"/"}>Monitors</Link></li>
+						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
+						<li><Link href={"/"}>Drills</Link></li>
+						<li><Link href={"/"}>Robotic-Vacuums</Link></li>
+						<li><Link href={"/"}>Gaming-Chairs</Link></li>
+						<li><Link href={"/"}>Earbuds</Link></li>
+					</ul>
+				</div>
+				<div className='text-white py-10 col-span-1'>
+					<img src="/images/logo-brr.png" width={180} alt="Logo Best Reviews Radar" />
+					<div className='flex items-center gap-2 mt-10'>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16"><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 480c-123.5 0-224-100.5-224-224s100.5-224 224-224s224 100.5 224 224S379.5 480 256 480zM256 184c13.25 0 24-10.74 24-24c0-13.25-10.75-24-24-24S232 146.7 232 160C232 173.3 242.7 184 256 184zM304 352h-32V240C272 231.2 264.8 224 256 224H224C215.2 224 208 231.2 208 240S215.2 256 224 256h16v96h-32C199.2 352 192 359.2 192 368C192 376.8 199.2 384 208 384h96c8.836 0 16-7.164 16-16C320 359.2 312.8 352 304 352z" fill="#fff" /></svg>
+						<span className='text-sm'>Advertising Disclosure</span>
 					</div>
-					<div className="mt-10 xl:mt-0">
-						<WidgetAddSubscriberForm />
+					<div className='flex items-center gap-3 mt-4'>
+						<img src="/images/us.png" width={30} alt="" />
+						<span className='text-[#b6c4d2]'>United States</span>
 					</div>
 				</div>
-				<div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24 dark:border-neutral-700">
-					<div className="flex flex-wrap gap-x-6 gap-y-3 md:order-2">
-						{NC_SITE_SETTINGS.site_socials?.map(item => (
-							<a
-								key={item?.name}
-								href={item?.url}
-								className="relative block"
-								target="_blank"
-								rel="noreferrer"
-							>
-								<span className="absolute -inset-0.5 hidden rounded-lg bg-neutral-400 dark:block"></span>
-								<span className="sr-only">{item?.name}</span>
-								<MyImage
-									width={22}
-									height={22}
-									className="max-h-[22px] opacity-60 hover:opacity-100"
-									src={item?.icon || ''}
-									alt={item?.name || ''}
-								/>
-							</a>
-						))}
-					</div>
-					<p className="mt-8 text-[13px] leading-5 text-gray-500 md:order-1 md:mt-0">
-						{NC_SITE_SETTINGS.site_footer?.all_rights_reserved_text}
-					</p>
-				</div>
+			</div>
+
+			<div className='container footer-bottom py-5 pb-10'>
+				<p className='text-left md:text-center text-xs md:text-sm text-[#b6c4d2]'>Amazon, Amazon Prime, the Amazon logo and Amazon Prime logo are trademarks of Amazon.com, Inc. or its affiliates</p>
+				<p className='text-left md:text-center text-xs md:text-sm text-[#b6c4d2]'>Copyright © 2024 by BestReviewsRadar.com</p>
 			</div>
 		</footer>
 	)

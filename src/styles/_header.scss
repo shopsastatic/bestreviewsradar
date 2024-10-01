@@ -15,3 +15,16 @@ html.dismiss_top_banner {
     @apply hidden;
   }
 }
+
+.header-top, .header-bottom {
+  padding-left: 70px;
+  padding-right: 70px;
+}
+
+
+@media (max-width: 895px) {
+  .header-top, .header-bottom {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

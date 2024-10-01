@@ -9,8 +9,9 @@ import { Bars3Icon } from '@heroicons/react/24/outline'
 
 export interface MenuBarProps {
 	menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[]
+	className?: any
 }
-const MenuBar: React.FC<MenuBarProps> = ({ menuItems }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className }) => {
 	const [isVisable, setIsVisable] = useState(false)
 	const pathname = usePathname()
 
@@ -71,9 +72,9 @@ const MenuBar: React.FC<MenuBarProps> = ({ menuItems }) => {
 				onClick={() => {
 					setIsVisable(!isVisable)
 				}}
-				className="flex items-center justify-center rounded-lg p-2.5 text-neutral-700 focus:outline-none dark:text-neutral-300"
+				className={`flex items-center justify-center rounded-lg p-2.5 pl-0 md:pl-2.5 text-neutral-700 focus:outline-none ml-0 md:ml-10 ${className}`}
 			>
-				<Bars3Icon className="h-7 w-7 lg:h-8 lg:w-8" />
+				<Bars3Icon className="h-7 w-7 lg:h-8 lg:w-8 text-white" />
 			</button>
 
 			{renderContent()}

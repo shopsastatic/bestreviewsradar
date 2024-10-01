@@ -31,7 +31,7 @@ const Navigation: FC<Props> = ({
 	}
 
 	return (
-		<ul className={`nc-Navigation items-center ${className}`}>
+		<ul className={`items-center ${className}`}>
 			{menus.map((item, i) =>
 				variation === 'nav2' ? (
 					<NavigationItem2 key={i} menuItem={item} />

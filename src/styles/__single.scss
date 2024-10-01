@@ -106,3 +106,25 @@
   right: -15px;
   margin-top: 10px;
 }
+
+.prod-item ul, .prod-item ul li{
+  list-style: disc;
+  margin-left: 10px;
+}
+
+.prod-item ul li {
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .heading-poligon {
+    padding: 10px 20px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heading-poligon {
+    right: 15px !important;
+    padding: 5px 5px 30px;
+  }
+}

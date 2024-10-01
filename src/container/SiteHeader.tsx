@@ -39,7 +39,7 @@ const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
 				)
 			case 'style2':
 				return (
-					<MainNav2
+					<MainNav1
 						menuItems={menuItems}
 						title={siteTitle}
 						description={siteDescription}
@@ -48,7 +48,7 @@ const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
 
 			default:
 				return (
-					<MainNav3
+					<MainNav1
 						menuItems={menuItems}
 						title={siteTitle}
 						description={siteDescription}
@@ -61,7 +61,7 @@ const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
 		<>
 			<Banner />
 
-			<div className="sticky top-0 z-30 w-full">{renderHeader()}</div>
+			<div className="w-full">{renderHeader()}</div>
 		</>
 	)
 }
