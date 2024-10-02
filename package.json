@@ -7,7 +7,7 @@
     "build": "faust build",
     "postbuild": "next-sitemap",
     "generate": "faust generatePossibleTypes",
-    "start": "faust start",
+    "start": "faust start -p 3005",
     "codegen": "graphql-codegen",
     "watch-codegen": "graphql-codegen -w",
     "wc": "graphql-codegen -w",
