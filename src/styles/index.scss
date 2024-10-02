@@ -131,9 +131,25 @@ p {
     line-height: var(--text-line-height);
 }
 
-.prod-item-1 {
-    color: var(--prod1-primary-color);
+
+.prod-child .heading-poligon {
+    background-color: var(--prod-global-rate-background);
+    color: var(--prod-global-rate-color);
 }
+
+.prod-child .hex-wrap {
+    background-color: var(--prod-global-count-background-color);
+    color: var(--prod-global-count-color);
+}
+
+.prod-child .hex-wrap::before {
+    border-bottom: 15.125px solid var(--prod-global-count-background-color);
+}
+
+.prod-child .hex-wrap::after {
+    border-top: 15.125px solid var(--prod-global-count-background-color);
+}
+
 
 .prod-item-1 .heading-poligon {
     background-color: var(--prod1-rate-background);
@@ -162,11 +178,6 @@ p {
 }
 
 
-
-.prod-item-2 {
-    color: var(--prod2-primary-color);
-}
-
 .prod-item-2 .heading-poligon {
     background-color: var(--prod2-rate-background);
     color: var(--prod2-rate-color);
@@ -192,6 +203,26 @@ p {
 .prod-item-2 .prod-heading-tag::after {
     border-right: 6px solid var(--prod2-tag-color);
 }
+
+
+.prod-item-3 .heading-poligon {
+    background-color: var(--prod3-rate-background);
+    color: var(--prod3-rate-color);
+}
+
+.prod-item-3 .hex-wrap {
+    background-color: var(--prod3-count-background-color);
+    color: var(--prod3-count-color);
+}
+
+.prod-item-3 .hex-wrap::before {
+    border-bottom: 15.125px solid var(--prod3-count-background-color);
+}
+
+.prod-item-3 .hex-wrap::after {
+    border-top: 15.125px solid var(--prod3-count-background-color);
+}
+
 
 button {
     outline: none;

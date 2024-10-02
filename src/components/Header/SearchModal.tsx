@@ -195,7 +195,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 											<ComboboxInput
 												autoFocus
 												className="h-12 w-full border-0 bg-transparent pe-4 ps-11 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-300"
-												placeholder={T['Type to search...']}
+												placeholder='Search...'
 												onChange={_.debounce(handleSetSearchValue, 200)}
 												onBlur={() => setQuery('')}
 											/>
@@ -218,127 +218,6 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 										</div>
 									)}
 
-									<ComboboxOptions
-										static
-										as="ul"
-										className="max-h-[70vh] scroll-py-2 divide-y divide-gray-100 overflow-y-auto dark:divide-gray-700"
-									>
-										{query !== '' && !isLoading && (
-											<li className="p-2">
-												<ul className="divide-y divide-gray-100 text-sm text-gray-700 dark:divide-gray-700 dark:text-gray-300">
-													{posts.length ? (
-														posts.map(post => (
-															<ComboboxOption
-																as={'li'}
-																key={post.databaseId}
-																value={post}
-																className={({ focus }) =>
-																	clsx(
-																		'relative flex cursor-default select-none items-center',
-																		focus &&
-																			'bg-neutral-100 dark:bg-neutral-700',
-																	)
-																}
-															>
-																{({ focus }) => (
-																	<CardPost post={post} focus={focus} />
-																)}
-															</ComboboxOption>
-														))
-													) : (
-														<div className="py-5 text-center">
-															<Empty />
-														</div>
-													)}
-												</ul>
-											</li>
-										)}
-
-										{query === '' && (
-											<li className="p-2">
-												<h2 className="mb-2 mt-4 px-3 text-xs font-medium text-gray-500 dark:text-gray-300">
-													{T['Recommended searches']}
-												</h2>
-
-												<ul className="text-sm text-gray-700 dark:text-gray-300">
-													{explores.map(explore => (
-														<ComboboxOption
-															as={'li'}
-															key={explore.name}
-															value={explore}
-															className={({ focus }) =>
-																clsx(
-																	'flex cursor-default select-none items-center rounded-md px-3 py-2',
-																	focus && 'bg-neutral-100 dark:bg-neutral-700',
-																)
-															}
-														>
-															{({ focus }) => (
-																<>
-																	<explore.icon
-																		className={clsx(
-																			'h-6 w-6 flex-none text-neutral-400 dark:text-gray-300',
-																		)}
-																		aria-hidden="true"
-																	/>
-																	<span className="ms-3 flex-auto truncate">
-																		{explore.name}
-																	</span>
-																	{focus && (
-																		<span className="ms-3 flex-none text-neutral-500 dark:text-gray-400">
-																			<ArrowUpRightIcon className="inline-block h-4 w-4" />
-																		</span>
-																	)}
-																</>
-															)}
-														</ComboboxOption>
-													))}
-												</ul>
-											</li>
-										)}
-
-										<li className="p-2">
-											<h2 className="sr-only">Quick actions</h2>
-											<ul className="text-sm text-gray-700 dark:text-gray-300">
-												{quickActions.map(action => (
-													<ComboboxOption
-														as={'li'}
-														key={action.name}
-														value={action}
-														className={({ focus }) =>
-															clsx(
-																'flex cursor-default select-none items-center rounded-md px-3 py-2',
-																focus && 'bg-neutral-100 dark:bg-neutral-700',
-															)
-														}
-													>
-														{({ focus }) => (
-															<>
-																<action.icon
-																	className={clsx(
-																		'h-6 w-6 flex-none text-neutral-400 dark:text-gray-300',
-																		focus ? '' : '',
-																	)}
-																	aria-hidden="true"
-																/>
-																<span className="ms-3 flex-auto truncate">
-																	{action.name}
-																</span>
-																<span
-																	className={clsx(
-																		'ms-3 flex-none text-xs font-semibold text-neutral-400 dark:text-gray-300',
-																		focus ? '' : '',
-																	)}
-																>
-																	<ArrowUpRightIcon className="inline-block h-4 w-4" />
-																</span>
-															</>
-														)}
-													</ComboboxOption>
-												))}
-											</ul>
-										</li>
-									</ComboboxOptions>
 								</Combobox>
 							</DialogPanel>
 						</TransitionChild>

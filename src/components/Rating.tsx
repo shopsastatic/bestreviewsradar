@@ -6,31 +6,38 @@ const Star = ({ filled }: any) => (
     width="18"
     height="18"
     viewBox="0 0 24 24"
-    fill={filled ? "#ddbe1a" : "#d1d1d1"}
+    fill={filled ? "#F5B331" : "#f1f1f1"}
     className="feather feather-star"
     style={{ marginRight: '0px' }}
   >
-    <polygon points="12 2 15 8.5 22 9.2 17 14 18.4 21 12 17.8 5.6 21 7 14 2 9.2 9 8.5 12 2"></polygon>
+    <polygon
+      stroke="#F5B331"
+      strokeWidth="1"
+      points="12 2 15 8.5 22 9.2 17 14 18.4 21 12 17.8 5.6 21 7 14 2 9.2 9 8.5 12 2"
+    ></polygon>
   </svg>
 );
 
 const Rating = ({ rating }: any) => {
+  rating = rating.toFixed(1)
+  if (rating >= 9.7) {
+    rating = 5;
+  } else if (rating >= 9 && rating < 9.7) {
+    rating = rating - 5 + 0.01;
+  } else if (rating > 8.2 && rating < 9) {
+    rating = 4;
+  } else {
+    rating = 3.5;
+  }
   const renderStar = (index: any) => {
-    if(rating > 5) {
-      if(rating == 9.9) {
-        rating = 5
-      }else {
-        rating = Math.floor((rating / 2) * 10) / 10 - 0.2
-      }
-    }
     if (rating >= index + 1) {
       return <Star key={index} filled />;
     } else if (rating > index && rating < index + 1) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="18"
+          height="18"
           viewBox="0 0 24 24"
           fill="none"
           className="feather feather-star"
@@ -39,11 +46,13 @@ const Rating = ({ rating }: any) => {
         >
           <defs>
             <linearGradient id={`grad${index}`}>
-              <stop offset={`${(rating - index) * 100}%`} stopColor="#F18618" />
+              <stop offset={`${(rating - index) * 100}%`} stopColor="#ddbe1a" />
               <stop offset={`${(rating - index) * 100}%`} stopColor="#ddd" />
             </linearGradient>
           </defs>
           <polygon
+            stroke="#F5B331"
+            strokeWidth="1"
             points="12 2 15 8.5 22 9.2 17 14 18.4 21 12 17.8 5.6 21 7 14 2 9.2 9 8.5 12 2"
             fill={`url(#grad${index})`}
           />

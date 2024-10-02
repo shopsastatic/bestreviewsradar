@@ -57,29 +57,41 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const [showMoreStore, setShowMoreStore] = useState(false);
 	const ctRef = useRef(null) as any;
 	const contentRef = useRef(null);
-	const [maxHeight, setMaxHeight] = useState(335);
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [maxHeights, setMaxHeights] = useState<number[]>([]);
+	const [expandedItems, setExpandedItems] = useState<boolean[]>([]);
 	const [activeIndex, setActiveIndex] = useState<number | null>(null);
+	const [formVisible, setFormVisible] = useState(true);
+	const [thanksVisible, setThanksVisible] = useState(false);
 
-	const contentRefs = useRef([]);
+	const contentRefs = useRef([]) as any;
 
-	const toggleExpand = (index: any) => {
-		setIsExpanded(!isExpanded);
-		setActiveIndex(index);
+	const handleSignUp = (e: any) => {
+		e.preventDefault();
+
+		setFormVisible(false);
+
+		setTimeout(() => {
+			setThanksVisible(true);
+		}, 1000);
 	};
 
-	useLayoutEffect(() => {
-		if (activeIndex !== null && contentRefs.current[activeIndex]) {
-			requestAnimationFrame(() => {
-				const content = contentRefs.current[activeIndex];
-				if (isExpanded) {
-					setMaxHeight(content.scrollHeight);
-				} else {
-					setMaxHeight(335);
-				}
-			});
-		}
-	}, [isExpanded, activeIndex]);
+	const toggleExpand = (index: number) => {
+		setExpandedItems((prevExpandedItems) => {
+			const newExpandedItems = [...prevExpandedItems];
+			newExpandedItems[index] = !newExpandedItems[index];
+
+			if (newExpandedItems[index] && contentRefs.current[index]) {
+				const content = contentRefs.current[index] as any;
+				setMaxHeights((prevMaxHeights) => {
+					const newMaxHeights = [...prevMaxHeights];
+					newMaxHeights[index] = content.scrollHeight;
+					return newMaxHeights;
+				});
+			}
+
+			return newExpandedItems;
+		});
+	};
 
 	const toggleStores = (index: number) => {
 		setShowMoreStore(!showMoreStore)
@@ -88,7 +100,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	useEffect(() => {
 		const handleProgressIndicator = () => {
-			const entryContent = contentRef.current
+			const entryContent = contentRef.current as any
 			const progressBarContent = progressRef.current
 
 			if (!entryContent || !progressBarContent) {
@@ -227,7 +239,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			{/* content */}
 
 			<div className='prod-item mt-12'>
-				{products?.length > 0 && products?.map((item: any, index: any) => (
+				{products && products?.length > 0 && products?.map((item: any, index: any) => (
 					<div className={`prod-child prod-item-${++index} grid grid-cols-1 md:grid-cols-10 bg-white gap-3 md:gap-7 px-4 md:px-0`} key={index}>
 						{(index == 1 || index == 2) && (
 							<div className='flex items-center absolute -top-[16px] -left-[7px]'>
@@ -251,23 +263,24 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</div>
 						</div>
 						<div className='col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col'>
-							<img className='max-w-[180px]' src={item?.box?.visuals?.productImage?.node?.sourceUrl ?? "/"} alt={item?.box?.visuals?.productImage?.node?.altText} />
-							<p className='mt-4'>{item?.box?.visuals?.brand}</p>
+							<img className='max-w-[140px] min-[400px]:max-w-[180px]' src={item?.box?.visuals?.productImage?.node?.sourceUrl ?? "/"} alt={item?.box?.visuals?.productImage?.node?.altText} />
+							<p className='mt-4 text-sm text-[#615b5b]'>{item?.box?.visuals?.brand}</p>
 						</div>
 
 						<div className='col-span-1 md:col-span-4 pt-5 pb-0 md:pb-5'>
 							<h2 className='text-[#3e434a] text-base font-semibold line-clamp-2'>{item?.box?.informations?.productName}</h2>
 							<p className='bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.box?.informations?.discount}</p>
 							<div ref={(el: any) => (contentRefs.current[index] = el)} className='overflow-hidden' style={{
-								maxHeight: `${maxHeight}px`,
-								transition: 'max-height 0.7s ease'
+								maxHeight: `${expandedItems[index] ? maxHeights[index] || 335 : 335}px`,
+								transition: 'max-height 0.7s ease',
+								willChange: 'max-height'
 							}}>
 								{parseSP(item?.box?.informations?.specifications)?.length > 0 && (
 									<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#ffefe5] grid grid-cols-1 gap-2'>
 										{parseSP(item?.box?.informations?.specifications)?.map((itemSP: any, indexSP: any) => (
 											<div className='flex items-center gap-2 col-span-1'>
-												<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{itemSP?.point}</span>
-												<span>{itemSP?.label}</span>
+												<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{itemSP?.point?.toFixed(1)}</span>
+												<span className='text-[#615b5b]'>{itemSP?.label}</span>
 											</div>
 										))}
 									</div>
@@ -275,7 +288,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 								{item?.box?.informations?.features && (
 									<div>
-										<h5>Why we love it</h5>
+										<h6>Why we love it</h6>
 										<div className='mt-2 grid grid-cols-1 gap-1.5'>
 											{transToArray(item?.box?.informations?.features)?.map((itemF: any, indexF: any) => (
 												<div className='col-span-1 flex items-start gap-2'>
@@ -283,7 +296,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 														<path d="M9.99992 1.04166C7.52633 1.04166 5.2859 2.04504 3.66542 3.66549C2.84062 4.4903 2.17569 5.47573 1.72156 6.57077C1.15266 7.73153 0.833252 9.03679 0.833252 10.4167C0.833252 15.2491 4.75076 19.1667 9.58325 19.1667C10.9631 19.1667 12.2684 18.8472 13.4292 18.2783C14.5242 17.8242 15.5096 17.1593 16.3344 16.3345C17.9549 14.714 18.9583 12.4736 18.9583 9.99999C18.9583 7.5264 17.9549 5.28597 16.3344 3.66549C14.7139 2.04504 12.4735 1.04166 9.99992 1.04166Z" fill="#d6e5f5" />
 														<path fillRule="evenodd" clipRule="evenodd" d="M14.6087 7.05806C14.8528 7.30214 14.8528 7.69786 14.6087 7.94194L9.60869 12.9419C9.36461 13.186 8.96888 13.186 8.72481 12.9419L6.22481 10.4419C5.98073 10.1979 5.98073 9.80214 6.22481 9.55806C6.46888 9.31398 6.86461 9.31398 7.10869 9.55806L9.16675 11.6161L13.7248 7.05806C13.9689 6.81398 14.3646 6.81398 14.6087 7.05806Z" fill="#1666b4" />
 													</svg>
-													<span>{itemF}</span>
+													<span className='text-[#615b5b]'>{itemF}</span>
 												</div>
 											))}
 										</div>
@@ -307,7 +320,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 							</div>
 							<button onClick={() => toggleExpand(index)} className='text-[#1575d4] flex items-center gap-1 mt-5 md:mt-2 py-2 w-full justify-center md:justify-start'>
-								{isExpanded ? 'Show less' : 'Show more'}
+								{expandedItems[index] ? 'Show less' : 'Show more'}
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="17"
@@ -315,7 +328,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									viewBox="0 0 16 16"
 									fill="none"
 									style={{
-										transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+										transform: expandedItems[index] ? 'rotate(180deg)' : 'rotate(0deg)',
 										transition: 'transform 0.3s ease'
 									}}
 								>
@@ -334,7 +347,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 						<div className='col-span-1 md:col-span-3 flex flex-col justify-end items-center pr-0 md:pr-5'>
 							<div className='heading-poligon'>
-								<h2 className='font-bold tracking-wider'>{calculateRating(index)?.point}</h2>
+								<h2 className='font-bold tracking-wider'>{calculateRating(index)?.point.toFixed(1)}</h2>
 								<p className='font-semibold text-sm my-2'>{calculateRating(index)?.tag}</p>
 								<Rating rating={calculateRating(index)?.point}></Rating>
 							</div>
@@ -345,7 +358,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 										<div className='box-action pb-3'>
 											{item?.box?.additionals?.actions?.slice(0, 3)?.map((itemS: any, indexS: any) => (
-												<div className='grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b'>
+												<div className={`grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 ${indexS !== itemS?.length ? 'border-b' : ''}`}>
 													<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 														<RenderStore storename={itemS?.brandImage?.[0]}></RenderStore>
 													</div>
@@ -385,11 +398,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 													</p>
 													<div className={`store-add absolute bg-white w-full ${(showMoreStore == true && activeIndex == index) ? "block" : "hidden"}`}>
 														{item?.box?.additionals?.actions?.slice(3, 100)?.map((itemT: any, indexT: any) => (
-															<div className='grid grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b'>
-																<div className='col-span-1 flex justify-center lg:justify-start text-center lg:text-left'>
+															<div className='grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b'>
+																<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 																	<RenderStore storename={itemT?.brandImage?.[0]}></RenderStore>
 																</div>
-																<div className='col-span-1 flex justify-center lg:justify-end'>
+																<div className='col-span-1 flex justify-end md:justify-center lg:justify-end'>
 																	<Link href={itemT?.actionLink ?? "/"} className='bg-[#117fec] text-white py-1.5 px-2.5 rounded-xl font-medium'>
 																		<button>Check Price</button>
 																	</Link>
@@ -407,6 +420,33 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					</div>
 				))}
 			</div>
+
+			<div className="flex flex-col items-center space-y-4 w-full">
+				<h3 className="font-bold text-2xl text-gray-700 text-center">Sign up and get exclusive special deals</h3>
+
+				<div className={`w-full flex justify-center transition-all duration-1000 ${!formVisible ? 'max-h-0 opacity-0' : 'max-h-screen opacity-100'}`}>
+					<form onSubmit={handleSignUp} className="w-full flex justify-center overflow-hidden transition-all duration-1000">
+						<div className="flex flex-col items-center space-x-2 w-full max-w-md">
+							<input
+								type="text"
+								placeholder="Email Address..."
+								className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-0"
+								required
+							/>
+							<button className="bg-blue-500 text-white px-10 mt-3 font-bold py-2 rounded-full w-fit m-auto hover:bg-blue-600">
+								Sign Up
+							</button>
+						</div>
+					</form>
+				</div>
+
+				{thanksVisible && (
+					<div className="text-center text-green-500 font-semibold text-xl mt-4">
+						Thank you for subscribing!
+					</div>
+				)}
+			</div>
+
 
 			<div className="!my-0" ref={endedAnchorRef}></div>
 		</div>

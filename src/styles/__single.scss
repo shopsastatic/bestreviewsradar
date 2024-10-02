@@ -24,7 +24,7 @@
 
 .prod-heading-tag {
   clip-path: polygon(100% 0, 70% 100%, 0 150%, 0 100%, 0 0);
-  z-index: 98;
+  z-index: 10;
 }
 
 .prod-heading-tag::after {
@@ -91,7 +91,7 @@
   align-items: center;
   width: fit-content;
   padding: 20px 30px 50px;
-  clipPath: polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);
+  clip-path: polygon(0 0,100% 0,100% 100%,50% 80%,0 100%);
   position: absolute;
   top: 0;
   right: auto;
@@ -126,5 +126,9 @@
   .heading-poligon {
     right: 15px !important;
     padding: 5px 5px 30px;
+  }
+
+  .store-add {
+    right: unset;
   }
 }
