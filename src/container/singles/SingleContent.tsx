@@ -278,7 +278,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								{parseSP(item?.box?.informations?.specifications)?.length > 0 && (
 									<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#ffefe5] grid grid-cols-1 gap-2'>
 										{parseSP(item?.box?.informations?.specifications)?.map((itemSP: any, indexSP: any) => (
-											<div className='flex items-center gap-2 col-span-1'>
+											<div className='flex items-center gap-2 col-span-1' key={"sp"+indexSP}>
 												<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{itemSP?.point?.toFixed(1)}</span>
 												<span className='text-[#615b5b]'>{itemSP?.label}</span>
 											</div>
@@ -291,7 +291,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<h6>Why we love it</h6>
 										<div className='mt-2 grid grid-cols-1 gap-1.5'>
 											{transToArray(item?.box?.informations?.features)?.map((itemF: any, indexF: any) => (
-												<div className='col-span-1 flex items-start gap-2'>
+												<div className='col-span-1 flex items-start gap-2' key={"F"+indexF}>
 													<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" className='min-w-[20px] md:min-w-[22px] mt-0 md:mt-0.5' viewBox="0 0 20 20" fill="none">
 														<path d="M9.99992 1.04166C7.52633 1.04166 5.2859 2.04504 3.66542 3.66549C2.84062 4.4903 2.17569 5.47573 1.72156 6.57077C1.15266 7.73153 0.833252 9.03679 0.833252 10.4167C0.833252 15.2491 4.75076 19.1667 9.58325 19.1667C10.9631 19.1667 12.2684 18.8472 13.4292 18.2783C14.5242 17.8242 15.5096 17.1593 16.3344 16.3345C17.9549 14.714 18.9583 12.4736 18.9583 9.99999C18.9583 7.5264 17.9549 5.28597 16.3344 3.66549C14.7139 2.04504 12.4735 1.04166 9.99992 1.04166Z" fill="#d6e5f5" />
 														<path fillRule="evenodd" clipRule="evenodd" d="M14.6087 7.05806C14.8528 7.30214 14.8528 7.69786 14.6087 7.94194L9.60869 12.9419C9.36461 13.186 8.96888 13.186 8.72481 12.9419L6.22481 10.4419C5.98073 10.1979 5.98073 9.80214 6.22481 9.55806C6.46888 9.31398 6.86461 9.31398 7.10869 9.55806L9.16675 11.6161L13.7248 7.05806C13.9689 6.81398 14.3646 6.81398 14.6087 7.05806Z" fill="#1666b4" />
@@ -311,7 +311,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 											<h5 className='mb-2 text-[#333]'>Main highlights</h5>
 											<ul>
 												{transToArray(item?.box?.informations?.productDescription)?.map((itemM: any, indexM: any) => (
-													<li>{itemM}</li>
+													<li key={"M"+indexM}>{itemM}</li>
 												))}
 											</ul>
 										</>
@@ -358,7 +358,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 										<div className='box-action pb-3'>
 											{item?.box?.additionals?.actions?.slice(0, 3)?.map((itemS: any, indexS: any) => (
-												<div className={`grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 ${indexS !== itemS?.length ? 'border-b' : ''}`}>
+												<div key={"S"+indexS} className={`grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 ${indexS !== itemS?.length ? 'border-b' : ''}`}>
 													<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 														<RenderStore storename={itemS?.brandImage?.[0]}></RenderStore>
 													</div>
@@ -398,7 +398,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 													</p>
 													<div className={`store-add absolute bg-white w-full ${(showMoreStore == true && activeIndex == index) ? "block" : "hidden"}`}>
 														{item?.box?.additionals?.actions?.slice(3, 100)?.map((itemT: any, indexT: any) => (
-															<div className='grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b'>
+															<div className='grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b' key={"T"+indexT}>
 																<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 																	<RenderStore storename={itemT?.brandImage?.[0]}></RenderStore>
 																</div>
