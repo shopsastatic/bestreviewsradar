@@ -15,7 +15,7 @@ import { getPostFormatDataFromFragment } from "@/utils/getPostFormatDataFromFrag
 import { FaustTemplate } from "@faustwp/core";
 import { FireIcon } from "@heroicons/react/24/outline";
 
-const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props) => {
+const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
   // LOADING ----------
   if (props.loading) {
     return <>Loading...</>;
@@ -79,41 +79,9 @@ const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props) => {
           taxonomyType="tag"
           top10Categories={_top10Categories}
         >
-          <div className="container mt-4 md:mt-10">
-            <div className="relative border border-neutral-200/70 dark:border-neutral-700 p-5 lg:p-7 rounded-3xl md:rounded-[2rem] flex flex-col md:flex-row gap-4 md:gap-6 xl:gap-12">
-              <div className="flex-shrink-0">
-                <div className="wil-avatar relative flex-shrink-0 overflow-hidden rounded-3xl w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40 ring-4 ring-white dark:ring-0 z-0">
-                  <div className="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-                    <FireIcon className="w-8 h-8 lg:w-12 lg:h-12" />
-                  </div>
-                </div>
-              </div>
-
-              {/*  */}
-              <div className="flex-grow">
-                <div className="max-w-screen-md space-y-3.5 ">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold">
-                    <span>{name}</span>
-                  </h2>
-                  <div className="flex items-center text-sm font-medium space-x-2 rtl:space-x-reverse cursor-pointer text-neutral-500 dark:text-neutral-400 ">
-                    <FireIcon className="w-5 h-5" />
-                    <span className="text-neutral-700 dark:text-neutral-300">
-                      {count || 0} Articles
-                    </span>
-                  </div>
-                  <span className="block text-sm sm:text-base text-neutral-500 dark:text-neutral-400">
-                    {description}
-                  </span>
-                </div>
-              </div>
-
-              {/*  */}
-              <div className="absolute top-5 end-5">
-                <SocialsShareDropdown />
-              </div>
-            </div>
+          <div>
+            Amazon Explore
           </div>
-          {/* ====================== END HEADER ====================== */}
         </ArchiveLayout>
       </PageLayout>
     </>
