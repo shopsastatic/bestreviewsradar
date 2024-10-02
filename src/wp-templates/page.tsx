@@ -27,6 +27,24 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
     parentKey: "parentClientId",
   });
 
+  if(props.__SEED_NODE__?.isFrontPage) {
+    return (
+      <PageLayout
+        headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
+        footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
+        pageTitle={title}
+        generalSettings={
+          props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
+        }
+      >
+        <div className="home-banner ">
+            
+        </div>
+      </PageLayout>
+    )
+  }
+
   return (
     <>
       <PageLayout

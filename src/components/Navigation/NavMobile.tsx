@@ -125,6 +125,11 @@ const NavMobile: React.FC<NavMobileProps> = ({
 
 	return (
 		<div className="h-screen w-full transform divide-y-2 divide-neutral-100 overflow-y-auto bg-white py-2 shadow-lg ring-1 transition dark:divide-neutral-800 dark:bg-black dark:ring-neutral-700">
+			<div className="px-5 py-6">
+				<span className="absolute end-2 top-2 p-1">
+					<ButtonClose onClick={onClickClose} />
+				</span>
+			</div>
 			<ul className="flex flex-col space-y-1 px-2 py-6 rtl:space-x-reverse">
 				{menuItems?.map((item, index) =>
 					_renderItem(item as NavItemType, index),

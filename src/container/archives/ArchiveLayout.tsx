@@ -51,7 +51,7 @@ const ArchiveLayout: FC<any> = ({
 					<div className='category-child mt-10 py-3 border-t border-slate-300'>
 						<ul className='flex gap-4 flex-wrap'>
 							{childs?.length > 0 && childs?.map((item: any, index: any) => (
-								<Link href={item?.uri ?? "/"} className='category-item px-4 py-2 rounded-xl hover:text-blue-700 transition-all shadow shadow-slate-300'>
+								<Link key={index} href={item?.uri ?? "/"} className='category-item px-4 py-2 rounded-xl hover:text-blue-700 transition-all shadow shadow-slate-300'>
 									<li className='text-sm capitalize'>{item?.name}</li>
 								</Link>
 							))}
