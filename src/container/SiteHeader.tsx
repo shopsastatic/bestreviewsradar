@@ -59,8 +59,6 @@ const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
 
 	return (
 		<>
-			<Banner />
-
 			<div className="w-full">{renderHeader()}</div>
 		</>
 	)
