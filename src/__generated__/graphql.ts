@@ -1698,6 +1698,8 @@ export enum ContentTypeEnum {
   /** The Type of Content object */
   Post = 'POST',
   /** The Type of Content object */
+  SourceProduct = 'SOURCE_PRODUCT',
+  /** The Type of Content object */
   UserReactionPost = 'USER_REACTION_POST'
 }
 
@@ -7388,6 +7390,35 @@ export type CreatePostPayload = {
   post?: Maybe<Post>;
 };
 
+/** Input for the createSourceProduct mutation. */
+export type CreateSourceProductInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The content of the object */
+  content?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the createSourceProduct mutation. */
+export type CreateSourceProductPayload = {
+  __typename?: 'CreateSourceProductPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  sourceProduct?: Maybe<SourceProduct>;
+};
+
 /** Input for the createTag mutation. */
 export type CreateTagInput = {
   /** The slug that the post_tag will be an alias of */
@@ -7708,6 +7739,29 @@ export type DeletePostPayload = {
   deletedId?: Maybe<Scalars['ID']['output']>;
   /** The object before it was deleted */
   post?: Maybe<Post>;
+};
+
+/** Input for the deleteSourceProduct mutation. */
+export type DeleteSourceProductInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** Whether the object should be force deleted instead of being moved to the trash */
+  forceDelete?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The ID of the SourceProduct to delete */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** The payload for the deleteSourceProduct mutation. */
+export type DeleteSourceProductPayload = {
+  __typename?: 'DeleteSourceProductPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The ID of the deleted object */
+  deletedId?: Maybe<Scalars['ID']['output']>;
+  /** The object before it was deleted */
+  sourceProduct?: Maybe<SourceProduct>;
 };
 
 /** Input for the deleteTag mutation. */
@@ -9816,7 +9870,7 @@ export enum MenuItemNodeIdTypeEnum {
 }
 
 /** Deprecated in favor of MenuItemLinkeable Interface */
-export type MenuItemObjectUnion = Category | Page | Post | PostFormat | Tag | UserReactionPost;
+export type MenuItemObjectUnion = Category | Page | Post | PostFormat | SourceProduct | Tag | UserReactionPost;
 
 /** Connection between the MenuItem type and the Menu type */
 export type MenuItemToMenuConnectionEdge = Edge & MenuConnectionEdge & OneToOneConnection & {
@@ -13615,6 +13669,8 @@ export type RootMutation = {
   createPost?: Maybe<CreatePostPayload>;
   /** The createPostFormat mutation */
   createPostFormat?: Maybe<CreatePostFormatPayload>;
+  /** The createSourceProduct mutation */
+  createSourceProduct?: Maybe<CreateSourceProductPayload>;
   /** The createTag mutation */
   createTag?: Maybe<CreateTagPayload>;
   /** The createUser mutation */
@@ -13637,6 +13693,8 @@ export type RootMutation = {
   deletePost?: Maybe<DeletePostPayload>;
   /** The deletePostFormat mutation */
   deletePostFormat?: Maybe<DeletePostFormatPayload>;
+  /** The deleteSourceProduct mutation */
+  deleteSourceProduct?: Maybe<DeleteSourceProductPayload>;
   /** The deleteTag mutation */
   deleteTag?: Maybe<DeleteTagPayload>;
   /** The deleteUser mutation */
@@ -13683,6 +13741,8 @@ export type RootMutation = {
   updatePostFormat?: Maybe<UpdatePostFormatPayload>;
   /** The updateSettings mutation */
   updateSettings?: Maybe<UpdateSettingsPayload>;
+  /** The updateSourceProduct mutation */
+  updateSourceProduct?: Maybe<UpdateSourceProductPayload>;
   /** The updateTag mutation */
   updateTag?: Maybe<UpdateTagPayload>;
   /** The updateUser mutation */
@@ -13737,6 +13797,12 @@ export type RootMutationCreatePostArgs = {
 /** The root mutation */
 export type RootMutationCreatePostFormatArgs = {
   input: CreatePostFormatInput;
+};
+
+
+/** The root mutation */
+export type RootMutationCreateSourceProductArgs = {
+  input: CreateSourceProductInput;
 };
 
 
@@ -13803,6 +13869,12 @@ export type RootMutationDeletePostArgs = {
 /** The root mutation */
 export type RootMutationDeletePostFormatArgs = {
   input: DeletePostFormatInput;
+};
+
+
+/** The root mutation */
+export type RootMutationDeleteSourceProductArgs = {
+  input: DeleteSourceProductInput;
 };
 
 
@@ -13945,6 +14017,12 @@ export type RootMutationUpdateSettingsArgs = {
 
 
 /** The root mutation */
+export type RootMutationUpdateSourceProductArgs = {
+  input: UpdateSourceProductInput;
+};
+
+
+/** The root mutation */
 export type RootMutationUpdateTagArgs = {
   input: UpdateTagInput;
 };
@@ -13966,6 +14044,8 @@ export type RootQuery = {
   __typename?: 'RootQuery';
   /** Entry point to get all settings for the site */
   allSettings?: Maybe<Settings>;
+  /** Connection between the RootQuery type and the SourceProduct type */
+  allSourceProduct?: Maybe<RootQueryToSourceProductConnection>;
   /** Connection between the RootQuery type and the category type */
   categories?: Maybe<RootQueryToCategoryConnection>;
   /** A 0bject */
@@ -14060,6 +14140,13 @@ export type RootQuery = {
   seo?: Maybe<SeoConfig>;
   /** The logo set in the customizer */
   siteLogo?: Maybe<MediaItem>;
+  /** An object of the SourceProduct Type.  */
+  sourceProduct?: Maybe<SourceProduct>;
+  /**
+   * A SourceProduct object
+   * @deprecated Deprecated in favor of using the single entry point for this type with ID and IDType fields. For example, instead of postBy( id: &quot;&quot; ), use post(id: &quot;&quot; idType: &quot;&quot;)
+   */
+  sourceProductBy?: Maybe<SourceProduct>;
   /** A 0bject */
   tag?: Maybe<Tag>;
   /** Connection between the RootQuery type and the tag type */
@@ -14097,6 +14184,16 @@ export type RootQuery = {
   viewer?: Maybe<User>;
   /** Fields of the &#039;WritingSettings&#039; settings group */
   writingSettings?: Maybe<WritingSettings>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQueryAllSourceProductArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  where?: InputMaybe<RootQueryToSourceProductConnectionWhereArgs>;
 };
 
 
@@ -14403,6 +14500,23 @@ export type RootQueryRevisionsArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   last?: InputMaybe<Scalars['Int']['input']>;
   where?: InputMaybe<RootQueryToRevisionsConnectionWhereArgs>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQuerySourceProductArgs = {
+  asPreview?: InputMaybe<Scalars['Boolean']['input']>;
+  id: Scalars['ID']['input'];
+  idType?: InputMaybe<SourceProductIdType>;
+};
+
+
+/** The root entry point into the Graph */
+export type RootQuerySourceProductByArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  sourceProductId?: InputMaybe<Scalars['Int']['input']>;
+  uri?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -15604,6 +15718,79 @@ export type RootQueryToRevisionsConnectionWhereArgs = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Connection between the RootQuery type and the SourceProduct type */
+export type RootQueryToSourceProductConnection = Connection & SourceProductConnection & {
+  __typename?: 'RootQueryToSourceProductConnection';
+  /** Edges for the RootQueryToSourceProductConnection connection */
+  edges: Array<RootQueryToSourceProductConnectionEdge>;
+  /** The nodes of the connection, without the edges */
+  nodes: Array<SourceProduct>;
+  /** Information about pagination in a connection. */
+  pageInfo: RootQueryToSourceProductConnectionPageInfo;
+};
+
+/** An edge in a connection */
+export type RootQueryToSourceProductConnectionEdge = Edge & SourceProductConnectionEdge & {
+  __typename?: 'RootQueryToSourceProductConnectionEdge';
+  /** A cursor for use in pagination */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The item at the end of the edge */
+  node: SourceProduct;
+};
+
+/** Page Info on the &quot;RootQueryToSourceProductConnection&quot; */
+export type RootQueryToSourceProductConnectionPageInfo = PageInfo & SourceProductConnectionPageInfo & WpPageInfo & {
+  __typename?: 'RootQueryToSourceProductConnectionPageInfo';
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** Arguments for filtering the RootQueryToSourceProductConnection connection */
+export type RootQueryToSourceProductConnectionWhereArgs = {
+  /** Filter the connection based on dates */
+  dateQuery?: InputMaybe<DateQueryInput>;
+  /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
+  hasPassword?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Specific database ID of the object */
+  id?: InputMaybe<Scalars['Int']['input']>;
+  /** Array of IDs for the objects to retrieve */
+  in?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Get objects with a specific mimeType property */
+  mimeType?: InputMaybe<MimeTypeEnum>;
+  /** Slug / post_name of the object */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Specify objects to retrieve. Use slugs */
+  nameIn?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Specify IDs NOT to retrieve. If this is used in the same query as "in", it will be ignored */
+  notIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** What parameter to use to order the objects by. */
+  orderby?: InputMaybe<Array<InputMaybe<PostObjectsConnectionOrderbyInput>>>;
+  /** Use ID to return only children. Use 0 to return only top-level items */
+  parent?: InputMaybe<Scalars['ID']['input']>;
+  /** Specify objects whose parent is in an array */
+  parentIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Specify posts whose parent is not in an array */
+  parentNotIn?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  /** Show posts with a specific password. */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** Show Posts based on a keyword search */
+  search?: InputMaybe<Scalars['String']['input']>;
+  /** Retrieve posts where post status is in an array. */
+  stati?: InputMaybe<Array<InputMaybe<PostStatusEnum>>>;
+  /** Show posts with a specific status. */
+  status?: InputMaybe<PostStatusEnum>;
+  /** Title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** Connection between the RootQuery type and the tag type */
 export type RootQueryToTagConnection = Connection & TagConnection & {
   __typename?: 'RootQueryToTagConnection';
@@ -16089,6 +16276,7 @@ export type SeoContentTypes = {
   mediaItem?: Maybe<SeoContentType>;
   page?: Maybe<SeoContentType>;
   post?: Maybe<SeoContentType>;
+  sourceProduct?: Maybe<SeoContentType>;
   userReactionPost?: Maybe<SeoContentType>;
 };
 
@@ -16385,6 +16573,224 @@ export type Settings = {
   writingSettingsDefaultPostFormat?: Maybe<Scalars['String']['output']>;
   /** Settings of the the boolean Settings Group */
   writingSettingsUseSmilies?: Maybe<Scalars['Boolean']['output']>;
+};
+
+/** The SourceProduct type */
+export type SourceProduct = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & WithAcfSourceProduct & {
+  __typename?: 'SourceProduct';
+  /** @deprecated Deprecated in favor of using Next.js pages */
+  conditionalTags?: Maybe<ConditionalTags>;
+  /** The content of the post. */
+  content?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the ContentType type */
+  contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
+  /** The name of the Content Type the node belongs to */
+  contentTypeName: Scalars['String']['output'];
+  /** The unique identifier stored in the database */
+  databaseId: Scalars['Int']['output'];
+  /** Post publishing date. */
+  date?: Maybe<Scalars['String']['output']>;
+  /** The publishing date set in GMT. */
+  dateGmt?: Maybe<Scalars['String']['output']>;
+  /** The desired slug of the post */
+  desiredSlug?: Maybe<Scalars['String']['output']>;
+  /** If a user has edited the node within the past 15 seconds, this will return the user that last edited. Null if the edit lock doesn&#039;t exist or is greater than 15 seconds */
+  editingLockedBy?: Maybe<ContentNodeToEditLockConnectionEdge>;
+  /** The RSS enclosure for the object */
+  enclosure?: Maybe<Scalars['String']['output']>;
+  /** Connection between the ContentNode type and the EnqueuedScript type */
+  enqueuedScripts?: Maybe<ContentNodeToEnqueuedScriptConnection>;
+  /** Connection between the ContentNode type and the EnqueuedStylesheet type */
+  enqueuedStylesheets?: Maybe<ContentNodeToEnqueuedStylesheetConnection>;
+  /** Connection between the NodeWithFeaturedImage type and the MediaItem type */
+  featuredImage?: Maybe<NodeWithFeaturedImageToMediaItemConnectionEdge>;
+  /** The database identifier for the featured image node assigned to the content node */
+  featuredImageDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Globally unique ID of the featured image assigned to the node */
+  featuredImageId?: Maybe<Scalars['ID']['output']>;
+  /** The global unique identifier for this post. This currently matches the value stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot; database table. */
+  guid?: Maybe<Scalars['String']['output']>;
+  /** Whether the source-product object is password protected. */
+  hasPassword?: Maybe<Scalars['Boolean']['output']>;
+  /** The globally unique identifier of the source-product object. */
+  id: Scalars['ID']['output'];
+  /** Whether the node is a Comment */
+  isComment: Scalars['Boolean']['output'];
+  /** Whether the node is a Content Node */
+  isContentNode: Scalars['Boolean']['output'];
+  /** Whether the node represents the front page. */
+  isFrontPage: Scalars['Boolean']['output'];
+  /** Whether  the node represents the blog page. */
+  isPostsPage: Scalars['Boolean']['output'];
+  /** Whether the object is a node in the preview state */
+  isPreview?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the object is restricted from the current viewer */
+  isRestricted?: Maybe<Scalars['Boolean']['output']>;
+  /** Whether the node is a Term */
+  isTermNode: Scalars['Boolean']['output'];
+  /** The user that most recently edited the node */
+  lastEditedBy?: Maybe<ContentNodeToEditLastConnectionEdge>;
+  /** The permalink of the post */
+  link?: Maybe<Scalars['String']['output']>;
+  /** The local modified time for a post. If a post was recently updated the modified field will change to match the corresponding time. */
+  modified?: Maybe<Scalars['String']['output']>;
+  /** The GMT modified time for a post. If a post was recently updated the modified field will change to match the corresponding time in GMT. */
+  modifiedGmt?: Maybe<Scalars['String']['output']>;
+  /** The password for the source-product object. */
+  password?: Maybe<Scalars['String']['output']>;
+  /** Connection between the SourceProduct type and the SourceProduct type */
+  preview?: Maybe<SourceProductToPreviewConnectionEdge>;
+  /** The database id of the preview node */
+  previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether the object is a node in the preview state */
+  previewRevisionId?: Maybe<Scalars['ID']['output']>;
+  /** The Yoast SEO data of the ContentNode */
+  seo?: Maybe<PostTypeSeo>;
+  /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** Fields of the SourceProduct ACF Field Group */
+  sourceProduct?: Maybe<SourceProduct>;
+  /**
+   * The id field matches the WP_Post-&gt;ID field.
+   * @deprecated Deprecated in favor of the databaseId field
+   */
+  sourceProductId: Scalars['Int']['output'];
+  /** The current status of the object */
+  status?: Maybe<Scalars['String']['output']>;
+  /** The template assigned to the node */
+  template?: Maybe<ContentTemplate>;
+  templates?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made. */
+  title?: Maybe<Scalars['String']['output']>;
+  /** The unique resource identifier path */
+  uri?: Maybe<Scalars['String']['output']>;
+};
+
+
+/** The SourceProduct type */
+export type SourceProductContentArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+
+/** The SourceProduct type */
+export type SourceProductEnqueuedScriptsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The SourceProduct type */
+export type SourceProductEnqueuedStylesheetsArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+/** The SourceProduct type */
+export type SourceProductTitleArgs = {
+  format?: InputMaybe<PostObjectFieldFormatEnum>;
+};
+
+/** The &quot;SourceProductAdditionals&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type SourceProductAdditionals = AcfFieldGroup & AcfFieldGroupFields & SourceProductAdditionals_Fields & {
+  __typename?: 'SourceProductAdditionals';
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;SourceProductAdditionals&quot; Field Group */
+  features?: Maybe<Scalars['String']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;SourceProductAdditionals&quot; Field Group */
+  specifications?: Maybe<Scalars['String']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;SourceProductAdditionals&quot; Field Group */
+export type SourceProductAdditionals_Fields = {
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;SourceProductAdditionals&quot; Field Group */
+  features?: Maybe<Scalars['String']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;SourceProductAdditionals&quot; Field Group */
+  specifications?: Maybe<Scalars['String']['output']>;
+};
+
+/** Connection to SourceProduct Nodes */
+export type SourceProductConnection = {
+  /** A list of edges (relational context) between RootQuery and connected SourceProduct Nodes */
+  edges: Array<SourceProductConnectionEdge>;
+  /** A list of connected SourceProduct Nodes */
+  nodes: Array<SourceProduct>;
+  /** Information about pagination in a connection. */
+  pageInfo: SourceProductConnectionPageInfo;
+};
+
+/** Edge between a Node and a connected SourceProduct */
+export type SourceProductConnectionEdge = {
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The connected SourceProduct Node */
+  node: SourceProduct;
+};
+
+/** Page Info on the connected SourceProductConnectionEdge */
+export type SourceProductConnectionPageInfo = {
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['String']['output']>;
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']['output'];
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']['output'];
+  /** Raw schema for page */
+  seo?: Maybe<SeoPostTypePageInfo>;
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Type of Identifier used to fetch a single resource. Default is ID. */
+export enum SourceProductIdType {
+  /** Identify a resource by the Database ID. */
+  DatabaseId = 'DATABASE_ID',
+  /** Identify a resource by the (hashed) Global ID. */
+  Id = 'ID',
+  /** Identify a resource by the slug. Available to non-hierarchcial Types where the slug is a unique identifier. */
+  Slug = 'SLUG',
+  /** Identify a resource by the URI. */
+  Uri = 'URI'
+}
+
+/** Connection between the SourceProduct type and the SourceProduct type */
+export type SourceProductToPreviewConnectionEdge = Edge & OneToOneConnection & SourceProductConnectionEdge & {
+  __typename?: 'SourceProductToPreviewConnectionEdge';
+  /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
+  cursor?: Maybe<Scalars['String']['output']>;
+  /** The node of the connection, without the edges */
+  node: SourceProduct;
+};
+
+/** Interface representing fields of the ACF &quot;SourceProduct&quot; Field Group */
+export type SourceProduct_Fields = {
+  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;SourceProduct&quot; Field Group */
+  additionals?: Maybe<SourceProductAdditionals>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;SourceProduct&quot; Field Group */
+  discount?: Maybe<Scalars['String']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;SourceProduct&quot; Field Group */
+  globalId?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;SourceProduct&quot; Field Group */
+  priority?: Maybe<Scalars['String']['output']>;
 };
 
 /** The tag type */
@@ -17581,6 +17987,39 @@ export type UpdateSettingsPayload = {
   readingSettings?: Maybe<ReadingSettings>;
   /** Update the WritingSettings setting. */
   writingSettings?: Maybe<WritingSettings>;
+};
+
+/** Input for the updateSourceProduct mutation. */
+export type UpdateSourceProductInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The content of the object */
+  content?: InputMaybe<Scalars['String']['input']>;
+  /** The date of the object. Preferable to enter as year/month/day (e.g. 01/31/2017) as it will rearrange date as fit if it is not specified. Incomplete dates may have unintended results for example, "2017" as the input will use current date with timestamp 20:17  */
+  date?: InputMaybe<Scalars['String']['input']>;
+  /** The ID of the SourceProduct object */
+  id: Scalars['ID']['input'];
+  /** Override the edit lock when another user is editing the post */
+  ignoreEditLock?: InputMaybe<Scalars['Boolean']['input']>;
+  /** A field used for ordering posts. This is typically used with nav menu items or for special ordering of hierarchical content types. */
+  menuOrder?: InputMaybe<Scalars['Int']['input']>;
+  /** The password used to protect the content of the object */
+  password?: InputMaybe<Scalars['String']['input']>;
+  /** The slug of the object */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** The status of the object */
+  status?: InputMaybe<PostStatusEnum>;
+  /** The title of the object */
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The payload for the updateSourceProduct mutation. */
+export type UpdateSourceProductPayload = {
+  __typename?: 'UpdateSourceProductPayload';
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The Post object mutation type. */
+  sourceProduct?: Maybe<SourceProduct>;
 };
 
 /** Input for the updateTag mutation. */
@@ -18913,6 +19352,12 @@ export type WithAcfRebuildNextjsButton = {
   rebuildNextjsButton?: Maybe<RebuildNextjsButton>;
 };
 
+/** Provides access to fields of the &quot;SourceProduct&quot; ACF Field Group via the &quot;sourceProduct&quot; field */
+export type WithAcfSourceProduct = {
+  /** Fields of the SourceProduct ACF Field Group */
+  sourceProduct?: Maybe<SourceProduct>;
+};
+
 /** The writing setting type */
 export type WritingSettings = {
   __typename?: 'WritingSettings';
@@ -18952,7 +19397,7 @@ export type NcmazFcTagFullFieldsFragmentFragment = (
   & { ' $fragmentRefs'?: { 'NcmazFcTagShortFieldsFragmentFragment': NcmazFcTagShortFieldsFragmentFragment } }
 ) & { ' $fragmentName'?: 'NcmazFcTagFullFieldsFragmentFragment' };
 
-export type NcmazFcCategoryFullFieldsFragmentFragment = { __typename: 'Category', id: string, databaseId: number, description?: string | null, name?: string | null, uri?: string | null, count?: number | null, parent?: { __typename?: 'CategoryToParentCategoryConnectionEdge', node: { __typename?: 'Category', id: string, name?: string | null, uri?: string | null } } | null, children?: { __typename?: 'CategoryToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', title?: string | null, uri?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null }> } | null, categorylayout?: { __typename?: 'Categorylayout', subCategory1?: { __typename?: 'AcfTermNodeConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', id: string, title?: string | null, uri?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null } } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null } | { __typename?: 'GraphqlDocumentGroup', name?: string | null, uri?: string | null } | { __typename?: 'PostFormat', name?: string | null, uri?: string | null } | { __typename?: 'Tag', name?: string | null, uri?: string | null }> } | null, subCategory2?: { __typename?: 'AcfTermNodeConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', id: string, title?: string | null, uri?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null } } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null } | { __typename?: 'GraphqlDocumentGroup', name?: string | null, uri?: string | null } | { __typename?: 'PostFormat', name?: string | null, uri?: string | null } | { __typename?: 'Tag', name?: string | null, uri?: string | null }> } | null, topPost?: { __typename?: 'AcfContentNodeConnection', nodes: Array<{ __typename?: 'GraphqlDocument' } | { __typename?: 'MediaItem' } | { __typename?: 'Page' } | { __typename?: 'Post', title?: string | null, uri?: string | null } | { __typename?: 'UserReactionPost' }> } | null } | null, ncTaxonomyMeta?: { __typename?: 'NcTaxonomyMeta', color?: Array<string | null> | null, featuredImage?: { __typename?: 'AcfMediaItemConnectionEdge', node: (
+export type NcmazFcCategoryFullFieldsFragmentFragment = { __typename: 'Category', id: string, databaseId: number, description?: string | null, name?: string | null, uri?: string | null, count?: number | null, parent?: { __typename?: 'CategoryToParentCategoryConnectionEdge', node: { __typename?: 'Category', id: string, name?: string | null, uri?: string | null } } | null, children?: { __typename?: 'CategoryToCategoryConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', title?: string | null, uri?: string | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null }> } | null, categorylayout?: { __typename?: 'Categorylayout', subCategory1?: { __typename?: 'AcfTermNodeConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', id: string, title?: string | null, uri?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null } } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null } | { __typename?: 'GraphqlDocumentGroup', name?: string | null, uri?: string | null } | { __typename?: 'PostFormat', name?: string | null, uri?: string | null } | { __typename?: 'Tag', name?: string | null, uri?: string | null }> } | null, subCategory2?: { __typename?: 'AcfTermNodeConnection', nodes: Array<{ __typename?: 'Category', name?: string | null, uri?: string | null, posts?: { __typename?: 'CategoryToPostConnection', nodes: Array<{ __typename?: 'Post', id: string, title?: string | null, uri?: string | null, author?: { __typename?: 'NodeWithAuthorToUserConnectionEdge', node: { __typename?: 'User', name?: string | null } } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null }> } | null } | { __typename?: 'GraphqlDocumentGroup', name?: string | null, uri?: string | null } | { __typename?: 'PostFormat', name?: string | null, uri?: string | null } | { __typename?: 'Tag', name?: string | null, uri?: string | null }> } | null, topPost?: { __typename?: 'AcfContentNodeConnection', nodes: Array<{ __typename?: 'GraphqlDocument' } | { __typename?: 'MediaItem' } | { __typename?: 'Page' } | { __typename?: 'Post', title?: string | null, uri?: string | null } | { __typename?: 'SourceProduct' } | { __typename?: 'UserReactionPost' }> } | null } | null, ncTaxonomyMeta?: { __typename?: 'NcTaxonomyMeta', color?: Array<string | null> | null, featuredImage?: { __typename?: 'AcfMediaItemConnectionEdge', node: (
         { __typename?: 'MediaItem' }
         & { ' $fragmentRefs'?: { 'NcmazFcImageFieldsFragment': NcmazFcImageFieldsFragment } }
       ) } | null } | null } & { ' $fragmentName'?: 'NcmazFcCategoryFullFieldsFragmentFragment' };
@@ -19102,7 +19547,7 @@ export type NcPrimaryMenuFieldsFragmentFragment = { __typename?: 'MenuItem', id:
           )> } | null, featuredImage?: { __typename?: 'NodeWithFeaturedImageToMediaItemConnectionEdge', node: (
             { __typename?: 'MediaItem' }
             & { ' $fragmentRefs'?: { 'NcmazFcImageFieldsFragment': NcmazFcImageFieldsFragment } }
-          ) } | null, postFormats?: { __typename?: 'PostToPostFormatConnection', nodes: Array<{ __typename?: 'PostFormat', name?: string | null, slug?: string | null }> } | null } | { __typename?: 'UserReactionPost', id: string }> } | null } | null } & { ' $fragmentName'?: 'NcPrimaryMenuFieldsFragmentFragment' };
+          ) } | null, postFormats?: { __typename?: 'PostToPostFormatConnection', nodes: Array<{ __typename?: 'PostFormat', name?: string | null, slug?: string | null }> } | null } | { __typename?: 'SourceProduct', id: string } | { __typename?: 'UserReactionPost', id: string }> } | null } | null } & { ' $fragmentName'?: 'NcPrimaryMenuFieldsFragmentFragment' };
 
 export type NcFooterMenuFieldsFragmentFragment = { __typename?: 'MenuItem', databaseId: number, uri?: string | null, label?: string | null, parentId?: string | null, id: string } & { ' $fragmentName'?: 'NcFooterMenuFieldsFragmentFragment' };
 
@@ -19672,7 +20117,7 @@ export type SitemapQueryQueryVariables = Exact<{
 }>;
 
 
-export type SitemapQueryQuery = { __typename?: 'RootQuery', contentNodes?: { __typename?: 'RootQueryToContentNodeConnection', pageInfo: { __typename?: 'RootQueryToContentNodeConnectionPageInfo', hasNextPage: boolean, endCursor?: string | null }, nodes: Array<{ __typename?: 'GraphqlDocument', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'MediaItem', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'Page', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'Post', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'UserReactionPost', uri?: string | null, modifiedGmt?: string | null }> } | null };
+export type SitemapQueryQuery = { __typename?: 'RootQuery', contentNodes?: { __typename?: 'RootQueryToContentNodeConnection', pageInfo: { __typename?: 'RootQueryToContentNodeConnectionPageInfo', hasNextPage: boolean, endCursor?: string | null }, nodes: Array<{ __typename?: 'GraphqlDocument', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'MediaItem', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'Page', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'Post', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'SourceProduct', uri?: string | null, modifiedGmt?: string | null } | { __typename?: 'UserReactionPost', uri?: string | null, modifiedGmt?: string | null }> } | null };
 
 export type CoreColumnFragmentFragment = { __typename?: 'CoreColumn', attributes?: { __typename?: 'CoreColumnAttributes', style?: any | null, className?: string | null, cssClassName?: string | null } | null } & { ' $fragmentName'?: 'CoreColumnFragmentFragment' };
 
@@ -19700,7 +20145,7 @@ export type PageArchiveGetArchiveQuery = { __typename?: 'RootQuery', nodeByUri?:
         & { ' $fragmentRefs'?: { 'NcmazFcPostCardFieldsFragment': NcmazFcPostCardFieldsFragment } }
       )>, pageInfo: { __typename?: 'PostFormatToPostConnectionPageInfo', endCursor?: string | null, hasNextPage: boolean } } | null }
     & { ' $fragmentRefs'?: { 'NcmazFcPostFormatFullFieldsFragmentFragment': NcmazFcPostFormatFullFieldsFragmentFragment } }
-  ) | { __typename?: 'Tag', uri?: string | null, id: string } | { __typename?: 'User', uri?: string | null, id: string } | { __typename?: 'UserReactionPost', uri?: string | null, id: string } | null, categories?: { __typename?: 'RootQueryToCategoryConnection', nodes: Array<(
+  ) | { __typename?: 'SourceProduct', uri?: string | null, id: string } | { __typename?: 'Tag', uri?: string | null, id: string } | { __typename?: 'User', uri?: string | null, id: string } | { __typename?: 'UserReactionPost', uri?: string | null, id: string } | null, categories?: { __typename?: 'RootQueryToCategoryConnection', nodes: Array<(
       { __typename?: 'Category' }
       & { ' $fragmentRefs'?: { 'NcmazFcCategoryFullFieldsFragmentFragment': NcmazFcCategoryFullFieldsFragmentFragment } }
     )> } | null, generalSettings?: (

@@ -3,15 +3,15 @@ import React from 'react';
 const Star = ({ filled }: any) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="18"
+    width="14"
+    height="14"
     viewBox="0 0 24 24"
-    fill={filled ? "#F5B331" : "#f1f1f1"}
+    fill={filled ? "#ffb506" : "#f1f1f1"}
     className="feather feather-star"
     style={{ marginRight: '0px' }}
   >
     <polygon
-      stroke="#F5B331"
+      stroke="#ffb506"
       strokeWidth="1"
       points="12 2 15 8.5 22 9.2 17 14 18.4 21 12 17.8 5.6 21 7 14 2 9.2 9 8.5 12 2"
     ></polygon>
@@ -36,8 +36,8 @@ const Rating = ({ rating }: any) => {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           className="feather feather-star"
@@ -51,7 +51,7 @@ const Rating = ({ rating }: any) => {
             </linearGradient>
           </defs>
           <polygon
-            stroke="#F5B331"
+            stroke="#ffb506"
             strokeWidth="1"
             points="12 2 15 8.5 22 9.2 17 14 18.4 21 12 17.8 5.6 21 7 14 2 9.2 9 8.5 12 2"
             fill={`url(#grad${index})`}

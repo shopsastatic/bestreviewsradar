@@ -8,18 +8,18 @@ export default function CookiestBoxPopover() {
 	const [isOpen, setisOpen] = useState(false)
 
 	useEffect(() => {
-		if (localStorage?.accessCookies !== 'ok') {
+		if (localStorage?.acceptCookies !== 'ac') {
 			setisOpen(true)
 		}
 	}, [])
 
 	const handleAccept = () => {
-		localStorage.accessCookies = 'ok'
+		localStorage.acceptCookies = 'ac'
 		setisOpen(false)
 	}
 
 	const handleRemove = () => {
-		localStorage.accessCookies = 'no'
+		localStorage.acceptCookies = 'no'
 		setisOpen(false)
 	}
 
@@ -35,28 +35,20 @@ export default function CookiestBoxPopover() {
 				leaveFrom="opacity-100 translate-y-0"
 				leaveTo="opacity-0 translate-y-1"
 			>
-				<div className="fixed bottom-4 start-4 z-20 w-72 sm:bottom-6 sm:start-6 sm:w-[21rem]">
-					<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-						<div className="grid bg-white px-4 py-5 text-xs sm:px-5 sm:py-7 dark:bg-black">
+				<div className="fixed bottom-0  left-0 z-20 w-full bg-white">
+					<div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
+						<div className="container flex items-center justify-between gap-5 bg-white px-4 py-5 text-xs sm:px-5 dark:bg-black">
 							<span>
-								This website uses cookies to ensure you receive the best
-								possible experience.{' '}
+								We use cookies to enhance your experience with us. To learn more - please refer to our privacy policy.{' '}
 								<Link
-									className="font-medium text-neutral-900 underline underline-offset-2"
-									href={NC_SITE_SETTINGS.cookies_policy_page?.uri || '#'}
+									className="font-medium text-[#2f8fed] underline underline-offset-2"
+									href="/privacy-policy"
 								>
 									Learn More
 								</Link>
 							</span>
 
-							<ButtonPrimary
-								className="mt-4 !rounded-full"
-								sizeClass="py-2 px-4 "
-								fontSize="text-xs font-medium"
-								onClick={handleAccept}
-							>
-								<span>Accept</span>
-							</ButtonPrimary>
+							<button className='py-2.5 px-4 font-medium text-sm rounded-2xl border border-[#2f8fed] text-[#2f8fed]' onClick={handleAccept}>Accept</button>
 						</div>
 					</div>
 				</div>

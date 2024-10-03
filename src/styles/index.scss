@@ -13,16 +13,16 @@
 @import "./_tiptap_MenuItem";
 
 .container {
-    max-width: 1140px;
+    max-width: 1080px;
     padding-left: 15px;
     padding-right: 15px;
 }
 
 :root {
-    --prod-global-rate-color: #7e68a2;
-    --prod-global-rate-background: #f4f2f6;
-    --prod-global-count-color: #8e80a6;
-    --prod-global-count-background-color: #f4f2f9;
+    // --prod-global-rate-color: #7e68a2;
+    // --prod-global-rate-background: #f4f2f6;
+    // --prod-global-count-color: #8e80a6;
+    // --prod-global-count-background-color: #f4f2f9;
 
     --prod1-rate-color: #F18618;
     --prod1-rate-background: #fff8db;
@@ -30,49 +30,56 @@
     --prod1-count-background-color: #fef3c7;
     --prod1-tag-color: #074786;
 
-    --prod2-rate-color: #5a7397;
-    --prod2-rate-background: #f1f5f9;
-    --prod2-count-color: #828fa1;
-    --prod2-count-background-color: #f1f5f9;
+    --prod2-rate-color: #556d91;
+    --prod2-rate-background: #f0f6fd;
+    --prod2-count-color: #556d91;
+    --prod2-count-background-color: #f0f6fd;
     --prod2-tag-color: #fd9aa4;
 
-    --prod3-rate-color: #ca8753;
-    --prod3-rate-background: #fff8ed;
-    --prod3-count-color: #d19465;
-    --prod3-count-background-color: #fff2e0;
+    --prod3-tag-color: #000;
+
+    // --prod3-rate-color: #ca8753;
+    // --prod3-rate-background: #fff8ed;
+    // --prod3-count-color: #d19465;
+    // --prod3-count-background-color: #fff2e0;
+
+    --prod-global-rate-color: #ca8753;
+    --prod-global-rate-background: #fff8ed;
+    --prod-global-count-color: #d19465;
+    --prod-global-count-background-color: #fff2e0;
 }
 
 @media (min-width: 1024px) {
     :root {
-        --h1-font-size: 46px;
-        --h1-line-height: 56px;
-        --h2-font-size: 36px;
-        --h2-line-height: 44px;
-        --h3-font-size: 28px;
-        --h3-line-height: 36px;
-        --h4-font-size: 24px;
-        --h4-line-height: 32px;
-        --h5-font-size: 20px;
-        --h5-line-height: 28px;
-        --text-font-size: 18px;
-        --text-line-height: 28px;
+        --h1-font-size: 2.5rem;
+        --h1-line-height: 3rem;
+        --h2-font-size: 2rem;
+        --h2-line-height: 2.5rem;
+        --h3-font-size: 1.5rem;
+        --h3-line-height: 2rem;
+        --h4-font-size: 1.25rem;
+        --h4-line-height: 1.75rem;
+        --h5-font-size: 1.125rem;
+        --h5-line-height: 1.5rem;
+        --text-font-size: 1rem;
+        --text-line-height: 1.5rem;
     }
 }
 
 @media (max-width: 1023px) {
     :root {
-        --h1-font-size: 36px;
-        --h1-line-height: 46px;
-        --h2-font-size: 28px;
-        --h2-line-height: 36px;
-        --h3-font-size: 24px;
-        --h3-line-height: 32px;
-        --h4-font-size: 18px;
-        --h4-line-height: 24px;
-        --h5-font-size: 16px;
-        --h5-line-height: 24px;
-        --text-font-size: 16px;
-        --text-line-height: 26px;
+        --h1-font-size: 2rem;
+        --h1-line-height: 2.5rem;
+        --h2-font-size: 1.75rem;
+        --h2-line-height: 2.25rem;
+        --h3-font-size: 1.5rem;
+        --h3-line-height: 2rem;
+        --h4-font-size: 1.125rem;
+        --h4-line-height: 1.5rem;
+        --h5-font-size: 1rem;
+        --h5-line-height: 1.5rem;
+        --text-font-size: 1rem;
+        --text-line-height: 1.625rem;
     }
 }
 
@@ -204,24 +211,31 @@ p {
     border-right: 6px solid var(--prod2-tag-color);
 }
 
-
-.prod-item-3 .heading-poligon {
-    background-color: var(--prod3-rate-background);
-    color: var(--prod3-rate-color);
+.prod-item-3 .prod-heading-tag {
+    background-color: var(--prod3-tag-color);
 }
 
-.prod-item-3 .hex-wrap {
-    background-color: var(--prod3-count-background-color);
-    color: var(--prod3-count-color);
+.prod-item-3 .prod-heading-tag::after {
+    border-right: 6px solid var(--prod3-tag-color);
 }
 
-.prod-item-3 .hex-wrap::before {
-    border-bottom: 15.125px solid var(--prod3-count-background-color);
-}
+// .prod-item-3 .heading-poligon {
+//     background-color: var(--prod3-rate-background);
+//     color: var(--prod3-rate-color);
+// }
 
-.prod-item-3 .hex-wrap::after {
-    border-top: 15.125px solid var(--prod3-count-background-color);
-}
+// .prod-item-3 .hex-wrap {
+//     background-color: var(--prod3-count-background-color);
+//     color: var(--prod3-count-color);
+// }
+
+// .prod-item-3 .hex-wrap::before {
+//     border-bottom: 15.125px solid var(--prod3-count-background-color);
+// }
+
+// .prod-item-3 .hex-wrap::after {
+//     border-top: 15.125px solid var(--prod3-count-background-color);
+// }
 
 
 button {

@@ -103,6 +103,7 @@ export function SiteWrapperChild({
 
 	return (
 		<div>
+			<CookiestBoxPopover></CookiestBoxPopover>
 		</div>
 	)
 }

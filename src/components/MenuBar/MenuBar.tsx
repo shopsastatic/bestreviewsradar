@@ -75,6 +75,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className }) => {
 				className={`flex items-center justify-center rounded-lg p-2.5 pl-0 pr-0 md:pr-2.5 md:pl-2.5 text-neutral-700 focus:outline-none ml-0 md:ml-10 ${className}`}
 			>
 				<Bars3Icon className="h-7 w-7 lg:h-8 lg:w-8 text-white" />
+				<p className='hidden md:block text-white pl-3 text-lg'>Menu</p>
 			</button>
 
 			{renderContent()}

@@ -30,7 +30,6 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 						<Link href={"/"}><img src="/images/logo-brr.png" alt="Logo Best Reviews Radar" width={140} /></Link>
 						<div className='items-center hidden md:flex'>
 							<MenuBar menuItems={menuItems} />
-							<p>Menu</p>
 						</div>
 						<form
 							className="relative ml-10 hidden min-[895px]:block md:min-w-[400px] lg:min-w-[500px] xl:min-w-[700px]"
@@ -52,7 +51,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 						</form>
 					</div>
 					<div className='flex justify-end items-center gap-2'>
-						<img src="/images/us.png" width={28} alt="" />
+						<Link href={"/"}><img src="/images/us.png" width={28} alt="" /></Link>
 						<SearchIconBtn className='!text-white hidden max-[895px]:block' />
 					</div>
 				</div>

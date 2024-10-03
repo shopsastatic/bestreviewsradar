@@ -56,17 +56,13 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <div className="nc-BgGlassmorphism absolute inset-x-0 md:top-10 xl:top-20 min-h-0 pl-20 py-24 flex overflow-hidden z-[-1]">
-          <span className="block bg-[#ef233c] w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl opacity-10 lg:w-96 lg:h-96"></span>
-          <span className="block bg-[#04868b] w-72 h-72 -ml-20 mt-40 rounded-full mix-blend-multiply filter blur-3xl opacity-10 lg:w-96 lg:h-96 nc-animation-delay-2000"></span>
-        </div>
         <div
           className={`container ${
             isGutenbergPage ? "" : "pb-20 pt-5 sm:pt-10"
           }`}
         >
           <main
-            className={`prose lg:prose-lg dark:prose-invert mx-auto ${
+            className={`prose max-w-full lg:prose-lg dark:prose-invert mx-auto ${
               isGutenbergPage ? "max-w-none" : ""
             }`}
           >

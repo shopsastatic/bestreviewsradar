@@ -241,9 +241,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			<div className='prod-item mt-12'>
 				{products && products?.length > 0 && products?.map((item: any, index: any) => (
 					<div className={`prod-child prod-item-${++index} grid grid-cols-1 md:grid-cols-10 bg-white gap-3 md:gap-7 px-4 md:px-0`} key={index}>
-						{(index == 1 || index == 2) && (
-							<div className='flex items-center absolute -top-[16px] -left-[7px]'>
-								<div className='w-[42px] h-[32px] flex justify-center items-center prod-heading-tag relative'>
+						{(index == 1 || index == 2 || index == 3 || index == 4) && (
+							<div className={`h-tag ${index == 4 ? "sub" : ""} flex items-center absolute -top-[16px] -left-[7px]`}>
+								<div className={`${index == 4 ? "noicon-tag-left" : ""} w-[42px] h-[32px] flex justify-center items-center prod-heading-tag relative`}>
 									{index == 1 && (
 										<svg xmlns="http://www.w3.org/2000/svg" className='mr-2' viewBox="0 0 576 512" width="16" height="16"><path d="M226.5 168.8L287.9 42.3l61.4 126.5c4.6 9.5 13.6 16.1 24.1 17.7l137.4 20.3-99.8 98.8c-7.4 7.3-10.8 17.8-9 28.1l23.5 139.5L303 407.7c-9.4-5-20.7-5-30.2 0L150.2 473.2l23.5-139.5c1.7-10.3-1.6-20.7-9-28.1L65 206.8l137.4-20.3c10.5-1.5 19.5-8.2 24.1-17.7zM424.9 509.1c8.1 4.3 17.9 3.7 25.3-1.7s11.2-14.5 9.7-23.5L433.6 328.4 544.8 218.2c6.5-6.4 8.7-15.9 5.9-24.5s-10.3-14.9-19.3-16.3L378.1 154.8 309.5 13.5C305.5 5.2 297.1 0 287.9 0s-17.6 5.2-21.6 13.5L197.7 154.8 44.5 177.5c-9 1.3-16.5 7.6-19.3 16.3s-.5 18.1 5.9 24.5L142.2 328.4 116 483.9c-1.5 9 2.2 18.1 9.7 23.5s17.3 6 25.3 1.7l137-73.2 137 73.2z" fill="#FFFFFF" /></svg>
 
@@ -251,25 +251,48 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									{index == 2 && (
 										<svg xmlns="http://www.w3.org/2000/svg" className='mr-2' height="16" viewBox="0 0 512.007 512.007" width="16"><g fill="#fff"><path d="m510.025 139.609-85.333-102.4a8.547 8.547 0 0 0 -6.554-3.063h-324.267a8.524 8.524 0 0 0 -6.554 3.063l-85.333 102.4a8.512 8.512 0 0 0 -1.178 9.079 8.55 8.55 0 0 0 7.731 4.915h494.933a8.55 8.55 0 0 0 7.731-4.915 8.53 8.53 0 0 0 -1.176-9.079zm-483.268-3.072 71.108-85.333h316.271l71.108 85.333z"></path><path d="m263.898 39.402a8.535 8.535 0 0 0 -7.885-5.265h-162.133c-3.055 0-5.871 1.63-7.398 4.284s-1.519 5.905.026 8.55l59.733 102.4a8.541 8.541 0 0 0 6.272 4.164c.367.043.734.068 1.092.068a8.539 8.539 0 0 0 6.042-2.5l102.4-102.4a8.532 8.532 0 0 0 1.851-9.301zm-108.501 91.81-46.669-80.008h126.677z"></path><path d="m511.109 141.281a8.527 8.527 0 0 0 -7.646-4.753h-494.933a8.536 8.536 0 0 0 -7.646 4.753 8.537 8.537 0 0 0 .87 8.96l247.467 324.267c1.613 2.116 4.122 3.362 6.784 3.362s5.171-1.246 6.767-3.362l247.467-324.267a8.54 8.54 0 0 0 .87-8.96zm-255.104 313.993-230.221-301.67h460.442z"></path><path d="m264.146 466.76-102.4-324.267a8.538 8.538 0 0 0 -8.141-5.965h-145.067a8.536 8.536 0 0 0 -7.646 4.753 8.537 8.537 0 0 0 .87 8.96l247.467 324.267a8.517 8.517 0 0 0 6.784 3.362 8.297 8.297 0 0 0 3.925-.973 8.53 8.53 0 0 0 4.208-10.137zm-238.362-313.156h121.566l85.811 271.736zm399.753-115.183a8.52 8.52 0 0 0 -7.398-4.284h-162.134a8.53 8.53 0 0 0 -6.033 14.566l102.4 102.4a8.503 8.503 0 0 0 6.033 2.5c.367 0 .734-.026 1.101-.068a8.531 8.531 0 0 0 6.272-4.164l59.733-102.4a8.55 8.55 0 0 0 .026-8.55zm-68.924 92.791-80.009-80.008h126.677z"></path><path d="m511.126 141.299a8.527 8.527 0 0 0 -7.646-4.753h-145.067a8.53 8.53 0 0 0 -8.141 5.965l-102.4 324.267a8.539 8.539 0 0 0 4.207 10.138 8.493 8.493 0 0 0 3.925.956 8.574 8.574 0 0 0 6.784-3.345l247.467-324.267a8.54 8.54 0 0 0 .871-8.961zm-232.277 284.04 85.811-271.736h121.566z"></path></g></svg>
 									)}
+									{index == 3 && (
+										<svg xmlns="http://www.w3.org/2000/svg" className='mr-2' fill="#fff" height="16" width="16" version="1.1" id="Layer_1" viewBox="0 0 512.001 512.001">
+											<g>
+												<g>
+													<path d="M468.658,41.987c-11.591,0-22.77,4.755-30.883,13.059L415.699,77.84V41.465c0-5.765-4.901-9.918-10.667-9.918H106.457    c-5.766,0-10.212,4.153-10.212,9.918v35.97L74.384,55.034c-8.1-8.29-19.449-13.045-31.04-13.045C19.46,41.987,0,61.418,0,85.302    c0,51.645,27.57,100.109,71.975,126.48l78.11,46.397c18.865,15.597,41.161,26.982,64.128,33.311v64.731h-54.514    c-5.766,0-10.212,4.675-10.212,10.44v103.701c0,5.765,4.446,10.092,10.212,10.092h192.09c5.766,0,10.667-4.327,10.667-10.092    V366.661c0-5.765-4.901-10.44-10.667-10.44h-54.059V291.49c20.879-5.881,41.908-16.13,59.851-30.064l82.459-49.644    c44.404-26.372,71.961-74.836,71.961-126.48C512,61.418,492.54,41.987,468.658,41.987z M233.004,52.427L233.004,52.427h45.935    v86.777c-7.308-2.989-14.939-4.651-22.967-4.651s-15.66,1.662-22.967,4.651V52.427z M255.744,155.432    c20.148,0,36.539,16.391,36.539,36.539c0,20.148-16.391,36.539-36.539,36.539s-36.539-16.391-36.539-36.539    C219.205,171.824,235.597,155.432,255.744,155.432z M82.623,193.831C44.52,171.202,20.851,129.616,20.851,85.302    c0-12.371,10.065-22.435,22.436-22.435c6.003,0,11.853,2.463,16.025,6.733l35.853,36.818c0.306,0.315,0.769,0.656,1.079,0.867    v43.798c0,20.676,5.006,40.863,14.727,59.517L82.623,193.831z M341.577,459.575H170.366v-20.879h171.211V459.575z     M341.577,377.101v40.715H170.366v-40.715H341.577z M235.092,356.222v-60.438c6.264,0.956,13.929,1.454,20.879,1.454    s13.572-0.498,20.879-1.454v60.438H235.092z M255.972,276.358c-72.668,0-138.848-59.711-138.848-125.276V52.427h95.001v101.091    c0,0.331,0.079,0.657,0.11,0.98c-8.693,10.066-13.939,23.161-13.939,37.473c0,31.66,25.772,57.418,57.433,57.418    s57.426-25.758,57.426-57.418c0-14.312-4.984-27.407-13.678-37.473c0.03-0.324,0.341-0.649,0.341-0.98V52.427h95.001v98.655h0.001    C394.82,216.648,328.639,276.358,255.972,276.358z M429.321,193.83l-28.787,17.163c9.856-18.764,15.165-39.088,15.165-59.911    v-43.309l37.024-38.149c4.195-4.294,9.988-6.758,15.992-6.758c12.371,0,22.407,10.065,22.407,22.435    C491.121,129.616,467.422,171.202,429.321,193.83z" />
+												</g>
+											</g>
+										</svg>
+									)}
 								</div>
-								<div className='bg-white heading-tag-text py-1'>
-									<span className='font-semibold px-4 text-black'>{index == 1 ? "Best Choice" : "Value for Money"}</span>
-								</div>
+								{index == 4 && (
+									<div className='tag-has-poligon'>
+										<div className="noicon-tag-right bg-white heading-tag-text py-0.5 flex items-center">
+											<span className="font-semibold px-4 text-black max-[375px]:text-sm py-0.5">
+												{index == 1 ? "Best Choice" : index == 2 ? "Value for Money" : "Best for Cashback"}
+											</span>
+										</div>
+									</div>
+								)}
+
+								{index !== 4 && (
+									<div className="bg-white heading-tag-text py-0.5 flex items-center">
+										<span className="font-semibold px-4 text-black max-[375px]:text-sm py-0.5">
+											{index == 1 ? "Best Choice" : index == 2 ? "Value for Money" : "Best for Cashback"}
+										</span>
+									</div>
+								)}
 							</div>
 						)}
-						<div className='count-num absolute top-20 -left-[28px]'>
+						<div className='count-num absolute top-20 -left-[25px]'>
 							<div className='hex-wrap'>
 								<span className='hex-num'>{index}</span>
 							</div>
 						</div>
 						<div className='col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col'>
-							<img className='max-w-[140px] min-[400px]:max-w-[180px]' src={item?.box?.visuals?.productImage?.node?.sourceUrl ?? "/"} alt={item?.box?.visuals?.productImage?.node?.altText} />
+							<img className='max-w-[140px] min-[400px]:max-w-[180px] max-[375px]:mr-[3.5em]' src={item?.box?.visuals?.productImage?.node?.sourceUrl ?? "/"} alt={item?.box?.visuals?.productImage?.node?.altText} />
 							<p className='mt-4 text-sm text-[#615b5b]'>{item?.box?.visuals?.brand}</p>
 						</div>
 
 						<div className='col-span-1 md:col-span-4 pt-5 pb-0 md:pb-5'>
 							<h2 className='text-[#3e434a] text-base font-semibold line-clamp-2'>{item?.box?.informations?.productName}</h2>
-							<p className='bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.box?.informations?.discount}</p>
+							<p className='discount-tag bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.box?.informations?.discount}</p>
 							<div ref={(el: any) => (contentRefs.current[index] = el)} className='overflow-hidden' style={{
 								maxHeight: `${expandedItems[index] ? maxHeights[index] || 335 : 335}px`,
 								transition: 'max-height 0.7s ease',
@@ -278,9 +301,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								{parseSP(item?.box?.informations?.specifications)?.length > 0 && (
 									<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#ffefe5] grid grid-cols-1 gap-2'>
 										{parseSP(item?.box?.informations?.specifications)?.map((itemSP: any, indexSP: any) => (
-											<div className='flex items-center gap-2 col-span-1' key={"sp"+indexSP}>
+											<div className='flex items-start md:items-center gap-2 col-span-1' key={"sp" + indexSP}>
 												<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{itemSP?.point?.toFixed(1)}</span>
-												<span className='text-[#615b5b]'>{itemSP?.label}</span>
+												<span className='text-[#615b5b] mt-[2px] md:mt-0'>{itemSP?.label}</span>
 											</div>
 										))}
 									</div>
@@ -291,7 +314,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<h6>Why we love it</h6>
 										<div className='mt-2 grid grid-cols-1 gap-1.5'>
 											{transToArray(item?.box?.informations?.features)?.map((itemF: any, indexF: any) => (
-												<div className='col-span-1 flex items-start gap-2' key={"F"+indexF}>
+												<div className='col-span-1 flex items-start gap-2' key={"F" + indexF}>
 													<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" className='min-w-[20px] md:min-w-[22px] mt-0 md:mt-0.5' viewBox="0 0 20 20" fill="none">
 														<path d="M9.99992 1.04166C7.52633 1.04166 5.2859 2.04504 3.66542 3.66549C2.84062 4.4903 2.17569 5.47573 1.72156 6.57077C1.15266 7.73153 0.833252 9.03679 0.833252 10.4167C0.833252 15.2491 4.75076 19.1667 9.58325 19.1667C10.9631 19.1667 12.2684 18.8472 13.4292 18.2783C14.5242 17.8242 15.5096 17.1593 16.3344 16.3345C17.9549 14.714 18.9583 12.4736 18.9583 9.99999C18.9583 7.5264 17.9549 5.28597 16.3344 3.66549C14.7139 2.04504 12.4735 1.04166 9.99992 1.04166Z" fill="#d6e5f5" />
 														<path fillRule="evenodd" clipRule="evenodd" d="M14.6087 7.05806C14.8528 7.30214 14.8528 7.69786 14.6087 7.94194L9.60869 12.9419C9.36461 13.186 8.96888 13.186 8.72481 12.9419L6.22481 10.4419C5.98073 10.1979 5.98073 9.80214 6.22481 9.55806C6.46888 9.31398 6.86461 9.31398 7.10869 9.55806L9.16675 11.6161L13.7248 7.05806C13.9689 6.81398 14.3646 6.81398 14.6087 7.05806Z" fill="#1666b4" />
@@ -311,7 +334,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 											<h5 className='mb-2 text-[#333]'>Main highlights</h5>
 											<ul>
 												{transToArray(item?.box?.informations?.productDescription)?.map((itemM: any, indexM: any) => (
-													<li key={"M"+indexM}>{itemM}</li>
+													<li key={"M" + indexM}>{itemM}</li>
 												))}
 											</ul>
 										</>
@@ -345,7 +368,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</button>
 						</div>
 
-						<div className='col-span-1 md:col-span-3 flex flex-col justify-end items-center pr-0 md:pr-5'>
+						<div className={`col-span-1 md:col-span-3 flex flex-col items-center pr-0 md:pr-5 ${item?.box?.additionals?.actions?.length == 1 ? "justify-start gap-10" : "justify-between"}`}>
 							<div className='heading-poligon'>
 								<h2 className='font-bold tracking-wider'>{calculateRating(index)?.point.toFixed(1)}</h2>
 								<p className='font-semibold text-sm my-2'>{calculateRating(index)?.tag}</p>
@@ -358,13 +381,26 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 										<div className='box-action pb-3'>
 											{item?.box?.additionals?.actions?.slice(0, 3)?.map((itemS: any, indexS: any) => (
-												<div key={"S"+indexS} className={`grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 ${indexS !== itemS?.length ? 'border-b' : ''}`}>
-													<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
+												<div key={"S" + indexS} className={`flex flex-row md:flex-col lg:flex-row justify-between gap-2 items-center py-4 ${indexS != item?.box?.additionals?.actions?.length - 1 ? 'border-b' : ''}`}>
+													<div className='flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 														<RenderStore storename={itemS?.brandImage?.[0]}></RenderStore>
 													</div>
-													<div className='col-span-1 flex justify-end md:justify-center lg:justify-end'>
-														<Link href={itemS?.actionLink ?? "/"} className='bg-[#117fec] text-white py-1.5 px-2.5 rounded-xl font-medium'>
-															<button>Check Price</button>
+													<div className='flex justify-end md:justify-center lg:justify-end'>
+														<Link href={itemS?.actionLink ?? "/"} className='bg-[#117fec] hover:bg-[#275787] transition-all text-white py-2 px-2.5 rounded-xl font-medium'>
+															<button className='flex flex-nowrap items-center gap-2'>
+																<span>Check Price</span>
+																<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 -6.5 38 38" version="1.1">
+																	<g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																		<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fill-rule="nonzero">
+																			<g id="1" transform="translate(1350.000000, 120.000000)">
+																				<path fill='#fff' d="M187.812138,38.5802109 L198.325224,49.0042713 L198.41312,49.0858421 C198.764883,49.4346574 198.96954,49.8946897 199,50.4382227 L198.998248,50.6209428 C198.97273,51.0514917 198.80819,51.4628128 198.48394,51.8313977 L198.36126,51.9580208 L187.812138,62.4197891 C187.031988,63.1934036 185.770571,63.1934036 184.990421,62.4197891 C184.205605,61.6415481 184.205605,60.3762573 184.990358,59.5980789 L192.274264,52.3739093 L162.99947,52.3746291 C161.897068,52.3746291 161,51.4850764 161,50.3835318 C161,49.2819872 161.897068,48.3924345 162.999445,48.3924345 L192.039203,48.3917152 L184.990421,41.4019837 C184.205605,40.6237427 184.205605,39.3584519 184.990421,38.5802109 C185.770571,37.8065964 187.031988,37.8065964 187.812138,38.5802109 Z" id="right-arrow">
+
+																				</path>
+																			</g>
+																		</g>
+																	</g>
+																</svg>
+															</button>
 														</Link>
 													</div>
 												</div>
@@ -398,13 +434,26 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 													</p>
 													<div className={`store-add absolute bg-white w-full ${(showMoreStore == true && activeIndex == index) ? "block" : "hidden"}`}>
 														{item?.box?.additionals?.actions?.slice(3, 100)?.map((itemT: any, indexT: any) => (
-															<div className='grid grid-cols-2 md:grid-cols-1 gap-2 lg:grid-cols-2 items-center py-4 border-b' key={"T"+indexT}>
+															<div className='flex justify-between gap-2 items-center py-4 border-b' key={"T" + indexT}>
 																<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
 																	<RenderStore storename={itemT?.brandImage?.[0]}></RenderStore>
 																</div>
 																<div className='col-span-1 flex justify-end md:justify-center lg:justify-end'>
 																	<Link href={itemT?.actionLink ?? "/"} className='bg-[#117fec] text-white py-1.5 px-2.5 rounded-xl font-medium'>
-																		<button>Check Price</button>
+																		<button className='flex flex-nowrap items-center gap-2'>
+																			<span>Check Price</span>
+																			<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 -6.5 38 38" version="1.1">
+																				<g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+																					<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fill-rule="nonzero">
+																						<g id="1" transform="translate(1350.000000, 120.000000)">
+																							<path fill='#fff' d="M187.812138,38.5802109 L198.325224,49.0042713 L198.41312,49.0858421 C198.764883,49.4346574 198.96954,49.8946897 199,50.4382227 L198.998248,50.6209428 C198.97273,51.0514917 198.80819,51.4628128 198.48394,51.8313977 L198.36126,51.9580208 L187.812138,62.4197891 C187.031988,63.1934036 185.770571,63.1934036 184.990421,62.4197891 C184.205605,61.6415481 184.205605,60.3762573 184.990358,59.5980789 L192.274264,52.3739093 L162.99947,52.3746291 C161.897068,52.3746291 161,51.4850764 161,50.3835318 C161,49.2819872 161.897068,48.3924345 162.999445,48.3924345 L192.039203,48.3917152 L184.990421,41.4019837 C184.205605,40.6237427 184.205605,39.3584519 184.990421,38.5802109 C185.770571,37.8065964 187.031988,37.8065964 187.812138,38.5802109 Z" id="right-arrow">
+
+																							</path>
+																						</g>
+																					</g>
+																				</g>
+																			</svg>
+																		</button>
 																	</Link>
 																</div>
 															</div>
