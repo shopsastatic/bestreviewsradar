@@ -201,54 +201,42 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		databaseId
 		title
 		postData {
-			headlineDesc
-			author {
-				... on AcfUserConnection {
-					nodes {
-						name
-						uri
-					}
-				}
-			}
-			layoutStyle
 			products {
-				... on PostDataProductsItemLayout {
-          box {
-            visuals {
-              productImage {
-                node {
-                  sourceUrl
-                  altText
-                }
-              }
-              brand
-            }
-
-            informations {
-              productName
-              discount
-              specifications
-              features
-              productDescription
-            }
-
-            additionals {
-              actions {
-                ... on PostDataProductsBoxAdditionalsActionsItemLayout {
-                  brandImage
-                  actionLink
-                }
-              }
-            }
-
-          }
-        }
-			}
-			faqsFooter {
-				... on PostDataFaqsFooterFaqLayout {
-				label
-				content
+			nodes {
+				...on SourceProduct {
+					productDatas {
+						general {
+							globalId
+							brand
+						}
+						price {
+							salePrice
+							originPrice
+							discount
+						}
+						additionals {
+							specifications
+							features
+						}
+						description
+						actions {
+							...on ProductDatasActionsItemLayout {
+								stores
+								actionsLink
+							}
+						}
+					}
+					title
+					excerpt
+					featuredImage {
+						node {
+							sourceUrl
+							altText
+						}
+					}
+					menuOrder
 				}
+			}
 			}
 		}
 		content
