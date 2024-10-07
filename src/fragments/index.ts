@@ -227,7 +227,6 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 						}
 					}
 					title
-					excerpt
 					featuredImage {
 						node {
 							sourceUrl

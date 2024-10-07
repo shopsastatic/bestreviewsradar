@@ -271,18 +271,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
-		// Tạo DOM ảo từ chuỗi HTML content để lấy các thẻ h2
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(content, 'text/html');
 		const h2Elements = Array.from(doc.querySelectorAll('h2'));
 
-		// Tạo các thẻ h2 với ID slug từ nội dung tiêu đề
 		h2Elements.forEach((heading, index) => {
 			const slugifiedText = slugify(heading.textContent || `heading-${index}`);
 			heading.id = `toc-${slugifiedText}`;
 		});
 
-		// Chuyển đổi lại thành HTML với các id đã thêm
 		const updatedContent = doc.body.innerHTML;
 		const headingData = h2Elements.map((heading) => ({
 			id: heading.id,
@@ -296,7 +293,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 		setHeadings(headingData);
 
-		// Cập nhật nội dung vào contentRef để render
 		if (cRef.current) {
 			cRef.current.innerHTML = updatedContent;
 		}
@@ -309,31 +305,26 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				let currentActiveId = '';
 				let sectionPositions: { id: string; top: number }[] = [];
 
-				// Lưu vị trí (top) của từng thẻ h2
 				sections.forEach((section: HTMLElement) => {
 					sectionPositions.push({ id: section.id, top: section.getBoundingClientRect().top - 20 });
 				});
 
-				// Tìm thẻ h2 hiện tại dựa trên khoảng cách với viewport
 				for (let i = 0; i < sectionPositions.length; i++) {
 					const currentSection = sectionPositions[i];
 					const nextSection = sectionPositions[i + 1];
 
-					// Nếu đang trong khoảng của thẻ hiện tại và chưa tới thẻ tiếp theo, giữ active cho thẻ này
 					if (nextSection) {
 						if (currentSection.top <= 0 && nextSection.top > 0) {
 							currentActiveId = currentSection.id;
 							break;
 						}
 					} else {
-						// Nếu là thẻ cuối cùng, kiểm tra vị trí để kích hoạt
 						if (currentSection.top <= 0) {
 							currentActiveId = currentSection.id;
 						}
 					}
 				}
 
-				// Chỉ cập nhật nếu activeHeading thay đổi
 				if (currentActiveId && currentActiveId !== activeHeading) {
 					setActiveHeading(currentActiveId);
 				}
@@ -342,7 +333,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 		window.addEventListener('scroll', handleScroll);
 
-		// Gọi một lần để cập nhật ngay sau khi render
 		handleScroll();
 
 		return () => {
@@ -415,7 +405,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
 										<h2 className='text-[#3e434a] text-base font-semibold line-clamp-2'>{item?.title}</h2>
 									</Link>
-									<p className='discount-tag bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.productDatas?.price?.discount}</p>
+									{item?.productDatas?.price?.discount && (
+										<p className='discount-tag bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.productDatas?.price?.discount}</p>
+									)}
 									<div ref={(el: any) => (contentRefs.current[index] = el)} className='overflow-hidden' style={{
 										maxHeight: `${expandedItems[index] ? maxHeights[index] || 335 : 335}px`,
 										transition: 'max-height 0.7s ease',
@@ -506,7 +498,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 													{item?.productDatas?.actions?.slice(0, 3)?.map((itemS: any, indexS: any) => (
 														<div key={"S" + indexS} className={`flex flex-row md:flex-col lg:flex-row justify-between gap-2 items-center py-4 ${indexS != item?.productDatas?.actions?.length - 1 ? 'border-b' : ''}`}>
 															<div className='flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
-																<RenderStore storename={itemS?.stores?.[0]}></RenderStore>
+																<RenderStore storename={itemS?.stores}></RenderStore>
 															</div>
 															<div className='flex justify-end md:justify-center lg:justify-end'>
 																<Link href={itemS?.actionsLink ?? "/"} className='bg-[#117fec] hover:bg-[#275787] transition-all text-white py-2 px-2.5 rounded-xl font-medium'>
@@ -559,7 +551,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																{item?.productDatas?.actions?.slice(3, 100)?.map((itemT: any, indexT: any) => (
 																	<div className='flex justify-between gap-2 items-center py-4 border-b' key={"T" + indexT}>
 																		<div className='col-span-1 flex justify-start md:justify-center lg:justify-start text-center lg:text-left'>
-																			<RenderStore storename={itemT?.stores?.[0]}></RenderStore>
+																			<RenderStore storename={itemT?.stores}></RenderStore>
 																		</div>
 																		<div className='col-span-1 flex justify-end md:justify-center lg:justify-end'>
 																			<Link href={itemT?.actionsLink ?? "/"} className='bg-[#117fec] text-white py-1.5 px-2.5 rounded-xl font-medium'>
