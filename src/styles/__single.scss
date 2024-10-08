@@ -200,8 +200,14 @@
 }
 
 .summary-content a {
-  color: #2626ed;
+  color: #3f3fef;
   text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.summary-content a:hover {
+  color: #2323c4;
+  transition: all 0.3s;
 }
 
 .summary-content h2 {
