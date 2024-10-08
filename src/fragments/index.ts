@@ -219,6 +219,11 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 							features
 						}
 						description
+						flexibleDescription {
+							content1
+							content2
+							content3
+						}
 						actions {
 							...on ProductDatasActionsItemLayout {
 								stores

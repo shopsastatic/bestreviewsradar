@@ -444,16 +444,71 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<div
 											className="prod-content mt-7"
 										>
-											{item?.productDatas?.description && (
+											{(item?.productDatas?.description || item?.productDatas?.flexibleDescription?.content1 || item?.productDatas?.flexibleDescription?.content2 || item?.productDatas?.flexibleDescription?.content3) ? (
 												<>
 													<h5 className='mb-2 text-[#333]'>Main highlights</h5>
-													<ul>
-														{transToArray(item?.productDatas?.description)?.map((itemM: any, indexM: any) => (
-															<li key={"M" + indexM}>{itemM}</li>
-														))}
-													</ul>
+													{(item?.productDatas?.flexibleDescription?.content1 || item?.productDatas?.flexibleDescription?.content2 || item?.productDatas?.flexibleDescription?.content3) ? (
+														<div className='grid gap-4'>
+															{item?.productDatas?.flexibleDescription?.content1 && (
+																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
+																	<div>
+																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+																			<g clip-path="url(#clip0_3150_10534)">
+																				<path d="M12 12.5L21 3.5" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+																				<path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+																				<path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+																			</g>
+																			<defs>
+																				<clipPath id="clip0_3150_10534">
+																					<rect width="24" height="24" fill="white" transform="translate(0 0.5)" />
+																				</clipPath>
+																			</defs>
+																		</svg>
+																	</div>
+																	<div>
+																		<p className='mb-1.5 font-medium'>Key Features and Benefits</p>
+																		<span>{item?.productDatas?.flexibleDescription?.content1}</span>
+																	</div>
+																</div>
+															)}
+
+															{item?.productDatas?.flexibleDescription?.content2 && (
+																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
+																	<div>
+																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
+																			<path fill-rule="evenodd" clip-rule="evenodd" d="M11.9983 2.21436C12.1714 2.21391 12.3298 2.31183 12.4067 2.46691L14.178 6.0359L18.1282 6.61189C18.2992 6.63683 18.4413 6.75658 18.4949 6.92092C18.5485 7.08526 18.5042 7.26575 18.3807 7.38669L15.5077 10.2004L16.1901 14.11C16.22 14.2812 16.1497 14.4545 16.009 14.5565C15.8682 14.6584 15.6817 14.6712 15.5283 14.5895L11.9995 12.7086L8.47137 14.5895C8.31792 14.6713 8.13125 14.6584 7.99048 14.5563C7.84972 14.4542 7.77951 14.2807 7.80963 14.1095L8.49698 10.2003L5.61927 7.38697C5.49558 7.26604 5.45121 7.08541 5.50481 6.92094C5.55841 6.75647 5.70069 6.63666 5.87189 6.61183L9.84361 6.03591L11.5911 2.46901C11.6673 2.31353 11.8251 2.2148 11.9983 2.21436ZM12.0021 3.69719L10.5547 6.65152C10.4886 6.78638 10.3602 6.87991 10.2116 6.90147L6.91283 7.37981L9.30422 9.71773C9.41155 9.82266 9.46018 9.97379 9.43419 10.1216L8.86687 13.3481L11.7855 11.7921C11.9192 11.7208 12.0796 11.7208 12.2133 11.7921L15.1341 13.3489L14.5707 10.1211C14.545 9.97353 14.5935 9.82279 14.7005 9.71801L17.0885 7.37931L13.8111 6.90141C13.6634 6.87988 13.5357 6.78728 13.4694 6.65361L12.0021 3.69719Z" fill="#074786" stroke="#074786" stroke-width="0.257143" stroke-linejoin="round" />
+																			<path fill-rule="evenodd" clip-rule="evenodd" d="M3.64307 18.2857C3.64307 17.2206 4.50652 16.3572 5.57164 16.3572H18.4288C19.4939 16.3572 20.3574 17.2206 20.3574 18.2857V20.8572C20.3574 21.9223 19.4939 22.7857 18.4288 22.7857H5.57164C4.50653 22.7857 3.64307 21.9223 3.64307 20.8572V18.2857ZM5.57164 17.6429C5.2166 17.6429 4.92878 17.9307 4.92878 18.2857V20.8572C4.92878 21.2122 5.21659 21.5 5.57164 21.5H18.4288C18.7838 21.5 19.0716 21.2122 19.0716 20.8572V18.2857C19.0716 17.9307 18.7838 17.6429 18.4288 17.6429H5.57164Z" fill="#074786" />
+																		</svg>
+																	</div>
+																	<div>
+																		<p className='mb-1.5 font-medium'>Key Features and Benefits</p>
+																		<span>{item?.productDatas?.flexibleDescription?.content1}</span>
+																	</div>
+																</div>
+															)}
+
+															{item?.productDatas?.flexibleDescription?.content3 && (
+																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
+																	<div>
+																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><g clip-path="url(#clip0_3150_10534)"><path d="M12 12.5L21 3.5" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_3150_10534"><rect width="24" height="24" fill="white" transform="translate(0 0.5)"></rect></clipPath></defs></svg>
+																	</div>
+																	<div>
+																		<p className='mb-1.5 font-medium'>Key Features and Benefits</p>
+																		<span>{item?.productDatas?.flexibleDescription?.content1}</span>
+																	</div>
+																</div>
+															)}
+														</div>
+													) : (
+														<ul>
+															{transToArray(item?.productDatas?.description)?.map((itemM: any, indexM: any) => (
+																<li key={"M" + indexM}>{itemM}</li>
+															))}
+														</ul>
+													)}
 												</>
-											)}
+											) : null}
+
 										</div>
 
 									</div>
