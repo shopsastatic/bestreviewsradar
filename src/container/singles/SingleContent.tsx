@@ -600,91 +600,97 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				</div>
 			</div>
 
-			<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-				<div className='col-span-3 mb-10 lg:mb-0 flex items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
-					<p className='py-0 lg:py-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
-					<div onClick={handleClickToggle} className='cursor-pointer lg:cursor-none lg:hidden jump-mob text-[#2765de] font-medium flex items-center gap-2 border p-3 py-1.5 rounded border-blue-600'>
-						Jump to
-						<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>
-					</div>
-
-					<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
-						{headings.map((heading) => (
-							<li
-								key={heading.id}
-								className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
-									? 'font-semibold border-blue-600 pl-4'
-									: 'font-normal border-transparent pl-0'
-									}`}
-							>
-								<a href={`#${heading.id}`}>{heading.text}</a>
-							</li>
-
-						))}
-					</ul>
-
-					<ul className={`mt-4 flex-col gap-4 mob-footer-menu flex lg:hidden ${isToggle ? "active" : ""}`}>
-						{headings.map((heading) => (
-							<li
-								key={heading.id}
-								className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
-									? 'font-semibold border-blue-600 pl-4'
-									: 'font-normal border-transparent pl-0'
-									}`}
-							>
-								<a href={`#${heading.id}`}>{heading.text}</a>
-							</li>
-
-						))}
-					</ul>
-				</div>
-				<div></div>
-
-
-				<div className='col-span-8'>
-					{products && products?.length >= 10 && (
-						<>
-							<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
-							<div className='related-products mb-14'>
-								<div className='grid grid-cols-2 gap-3 md:gap-10'>
-									{products?.slice(10, 20)?.map((item: any, index: any) => (
-										<div className='col-span-1 related-prod-child' key={index}>
-											<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
-												<img className='mx-auto max-w-[120px] mb-3' src={item?.featuredImage?.node?.sourceUrl ?? "/"} alt={item?.featuredImage?.node?.altText} />
-											</Link>
-											<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
-											<div className='flex flex-wrap items-center gap-1 md:gap-2'>
-												{item?.productDatas?.price?.discount && (
-													<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>{item?.productDatas?.price?.discount + " OFF"}</span>
-												)}
-												<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>Free Shipping</span>
-											</div>
-											<Link className='block w-fit my-3 mt-1' href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
-												<p className='font-semibold line-clamp-2'>{item?.title}</p>
-											</Link>
-											<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
-											<div className='box-price flex flex-wrap items-end gap-4'>
-												<span className='font-semibold text-xl md:text-2xl'>{item?.productDatas?.price?.salePrice}</span>
-												<div className='flex items-center gap-4'>
-													<span className='text-sm line-through text-[#444]'>{item?.productDatas?.price?.originPrice}</span>
-													{item?.productDatas?.price?.discount && (
-														<span className='text-sm text-red-700 '>({item?.productDatas?.price?.discount} OFF)</span>
-													)}
-												</div>
-											</div>
-											<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"} className='p-3 px-2 block w-full mt-3 bg-[#117fec] hover:bg-[#275787] transition-all rounded-xl'>
-												<button className='text-center w-full text-white font-semibold'>View Deal</button>
-											</Link>
-										</div>
-									))}
-
+			{headings?.length > 0 && content && (
+				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
+					<div className='col-span-3 mb-10 lg:mb-0 flex items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
+						{headings?.length > 0 && (
+							<>
+								<p className='py-0 lg:py-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
+								<div onClick={handleClickToggle} className='cursor-pointer lg:cursor-none lg:hidden jump-mob text-[#2765de] font-medium flex items-center gap-2 border p-3 py-1.5 rounded border-blue-600'>
+									Jump to
+									<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>
 								</div>
-							</div>
-						</>
-					)}
-					<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: content }}></div>
+							</>
+						)}
+
+						<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
+							{headings.map((heading) => (
+								<li
+									key={heading.id}
+									className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
+										? 'font-semibold border-blue-600 pl-4'
+										: 'font-normal border-transparent pl-0'
+										}`}
+								>
+									<a href={`#${heading.id}`}>{heading.text}</a>
+								</li>
+
+							))}
+						</ul>
+
+						<ul className={`mt-4 flex-col gap-4 mob-footer-menu flex lg:hidden ${isToggle ? "active" : ""}`}>
+							{headings.map((heading) => (
+								<li
+									key={heading.id}
+									className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
+										? 'font-semibold border-blue-600 pl-4'
+										: 'font-normal border-transparent pl-0'
+										}`}
+								>
+									<a href={`#${heading.id}`}>{heading.text}</a>
+								</li>
+
+							))}
+						</ul>
+					</div>
+					<div></div>
+
+
+					<div className='col-span-8'>
+						{products && products?.length >= 10 && (
+							<>
+								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
+								<div className='related-products mb-14'>
+									<div className='grid grid-cols-2 gap-3 md:gap-10'>
+										{products?.slice(10, 20)?.map((item: any, index: any) => (
+											<div className='col-span-1 related-prod-child' key={index}>
+												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
+													<img className='mx-auto max-w-[120px] mb-3' src={item?.featuredImage?.node?.sourceUrl ?? "/"} alt={item?.featuredImage?.node?.altText} />
+												</Link>
+												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
+												<div className='flex flex-wrap items-center gap-1 md:gap-2'>
+													{item?.productDatas?.price?.discount && (
+														<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>{item?.productDatas?.price?.discount + " OFF"}</span>
+													)}
+													<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>Free Shipping</span>
+												</div>
+												<Link className='block w-fit my-3 mt-1' href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
+													<p className='font-semibold line-clamp-2'>{item?.title}</p>
+												</Link>
+												<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
+												<div className='box-price flex flex-wrap items-end gap-4'>
+													<span className='font-semibold text-xl md:text-2xl'>{item?.productDatas?.price?.salePrice}</span>
+													<div className='flex items-center gap-4'>
+														<span className='text-sm line-through text-[#444]'>{item?.productDatas?.price?.originPrice}</span>
+														{item?.productDatas?.price?.discount && (
+															<span className='text-sm text-red-700 '>({item?.productDatas?.price?.discount} OFF)</span>
+														)}
+													</div>
+												</div>
+												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"} className='p-3 px-2 block w-full mt-3 bg-[#117fec] hover:bg-[#275787] transition-all rounded-xl'>
+													<button className='text-center w-full text-white font-semibold'>View Deal</button>
+												</Link>
+											</div>
+										))}
+
+									</div>
+								</div>
+							</>
+						)}
+						<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: content }}></div>
+					</div>
 				</div>
-			</div>
+			)}
 
 			<div className="container mt-20 flex flex-col items-center space-y-4 w-full">
 				<h3 className="font-bold text-2xl text-gray-700 text-center">Sign up and get exclusive special deals</h3>
