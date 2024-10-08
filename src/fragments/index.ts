@@ -201,7 +201,7 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		databaseId
 		title
 		postData {
-			products {
+			products (first: 20){
 			nodes {
 				...on SourceProduct {
 					productDatas {
