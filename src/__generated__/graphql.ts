@@ -12204,6 +12204,10 @@ export type PostData = AcfFieldGroup & AcfFieldGroupFields & PostData_Fields & {
    * @deprecated Use __typename instead
    */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
+  generatePoints?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
+  points?: Maybe<Scalars['String']['output']>;
   /** Field of the &quot;relationship&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
   products?: Maybe<AcfContentNodeConnection>;
 };
@@ -12224,6 +12228,10 @@ export type PostData_Fields = {
    * @deprecated Use __typename instead
    */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
+  generatePoints?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
+  points?: Maybe<Scalars['String']['output']>;
   /** Field of the &quot;relationship&quot; Field Type added to the schema as part of the &quot;PostData&quot; Field Group */
   products?: Maybe<AcfContentNodeConnection>;
 };
