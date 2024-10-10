@@ -197,6 +197,41 @@
   color: #fff;
 }
 
+.pros-cons-table {
+  display: flex;
+  width: 100%;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.pros-cons-table .pros-cons-item {
+  width: 50%;
+}
+
+.pros-cons-table .pros-cons-item div {
+  padding: 15px;
+  padding-left: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.pros-cons-table .pros-cons-item div:first-child {
+  font-weight: 600;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding: 0 0 5px;
+}
+
+.pros-cons-table .pros-cons-item div svg {
+  margin-top: 2px;
+  min-width: 20px;
+}
+
+.pros-cons-table .pros-cons-item div:first-child svg {
+  display: none;
+}
+
 .summary-content a {
   color: #3f3fef;
   text-decoration: underline;
@@ -309,6 +344,14 @@
 
   .related-prod-child {
     padding: 12px;
+  }
+
+  .pros-cons-table {
+    flex-direction: column;
+  }
+
+  .pros-cons-table .pros-cons-item {
+    width: 100%;
   }
 }
 

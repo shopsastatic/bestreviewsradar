@@ -29,7 +29,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const progressRef = useRef<HTMLButtonElement>(null)
 
 	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
-	
+
 	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
 		threshold: 0,
 		root: null,
@@ -49,20 +49,20 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		date,
 		postData
 	} = getPostDataFromPostFragment(post || {})
-	
+
 	//	
-	
+
 	const products = postData?.products?.nodes
 	const points = postData?.points
-	
+
 	const pointLines = points?.trim().split('\n');
-	
+
 	const pointArray = pointLines?.map(line => {
 		const numbers = line.split(' ').map(parseFloat);
 		return numbers
 	});
-	
-	
+
+
 	//
 	const [showMoreStore, setShowMoreStore] = useState(false);
 	const ctRef = useRef(null) as any;
@@ -275,32 +275,105 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
-		if (typeof window === 'undefined') return; // Only run on the client
-	
-		// Function to parse and update content with IDs
+		if (typeof window === 'undefined') return;
+
 		const updateContentWithHeadings = () => {
-		  const parser = new DOMParser();
-		  const doc = parser.parseFromString(content, 'text/html');
-		  const h2Elements = Array.from(doc.querySelectorAll('h2'));
-	
-		  h2Elements.forEach((heading, index) => {
-			const slugifiedText = slugify(heading.textContent || `heading-${index}`);
-			heading.id = `toc-${slugifiedText}`;
-		  });
-	
-		  const updatedContent = doc.body.innerHTML;
-		  const headingData = h2Elements.map((heading) => ({
-			id: heading.id,
-			text: heading.textContent || '',
-		  }));
-	
-		  setHeadings(headingData);
-		  setHydratedContent(updatedContent); // Update the content with the new IDs
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(content, 'text/html');
+			const h2Elements = Array.from(doc.querySelectorAll('h2'));
+
+			h2Elements.forEach((heading, index) => {
+				const slugifiedText = slugify(heading.textContent || `heading-${index}`);
+				heading.id = `toc-${slugifiedText}`;
+			});
+
+			// Tìm kiếm tất cả các bảng trong nội dung
+			const tables = Array.from(doc.querySelectorAll('table'));
+			tables.forEach((table, index) => {
+				let hasProsOrCons = false;
+
+				// Kiểm tra hàng đầu tiên của bảng
+				const firstRow = table.querySelector('tr');
+				if (firstRow) {
+					const tdElements = Array.from(firstRow.querySelectorAll('td'));
+					tdElements.forEach((td: any) => {
+						const text = td.textContent.toLowerCase();
+						if (text.includes('pros') || text.includes('cons')) {
+							hasProsOrCons = true;
+							table.id = `pros-cons-table`;
+						}
+					});
+				}
+
+				const newDivWrapper = document.createElement('div');
+				newDivWrapper.classList.add('pros-cons-table');
+
+				const thead = table.querySelector('thead');
+				if (thead) {
+					const theadDiv = document.createElement('div');
+					theadDiv.classList.add('thead-wrapper'); 
+
+					const thElements = Array.from(thead.querySelectorAll('th'));
+					thElements.forEach((th) => {
+						const thDiv = document.createElement('div');
+						thDiv.classList.add('thead-cell');
+						thDiv.innerHTML = th.innerHTML;
+						theadDiv.appendChild(thDiv);
+					});
+
+					newDivWrapper.appendChild(theadDiv);
+				}
+
+				const rows = Array.from(table.querySelectorAll('tbody tr'));
+				const columns = [] as any;
+
+				rows.forEach((row, rowIndex) => {
+					const cells = Array.from(row.querySelectorAll('td'));
+					cells.forEach((cell, cellIndex) => {
+						if (!columns[cellIndex]) {
+							columns[cellIndex] = [];
+						}
+
+						if(cell.innerHTML) {
+							if(cellIndex == 0) {
+								columns[cellIndex].push('<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>' + cell.innerHTML);
+							}else {
+								columns[cellIndex].push('<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path> </svg>' + cell.innerHTML)
+							}
+						}
+					});
+				});
+
+				columns.forEach((columnData: any) => {
+					const columnDiv = document.createElement('div');
+					columnDiv.classList.add('pros-cons-item');
+
+					columnData.forEach((cellContent: any) => {
+						const cellDiv = document.createElement('div');
+						cellDiv.classList.add('cell');
+						cellDiv.innerHTML = cellContent;
+						columnDiv.appendChild(cellDiv);
+					});
+
+					newDivWrapper.appendChild(columnDiv);
+				});
+
+				table.replaceWith(newDivWrapper);
+			});
+
+			const updatedContent = doc.body.innerHTML;
+			const headingData = h2Elements.map((heading) => ({
+				id: heading.id,
+				text: heading.textContent || '',
+			}));
+
+			setHeadings(headingData);
+			setHydratedContent(updatedContent);
 		};
-	
-		updateContentWithHeadings(); // Call the function to update headings
-	
-	  }, [content]);
+
+		updateContentWithHeadings();
+
+	}, [content]);
 
 	useEffect(() => {
 		const handleScroll = () => {
