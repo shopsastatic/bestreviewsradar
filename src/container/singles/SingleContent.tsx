@@ -51,9 +51,17 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		postData
 	} = getPostDataFromPostFragment(post || {})
 
-	console.log(postData)
 
 	const products = postData?.products?.nodes
+	const points = postData?.points
+
+	const pointLines = points?.trim().split('\n');
+
+	const pointArray = pointLines?.map(line => {
+		const numbers = line.split(' ').map(parseFloat);
+		return numbers
+	});
+	
 
 	//
 	const [showMoreStore, setShowMoreStore] = useState(false);
@@ -70,6 +78,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const [activeHeading, setActiveHeading] = useState<string>('');
 	const cRef = useRef<HTMLDivElement>(null) as any;
 	const [isToggle, setIsToggle] = useState(false);
+	const [hydratedContent, setHydratedContent] = useState(content);
 
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
@@ -175,12 +184,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	function parseSP(data: any) {
 		if (data) {
 			return data.trim().split('\n').map((item: any) => {
-				const [point, ...labelParts] = item.trim().split(' ');
-				const label = labelParts.join(' ');
-				return {
-					point: parseFloat(point),
-					label: label
-				};
+				const label = item.trim().split(' ');
+				return label
 			});
 		} else {
 			return []
@@ -271,32 +276,32 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(content, 'text/html');
-		const h2Elements = Array.from(doc.querySelectorAll('h2'));
-
-		h2Elements.forEach((heading, index) => {
+		if (typeof window === 'undefined') return; // Only run on the client
+	
+		// Function to parse and update content with IDs
+		const updateContentWithHeadings = () => {
+		  const parser = new DOMParser();
+		  const doc = parser.parseFromString(content, 'text/html');
+		  const h2Elements = Array.from(doc.querySelectorAll('h2'));
+	
+		  h2Elements.forEach((heading, index) => {
 			const slugifiedText = slugify(heading.textContent || `heading-${index}`);
 			heading.id = `toc-${slugifiedText}`;
-		});
-
-		const updatedContent = doc.body.innerHTML;
-		const headingData = h2Elements.map((heading) => ({
+		  });
+	
+		  const updatedContent = doc.body.innerHTML;
+		  const headingData = h2Elements.map((heading) => ({
 			id: heading.id,
 			text: heading.textContent || '',
-		}));
-
-		// headingData.unshift({
-		// 	id: 'toc-related-deal',
-		// 	text: 'Related Deal',
-		// });
-
-		setHeadings(headingData);
-
-		if (cRef.current) {
-			cRef.current.innerHTML = updatedContent;
-		}
-	}, [content]);
+		  }));
+	
+		  setHeadings(headingData);
+		  setHydratedContent(updatedContent); // Update the content with the new IDs
+		};
+	
+		updateContentWithHeadings(); // Call the function to update headings
+	
+	  }, [content]);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -348,8 +353,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 				<div className='prod-item mt-12'>
 					{products && products?.length > 0 && products?.slice(0, 10)?.map((item: any, index: any) => (
-						<>
-							<div className={`prod-child prod-item-${++index} grid grid-cols-1 md:grid-cols-10 bg-white gap-3 md:gap-7 px-4 md:px-0`} key={index}>
+						<div key={index}>
+							<div className={`prod-child prod-item-${++index} grid grid-cols-1 md:grid-cols-10 bg-white gap-3 md:gap-7 px-4 md:px-0`}>
 								{(index == 1 || index == 2 || index == 3 || index == 4) && (
 									<div className={`h-tag ${index == 4 ? "sub" : ""} flex items-center absolute -top-[16px] -left-[7px]`}>
 										<div className={`${index == 4 ? "noicon-tag-left" : ""} w-[42px] h-[32px] flex justify-center items-center prod-heading-tag relative`}>
@@ -417,8 +422,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 											<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#ffefe5] grid grid-cols-1 gap-2'>
 												{parseSP(item?.productDatas?.additionals?.specifications)?.map((itemSP: any, indexSP: any) => (
 													<div className='flex items-start md:items-center gap-2 col-span-1' key={"sp" + indexSP}>
-														<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{itemSP?.point?.toFixed(1)}</span>
-														<span className='text-[#615b5b] mt-[2px] md:mt-0'>{itemSP?.label}</span>
+														<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{pointArray?.[index - 1]?.[indexSP] ?? 9.4}</span>
+														<span className='text-[#615b5b] mt-[2px] md:mt-0'>{itemSP}</span>
 													</div>
 												))}
 											</div>
@@ -453,10 +458,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
 																	<div>
 																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-																			<g clip-path="url(#clip0_3150_10534)">
-																				<path d="M12 12.5L21 3.5" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-																				<path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-																				<path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+																			<g clipPath="url(#clip0_3150_10534)">
+																				<path d="M12 12.5L21 3.5" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+																				<path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+																				<path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
 																			</g>
 																			<defs>
 																				<clipPath id="clip0_3150_10534">
@@ -476,8 +481,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
 																	<div>
 																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none">
-																			<path fill-rule="evenodd" clip-rule="evenodd" d="M11.9983 2.21436C12.1714 2.21391 12.3298 2.31183 12.4067 2.46691L14.178 6.0359L18.1282 6.61189C18.2992 6.63683 18.4413 6.75658 18.4949 6.92092C18.5485 7.08526 18.5042 7.26575 18.3807 7.38669L15.5077 10.2004L16.1901 14.11C16.22 14.2812 16.1497 14.4545 16.009 14.5565C15.8682 14.6584 15.6817 14.6712 15.5283 14.5895L11.9995 12.7086L8.47137 14.5895C8.31792 14.6713 8.13125 14.6584 7.99048 14.5563C7.84972 14.4542 7.77951 14.2807 7.80963 14.1095L8.49698 10.2003L5.61927 7.38697C5.49558 7.26604 5.45121 7.08541 5.50481 6.92094C5.55841 6.75647 5.70069 6.63666 5.87189 6.61183L9.84361 6.03591L11.5911 2.46901C11.6673 2.31353 11.8251 2.2148 11.9983 2.21436ZM12.0021 3.69719L10.5547 6.65152C10.4886 6.78638 10.3602 6.87991 10.2116 6.90147L6.91283 7.37981L9.30422 9.71773C9.41155 9.82266 9.46018 9.97379 9.43419 10.1216L8.86687 13.3481L11.7855 11.7921C11.9192 11.7208 12.0796 11.7208 12.2133 11.7921L15.1341 13.3489L14.5707 10.1211C14.545 9.97353 14.5935 9.82279 14.7005 9.71801L17.0885 7.37931L13.8111 6.90141C13.6634 6.87988 13.5357 6.78728 13.4694 6.65361L12.0021 3.69719Z" fill="#074786" stroke="#074786" stroke-width="0.257143" stroke-linejoin="round" />
-																			<path fill-rule="evenodd" clip-rule="evenodd" d="M3.64307 18.2857C3.64307 17.2206 4.50652 16.3572 5.57164 16.3572H18.4288C19.4939 16.3572 20.3574 17.2206 20.3574 18.2857V20.8572C20.3574 21.9223 19.4939 22.7857 18.4288 22.7857H5.57164C4.50653 22.7857 3.64307 21.9223 3.64307 20.8572V18.2857ZM5.57164 17.6429C5.2166 17.6429 4.92878 17.9307 4.92878 18.2857V20.8572C4.92878 21.2122 5.21659 21.5 5.57164 21.5H18.4288C18.7838 21.5 19.0716 21.2122 19.0716 20.8572V18.2857C19.0716 17.9307 18.7838 17.6429 18.4288 17.6429H5.57164Z" fill="#074786" />
+																			<path fillRule="evenodd" clipRule="evenodd" d="M11.9983 2.21436C12.1714 2.21391 12.3298 2.31183 12.4067 2.46691L14.178 6.0359L18.1282 6.61189C18.2992 6.63683 18.4413 6.75658 18.4949 6.92092C18.5485 7.08526 18.5042 7.26575 18.3807 7.38669L15.5077 10.2004L16.1901 14.11C16.22 14.2812 16.1497 14.4545 16.009 14.5565C15.8682 14.6584 15.6817 14.6712 15.5283 14.5895L11.9995 12.7086L8.47137 14.5895C8.31792 14.6713 8.13125 14.6584 7.99048 14.5563C7.84972 14.4542 7.77951 14.2807 7.80963 14.1095L8.49698 10.2003L5.61927 7.38697C5.49558 7.26604 5.45121 7.08541 5.50481 6.92094C5.55841 6.75647 5.70069 6.63666 5.87189 6.61183L9.84361 6.03591L11.5911 2.46901C11.6673 2.31353 11.8251 2.2148 11.9983 2.21436ZM12.0021 3.69719L10.5547 6.65152C10.4886 6.78638 10.3602 6.87991 10.2116 6.90147L6.91283 7.37981L9.30422 9.71773C9.41155 9.82266 9.46018 9.97379 9.43419 10.1216L8.86687 13.3481L11.7855 11.7921C11.9192 11.7208 12.0796 11.7208 12.2133 11.7921L15.1341 13.3489L14.5707 10.1211C14.545 9.97353 14.5935 9.82279 14.7005 9.71801L17.0885 7.37931L13.8111 6.90141C13.6634 6.87988 13.5357 6.78728 13.4694 6.65361L12.0021 3.69719Z" fill="#074786" stroke="#074786" strokeWidth="0.257143" strokeLinejoin="round" />
+																			<path fillRule="evenodd" clipRule="evenodd" d="M3.64307 18.2857C3.64307 17.2206 4.50652 16.3572 5.57164 16.3572H18.4288C19.4939 16.3572 20.3574 17.2206 20.3574 18.2857V20.8572C20.3574 21.9223 19.4939 22.7857 18.4288 22.7857H5.57164C4.50653 22.7857 3.64307 21.9223 3.64307 20.8572V18.2857ZM5.57164 17.6429C5.2166 17.6429 4.92878 17.9307 4.92878 18.2857V20.8572C4.92878 21.2122 5.21659 21.5 5.57164 21.5H18.4288C18.7838 21.5 19.0716 21.2122 19.0716 20.8572V18.2857C19.0716 17.9307 18.7838 17.6429 18.4288 17.6429H5.57164Z" fill="#074786" />
 																		</svg>
 																	</div>
 																	<div>
@@ -490,7 +495,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 															{item?.productDatas?.flexibleDescription?.content3 && (
 																<div className='col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4'>
 																	<div>
-																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><g clip-path="url(#clip0_3150_10534)"><path d="M12 12.5L21 3.5" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_3150_10534"><rect width="24" height="24" fill="white" transform="translate(0 0.5)"></rect></clipPath></defs></svg>
+																		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25" fill="none"><g clipPath="url(#clip0_3150_10534)"><path d="M12 12.5L21 3.5" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"></path><path d="M18.3665 6.13549C16.7709 4.53513 14.6327 3.5921 12.375 3.49305C10.1173 3.394 7.90474 4.14613 6.17515 5.6006C4.44556 7.05507 3.32504 9.10586 3.03536 11.3471C2.74569 13.5883 3.30797 15.8566 4.61091 17.703C5.91386 19.5494 7.86252 20.8394 10.0712 21.3176C12.2799 21.7959 14.5876 21.4275 16.5376 20.2854C18.4876 19.1433 19.9378 17.3107 20.6012 15.1504C21.2645 12.9901 21.0927 10.6595 20.1196 8.61986" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"></path><path d="M15.1791 9.31864C14.4359 8.5775 13.4565 8.12011 12.4111 8.02593C11.3658 7.93175 10.3204 8.20673 9.45671 8.8031C8.59299 9.39946 7.96545 10.2795 7.68311 11.2905C7.40076 12.3014 7.48145 13.3793 7.91114 14.3369C8.34084 15.2945 9.09241 16.0713 10.0353 16.5325C10.9782 16.9936 12.0528 17.1099 13.0725 16.8611C14.0922 16.6124 14.9925 16.0143 15.6172 15.1708C16.2418 14.3272 16.5512 13.2916 16.4916 12.2436" stroke="#074786" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"></path></g><defs><clipPath id="clip0_3150_10534"><rect width="24" height="24" fill="white" transform="translate(0 0.5)"></rect></clipPath></defs></svg>
 																	</div>
 																	<div>
 																		<p className='mb-1.5 font-medium'>Key Features and Benefits</p>
@@ -560,8 +565,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																	<button className='flex flex-nowrap items-center gap-2'>
 																		<span>Check Price</span>
 																		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 -6.5 38 38" version="1.1">
-																			<g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																				<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fill-rule="nonzero">
+																			<g id="icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+																				<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fillRule="nonzero">
 																					<g id="1" transform="translate(1350.000000, 120.000000)">
 																						<path fill='#fff' d="M187.812138,38.5802109 L198.325224,49.0042713 L198.41312,49.0858421 C198.764883,49.4346574 198.96954,49.8946897 199,50.4382227 L198.998248,50.6209428 C198.97273,51.0514917 198.80819,51.4628128 198.48394,51.8313977 L198.36126,51.9580208 L187.812138,62.4197891 C187.031988,63.1934036 185.770571,63.1934036 184.990421,62.4197891 C184.205605,61.6415481 184.205605,60.3762573 184.990358,59.5980789 L192.274264,52.3739093 L162.99947,52.3746291 C161.897068,52.3746291 161,51.4850764 161,50.3835318 C161,49.2819872 161.897068,48.3924345 162.999445,48.3924345 L192.039203,48.3917152 L184.990421,41.4019837 C184.205605,40.6237427 184.205605,39.3584519 184.990421,38.5802109 C185.770571,37.8065964 187.031988,37.8065964 187.812138,38.5802109 Z" id="right-arrow">
 
@@ -613,8 +618,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																				<button className='flex flex-nowrap items-center gap-2'>
 																					<span>Check Price</span>
 																					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 -6.5 38 38" version="1.1">
-																						<g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-																							<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fill-rule="nonzero">
+																						<g id="icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+																							<g id="ui-gambling-website-lined-icnos-casinoshunter" transform="translate(-1511.000000, -158.000000)" fill="#1C1C1F" fillRule="nonzero">
 																								<g id="1" transform="translate(1350.000000, 120.000000)">
 																									<path fill='#fff' d="M187.812138,38.5802109 L198.325224,49.0042713 L198.41312,49.0858421 C198.764883,49.4346574 198.96954,49.8946897 199,50.4382227 L198.998248,50.6209428 C198.97273,51.0514917 198.80819,51.4628128 198.48394,51.8313977 L198.36126,51.9580208 L187.812138,62.4197891 C187.031988,63.1934036 185.770571,63.1934036 184.990421,62.4197891 C184.205605,61.6415481 184.205605,60.3762573 184.990358,59.5980789 L192.274264,52.3739093 L162.99947,52.3746291 C161.897068,52.3746291 161,51.4850764 161,50.3835318 C161,49.2819872 161.897068,48.3924345 162.999445,48.3924345 L192.039203,48.3917152 L184.990421,41.4019837 C184.205605,40.6237427 184.205605,39.3584519 184.990421,38.5802109 C185.770571,37.8065964 187.031988,37.8065964 187.812138,38.5802109 Z" id="right-arrow">
 
@@ -650,7 +655,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										</strong></span>
 								</div>
 							)}
-						</>
+						</div>
 					))}
 				</div>
 			</div>
@@ -663,7 +668,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								<p className='py-0 lg:py-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
 								<div onClick={handleClickToggle} className='cursor-pointer lg:cursor-none lg:hidden jump-mob text-[#2765de] font-medium flex items-center gap-2 border p-3 py-1.5 rounded border-blue-600'>
 									Jump to
-									<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>
+									<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fillRule="evenodd" clipRule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>
 								</div>
 							</>
 						)}
@@ -742,7 +747,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								</div>
 							</>
 						)}
-						<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: content }}></div>
+						<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
 					</div>
 				</div>
 			)}

@@ -71,7 +71,7 @@
 }
 
 .prod-heading-tag {
-  clip-path: polygon(100% 0, 70% 100%, 0 150%, 0 100%, 0 0);
+  clipPath: polygon(100% 0, 70% 100%, 0 150%, 0 100%, 0 0);
   z-index: 10;
 }
 
@@ -140,7 +140,7 @@
   align-items: center;
   width: fit-content;
   padding: 15px 30px 60px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  clipPath: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
 }
 
 .store-add {
@@ -177,7 +177,7 @@
   border-bottom-left-radius: 0;
   background-color: #fff;
   padding-right: 20px;
-  clip-path: polygon(0 0, 100% 0%, 92% 50%, 100% 100%, 0 100%, 0 50%);
+  clipPath: polygon(0 0, 100% 0%, 92% 50%, 100% 100%, 0 100%, 0 50%);
   background-color: #4f72ce;
 }
 
@@ -215,7 +215,7 @@
 }
 
 .summary-content h2 {
-  margin: 50px 0 25px;
+  margin: 40px 0 25px;
 }
 
 .summary-content h2:first-child {
@@ -232,12 +232,20 @@
   margin-bottom: 14px;
 }
 
-.summary-content ul {
+.summary-content ul + p, .summary-content ol + p {
+  margin-top: 10px;
+}
+
+.summary-content ul, .summary-content ol {
   margin-left: 40px;
 }
 
-.summary-content li {
+.summary-content ul li {
   list-style-type: disc;
+}
+
+.summary-content ol li {
+  list-style-type: decimal;
 }
 
 .mob-footer-menu {

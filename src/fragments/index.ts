@@ -242,6 +242,7 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 				}
 			}
 			}
+			points
 		}
 		content
 		author {
