@@ -40,19 +40,20 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		date,
 		postData
 	} = getPostDataFromPostFragment(post || {})
-
-
+	
+	//	
+	
 	const products = postData?.products?.nodes
 	const points = postData?.points
-
+	
 	const pointLines = points?.trim().split('\n');
-
+	
 	const pointArray = pointLines?.map(line => {
 		const numbers = line.split(' ').map(parseFloat);
 		return numbers
 	});
 	
-
+	
 	//
 	const [showMoreStore, setShowMoreStore] = useState(false);
 	const ctRef = useRef(null) as any;
@@ -69,7 +70,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const cRef = useRef<HTMLDivElement>(null) as any;
 	const [isToggle, setIsToggle] = useState(false);
 	const [hydratedContent, setHydratedContent] = useState(content);
-
+	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
+	
+	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
+		threshold: 0,
+		root: null,
+		rootMargin: '0%',
+		freezeOnceVisible: false,
+	})
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false);
