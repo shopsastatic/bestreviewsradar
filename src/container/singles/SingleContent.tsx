@@ -28,16 +28,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const endedAnchorRef = useRef<HTMLDivElement>(null)
 	const progressRef = useRef<HTMLButtonElement>(null)
 	//
-	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
-	//
-
-	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
-		threshold: 0,
-		root: null,
-		rootMargin: '0%',
-		freezeOnceVisible: false,
-	})
-
 	//
 	const {
 		content,
