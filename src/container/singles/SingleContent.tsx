@@ -27,6 +27,15 @@ export interface SingleContentProps {
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const endedAnchorRef = useRef<HTMLDivElement>(null)
 	const progressRef = useRef<HTMLButtonElement>(null)
+
+	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
+	
+	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
+		threshold: 0,
+		root: null,
+		rootMargin: '0%',
+		freezeOnceVisible: false,
+	})
 	//
 	//
 	const {
@@ -70,14 +79,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const cRef = useRef<HTMLDivElement>(null) as any;
 	const [isToggle, setIsToggle] = useState(false);
 	const [hydratedContent, setHydratedContent] = useState(content);
-	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
-	
-	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
-		threshold: 0,
-		root: null,
-		rootMargin: '0%',
-		freezeOnceVisible: false,
-	})
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false);
