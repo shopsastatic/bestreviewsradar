@@ -26,7 +26,7 @@ export type PostFormatNameType =
 
 export function getPostDataFromPostFragment(
   post:
-    | FragmentType<typeof NC_POST_CARD_FRAGMENT>
+    | FragmentType<any>
     | FragmentType<typeof NC_POST_FULL_FRAGMENT>
     | FragmentType<typeof NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT>
     | TPostCard

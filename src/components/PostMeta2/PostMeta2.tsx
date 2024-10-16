@@ -10,7 +10,7 @@ import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment
 export interface PostMeta2Props {
 	className?: string
 	post:
-		| FragmentType<typeof NC_POST_CARD_FRAGMENT>
+		| FragmentType<any>
 		| FragmentType<typeof NC_POST_FULL_FRAGMENT>
 	hiddenCategories?: boolean
 	size?: 'large' | 'normal'
