@@ -80,7 +80,7 @@ export interface Props {
 	iconClass?: string
 	dropdownPositon?: 'up' | 'down'
 	post:
-		| FragmentType<typeof NC_POST_FULL_FRAGMENT>
+		| FragmentType<any>
 		| FragmentType<typeof NC_POST_CARD_FRAGMENT>
 	isSingle?: boolean
 }
