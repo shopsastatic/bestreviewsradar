@@ -62,7 +62,7 @@
         --h5-font-size: 1.125rem;
         --h5-line-height: 1.5rem;
         --text-font-size: 1rem;
-        --text-line-height: 1.5rem;
+        --text-line-height: 1.875rem;
     }
 }
 
@@ -79,7 +79,7 @@
         --h5-font-size: 1rem;
         --h5-line-height: 1.5rem;
         --text-font-size: 1rem;
-        --text-line-height: 1.625rem;
+        --text-line-height: 1.75rem;
     }
 }
 
@@ -92,6 +92,7 @@ body {
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;
+    color: #242e3f;
     background-color: #F9FAFBF2;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
