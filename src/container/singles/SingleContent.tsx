@@ -478,7 +478,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									<p className='mt-4 text-sm text-[#615b5b]'>{item?.productDatas?.general?.brand}</p>
 								</div>
 
-								<div className='col-span-1 md:col-span-4 pt-5 pb-0 md:pb-5'>
+								<div className='prod-information col-span-1 md:col-span-4 pt-5 pb-0 md:pb-5'>
 									<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
 										<h2 className='text-[#3e434a] text-base font-semibold line-clamp-2'>{item?.title}</h2>
 									</Link>
@@ -504,7 +504,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										{item?.productDatas?.additionals?.features && (
 											<div>
 												<h6>Why we love it</h6>
-												<div className='mt-2 grid grid-cols-1 gap-1.5'>
+												<div className='mt-2 grid grid-cols-1 gap-2.5'>
 													{transToArray(item?.productDatas?.additionals?.features)?.map((itemF: any, indexF: any) => (
 														<div className='col-span-1 flex items-start gap-2' key={"F" + indexF}>
 															<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" className='min-w-[20px] md:min-w-[22px] mt-0 md:mt-0.5' viewBox="0 0 20 20" fill="none">

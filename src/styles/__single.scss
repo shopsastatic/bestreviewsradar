@@ -160,7 +160,7 @@
 }
 
 .prod-item ul li {
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .discount-tag {
@@ -232,6 +232,10 @@
   display: none;
 }
 
+.prod-information {
+  line-height: 24px;
+}
+
 .summary-content a {
   color: #3f3fef;
   text-decoration: underline;
@@ -270,7 +274,6 @@
 .summary-content p {
   margin-bottom: 14px;
   font-size: 18px;
-  line-height: 28px;
 }
 
 .summary-content ul + p, .summary-content ol + p {
