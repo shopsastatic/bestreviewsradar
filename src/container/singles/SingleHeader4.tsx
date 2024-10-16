@@ -13,7 +13,7 @@ export interface SingleHeader4Props {
   post: GetPostSiglePageQuery["post"];
 }
 
-const SingleHeader4: FC<SingleHeader4Props> = ({
+const SingleHeader4: FC<any> = ({
   hiddenDesc = false,
   className = "",
   post,
