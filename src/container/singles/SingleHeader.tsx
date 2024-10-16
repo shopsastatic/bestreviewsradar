@@ -9,7 +9,7 @@ export interface SingleHeaderProps {
   hiddenDesc?: boolean;
   titleMainClass?: string;
   className?: string;
-  post: FragmentType<typeof NC_POST_FULL_FRAGMENT>;
+  post: FragmentType<any>;
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({

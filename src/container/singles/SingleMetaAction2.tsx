@@ -13,7 +13,7 @@ import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 
 export interface Props {
 	className?: string
-	post: FragmentType<typeof NC_POST_FULL_FRAGMENT>
+	post: FragmentType<any>
 }
 
 const SingleMetaAction2: FC<Props> = ({ className = '', post }) => {

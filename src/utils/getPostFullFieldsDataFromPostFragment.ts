@@ -7,7 +7,7 @@
 // } from "../fragments";
 
 // export function getPostDataFromPostFragment(
-//   post: FragmentType<typeof NC_POST_FULL_FRAGMENT>
+//   post: FragmentType<any>
 // ) {
 //   let query = useFragment(NC_POST_FULL_FRAGMENT, post);
 

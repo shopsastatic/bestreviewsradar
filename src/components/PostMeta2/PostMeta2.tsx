@@ -11,7 +11,7 @@ export interface PostMeta2Props {
 	className?: string
 	post:
 		| FragmentType<any>
-		| FragmentType<typeof NC_POST_FULL_FRAGMENT>
+		| FragmentType<any>
 	hiddenCategories?: boolean
 	size?: 'large' | 'normal'
 	avatarRounded?: string
