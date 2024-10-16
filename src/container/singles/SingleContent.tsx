@@ -48,7 +48,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		status,
 		date,
 		postData
-	} = getPostDataFromPostFragment(post || {})
+	} = getPostDataFromPostFragment(post as any || {})
 
 	//	
 
