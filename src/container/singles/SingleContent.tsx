@@ -57,7 +57,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const pointLines = points?.trim().split('\n');
 
-	const pointArray = pointLines?.map(line => {
+	const pointArray = pointLines?.map((line: any) => {
 		const numbers = line.split(' ').map(parseFloat);
 		return numbers
 	});
