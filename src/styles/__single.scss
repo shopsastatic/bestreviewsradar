@@ -260,7 +260,7 @@
   max-width: 652px;
   width: 100%;
   margin: auto;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 
 .summary-content iframe {
@@ -303,6 +303,7 @@
 .summary-content ol {
   margin-left: 40px;
   line-height: 28px;
+  margin-bottom: 30px;
 }
 
 .summary-content ul li {
@@ -377,6 +378,7 @@ footer .container {
 
 .prod-image {
   max-height: 140px;
+  border-radius: 8px;
 }
 
 @media (max-width: 1024px) {
