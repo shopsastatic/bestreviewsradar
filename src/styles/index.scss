@@ -26,14 +26,14 @@
 
     --prod1-rate-color: #F18618;
     --prod1-rate-background: #fff8db;
-    --prod1-count-color: #f69b02;
-    --prod1-count-background-color: #fef3c7;
+    --prod1-count-color: #d19465;
+    --prod1-count-background-color: #fff2e0;
     --prod1-tag-color: #074786;
 
     --prod2-rate-color: #556d91;
     --prod2-rate-background: #f0f6fd;
-    --prod2-count-color: #556d91;
-    --prod2-count-background-color: #f0f6fd;
+    --prod2-count-color: #d19465;
+    --prod2-count-background-color: #fff2e0;
     --prod2-tag-color: #fd9aa4;
 
     --prod3-tag-color: #000;
@@ -43,8 +43,8 @@
     // --prod3-count-color: #d19465;
     // --prod3-count-background-color: #fff2e0;
 
-    --prod-global-rate-color: #ca8753;
-    --prod-global-rate-background: #fff8ed;
+    --prod-global-rate-color: #2b509f;
+    --prod-global-rate-background: #f0f6fd;
     --prod-global-count-color: #d19465;
     --prod-global-count-background-color: #fff2e0;
 }
@@ -92,7 +92,8 @@ html, body {
 }
 
 body {
-    font-family: "Noto Sans", sans-serif;
+    font-family: Inter, sans-serif;
+    font-size: 17px;
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;
@@ -146,6 +147,9 @@ p {
     line-height: var(--text-line-height);
 }
 
+.large-width {
+    font-family: Inter;
+}
 
 .prod-child .heading-poligon {
     background-color: var(--prod-global-rate-background);
@@ -166,10 +170,10 @@ p {
 }
 
 
-.prod-item-1 .heading-poligon {
-    background-color: var(--prod1-rate-background);
-    color: var(--prod1-rate-color);
-}
+// .prod-item-1 .heading-poligon {
+//     background-color: var(--prod1-rate-background);
+//     color: var(--prod1-rate-color);
+// }
 
 .prod-item-1 .hex-wrap {
     background-color: var(--prod1-count-background-color);
@@ -193,10 +197,10 @@ p {
 }
 
 
-.prod-item-2 .heading-poligon {
-    background-color: var(--prod2-rate-background);
-    color: var(--prod2-rate-color);
-}
+// .prod-item-2 .heading-poligon {
+//     background-color: var(--prod2-rate-background);
+//     color: var(--prod2-rate-color);
+// }
 
 .prod-item-2 .hex-wrap {
     background-color: var(--prod2-count-background-color);

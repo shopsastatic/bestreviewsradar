@@ -111,7 +111,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		
 			button.addEventListener('click', function () {
 				if (isExpanded) {
-					content.style.maxHeight = '335px';
+					content.style.maxHeight = '238px';
 					button.innerHTML = `Show More
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -553,12 +553,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<p className='discount-tag bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.productDatas?.price?.discount}</p>
 									)}
 									<div ref={(el: any) => (contentRefs.current[index] = el)} className='overflow-hidden' style={{
-										maxHeight: `${expandedItems[index] ? maxHeights[index] || 335 : 335}px`,
+										maxHeight: `${expandedItems[index] ? maxHeights[index] || 238 : 238}px`,
 										transition: 'max-height 0.7s ease',
 										willChange: 'max-height'
 									}}>
 										{parseSP(item?.productDatas?.additionals?.specifications)?.length > 0 && (
-											<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#ffefe5] grid grid-cols-1 gap-2'>
+											<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#f0f6fd] grid grid-cols-1 gap-2'>
 												{parseSP(item?.productDatas?.additionals?.specifications)?.map((itemSP: any, indexSP: any) => (
 													<div className='flex items-start md:items-center gap-2 col-span-1' key={"sp" + indexSP}>
 														<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{pointArray?.[index - 1]?.[indexSP] ?? 9.4}</span>
@@ -571,11 +571,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										{item?.productDatas?.additionals?.features && (
 											<div>
 												<h6>Why we love it</h6>
-												<div className='mt-2 grid grid-cols-1 gap-1.5'>
+												<div className='features-details mt-2 grid grid-cols-1 gap-2.5'>
 													{transToArray(item?.productDatas?.additionals?.features)?.map((itemF: any, indexF: any) => (
 														<div className='col-span-1 flex items-start gap-2' key={"F" + indexF}>
 															<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" className='min-w-[20px] md:min-w-[22px] mt-0 md:mt-0.5' viewBox="0 0 20 20" fill="none">
-																<path d="M9.99992 1.04166C7.52633 1.04166 5.2859 2.04504 3.66542 3.66549C2.84062 4.4903 2.17569 5.47573 1.72156 6.57077C1.15266 7.73153 0.833252 9.03679 0.833252 10.4167C0.833252 15.2491 4.75076 19.1667 9.58325 19.1667C10.9631 19.1667 12.2684 18.8472 13.4292 18.2783C14.5242 17.8242 15.5096 17.1593 16.3344 16.3345C17.9549 14.714 18.9583 12.4736 18.9583 9.99999C18.9583 7.5264 17.9549 5.28597 16.3344 3.66549C14.7139 2.04504 12.4735 1.04166 9.99992 1.04166Z" fill="#d6e5f5" />
+																<path d="M9.99992 1.04166C7.52633 1.04166 5.2859 2.04504 3.66542 3.66549C2.84062 4.4903 2.17569 5.47573 1.72156 6.57077C1.15266 7.73153 0.833252 9.03679 0.833252 10.4167C0.833252 15.2491 4.75076 19.1667 9.58325 19.1667C10.9631 19.1667 12.2684 18.8472 13.4292 18.2783C14.5242 17.8242 15.5096 17.1593 16.3344 16.3345C17.9549 14.714 18.9583 12.4736 18.9583 9.99999C18.9583 7.5264 17.9549 5.28597 16.3344 3.66549C14.7139 2.04504 12.4735 1.04166 9.99992 1.04166Z" fill="#eaf4ff" />
 																<path fillRule="evenodd" clipRule="evenodd" d="M14.6087 7.05806C14.8528 7.30214 14.8528 7.69786 14.6087 7.94194L9.60869 12.9419C9.36461 13.186 8.96888 13.186 8.72481 12.9419L6.22481 10.4419C5.98073 10.1979 5.98073 9.80214 6.22481 9.55806C6.46888 9.31398 6.86461 9.31398 7.10869 9.55806L9.16675 11.6161L13.7248 7.05806C13.9689 6.81398 14.3646 6.81398 14.6087 7.05806Z" fill="#1666b4" />
 															</svg>
 															<span className='text-[#615b5b]'>{itemF}</span>
@@ -700,7 +700,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																<RenderStore storename={itemS?.stores}></RenderStore>
 															</div>
 															<div className='flex justify-end md:justify-center lg:justify-end'>
-																<Link href={itemS?.actionsLink ?? "/"} className='bg-[#117fec] hover:bg-[#275787] transition-all text-white py-2 px-2.5 rounded-xl font-medium'>
+																<Link href={itemS?.actionsLink ?? "/"} className='bg-[#ff6b00] hover:bg-[#e06308] transition-all text-white py-2 px-2.5 rounded-xl font-medium'>
 																	<button className='flex flex-nowrap items-center gap-2'>
 																		<span>Check Price</span>
 																		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 -6.5 38 38" version="1.1">
@@ -753,7 +753,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 																			<RenderStore storename={itemT?.stores}></RenderStore>
 																		</div>
 																		<div className='col-span-1 flex justify-end md:justify-center lg:justify-end'>
-																			<Link href={itemT?.actionsLink ?? "/"} className='bg-[#117fec] text-white py-1.5 px-2.5 rounded-xl font-medium'>
+																			<Link href={itemT?.actionsLink ?? "/"} className='bg-[#ff6b00] text-white py-1.5 px-2.5 rounded-xl font-medium'>
 																				<button className='flex flex-nowrap items-center gap-2'>
 																					<span>Check Price</span>
 																					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 -6.5 38 38" version="1.1">
@@ -876,7 +876,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 														)}
 													</div>
 												</div>
-												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"} className='p-3 px-2 block w-full mt-3 bg-[#117fec] hover:bg-[#275787] transition-all rounded-xl'>
+												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"} className='p-3 px-2 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
 													<button className='text-center w-full text-white font-semibold'>View Deal</button>
 												</Link>
 											</div>

@@ -36,7 +36,7 @@
   border-color: transparent;
   background-color: #fff;
   border-radius: 18px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   position: relative;
   font-family: "Inter", sans-serif;
 }
@@ -47,7 +47,7 @@
 
 .how-it-work {
   margin-bottom: 35px;
-  background-color: #e7e6f2;
+  background-color: #f0f6fd;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,9 +96,13 @@
   color: #3e434a;
 }
 
+.prod-content p {
+  line-height: 24px;
+}
+
 .hex-wrap {
-  width: 49.5px;
-  height: 27.225px;
+  width: 44.55px;
+  height: 24.5025px;
   background-color: #fef3c7;
   position: relative;
   display: flex;
@@ -113,10 +117,8 @@
   content: "";
   position: absolute;
   width: 0;
-  border-left: 24.75px solid transparent;
-  /* Giảm 10% từ 27.5px */
-  border-right: 24.75px solid transparent;
-  /* Giảm 10% từ 27.5px */
+  border-left: 22.275px solid transparent;
+  border-right: 22.275px solid transparent;
 }
 
 .hex-wrap::before {
@@ -125,12 +127,16 @@
 
 .hex-wrap::after {
   top: 100%;
-  width: 0;
 }
 
+
 .hex-num {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 800;
+}
+
+.spec-point {
+  color: #205bad;
 }
 
 .heading-poligon {
@@ -141,6 +147,8 @@
   width: fit-content;
   padding: 15px 30px 60px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+  color: #2b509f;
+  background-color: #f0f6fd;
 }
 
 .store-add {
@@ -157,10 +165,11 @@
 .prod-item ul li {
   list-style: disc;
   margin-left: 10px;
+  font-size: 16px;
 }
 
 .prod-item ul li {
-  margin-top: 4px;
+  margin-top: 10px;
 }
 
 .discount-tag {
@@ -275,18 +284,19 @@
 }
 
 .summary-content p {
-  margin-bottom: 14px;
-  font-size: 18px;
+  margin-bottom: 1.5em;
+  font-size: 17px;
   line-height: 28px;
 }
 
-.summary-content ul + p, .summary-content ol + p {
+.summary-content ul+p,
+.summary-content ol+p {
   margin-top: 10px;
 }
 
-.summary-content ul, .summary-content ol {
+.summary-content ul,
+.summary-content ol {
   margin-left: 40px;
-  font-size: 18px;
   line-height: 28px;
 }
 
@@ -334,13 +344,17 @@
   border-radius: 16px;
 }
 
+.specs-container, .features-details {
+  font-size: 16px;
+}
+
 .specs-container p {
   display: none;
 }
 
 .max-h-content {
   transition: max-height 0.7s ease;
-  max-height: 335px;
+  max-height: 238px;
   overflow: hidden;
 }
 
@@ -393,4 +407,3 @@
     height: 300px;
   }
 }
-
