@@ -87,6 +87,10 @@ html, body {
     scroll-behavior: smooth;
 }
 
+.prod-item-3, .prod-item-4 {
+    display: none !important;
+}
+
 body {
     font-family: "Noto Sans", sans-serif;
     font-optical-sizing: auto;
