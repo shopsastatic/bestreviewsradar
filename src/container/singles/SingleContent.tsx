@@ -47,13 +47,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		tags,
 		status,
 		date,
-		postData
+		postData,
+		amazonShortcode
 	} = getPostDataFromPostFragment(post || {})
-
 	//	
 
 	const products = postData?.products?.nodes
 	const points = postData?.points
+	const amzShortcode = amazonShortcode as any
 
 	const pointLines = points?.trim().split('\n');
 
@@ -86,6 +87,71 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
+		var learnMoreBtn = document.getElementById('learnMoreBtn');
+		var learnMoreContent = document.getElementById('learnMoreContent');
+		learnMoreBtn?.addEventListener('click', function (event) {
+			learnMoreContent?.classList.remove('hidden');
+			learnMoreContent?.classList.add('block');
+			event.stopPropagation();
+		});
+
+		document.addEventListener('click', function (event: any) {
+			if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
+				learnMoreContent?.classList.add('hidden');
+				learnMoreContent?.classList.remove('block');
+			}
+		});
+
+
+		// Set Max Height
+		document.querySelectorAll('.toggle-button').forEach((button, index) => {
+			let content = document.querySelectorAll('.max-h-content')[index] as any;
+		
+			let isExpanded = false;
+		
+			button.addEventListener('click', function () {
+				if (isExpanded) {
+					content.style.maxHeight = '335px';
+					button.innerHTML = `Show More
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        <g id="Primary">
+                        <path
+                            id="Vector (Stroke)"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+                            fill="#1575d4" />
+                        </g>
+                    </svg>`;
+				} else {
+					content.style.maxHeight = content.scrollHeight + 'px';
+					button.innerHTML = `Show Less
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 16 16"
+                        fill="none"
+						style="transform: rotate(180deg); transition: transform 0.3s ease;"
+                        <g id="Primary">
+                        <path
+                            id="Vector (Stroke)"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+                            fill="#1575d4" />
+                        </g>
+                    </svg>`;
+				}
+				isExpanded = !isExpanded;
+			});
+		});
+
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
@@ -311,7 +377,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				const thead = table.querySelector('thead');
 				if (thead) {
 					const theadDiv = document.createElement('div');
-					theadDiv.classList.add('thead-wrapper'); 
+					theadDiv.classList.add('thead-wrapper');
 
 					const thElements = Array.from(thead.querySelectorAll('th'));
 					thElements.forEach((th) => {
@@ -334,10 +400,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							columns[cellIndex] = [];
 						}
 
-						if(cell.innerHTML) {
-							if(cellIndex == 0) {
+						if (cell.innerHTML) {
+							if (cellIndex == 0) {
 								columns[cellIndex].push('<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>' + cell.innerHTML);
-							}else {
+							} else {
 								columns[cellIndex].push('<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path> </svg>' + cell.innerHTML)
 							}
 						}
@@ -422,6 +488,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			<div className='container'>
 				{renderAlert()}
 				{/* content */}
+				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 
 				<div className='prod-item mt-12'>
 					{products && products?.length > 0 && products?.slice(0, 10)?.map((item: any, index: any) => (

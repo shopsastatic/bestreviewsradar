@@ -248,6 +248,13 @@
   border-radius: 6px;
 }
 
+.summary-content iframe {
+  max-width: 652px;
+  width: 100%;
+  height: 360px;
+  margin: auto;
+}
+
 .summary-content a:hover {
   color: #2323c4;
   transition: all 0.3s;
@@ -285,10 +292,20 @@
 
 .summary-content ul li {
   list-style-type: disc;
+  margin-bottom: 20px;
+}
+
+.summary-content ul li:last-child {
+  margin-bottom: 0;
 }
 
 .summary-content ol li {
   list-style-type: decimal;
+  margin-bottom: 10px;
+}
+
+.summary-content ol li:last-child {
+  margin-bottom: 0;
 }
 
 .mob-footer-menu {
@@ -370,6 +387,10 @@
 
   .pros-cons-table .pros-cons-item {
     width: 100%;
+  }
+
+  .summary-content iframe {
+    height: 300px;
   }
 }
 

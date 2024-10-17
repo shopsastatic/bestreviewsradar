@@ -244,6 +244,9 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 			}
 			points
 		}
+			amazonShortcode {
+			amazonShortcode
+			}
 		content
 		author {
 			node {
