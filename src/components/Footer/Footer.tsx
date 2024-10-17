@@ -47,9 +47,9 @@ export default function Footer({ menuItems }: Props) {
 	return (
 		<footer className='bg-[#1C202C] mt-20'>
 			<div className='container grid grid-cols-1 gap-5 md:grid-cols-4'>
-				<div className='text-white py-0 pt-16 md:pt-0 md:py-10 col-span-1'>
+				<div className='text-white py-0 md:py-10 pt-16 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5'>
+					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
 						<li><Link href={"/"}>Monitors</Link></li>
 						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
 						<li><Link href={"/"}>Drills</Link></li>
@@ -60,7 +60,7 @@ export default function Footer({ menuItems }: Props) {
 				</div>
 				<div className='text-white py-0 md:py-10 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5'>
+					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
 						<li><Link href={"/"}>Monitors</Link></li>
 						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
 						<li><Link href={"/"}>Drills</Link></li>
@@ -71,7 +71,7 @@ export default function Footer({ menuItems }: Props) {
 				</div>
 				<div className='text-white py-0 md:py-10 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Contact</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5'>
+					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
 						<li><Link href={"/"}>Monitors</Link></li>
 						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
 						<li><Link href={"/"}>Drills</Link></li>

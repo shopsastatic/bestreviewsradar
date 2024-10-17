@@ -50,7 +50,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 						</form>
 					</div>
 					<div className='flex justify-end items-center gap-2'>
-						<Link href={"/"}><img src="/images/us.png" width={28} alt="" /></Link>
+						<Link href={"/"}><img src="/images/us.png" className='w-[24px] md:w-[28px]' alt="" /></Link>
 						<SearchIconBtn className='!text-white hidden max-[895px]:block' />
 						<MenuBar menuItems={menuItems} className="p-0 ml-0 block md:hidden" />
 					</div>

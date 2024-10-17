@@ -92,7 +92,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="14" height="14"><path d="m256 0c36.8 0 68.8 20.7 84.9 51.1 32.9-10.1 70.1-2.1 96.1 23.9s34 63.3 23.9 96.1c30.4 16.1 51.1 48.1 51.1 84.9s-20.7 68.8-51.1 84.9c10.1 32.9 2.1 70.1-23.9 96.1s-63.3 34-96.1 23.9c-16.1 30.4-48.1 51.1-84.9 51.1s-68.8-20.7-84.9-51.1c-32.9 10.1-70.1 2.1-96.1-23.9s-34-63.3-23.9-96.1c-30.4-16.1-51.1-48.1-51.1-84.9s20.7-68.8 51.1-84.9c-10.1-32.9-2.1-70.1 23.9-96.1s63.3-34 96.1-23.9c16.1-30.4 48.1-51.1 84.9-51.1zm113 209c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-111 111-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0z" fill="#016EF9" /></svg>
               <span className="text-sm text-[#191C1F]">Fact checked by <Link href={author?.uri ?? "/"} className="underline">{author?.name}</Link></span>
             </div>
-            <div className="text-sm flex items-center mt-2 gap-2 flex-wrap text-[#5B5E61]">
+            <div className="text-sm flex items-center mt-3 gap-2 flex-wrap text-[#5B5E61]">
               <span>Last Updated</span>
               <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="e-font-icon-svg e-fas-circle" viewBox="0 0 512 512" width="8" height="8"><path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z" fill="#92DF00" /></svg>
               <span>{formatDate(date, false)}</span>

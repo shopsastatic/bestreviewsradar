@@ -111,7 +111,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		
 			button.addEventListener('click', function () {
 				if (isExpanded) {
-					content.style.maxHeight = '238px';
+					content.style.maxHeight = '276px';
 					button.innerHTML = `Show More
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -490,7 +490,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				{/* content */}
 				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 
-				<div className='prod-item mt-12'>
+				<div className='prod-item mt-8'>
 					{products && products?.length > 0 && products?.slice(0, 10)?.map((item: any, index: any) => (
 						<div key={index}>
 							<div className={`prod-child prod-item-${++index} grid grid-cols-1 md:grid-cols-10 bg-white gap-3 md:gap-7 px-4 md:px-0`}>
@@ -553,7 +553,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<p className='discount-tag bg-[#f13549] w-fit text-sm text-white p-2 py-1 mt-2 rounded'>{item?.productDatas?.price?.discount}</p>
 									)}
 									<div ref={(el: any) => (contentRefs.current[index] = el)} className='overflow-hidden' style={{
-										maxHeight: `${expandedItems[index] ? maxHeights[index] || 238 : 238}px`,
+										maxHeight: `${expandedItems[index] ? maxHeights[index] || 276 : 276}px`,
 										transition: 'max-height 0.7s ease',
 										willChange: 'max-height'
 									}}>
@@ -801,7 +801,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 			{headings?.length > 0 && content && (
 				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-					<div className='col-span-3 mb-10 lg:mb-0 flex items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 pt-2 md:pt-0 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
+					<div className='hidden col-span-3 mb-10 lg:mb-0 items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 pt-2 md:pt-0 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
 						{headings?.length > 0 && (
 							<>
 								<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
@@ -816,12 +816,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							{headings.map((heading) => (
 								<li
 									key={heading.id}
-									className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
+									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
 										? 'font-semibold border-blue-600 pl-4'
 										: 'font-normal border-transparent pl-0'
 										}`}
 								>
-									<a href={`#${heading.id}`}>{heading.text}</a>
+									<a href={`#${heading.id}`} className={` duration-500 ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
 								</li>
 
 							))}
@@ -892,18 +892,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			)}
 
 			<div className="container mt-20 flex flex-col items-center space-y-4 w-full">
-				<h3 className="font-bold text-2xl text-gray-700 text-center">Sign up and get exclusive special deals</h3>
+				<h3 className="font-bold text-2xl text-gray-700 text-center">Join now for exclusive deals and special offers!</h3>
 
 				<div className={`w-full flex justify-center transition-all duration-1000 ${!formVisible ? 'max-h-0 opacity-0' : 'max-h-screen opacity-100'}`}>
 					<form onSubmit={handleSignUp} className="w-full flex justify-center overflow-hidden transition-all duration-1000">
-						<div className="flex flex-col items-center space-x-2 w-full max-w-md">
+						<div className="relative flex flex-col items-center space-x-2 w-full max-w-md">
 							<input
 								type="text"
 								placeholder="Email Address..."
 								className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-0"
 								required
 							/>
-							<button className="bg-blue-500 text-white px-10 mt-3 font-bold py-2 rounded-full w-fit m-auto hover:bg-blue-600">
+							<button className="absolute top-0 bottom-0 right-0 bg-blue-500 border border-[#2563eb] text-white px-5 text-base font-bold rounded-full rounded-tl-none rounded-bl-none w-fit m-auto hover:bg-blue-600">
 								Sign Up
 							</button>
 						</div>

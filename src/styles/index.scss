@@ -28,13 +28,13 @@
     --prod1-rate-background: #fff8db;
     --prod1-count-color: #d19465;
     --prod1-count-background-color: #fff2e0;
-    --prod1-tag-color: #074786;
+    --prod1-tag-color: #ff7e20;
 
     --prod2-rate-color: #556d91;
     --prod2-rate-background: #f0f6fd;
     --prod2-count-color: #d19465;
     --prod2-count-background-color: #fff2e0;
-    --prod2-tag-color: #fd9aa4;
+    --prod2-tag-color: #117fec;
 
     --prod3-tag-color: #000;
 
@@ -45,8 +45,8 @@
 
     --prod-global-rate-color: #2b509f;
     --prod-global-rate-background: #f0f6fd;
-    --prod-global-count-color: #d19465;
-    --prod-global-count-background-color: #fff2e0;
+    --prod-global-count-color: #556d91;
+    --prod-global-count-background-color: #f0f6fd;
 }
 
 @media (min-width: 1024px) {
@@ -175,18 +175,18 @@ p {
 //     color: var(--prod1-rate-color);
 // }
 
-.prod-item-1 .hex-wrap {
-    background-color: var(--prod1-count-background-color);
-    color: var(--prod1-count-color);
-}
+// .prod-item-1 .hex-wrap {
+//     background-color: var(--prod1-count-background-color);
+//     color: var(--prod1-count-color);
+// }
 
-.prod-item-1 .hex-wrap::before {
-    border-bottom: 15.125px solid var(--prod1-count-background-color);
-}
+// .prod-item-1 .hex-wrap::before {
+//     border-bottom: 15.125px solid var(--prod1-count-background-color);
+// }
 
-.prod-item-1 .hex-wrap::after {
-    border-top: 15.125px solid var(--prod1-count-background-color);
-}
+// .prod-item-1 .hex-wrap::after {
+//     border-top: 15.125px solid var(--prod1-count-background-color);
+// }
 
 .prod-item-1 .prod-heading-tag {
     background-color: var(--prod1-tag-color);
@@ -202,18 +202,18 @@ p {
 //     color: var(--prod2-rate-color);
 // }
 
-.prod-item-2 .hex-wrap {
-    background-color: var(--prod2-count-background-color);
-    color: var(--prod2-count-color);
-}
+// .prod-item-2 .hex-wrap {
+//     background-color: var(--prod2-count-background-color);
+//     color: var(--prod2-count-color);
+// }
 
-.prod-item-2 .hex-wrap::before {
-    border-bottom: 15.125px solid var(--prod2-count-background-color);
-}
+// .prod-item-2 .hex-wrap::before {
+//     border-bottom: 15.125px solid var(--prod2-count-background-color);
+// }
 
-.prod-item-2 .hex-wrap::after {
-    border-top: 15.125px solid var(--prod2-count-background-color);
-}
+// .prod-item-2 .hex-wrap::after {
+//     border-top: 15.125px solid var(--prod2-count-background-color);
+// }
 
 .prod-item-2 .prod-heading-tag {
     background-color: var(--prod2-tag-color);

@@ -66,6 +66,11 @@
   background-color: #fff;
 }
 
+.h-tag span {
+  font-size: 16px;
+  color: #242e3f;
+}
+
 .h-tag.sub {
   background-color: transparent;
 }
@@ -135,10 +140,6 @@
   font-weight: 800;
 }
 
-.spec-point {
-  color: #205bad;
-}
-
 .heading-poligon {
   display: flex;
   flex-direction: column;
@@ -170,6 +171,10 @@
 
 .prod-item ul li {
   margin-top: 10px;
+}
+
+.count-num {
+  left: -22.5px;
 }
 
 .discount-tag {
@@ -218,7 +223,7 @@
 }
 
 .pros-cons-table .pros-cons-item div {
-  padding: 15px;
+  padding: 0;
   padding-left: 0;
   display: flex;
   align-items: flex-start;
@@ -230,6 +235,7 @@
   font-size: 18px;
   border-bottom: 1px solid #ccc;
   padding: 0 0 5px;
+  margin-bottom: 15px;
 }
 
 .pros-cons-table .pros-cons-item div svg {
@@ -278,9 +284,8 @@
 }
 
 .summary-content h3 {
-  font-size: 18px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 1.25em;
+  margin-bottom: 0.75em;
 }
 
 .summary-content p {
@@ -352,13 +357,21 @@ footer .container {
   font-size: 16px;
 }
 
+.specs-container span, .features-details span {
+  color: #42495f;
+}
+
+.specs-container span.spec-point {
+  color: #205bad;
+}
+
 .specs-container p {
   display: none;
 }
 
 .max-h-content {
   transition: max-height 0.7s ease;
-  max-height: 238px;
+  max-height: 276px;
   overflow: hidden;
 }
 
@@ -389,6 +402,10 @@ footer .container {
     position: absolute;
     top: 0;
     right: 0;
+  }
+
+  .prod-child {
+    border-right-width: 0;
   }
 
   .store-add {

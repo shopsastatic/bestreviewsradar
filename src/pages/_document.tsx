@@ -42,32 +42,7 @@ export default class Document extends NextDocument {
 						type="application/atom+xml"
 						title={SITE_TITLE + ' Atom Feed'}
 					/>
-					<link
-						rel="apple-touch-icon"
-						sizes="180x180"
-						href={v('/favicons/apple-touch-icon.png')}
-					/>
-					<link
-						rel="icon"
-						type="image/png"
-						sizes="32x32"
-						href={v('/favicons/favicon-32x32.png')}
-					/>
-					<link
-						rel="icon"
-						type="image/png"
-						sizes="16x16"
-						href={v('/favicons/favicon-16x16.png')}
-					/>
-					<link rel="manifest" href={v('/favicons/site.webmanifest')} />
-					<link
-						rel="mask-icon"
-						href={v('/favicons/safari-pinned-tab.svg')}
-						color="#38bdf8"
-					/>
-					<link rel="shortcut icon" href={v('/favicons/favicon.ico')} />
-					<meta name="apple-mobile-web-app-title" content="Ncmaz Nextjs" />
-					<meta name="application-name" content="Ncmaz Nextjs" />
+					<link rel="shortcut icon" href={v('/favicons/favicon-brr.png')} />
 					<meta name="theme-color" content="#172A53" />
 					<script
 						dangerouslySetInnerHTML={{
