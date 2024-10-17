@@ -13,7 +13,7 @@
 }
 
 .large-width {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -145,7 +145,7 @@
   justify-content: center;
   align-items: center;
   width: fit-content;
-  padding: 15px 30px 60px;
+  padding: 10px 20px 45px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
   color: #2b509f;
   background-color: #f0f6fd;
@@ -318,6 +318,10 @@
   margin-bottom: 0;
 }
 
+footer .container {
+  max-width: 1200px;
+}
+
 .mob-footer-menu {
   position: fixed;
   bottom: 0;
@@ -368,8 +372,8 @@
   }
 
   .large-width {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 

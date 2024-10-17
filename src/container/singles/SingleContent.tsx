@@ -685,7 +685,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								<div className={`col-span-1 md:col-span-3 flex flex-col items-center pr-0 md:pr-5 ${item?.productDatas?.actions?.length == 1 ? "justify-start gap-10" : "justify-between"}`}>
 									<div className='heading-poligon'>
 										<h2 className='font-bold tracking-wider'>{calculateRating(index)?.point.toFixed(1)}</h2>
-										<p className='font-semibold text-sm my-2'>{calculateRating(index)?.tag}</p>
+										<p className='font-semibold text-sm my-1 mt-0'>{calculateRating(index)?.tag}</p>
 										<Rating rating={calculateRating(index)?.point}></Rating>
 									</div>
 									<div className='w-full'>
@@ -801,10 +801,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 			{headings?.length > 0 && content && (
 				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-					<div className='col-span-3 mb-10 lg:mb-0 flex items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
+					<div className='col-span-3 mb-10 lg:mb-0 flex items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 pt-2 md:pt-0 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
 						{headings?.length > 0 && (
 							<>
-								<p className='py-0 lg:py-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
+								<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
 								<div onClick={handleClickToggle} className='cursor-pointer lg:cursor-none lg:hidden jump-mob text-[#2765de] font-medium flex items-center gap-2 border p-3 py-1.5 rounded border-blue-600'>
 									Jump to
 									<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fillRule="evenodd" clipRule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>

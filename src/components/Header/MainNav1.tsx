@@ -24,9 +24,8 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 	return (
 		<>
 			<div className="header-top bg-[#1b1d31] text-white py-3">
-				<div className='max-w-[1300px] m-auto flex items-center justify-between'>
+				<div className='max-w-[1200px] m-auto flex items-center justify-between'>
 					<div className='flex items-center'>
-						<MenuBar menuItems={menuItems} className="p-0 ml-0 mr-4 block md:hidden" />
 						<Link href={"/"}><img src="/images/logo-brr.png" alt="Logo Best Reviews Radar" width={140} /></Link>
 						<div className='items-center hidden md:flex'>
 							<MenuBar menuItems={menuItems} />
@@ -53,12 +52,13 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 					<div className='flex justify-end items-center gap-2'>
 						<Link href={"/"}><img src="/images/us.png" width={28} alt="" /></Link>
 						<SearchIconBtn className='!text-white hidden max-[895px]:block' />
+						<MenuBar menuItems={menuItems} className="p-0 ml-0 block md:hidden" />
 					</div>
 				</div>
 			</div>
 
 			<div className='header-bottom bg-[#252E43] hidden md:block'>
-				<div className='max-w-[1300px] m-auto'>
+				<div className='max-w-[1200px] m-auto'>
 					<Navigation menuItems={menuItems} className="flex text-white" />
 				</div>
 			</div>
