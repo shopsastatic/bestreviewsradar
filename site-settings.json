@@ -32,10 +32,10 @@
 		"sub_title": "Let's explore the most popular categories"
 	},
 	"site_info": {
-		"site_title": "Ncmaz Nextjs Blog",
-		"site_description": "Ncmaz Nextjs Blog headless WordPress",
-		"site_keywords": "Ncmaz Nextjs Blog",
-		"site_author": "ChisNghiax",
+		"site_title": "Blog",
+		"site_description": "Blog headless WordPress",
+		"site_keywords": "Blog",
+		"site_author": "udev",
 		"site_email": "Your Email",
 		"site_phone": "Your Phone",
 		"site_address": "Your Address",
@@ -81,7 +81,7 @@
 		}
 	},
 	"site_footer": {
-		"all_rights_reserved_text": "© 2023 ChisNghiax Company, Inc. All rights reserved."
+		"all_rights_reserved_text": "Copyright © 2024 by BestReviewsRadar.com. All rights reserved."
 	},
 	"single_page": {
 		"show_view_cout": true,
