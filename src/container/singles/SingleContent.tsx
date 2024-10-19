@@ -560,7 +560,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										willChange: 'max-height'
 									}}>
 										{parseSP(item?.productDatas?.additionals?.specifications)?.length > 0 && (
-											<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#f0f6fd] grid grid-cols-1 gap-2'>
+											<div className='min-h-5 my-5 rounded-lg md:rounded-2xl p-4 bg-[#e8f2ff] grid grid-cols-1 gap-2'>
 												{parseSP(item?.productDatas?.additionals?.specifications)?.map((itemSP: any, indexSP: any) => (
 													<div className='flex items-start md:items-center gap-2 col-span-1' key={"sp" + indexSP}>
 														<span className='bg-white py-0.5 px-2.5 rounded text-[#3a95ee] font-medium min-w-11 flex justify-center'>{pointArray?.[index - 1]?.[indexSP] ?? 9.4}</span>
