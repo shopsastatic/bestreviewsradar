@@ -50,6 +50,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		postData,
 		amazonShortcode
 	} = getPostDataFromPostFragment(post || {})
+
+	console.log(postData)
 	//	
 
 	const products = postData?.products?.nodes

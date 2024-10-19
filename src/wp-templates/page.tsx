@@ -45,7 +45,7 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         // pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
-        pageTitle={title}
+        // pageTitle={title}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
@@ -63,7 +63,7 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         // pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
-        pageTitle={title}
+        // pageTitle={title}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
@@ -76,12 +76,12 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
             className={`prose max-w-full lg:prose-lg dark:prose-invert mx-auto ${isGutenbergPage ? "max-w-none" : ""
               }`}
           >
-            {title && !isGutenbergPage && (
+            {/* {title && !isGutenbergPage && (
               <>
                 <EntryHeader title={title} />
                 <hr />
               </>
-            )}
+            )} */}
 
             {/* <MyWordPressBlockViewer blocks={blocks} /> */}
           </main>
