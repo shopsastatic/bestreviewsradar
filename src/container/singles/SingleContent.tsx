@@ -111,7 +111,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		
 			let isExpanded = false;
 		
-			button.addEventListener('click', function () {
+			button.addEventListener('click', function (event) {
+				event.preventDefault();
+       			event.stopPropagation();
+				event.stopPropagation();
 				if (isExpanded) {
 					content.style.maxHeight = '276px';
 					button.innerHTML = `Show More

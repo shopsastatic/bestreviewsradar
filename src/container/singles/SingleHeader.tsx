@@ -65,6 +65,8 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     nocategory = true
   }
 
+  console.log(categories)
+
   return (
     <>
       <div className='container my-6'>
