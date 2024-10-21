@@ -41,6 +41,10 @@
   font-family: "Inter", sans-serif;
 }
 
+.prod-item .prod-child:last-child {
+  display: none;
+}
+
 .prod-child p:first-child {
   display: none !important;
 }
