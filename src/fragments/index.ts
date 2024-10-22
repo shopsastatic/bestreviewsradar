@@ -137,6 +137,7 @@ export const NC_CATEGORY_CARD_FIELD_NOT_IMAGE_FRAGMENT = gql(/* GraphQL */ `
 		uri
 		count
 		databaseId
+		parentDatabaseId
 		ncTaxonomyMeta {
 			color
 		}
@@ -244,9 +245,9 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 			}
 			points
 		}
-			amazonShortcode {
+		amazonShortcode {
 			amazonShortcode
-			}
+		}
 		content
 		author {
 			node {

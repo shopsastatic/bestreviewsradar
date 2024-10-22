@@ -100,8 +100,6 @@ export function getPostDataFromPostFragment(
     ncmazGalleryImg8,
   ].filter((img) => img) as NcmazFcImageHasDetailFieldsFragment[];
 
-  console.log(query.categories?.nodes)
-
   return {
     ...query,
     uri: query.uri || "",

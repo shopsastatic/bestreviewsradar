@@ -30,6 +30,38 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     date
   } = getPostDataFromPostFragment(post as any || {});
 
+
+  function sortCategories(categories: any) {
+    if (!Array.isArray(categories) || categories.length === 0) {
+      return [];
+    }
+    const categoryMap = categories.reduce((acc: any, category: any) => {
+      acc[category.databaseId] = category;
+      return acc;
+    }, {});
+
+    const sortedCategories = [] as any;
+    categories.forEach((category: any) => {
+      let currentCategory = category;
+      const categoryHierarchy = [];
+
+      while (currentCategory) {
+        categoryHierarchy.unshift(currentCategory);
+        currentCategory = categoryMap[currentCategory.parentDatabaseId];
+      }
+
+      categoryHierarchy.forEach(cat => {
+        if (!sortedCategories.find((existingCat: any) => existingCat.databaseId === cat.databaseId)) {
+          sortedCategories.push(cat);
+        }
+      });
+    });
+
+    return sortedCategories;
+  }
+
+  let cate = sortCategories(categories.nodes)
+
   const getBaseURL = () => {
     if (typeof window !== 'undefined') {
       return window.location.origin;
@@ -65,8 +97,6 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     nocategory = true
   }
 
-  console.log(categories)
-
   return (
     <>
       <div className='container my-6'>
@@ -74,7 +104,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 
         {!nocategory && (
           <div className="hidden md:flex gap-2 items-center">
-            {categories?.nodes?.map((item: any, index: any) => (
+            {cate?.map((item: any, index: any) => (
               <React.Fragment key={item.id || index}>
                 <Link
                   className="text-[13px] text-[#5B5E61]"
@@ -82,7 +112,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
                 >
                   {item.name}
                 </Link>
-                {categories?.nodes && index < categories?.nodes.length - 1 && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>}
+                {cate && index < cate.length - 1 && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>}
               </React.Fragment>
             ))}
           </div>
