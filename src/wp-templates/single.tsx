@@ -75,7 +75,6 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props) => {
   const _top10Categories =
     (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
 
-    console.log(props.data)
   const {
     title,
     ncPostMetaData,
