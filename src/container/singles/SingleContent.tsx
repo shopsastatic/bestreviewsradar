@@ -842,25 +842,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 							))}
 						</ul>
-						<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
-							{(typeof dataRelated !== 'undefined' ? headings : headings.slice(1)).map((heading) => (
-								<li
-									key={heading.id}
-									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-											? 'duration-300 font-semibold border-blue-600'
-											: 'duration-300 font-normal border-transparent'
-										}`}
-								>
-									<a
-										href={`#${heading.id}`}
-										className={`duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
-											}`}
-									>
-										{heading.text}
-									</a>
-								</li>
-							))}
-						</ul>
 
 						<ul className={`mt-4 flex-col gap-4 mob-footer-menu flex lg:hidden ${isToggle ? "active" : ""}`}>
 							{headings.map((heading) => (
