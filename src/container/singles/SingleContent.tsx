@@ -857,7 +857,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						{dataRelated && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
-								<div className='related-products mb-14' ref={relatedRef}>
+								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
 									<div className='grid grid-cols-2 gap-3 md:gap-10'>
 										{dataRelated.slice(0, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
