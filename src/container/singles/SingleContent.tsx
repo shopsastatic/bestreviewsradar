@@ -842,6 +842,47 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 							))}
 						</ul>
+						{typeof dataRelated !== 'undefined' ? (
+							<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
+								{headings.map((heading) => (
+									<li
+										key={heading.id}
+										className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+												? 'duration-300 font-semibold border-blue-600'
+												: 'duration-300 font-normal border-transparent'
+											}`}
+									>
+										<a
+											href={`#${heading.id}`}
+											className={`duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
+												}`}
+										>
+											{heading.text}
+										</a>
+									</li>
+								))}
+							</ul>
+						) : (
+							<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
+								{headings.slice(1).map((heading) => (
+									<li
+										key={heading.id}
+										className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+												? 'duration-300 font-semibold border-blue-600'
+												: 'duration-300 font-normal border-transparent'
+											}`}
+									>
+										<a
+											href={`#${heading.id}`}
+											className={`duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
+												}`}
+										>
+											{heading.text}
+										</a>
+									</li>
+								))}
+							</ul>
+						)}
 
 						<ul className={`mt-4 flex-col gap-4 mob-footer-menu flex lg:hidden ${isToggle ? "active" : ""}`}>
 							{headings.map((heading) => (
@@ -864,12 +905,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					<div className='col-span-8' ref={cRef}>
 						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
 							<>
-								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
+								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
 									<div className='grid grid-cols-2 gap-3 md:gap-10'>
 										{dataRelated.slice(0, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
-												<img className='related-prod-image mx-auto max-w-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
+												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
 												<div className='flex flex-wrap items-center gap-1 md:gap-2'>
 													{item?.percentageSaved > 0 && (
