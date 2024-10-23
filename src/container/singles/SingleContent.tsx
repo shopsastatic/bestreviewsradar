@@ -50,6 +50,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		status,
 		date,
 		postData,
+		uri,
 		amazonShortcode
 	} = getPostDataFromPostFragment(post || {})
 
@@ -344,7 +345,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			.toString()
 			.toLowerCase()
 			.trim()
-			.replace(/[\s\W-]+/g, '-');
+			.replace(/[\s\W-]+/g, '-')
+			.replace(/^-+|-+$/g, '');
 	};
 
 
@@ -357,16 +359,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			const h2Elements = Array.from(doc.querySelectorAll('h2'));
 
 			h2Elements.forEach((heading, index) => {
-				const slugifiedText = slugify(heading.textContent || `heading-${index}`);
+				const slugifiedText = slugify(heading.textContent || `heading`);
 				heading.id = `toc-${slugifiedText}`;
 			});
 
-			// Tìm kiếm tất cả các bảng trong nội dung
 			const tables = Array.from(doc.querySelectorAll('table'));
 			tables.forEach((table, index) => {
 				let hasProsOrCons = false;
 
-				// Kiểm tra hàng đầu tiên của bảng
 				const firstRow = table.querySelector('tr');
 				if (firstRow) {
 					const tdElements = Array.from(firstRow.querySelectorAll('td'));
@@ -436,10 +436,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			});
 
 			const updatedContent = doc.body.innerHTML;
-			const headingData = h2Elements.map((heading) => ({
-				id: heading.id,
-				text: heading.textContent || '',
-			}));
+			let headingData = [
+				{
+					id: 'toc-related-deal',
+					text: 'Related Deals',
+				}
+			]
+			h2Elements.map((heading) => (
+				headingData.push({
+					id: heading.id,
+					text: heading.textContent || '',
+				})
+			));
 
 			setHeadings(headingData);
 			setHydratedContent(updatedContent);
@@ -457,7 +465,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				let sectionPositions: { id: string; top: number }[] = [];
 
 				sections.forEach((section: HTMLElement) => {
-					sectionPositions.push({ id: section.id, top: section.getBoundingClientRect().top - 20 });
+					sectionPositions.push({ id: section.id, top: section.getBoundingClientRect().top - 150 });
 				});
 
 				for (let i = 0; i < sectionPositions.length; i++) {
@@ -853,7 +861,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					<div></div>
 
 
-					<div className='col-span-8'>
+					<div className='col-span-8' ref={cRef}>
 						{dataRelated && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
@@ -895,7 +903,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								</div>
 							</>
 						)}
-						<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
+						<div className='summary-content' dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
 					</div>
 
 				</div>
