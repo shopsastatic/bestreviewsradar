@@ -825,11 +825,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								<li
 									key={heading.id}
 									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-										? 'font-semibold border-blue-600 pl-4'
-										: 'font-normal border-transparent pl-0'
+										? 'duration-300 font-semibold border-blue-600'
+										: 'duration-300 font-normal border-transparent'
 										}`}
 								>
-									<a href={`#${heading.id}`} className={` duration-500 ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
+									<a href={`#${heading.id}`} className={` duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
 								</li>
 
 							))}
