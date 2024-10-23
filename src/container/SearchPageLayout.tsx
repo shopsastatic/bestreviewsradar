@@ -91,30 +91,12 @@ const SearchPageLayout: FC<Props> = ({
 							</span>
 						</label>
 					</form>
-					{NC_SITE_SETTINGS.search_page?.recommended_searches?.enable ===
-						true && (
-						<div className="mt-5 flex flex-wrap justify-center gap-2 text-center text-sm text-neutral-700 dark:text-neutral-200">
-							<p>
-								{NC_SITE_SETTINGS.search_page?.recommended_searches?.title}:{' '}
-							</p>
-							{NC_SITE_SETTINGS.search_page?.recommended_searches?.items?.map(
-								item => (
-									<Link
-										className="underline-offset-2 hover:underline"
-										href={item?.url || '#'}
-										key={item?.title}
-									>
-										{item?.title}
-									</Link>
-								),
-							)}
-						</div>
-					)}
+					
 				</header>
 			</div>
 			{/* ====================== END HEADER ====================== */}
 
-			<div className="container space-y-16 py-16 lg:space-y-28 lg:pb-28 lg:pt-20">
+			<div className="container space-y-16 pt-16">
 				<main>
 					{/* TABS FILTER */}
 					<div className="flex flex-col border-neutral-200 sm:flex-row sm:items-center sm:justify-between sm:border-b dark:border-neutral-600">
@@ -134,15 +116,12 @@ const SearchPageLayout: FC<Props> = ({
 					{children}
 				</main>
 
-				{/* === SECTION 5 === */}
-				{NC_SITE_SETTINGS.search_page?.show_top_categories && (
-					<SectionTrendingTopic categories={top10Categories || []} />
-				)}
-
 				{/* SUBCRIBES */}
-				{NC_SITE_SETTINGS.search_page?.show_newsletter_section && (
-					<SectionSubscribe2 />
-				)}
+				<div className=' border-t border-slate-200 pt-10'>
+					{NC_SITE_SETTINGS.search_page?.show_newsletter_section && (
+						<SectionSubscribe2 />
+					)}
+				</div>
 			</div>
 		</div>
 	)
