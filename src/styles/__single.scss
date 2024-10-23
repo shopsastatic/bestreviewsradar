@@ -366,6 +366,15 @@ footer .container {
   border-radius: 16px;
 }
 
+.related-prod-image {
+  transition: all .4s;
+}
+
+.related-prod-child:hover > .related-prod-image {
+  transform: scale(1.1);
+  transition: all .4s;
+}
+
 .specs-container {
   background-color: #e8f2ff !important;
 }

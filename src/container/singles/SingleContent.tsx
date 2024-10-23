@@ -20,6 +20,8 @@ import Rating from '@/components/Rating'
 import Link from 'next/link'
 import RenderStore from '@/components/RenderStore'
 
+declare var dataRelated: any;
+
 export interface SingleContentProps {
 	post: GetPostSiglePageQuery['post']
 }
@@ -64,7 +66,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		return numbers
 	});
 
-
 	//
 	const [showMoreStore, setShowMoreStore] = useState(false);
 	const ctRef = useRef(null) as any;
@@ -81,11 +82,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const cRef = useRef<HTMLDivElement>(null) as any;
 	const [isToggle, setIsToggle] = useState(false);
 	const [hydratedContent, setHydratedContent] = useState(content);
+	const [isVisible, setIsVisible] = useState(false);
+	const relatedRef = useRef(null);
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false);
 		}
 	};
+
 
 	useEffect(() => {
 		var learnMoreBtn = document.getElementById('learnMoreBtn');
@@ -103,16 +107,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			}
 		});
 
-
 		// Set Max Height
 		document.querySelectorAll('.toggle-button').forEach((button, index) => {
 			let content = document.querySelectorAll('.max-h-content')[index] as any;
-		
+
 			let isExpanded = false;
-		
+
 			button.addEventListener('click', function (event) {
 				event.preventDefault();
-       			event.stopPropagation();
+				event.stopPropagation();
 				event.stopPropagation();
 				if (isExpanded) {
 					content.style.maxHeight = '276px';
@@ -343,6 +346,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			.trim()
 			.replace(/[\s\W-]+/g, '-');
 	};
+
 
 	useEffect(() => {
 		if (typeof window === 'undefined') return;
@@ -850,48 +854,50 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 
 					<div className='col-span-8'>
-						{products && products?.length >= 10 && (
+						{dataRelated && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
-								<div className='related-products mb-14'>
+								<div className='related-products mb-14' ref={relatedRef}>
 									<div className='grid grid-cols-2 gap-3 md:gap-10'>
-										{products?.slice(10, 20)?.map((item: any, index: any) => (
-											<div className='col-span-1 related-prod-child' key={index}>
-												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
-													<img className='mx-auto max-w-[120px] mb-3' src={item?.featuredImage?.node?.sourceUrl ?? "/"} alt={item?.featuredImage?.node?.altText} />
-												</Link>
+										{dataRelated.slice(0, 50).map((item: any, index: any) => (
+											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
+												<img className='related-prod-image mx-auto max-w-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
 												<div className='flex flex-wrap items-center gap-1 md:gap-2'>
-													{item?.productDatas?.price?.discount && (
-														<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>{item?.productDatas?.price?.discount + " OFF"}</span>
+													{item?.percentageSaved > 0 && (
+														<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>{item?.percentageSaved + "% OFF"}</span>
 													)}
 													<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>Free Shipping</span>
 												</div>
-												<Link className='block w-fit my-3 mt-1' href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"}>
+												<div className='block w-fit my-3 mt-1'>
 													<p className='font-semibold line-clamp-2'>{item?.title}</p>
-												</Link>
+												</div>
 												<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
 												<div className='box-price flex flex-wrap items-end gap-4'>
-													<span className='font-semibold text-xl md:text-2xl'>{item?.productDatas?.price?.salePrice}</span>
+													{item?.price > 0 && (
+														<span className='font-bold text-lg md:text-[22px]'>${item?.price}</span>
+													)}
 													<div className='flex items-center gap-4'>
-														<span className='text-sm line-through text-[#444]'>{item?.productDatas?.price?.originPrice}</span>
-														{item?.productDatas?.price?.discount && (
-															<span className='text-sm text-red-700 '>({item?.productDatas?.price?.discount} OFF)</span>
+														{item?.priceOld > 0 && (
+															<span className='text-sm line-through text-[#444]'>${item?.priceOld}</span>
+														)}
+														{item?.percentageSaved > 0 && (
+															<span className='text-sm text-red-700 '>({item?.percentageSaved}% OFF)</span>
 														)}
 													</div>
 												</div>
-												<Link href={item?.productDatas?.actions?.[0]?.actionsLink ?? "/"} className='p-3 px-2 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
+												<div className='p-3 px-2 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
 													<button className='text-center w-full text-white font-semibold'>View Deal</button>
-												</Link>
-											</div>
+												</div>
+											</Link>
 										))}
-
 									</div>
 								</div>
 							</>
 						)}
 						<div className='summary-content' ref={cRef} dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
 					</div>
+
 				</div>
 			)}
 
