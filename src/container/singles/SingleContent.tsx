@@ -862,7 +862,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 
 					<div className='col-span-8' ref={cRef}>
-						{dataRelated && dataRelated.length > 0 && (
+						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for monitors</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
