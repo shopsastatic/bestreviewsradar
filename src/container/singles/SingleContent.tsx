@@ -81,7 +81,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
 	const [activeHeading, setActiveHeading] = useState<string>('');
 	const cRef = useRef<HTMLDivElement>(null) as any;
-	const [isToggle, setIsToggle] = useState(false);
 	const [hydratedContent, setHydratedContent] = useState(content);
 	const [isVisible, setIsVisible] = useState(false);
 	const relatedRef = useRef(null);
@@ -172,10 +171,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		setShowTooltip(!showTooltip);
 	};
 
-	const handleClickToggle = () => {
-		setIsToggle(!isToggle);
-	}
-
 	const contentRefs = useRef([]) as any;
 
 	const handleSignUp = (e: any) => {
@@ -212,23 +207,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
-		const handleClickOutside = (event: any) => {
-			if (
-				menuRef.current &&
-				!menuRef?.current?.contains(event.target) &&
-				buttonRef.current &&
-				!buttonRef?.current?.contains(event.target)
-			) {
-				setIsToggle(false);
-			}
-		};
-
-		document.addEventListener('mousedown', handleClickOutside);
-
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-
 		const handleProgressIndicator = () => {
 			const entryContent = contentRef.current as any
 			const progressBarContent = progressRef.current
@@ -858,8 +836,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							))}
 						</ul>
 
-
-						<div className={`fixed top-0 left-0 right-0 bottom-0 bg-black ${isToggle ? 'opacity-30 visible' : 'opacity-0 hidden'}`}></div>
 						<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
 							{headings.map((heading) => (
 								<li
