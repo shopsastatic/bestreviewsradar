@@ -85,6 +85,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const [hydratedContent, setHydratedContent] = useState(content);
 	const [isVisible, setIsVisible] = useState(false);
 	const relatedRef = useRef(null);
+	const menuRef = useRef(null) as any;
+	const buttonRef = useRef(null) as any;
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false);
@@ -210,6 +212,23 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	useEffect(() => {
+		const handleClickOutside = (event: any) => {
+			if (
+				menuRef.current &&
+				!menuRef?.current?.contains(event.target) &&
+				buttonRef.current &&
+				!buttonRef?.current?.contains(event.target)
+			) {
+				setIsToggle(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+
 		const handleProgressIndicator = () => {
 			const entryContent = contentRef.current as any
 			const progressBarContent = progressRef.current
@@ -817,18 +836,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 			{headings?.length > 0 && content && (
 				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-					<div className='hidden col-span-3 mb-10 lg:mb-0 items-center lg:block justify-between lg:sticky top-0 h-fit border lg:border-0 p-2 pt-2 md:pt-0 rounded shadow-[1px_1px_5px_rgba(0,0,0,0.4)] lg:shadow-none'>
+					<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 						{headings?.length > 0 && (
 							<>
 								<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
-								<div onClick={handleClickToggle} className='cursor-pointer lg:cursor-none lg:hidden jump-mob text-[#2765de] font-medium flex items-center gap-2 border p-3 py-1.5 rounded border-blue-600'>
-									Jump to
-									<svg viewBox="0 0 24 24" fill="#2765de" width={18} xmlns="http://www.w3.org/2000/svg" focusable="false"><path fillRule="evenodd" clipRule="evenodd" d="M3 5.972a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Zm17.163.837H8.107a.84.84 0 0 1-.837-.837.84.84 0 0 1 .837-.837h12.056a.84.84 0 0 1 .837.837.84.84 0 0 1-.837.837ZM8.107 12.837h12.056A.84.84 0 0 0 21 12a.84.84 0 0 0-.837-.837H8.107A.84.84 0 0 0 7.27 12c0 .46.376.837.837.837Zm0 6.028h12.056a.84.84 0 0 0 .837-.837.84.84 0 0 0-.837-.837H8.107a.84.84 0 0 0-.837.837c0 .46.376.837.837.837Zm-4.008-5.64a1.099 1.099 0 1 1 0-2.198 1.099 1.099 0 0 1 0 2.198ZM3 18.027a1.099 1.099 0 1 0 2.197 0 1.099 1.099 0 0 0-2.197 0Z"></path></svg>
-								</div>
 							</>
 						)}
 
-						<ul className='mt-4 flex-col gap-4 hidden lg:flex'>
+						<ul className='mt-4 flex-col gap-6 hidden lg:flex'>
 							{headings.map((heading) => (
 								<li
 									key={heading.id}
@@ -837,22 +852,24 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										: 'duration-300 font-normal border-transparent'
 										}`}
 								>
-									<a href={`#${heading.id}`} className={` duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
+									<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
 								</li>
 
 							))}
 						</ul>
 
-						<ul className={`mt-4 flex-col gap-4 mob-footer-menu flex lg:hidden ${isToggle ? "active" : ""}`}>
+
+						<div className={`fixed top-0 left-0 right-0 bottom-0 bg-black ${isToggle ? 'opacity-30 visible' : 'opacity-0 hidden'}`}></div>
+						<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
 							{headings.map((heading) => (
 								<li
 									key={heading.id}
-									className={`border-l-2 transition-[padding-left, border-color, color] duration-500 ease-in-out ${activeHeading === heading.id
-										? 'font-semibold border-blue-600 pl-4'
-										: 'font-normal border-transparent pl-0'
+									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+										? 'duration-300 font-semibold border-blue-600'
+										: 'duration-300 font-normal border-transparent'
 										}`}
 								>
-									<a href={`#${heading.id}`}>{heading.text}</a>
+									<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
 								</li>
 
 							))}
@@ -860,13 +877,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					</div>
 					<div></div>
 
-
 					<div className='col-span-8' ref={cRef}>
 						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className='grid grid-cols-2 gap-3 md:gap-10'>
+									<div className='grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-10'>
 										{dataRelated.slice(0, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
 												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
