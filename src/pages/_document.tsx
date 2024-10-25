@@ -42,7 +42,7 @@ export default class Document extends NextDocument {
 						type="application/atom+xml"
 						title={SITE_TITLE + ' Atom Feed'}
 					/>
-					<link rel="shortcut icon" href={v('/favicons/favicon-brr.png')} />
+					<link rel="shortcut icon" href={v('/favicons/favicon.png')} />
 					<meta name="theme-color" content="#172A53" />
 					<script
 						dangerouslySetInnerHTML={{
