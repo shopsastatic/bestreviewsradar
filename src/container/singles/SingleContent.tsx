@@ -38,6 +38,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		rootMargin: '0%',
 		freezeOnceVisible: false,
 	})
+
 	//
 	//
 	const {
@@ -812,63 +813,60 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				</div>
 			</div>
 
-			{headings?.length > 0 && content && (
+			{headings?.length > 0 && (
 				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-					<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
-						{headings?.length > 0 && (
-							<>
-								<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
-							</>
-						)}
+					{(typeof dataRelated !== 'undefined' && dataRelated.length > 0 || hydratedContent) && (
+						<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
+							{headings?.length > 0 && (
+								<>
+									<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>On This Page</p>
+								</>
+							)}
 
-						<ul className='mt-4 flex-col gap-6 hidden lg:flex'>
-							{headings.map((heading) => (
-								<li
-									key={heading.id}
-									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-										? 'duration-300 font-semibold border-blue-600'
-										: 'duration-300 font-normal border-transparent'
-										}`}
-								>
-									<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
-								</li>
+							<ul className='mt-4 flex-col gap-6 hidden lg:flex'>
+								{headings.map((heading) => (
+									<li
+										key={heading.id}
+										className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+											? 'duration-300 font-semibold border-blue-600'
+											: 'duration-300 font-normal border-transparent'
+											}`}
+									>
+										<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
+									</li>
 
-							))}
-						</ul>
+								))}
+							</ul>
 
-						<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
-							{headings.map((heading) => (
-								<li
-									key={heading.id}
-									className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-										? 'duration-300 font-semibold border-blue-600'
-										: 'duration-300 font-normal border-transparent'
-										}`}
-								>
-									<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
-								</li>
+							<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
+								{headings.map((heading) => (
+									<li
+										key={heading.id}
+										className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+											? 'duration-300 font-semibold border-blue-600'
+											: 'duration-300 font-normal border-transparent'
+											}`}
+									>
+										<a href={`#${heading.id}`} className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'}`}>{heading.text}</a>
+									</li>
 
-							))}
-						</ul>
-					</div>
+								))}
+							</ul>
+						</div>
+					)}
 					<div></div>
 
 					<div className='col-span-8' ref={cRef}>
 						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
 							<>
-								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like for</h2>
+								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
 									<div className='grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-10'>
 										{dataRelated.slice(0, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
 												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
-												<div className='flex flex-wrap items-center gap-1 md:gap-2'>
-													{item?.percentageSaved > 0 && (
-														<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>{item?.percentageSaved + "% OFF"}</span>
-													)}
-													<span className='bg-blue-400 mb-1 block w-fit px-2 py-1 rounded-2xl text-xs text-white'>Free Shipping</span>
-												</div>
+
 												<div className='block w-fit my-3 mt-1'>
 													<p className='font-semibold line-clamp-2'>{item?.title}</p>
 												</div>
@@ -895,7 +893,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								</div>
 							</>
 						)}
-						<div className='summary-content' dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
+						{hydratedContent && (
+							<div className='summary-content' dangerouslySetInnerHTML={{ __html: hydratedContent }}></div>
+						)}
 					</div>
 
 				</div>
