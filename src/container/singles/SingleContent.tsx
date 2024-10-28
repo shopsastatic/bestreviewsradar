@@ -854,7 +854,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</ul>
 						</div>
 					)}
-					{headings.length > 1 && dataRelated.length > 0 && (
+					{typeof dataRelated !== 'undefined' && headings.length > 1 && dataRelated.length > 0 && (
 						<div></div>
 					)}
 

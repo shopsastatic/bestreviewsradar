@@ -11226,6 +11226,29 @@ export type NodeWithTrackbacks = {
   toPing?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
+/** The &quot;NumberOfToplist&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type NumberOfToplist = AcfFieldGroup & AcfFieldGroupFields & NumberOfToplist_Fields & {
+  __typename?: 'NumberOfToplist';
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;NumberOfToplist&quot; Field Group */
+  numberOfToplist?: Maybe<Scalars['String']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;NumberOfToplist&quot; Field Group */
+export type NumberOfToplist_Fields = {
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;NumberOfToplist&quot; Field Group */
+  numberOfToplist?: Maybe<Scalars['String']['output']>;
+};
+
 /** A singular connection from one Node to another, with support for relational data on the &quot;edge&quot; of the connection. */
 export type OneToOneConnection = {
   /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
@@ -11935,7 +11958,7 @@ export enum PluginStatusEnum {
 }
 
 /** The post type */
-export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithExcerpt & NodeWithFeaturedImage & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & NodeWithTrackbacks & Previewable & UniformResourceIdentifiable & WithAcfAmazonShortcode & WithAcfNcPostMetaData & WithAcfNcmazAudioUrl & WithAcfNcmazGalleryImgs & WithAcfNcmazVideoUrl & WithAcfPostData & WithAcfRebuildNextjsButton & {
+export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithExcerpt & NodeWithFeaturedImage & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & NodeWithTrackbacks & Previewable & UniformResourceIdentifiable & WithAcfAmazonShortcode & WithAcfNcPostMetaData & WithAcfNcmazAudioUrl & WithAcfNcmazGalleryImgs & WithAcfNcmazVideoUrl & WithAcfNumberOfToplist & WithAcfPostData & WithAcfRebuildNextjsButton & {
   __typename?: 'Post';
   /** Fields of the AmazonShortcode ACF Field Group */
   amazonShortcode?: Maybe<AmazonShortcode>;
@@ -12025,6 +12048,8 @@ export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & 
   ncmazGalleryImgs?: Maybe<NcmazGalleryImgs>;
   /** Fields of the NcmazVideoUrl ACF Field Group */
   ncmazVideoUrl?: Maybe<NcmazVideoUrl>;
+  /** Fields of the NumberOfToplist ACF Field Group */
+  numberOfToplist?: Maybe<NumberOfToplist>;
   /** The password for the post object. */
   password?: Maybe<Scalars['String']['output']>;
   /** Whether the pings are open or closed for this particular post. */
@@ -19911,6 +19936,12 @@ export type WithAcfNcmazVideoUrl = {
 export type WithAcfNcmazfaustMenu = {
   /** Fields of the NcmazfaustMenu ACF Field Group */
   ncmazfaustMenu?: Maybe<NcmazfaustMenu>;
+};
+
+/** Provides access to fields of the &quot;NumberOfToplist&quot; ACF Field Group via the &quot;numberOfToplist&quot; field */
+export type WithAcfNumberOfToplist = {
+  /** Fields of the NumberOfToplist ACF Field Group */
+  numberOfToplist?: Maybe<NumberOfToplist>;
 };
 
 /** Provides access to fields of the &quot;PageCategory&quot; ACF Field Group via the &quot;pageCategory&quot; field */
