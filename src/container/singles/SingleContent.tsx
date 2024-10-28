@@ -55,13 +55,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		amazonShortcode,
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
-	let NoT = numberOfToplist?.numberOfToplist
+	let NoT = numberOfToplist?.numberOfToplist as any
 
 	if(!NoT) {
 		NoT = 10
 	}
 
 	const post_id = post?.databaseId
+
+	console.log(NoT)
 
 	useEffect(() => {
         const fetchData = async () => {
@@ -82,6 +84,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		dataRelatedArray = Object.values(dataRelated?.Amazon);
 	}
 
+
 	//	
 
 	const products = postData?.products?.nodes
@@ -90,7 +93,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const pointLines = points?.trim().split('\n');
 
-	const pointArray = pointLines?.map(line => {
+	const pointArray = pointLines?.map((line: any) => {
 		const numbers = line.split(' ').map(parseFloat);
 		return numbers
 	});
