@@ -19,11 +19,10 @@ import { useMusicPlayer } from '@/hooks/useMusicPlayer'
 import Rating from '@/components/Rating'
 import Link from 'next/link'
 import RenderStore from '@/components/RenderStore'
-
-declare var dataRelated: any;
+import axios from 'axios'
 
 export interface SingleContentProps {
-	post: GetPostSiglePageQuery['post']
+	post: any
 }
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
@@ -31,6 +30,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const progressRef = useRef<HTMLButtonElement>(null)
 
 	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
+	const [dataRelated, setDataRelated] = useState<any>({});
 
 	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
 		threshold: 0,
@@ -52,8 +52,31 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		date,
 		postData,
 		uri,
-		amazonShortcode
+		amazonShortcode,
+		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
+	let NoT = numberOfToplist?.numberOfToplist
+
+	const post_id = post?.databaseId
+
+	useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const { data } = await axios.get(`http://temp5.local/wp-json/cegg/v1/data/${post_id}`);
+                setDataRelated(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, [post_id]);
+
+	let dataRelatedArray = [] as any
+
+	if(dataRelated?.Amazon) {
+		dataRelatedArray = Object.values(dataRelated?.Amazon);
+	}
 
 	//	
 
@@ -814,8 +837,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			</div>
 
 			{headings?.length > 0 && (
-				<div className={`large-width grid grid-cols-1 ${headings.length == 1 && dataRelated.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
-					{(typeof dataRelated !== 'undefined' && headings.length > 1 && dataRelated.length > 0 || hydratedContent) && (
+				<div className={`large-width grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
+					{(headings.length > 1 && dataRelatedArray.length > 0 || hydratedContent) && (
 						<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 							{headings?.length > 0 && (
 								<>
@@ -854,17 +877,17 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</ul>
 						</div>
 					)}
-					{typeof dataRelated !== 'undefined' && headings.length > 1 && dataRelated.length > 0 && (
+					{headings.length > 1 && dataRelatedArray.length > 0 && (
 						<div></div>
 					)}
 
 					<div className='col-span-8' ref={cRef}>
-						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
+						{dataRelatedArray.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelated.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-3`}>
-										{dataRelated.slice(0, 50).map((item: any, index: any) => (
+									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-3`}>
+										{dataRelatedArray.slice(NoT, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
 												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
