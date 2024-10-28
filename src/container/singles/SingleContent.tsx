@@ -525,9 +525,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		};
 	}, [activeHeading]);
 
-	console.log(headings)
-	console.log(hydratedContent)
-
 	return (
 		<>
 			<div className='container'>
