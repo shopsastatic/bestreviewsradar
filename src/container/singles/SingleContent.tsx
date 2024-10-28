@@ -63,8 +63,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const post_id = post?.databaseId
 
-	console.log(NoT)
-
 	useEffect(() => {
         const fetchData = async () => {
             try {
