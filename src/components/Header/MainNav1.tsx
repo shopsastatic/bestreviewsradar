@@ -21,7 +21,7 @@ export interface MainNav1Props {
 
 const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 	const [searchValue, setSearchValue] = useState('')
-	const [matchedCategories, setMatchedCategories] = useState([])
+	const [matchedCategories, setMatchedCategories] = useState<any[]>([]);
 	const router = useRouter()
 
 	const fetchCategories = async (value: string) => {
@@ -86,6 +86,13 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 		)
 	}
 
+	const searchSubmit = (e: any) => {
+		e.preventDefault()
+        if (searchValue.length > 0 && matchedCategories.length > 0) {
+            router.push('/' + matchedCategories?.[0]?.slug)
+        }
+	}
+
 	return (
 		<>
 			<div className="header-top bg-[#1b1d31] text-white py-3">
@@ -100,37 +107,39 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 						<div
 							className="relative ml-10 hidden min-[895px]:block md:min-w-[400px] lg:min-w-[500px] xl:min-w-[700px]"
 						>
-							<input
-								type="search"
-								id="search-input"
-								placeholder="Search..."
-								name="hsearch"
-								autoComplete="off"
-								className="w-full focus:ring-0 border-opacity-0 py-2.5 text-base shadow-md pe-3 sm:pe-5 text-neutral-800 rounded"
-								value={searchValue}
-								onChange={(e) => setSearchValue(e.target.value)}
-							/>
-							<button type="submit">
-								<div className="absolute top-[1px] bottom-[1px] right-0 px-5 flex justify-center bg-[#eeeeee] items-center z-10 rounded-tr rounded-br">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="22"
-										height="22"
-										viewBox="0 0 22 22"
-										fill="none"
-									>
-										<path
-											d="M20.8438 19.8281C21.0781 20.0365 21.0781 20.2578 20.8438 20.4922L20.4922 20.8438C20.2578 21.0781 20.0365 21.0781 19.8281 20.8438L14.7891 15.8438C14.6849 15.7396 14.6328 15.6224 14.6328 15.4922V15.1016C13.0703 16.5339 11.2344 17.25 9.125 17.25C6.88542 17.25 4.97135 16.4557 3.38281 14.8672C1.79427 13.2786 1 11.3646 1 9.125C1 6.88542 1.79427 4.97135 3.38281 3.38281C4.97135 1.79427 6.88542 1 9.125 1C11.3646 1 13.2786 1.79427 14.8672 3.38281C16.4557 4.97135 17.25 6.88542 17.25 9.125C17.25 11.2344 16.5339 13.0703 15.1016 14.6328H15.4922C15.6224 14.6328 15.7396 14.6849 15.8438 14.7891L20.8438 19.8281ZM4.24219 14.0078C5.59635 15.3359 7.22396 16 9.125 16C11.026 16 12.6406 15.3359 13.9688 14.0078C15.3229 12.6536 16 11.026 16 9.125C16 7.22396 15.3229 5.60938 13.9688 4.28125C12.6406 2.92708 11.026 2.25 9.125 2.25C7.22396 2.25 5.59635 2.92708 4.24219 4.28125C2.91406 5.60938 2.25 7.22396 2.25 9.125C2.25 11.026 2.91406 12.6536 4.24219 14.0078Z"
-											fill="black"
-										></path>
-									</svg>
-								</div>
-							</button>
+							<form onSubmit={searchSubmit}>
+								<input
+									type="search"
+									id="search-input"
+									placeholder="Search..."
+									name="hsearch"
+									autoComplete="off"
+									className="w-full focus:ring-0 border-opacity-0 py-2.5 text-base shadow-md pe-3 sm:pe-5 text-neutral-800 rounded"
+									value={searchValue}
+									onChange={(e) => setSearchValue(e.target.value)}
+								/>
+								<button type="submit">
+									<div className="absolute top-[1px] bottom-[1px] right-0 px-5 flex justify-center bg-[#eeeeee] items-center z-10 rounded-tr rounded-br">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="22"
+											height="22"
+											viewBox="0 0 22 22"
+											fill="none"
+										>
+											<path
+												d="M20.8438 19.8281C21.0781 20.0365 21.0781 20.2578 20.8438 20.4922L20.4922 20.8438C20.2578 21.0781 20.0365 21.0781 19.8281 20.8438L14.7891 15.8438C14.6849 15.7396 14.6328 15.6224 14.6328 15.4922V15.1016C13.0703 16.5339 11.2344 17.25 9.125 17.25C6.88542 17.25 4.97135 16.4557 3.38281 14.8672C1.79427 13.2786 1 11.3646 1 9.125C1 6.88542 1.79427 4.97135 3.38281 3.38281C4.97135 1.79427 6.88542 1 9.125 1C11.3646 1 13.2786 1.79427 14.8672 3.38281C16.4557 4.97135 17.25 6.88542 17.25 9.125C17.25 11.2344 16.5339 13.0703 15.1016 14.6328H15.4922C15.6224 14.6328 15.7396 14.6849 15.8438 14.7891L20.8438 19.8281ZM4.24219 14.0078C5.59635 15.3359 7.22396 16 9.125 16C11.026 16 12.6406 15.3359 13.9688 14.0078C15.3229 12.6536 16 11.026 16 9.125C16 7.22396 15.3229 5.60938 13.9688 4.28125C12.6406 2.92708 11.026 2.25 9.125 2.25C7.22396 2.25 5.59635 2.92708 4.24219 4.28125C2.91406 5.60938 2.25 7.22396 2.25 9.125C2.25 11.026 2.91406 12.6536 4.24219 14.0078Z"
+												fill="black"
+											></path>
+										</svg>
+									</div>
+								</button>
+							</form>
 
 							{matchedCategories.length > 0 && (
 								<ul className="absolute z-20 max-h-[200px] overflow-y-scroll bg-white border border-gray-300 w-full mt-2 rounded shadow-lg">
 									{matchedCategories.map((category: any, index: any) => (
-										<Link href={"/"+category.slug} key={index}>
+										<Link href={"/" + category.slug} key={index}>
 											<li
 												className="p-2 hover:bg-gray-100 cursor-pointer text-black text-base"
 											>

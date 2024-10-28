@@ -814,8 +814,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			</div>
 
 			{headings?.length > 0 && (
-				<div className='large-width grid grid-cols-1 lg:grid-cols-12 mt-20'>
-					{(typeof dataRelated !== 'undefined' && dataRelated.length > 0 || hydratedContent) && (
+				<div className={`large-width grid grid-cols-1 ${headings.length == 1 && dataRelated.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
+					{(typeof dataRelated !== 'undefined' && headings.length > 1 && dataRelated.length > 0 || hydratedContent) && (
 						<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 							{headings?.length > 0 && (
 								<>
@@ -854,14 +854,16 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</ul>
 						</div>
 					)}
-					<div></div>
+					{headings.length > 1 && dataRelated.length > 0 && (
+						<div></div>
+					)}
 
 					<div className='col-span-8' ref={cRef}>
 						{typeof dataRelated !== 'undefined' && dataRelated.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className='grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-10'>
+									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelated.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-3`}>
 										{dataRelated.slice(0, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
 												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
