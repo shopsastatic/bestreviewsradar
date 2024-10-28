@@ -26,7 +26,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 
 	const fetchCategories = async (value: string) => {
 		try {
-			const response = await axios.get('http://temp5.local/wp-json/custom/v1/search-categories', {
+			const response = await axios.get('https://bestreviewsradar.com/wp-json/custom/v1/search-categories', {
 				params: { keyword: value }
 			})
 
