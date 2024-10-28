@@ -57,6 +57,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	} = getPostDataFromPostFragment(post || {})
 	let NoT = numberOfToplist?.numberOfToplist
 
+	if(!NoT) {
+		NoT = 10
+	}
+
 	const post_id = post?.databaseId
 
 	useEffect(() => {
@@ -877,7 +881,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</ul>
 						</div>
 					)}
-					{headings.length > 1 && dataRelatedArray.length > 0 && (
+					{(headings.length > 0 && dataRelatedArray.length == 0 || headings.length > 1 && dataRelatedArray.length > 0) && (
 						<div></div>
 					)}
 
