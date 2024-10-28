@@ -407,6 +407,21 @@ footer .container {
   border-radius: 8px;
 }
 
+.category-box-child {
+  box-shadow: 0 0 30px rgba(10, 10, 10, 0.1);
+  padding: 1.5rem 1rem;
+  border-radius: 12px;
+}
+
+.category-image {
+  transition: all .4s;
+}
+
+.category-box-child:hover > .category-image{
+  transform: scale(1.1);
+  transition: all .4s;
+}
+
 @media (max-width: 1024px) {
   .heading-poligon {
     padding: 10px 20px 40px;

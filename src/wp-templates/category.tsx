@@ -56,7 +56,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
         props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
       }
     >
-      <ArchiveLayoutChild></ArchiveLayoutChild>
+      <ArchiveLayoutChild name={name} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
     </PageLayout>
     )
   }

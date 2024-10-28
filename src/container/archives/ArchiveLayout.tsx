@@ -24,11 +24,6 @@ const ArchiveLayout: FC<any> = ({
 	})
 	//
 
-	console.log(childs)
-	const child1 = childs?.[0]
-	const child2 = childs?.[1]
-	const child3 = childs?.[2]
-
 	const {
 		currentPosts,
 		handleChangeFilterPosts,
@@ -42,6 +37,31 @@ const ArchiveLayout: FC<any> = ({
 		categoryDatabaseId,
 	})
 
+	let categoryPosts = [] as any;
+
+	for (const item of childs) {
+		for (const post of item.posts.nodes) {
+			if (categoryPosts.length < 10) {
+				categoryPosts.push(post);
+			} else {
+				break;
+			}
+		}
+		if (categoryPosts.length >= 10) {
+			break;
+		}
+	}
+
+	console.log(childs)
+
+	function slugToLabel(slug: any) {
+		const cleanedSlug = slug.replace(/^\/+|\/+$/g, '');
+		return cleanedSlug
+			.split('-')
+			.map((word: any) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
+	}
+
 	return (
 		<div className="mt-10">
 			<div className={`page-category`}>
@@ -51,7 +71,7 @@ const ArchiveLayout: FC<any> = ({
 					<div className='category-child mt-10 py-3 border-t border-slate-300'>
 						<ul className='flex gap-4 flex-wrap'>
 							{childs?.length > 0 && childs?.map((item: any, index: any) => (
-								<Link key={index} href={item?.uri ?? "/"} className='category-item px-4 py-2 rounded-xl hover:text-blue-700 transition-all shadow shadow-slate-300'>
+								<Link key={index} href={item?.uri ?? "/"} className='category-box-child !px-4 !py-2 !rounded-lg hover:text-blue-700 transition-all shadow shadow-slate-300'>
 									<li className='text-sm capitalize'>{item?.name}</li>
 								</Link>
 							))}
@@ -64,57 +84,13 @@ const ArchiveLayout: FC<any> = ({
 						<span className='text-sm'>{name}</span>
 					</div>
 
-					<div>
-						{child1?.posts?.nodes?.length > 0 && (
-							<div className='mt-7'>
-								<Link href={child1?.uri ?? "/"}><h3>{child1?.name}</h3></Link>
-
-								<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-7 mt-4'>
-									{child1?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-										<div className='rounded-lg col-span-1 border border-slate-300 shadow hover:shadow-lg shadow-slate-300 transition-all' key={index}>
-											<Link href={item?.uri ?? "/"}>
-												<img className='w-full max-[400px]:h-[120px] h-[170px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-												<p className='mt-2 font-semibold max-[400px]:px-2 max-[400px]:text-sm px-4 pt-2 pb-5 text-base'>{item?.title}</p>
-											</Link>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-
-						{child2?.posts?.nodes?.length > 0 && (
-							<div className='mt-20'>
-								<Link href={child2?.uri ?? "/"}><h3>{child2?.name}</h3></Link>
-
-								<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-7 mt-4'>
-									{child2?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-										<div className='rounded-lg col-span-1 border border-slate-300 shadow hover:shadow-lg shadow-slate-300 transition-all' key={index}>
-											<Link href={item?.uri ?? "/"}>
-												<img className='w-full max-[400px]:h-[120px] h-[170px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-												<p className='mt-2 font-semibold max-[400px]:px-2 max-[400px]:text-sm px-4 pt-2 pb-5 text-base'>{item?.title}</p>
-											</Link>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
-
-						{child3?.posts?.nodes?.length > 0 && (
-							<div className='mt-20'>
-								<Link href={child3?.uri ?? "/"}><h3>{child3?.name}</h3></Link>
-
-								<div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-7 mt-4'>
-									{child3?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-										<div className='rounded-lg col-span-1 border border-slate-300 shadow hover:shadow-lg shadow-slate-300 transition-all' key={index}>
-											<Link href={item?.uri ?? "/"}>
-												<img className='w-full max-[400px]:h-[120px] h-[170px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-												<p className='mt-2 font-semibold max-[400px]:px-2 max-[400px]:text-sm px-4 pt-2 pb-5 text-base'>{item?.title}</p>
-											</Link>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
+					<div className='grid grid-cols-3 gap-5 mt-5'>
+						{categoryPosts.length > 0 && categoryPosts.map((item: any) => (
+							<Link href={item?.uri ?? "/"} className='category-box-child col-span-1 flex items-center gap-5'>
+								<img className='category-image max-w-[55px] w-auto h-[55px]' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
+								<span className='font-medium text-base'>{slugToLabel(item?.uri)}</span>
+							</Link>
+						))}
 					</div>
 				</div>
 			</div>
