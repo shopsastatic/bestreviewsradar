@@ -9,7 +9,7 @@ export interface SingleHeaderProps {
   hiddenDesc?: boolean;
   titleMainClass?: string;
   className?: string;
-  post: FragmentType<typeof NC_POST_FULL_FRAGMENT>;
+  post: FragmentType<any>;
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({
@@ -100,7 +100,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
   return (
     <>
       <div className='container my-6'>
-        <h1 className="post-title text-center my-5 md:my-12 font-bold leading-[1.1em] max-w-full md:max-w-[690px] mx-auto">{title}</h1>
+        <h1 className="post-title text-center my-5 md:my-12 font-extrabold leading-[1.1em] max-w-full md:max-w-[690px] mx-auto">{title}</h1>
 
         {!nocategory && (
           <div className="hidden md:flex gap-2 items-center">

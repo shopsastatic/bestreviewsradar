@@ -24,6 +24,11 @@ const ArchiveLayout: FC<any> = ({
 	})
 	//
 
+	console.log(childs)
+	const child1 = childs?.[0]
+	const child2 = childs?.[1]
+	const child3 = childs?.[2]
+
 	const {
 		currentPosts,
 		handleChangeFilterPosts,
@@ -37,60 +42,99 @@ const ArchiveLayout: FC<any> = ({
 		categoryDatabaseId,
 	})
 
-	let categoryPosts = [] as any;
-
-	for (const item of childs) {
-		for (const post of item.posts.nodes) {
-			if (categoryPosts.length < 10) {
-				categoryPosts.push(post);
-			} else {
-				break;
-			}
-		}
-		if (categoryPosts.length >= 10) {
-			break;
-		}
-	}
-
-	console.log(childs)
-
-	function slugToLabel(slug: any) {
-		const cleanedSlug = slug.replace(/^\/+|\/+$/g, '');
-		return cleanedSlug
-			.split('-')
-			.map((word: any) => word.charAt(0).toUpperCase() + word.slice(1))
-			.join(' ');
-	}
-
 	return (
 		<div className="mt-10">
 			<div className={`page-category`}>
 				<div className='container'>
 					<h1 className='font-bold capitalize'>{name}</h1>
 
-					<div className='category-child mt-10 py-3 border-t border-slate-300'>
+					<div className='py-10 border-b border-slate-300'>
 						<ul className='flex gap-4 flex-wrap'>
 							{childs?.length > 0 && childs?.map((item: any, index: any) => (
-								<Link key={index} href={item?.uri ?? "/"} className='category-box-child !px-4 !py-2 !rounded-lg hover:text-blue-700 transition-all shadow shadow-slate-300'>
-									<li className='text-sm capitalize'>{item?.name}</li>
+								<Link key={index} href={item?.uri ?? "/"} className='px-6 py-3 text-[#e06308] border border-[#e06308] rounded-xl hover:border-0 hover:bg-[#e06308] hover:text-white'>
+									<li className='text-base font-semibold capitalize'>{item?.name}</li>
 								</Link>
 							))}
 						</ul>
 					</div>
 
-					<div className='category-breadcrumb ml-1 mt-2 flex items-center gap-2'>
-						<Link href={"/"} className='hover:underline text-sm'>Home</Link>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>
-						<span className='text-sm'>{name}</span>
-					</div>
+					<div>
+						{child1?.posts?.nodes?.length > 0 && (
+							<div className='mt-7'>
+								<div className='flex justify-between items-end mb-10'>
+									<h2>{child1?.name}</h2>
+									<Link href={child1?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p>View More</p></Link>
+								</div>
 
-					<div className='grid grid-cols-3 gap-5 mt-5'>
-						{categoryPosts.length > 0 && categoryPosts.map((item: any) => (
-							<Link href={item?.uri ?? "/"} className='category-box-child col-span-1 flex items-center gap-5'>
-								<img className='category-image max-w-[55px] w-auto h-[55px]' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-								<span className='font-medium text-base'>{slugToLabel(item?.uri)}</span>
-							</Link>
-						))}
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-7 mt-4'>
+									{child1?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
+										<div className='rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+											<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
+												<img className='w-full h-[120px] object-cover object-top rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
+											</Link>
+											<div className='col-span-2 md:col-span-3'>
+												<Link href={item?.uri ?? "/"}>
+													<h4 className='font-semibold'>{item?.title}</h4>
+												</Link>
+												<Link href={child1?.uri ?? "/"} className='text-sm mt-4 inline-block w-fit text-[#2c5bb3]'>{child1?.name}</Link>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+						<hr className='my-14' />
+
+						{child2?.posts?.nodes?.length > 0 && (
+							<div>
+								<div className='flex justify-between items-end mb-10'>
+									<h2>{child2?.name}</h2>
+									<Link href={child2?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p>View More</p></Link>
+								</div>
+
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-7 mt-4'>
+									{child2?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
+										<div className='rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+											<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
+												<img className='w-full h-[120px] object-cover object-top rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
+											</Link>
+											<div className='col-span-2 md:col-span-3'>
+												<Link href={item?.uri ?? "/"}>
+													<h4 className='font-semibold'>{item?.title}</h4>
+												</Link>
+												<Link href={child2?.uri ?? "/"} className='text-sm mt-4 block w-fit text-[#2c5bb3]'>{child2?.name}</Link>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
+						<hr className='my-14' />
+
+						{child3?.posts?.nodes?.length > 0 && (
+							<div>
+								<div className='flex justify-between items-end mb-10 mt-14'>
+									<h2>{child3?.name}</h2>
+									<Link href={child3?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p>View More</p></Link>
+								</div>
+
+								<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-7 mt-4'>
+									{child3?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
+										<div className='rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+											<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
+												<img className='w-full h-[120px] object-cover object-top rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
+											</Link>
+											<div className='col-span-2 md:col-span-3'>
+												<Link href={item?.uri ?? "/"}>
+													<h4 className='font-semibold'>{item?.title}</h4>
+												</Link>
+												<Link href={child3?.uri ?? "/"} className='text-sm mt-4 inline-block w-fit text-[#2c5bb3]'>{child3?.name}</Link>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
