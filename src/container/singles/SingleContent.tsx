@@ -66,7 +66,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data } = await axios.get(`https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
+                const { data } = await axios.get(`https://bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
                 setDataRelated(data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -560,7 +560,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 											<div className='tag-has-poligon'>
 												<div className="noicon-tag-right bg-white heading-tag-text py-0.5 flex items-center">
 													<span className="font-semibold px-4 text-black max-[375px]:text-sm py-0.5">
-														{index == 1 ? "Best Choice" : index == 2 ? "Value for Money" : "Best for Cashback"}
+														{index == 1 ? "Editor's Choice" : index == 2 ? "Best Value" : "Best for Cashback"}
 													</span>
 												</div>
 											</div>
@@ -569,7 +569,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										{index !== 4 && (
 											<div className="bg-white heading-tag-text py-0.5 flex items-center">
 												<span className="font-semibold px-4 text-black max-[375px]:text-sm py-0.5">
-													{index == 1 ? "Best Choice" : index == 2 ? "Value for Money" : "Best for Cashback"}
+													{index == 1 ? "Editor's Choice" : index == 2 ? "Best Value" : "Best for Cashback"}
 												</span>
 											</div>
 										)} */}
@@ -894,16 +894,16 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-3`}>
 										{dataRelatedArray.slice(NoT, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
-												<img className='related-prod-image mx-auto max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
+												<img className='related-prod-image mx-auto rounded-[8px] max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
 
 												<div className='block w-fit my-3 mt-1'>
-													<p className='font-semibold line-clamp-2'>{item?.title}</p>
+													<p className='font-semibold line-clamp-2 text-base'>{item?.title}</p>
 												</div>
 												<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
 												<div className='box-price flex flex-wrap items-end gap-4'>
 													{item?.price > 0 && (
-														<span className='font-bold text-lg md:text-[22px]'>${item?.price}</span>
+														<span className='font-bold text-base'>${item?.price}</span>
 													)}
 													<div className='flex items-center gap-4'>
 														{item?.priceOld > 0 && (
@@ -914,8 +914,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 														)}
 													</div>
 												</div>
-												<div className='p-3 px-2 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
-													<button className='text-center w-full text-white font-semibold'>View Deal</button>
+												<div className='p-2.5 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
+													<button className='text-center text-sm w-full text-white font-semibold'>View Deal</button>
 												</div>
 											</Link>
 										))}
