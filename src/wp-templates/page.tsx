@@ -314,7 +314,7 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
               </>
             )}
 
-            {/* <MyWordPressBlockViewer blocks={blocks} /> */}
+            {<MyWordPressBlockViewer blocks={blocks} />}
           </main>
         </div>
       </PageLayout>

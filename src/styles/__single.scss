@@ -46,7 +46,8 @@
   display: none;
 }
 
-.prod-child p:first-child {
+.prod-child p:first-child:not(.title-desc)
+ {
   display: none !important;
 }
 
