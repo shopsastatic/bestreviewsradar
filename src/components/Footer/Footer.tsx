@@ -22,62 +22,35 @@ export default function Footer({ menuItems }: Props) {
 		childrenKey: 'children',
 	}) as FooterNavItemType[]
 
-	const renderMenuItem = (item: FooterNavItemType, index: number) => {
-		return (
-			<div key={index + item.id}>
-				<h3 className="text-sm font-semibold leading-6 text-neutral-900 dark:text-neutral-200">
-					<Link href={item.uri ?? '/'}>{item.label}</Link>
-				</h3>
-				<ul role="list" className="mt-6 space-y-4">
-					{item.children?.map((j, id) => (
-						<li key={j.id + id}>
-							<Link
-								href={j.uri ?? ''}
-								className="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-							>
-								{j.label}
-							</Link>
-						</li>
-					))}
-				</ul>
-			</div>
-		)
-	}
-
 	return (
 		<footer className='bg-[#1C202C] mt-20'>
 			<div className='container grid grid-cols-1 gap-5 md:grid-cols-4'>
 				<div className='text-white py-0 md:py-10 pt-16 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						<li><Link href={"/"}>Monitors</Link></li>
-						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
-						<li><Link href={"/"}>Drills</Link></li>
-						<li><Link href={"/"}>Robotic-Vacuums</Link></li>
-						<li><Link href={"/"}>Gaming-Chairs</Link></li>
-						<li><Link href={"/"}>Earbuds</Link></li>
+						{menus?.length > 0 && menus?.slice(0, 7)?.map((item: any) => (
+							<li><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
+						))}
 					</ul>
 				</div>
 				<div className='text-white py-0 md:py-10 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						<li><Link href={"/"}>Monitors</Link></li>
-						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
-						<li><Link href={"/"}>Drills</Link></li>
-						<li><Link href={"/"}>Robotic-Vacuums</Link></li>
-						<li><Link href={"/"}>Gaming-Chairs</Link></li>
-						<li><Link href={"/"}>Earbuds</Link></li>
+						{menus?.length > 0 && menus?.slice(7, 14)?.map((item: any) => (
+							<li><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
+						))}
 					</ul>
 				</div>
 				<div className='text-white py-0 md:py-10 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Contact</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						<li><Link href={"/"}>Monitors</Link></li>
-						<li><Link href={"/"}>Cordless-Vacuums</Link></li>
-						<li><Link href={"/"}>Drills</Link></li>
-						<li><Link href={"/"}>Robotic-Vacuums</Link></li>
-						<li><Link href={"/"}>Gaming-Chairs</Link></li>
-						<li><Link href={"/"}>Earbuds</Link></li>
+						<li><Link href={"/about"}>About Us</Link></li>
+						<li><Link href={"/contact-us"}>Contact Us</Link></li>
+						<li><Link href={"/privacy-policy"}>Privacy Policy</Link></li>
+						<li><Link href={"/terms-of-service"}>Terms of Service</Link></li>
+						<li><Link href={"/categories"}>Categories</Link></li>
+						<li><Link href={"/affiliate-disclosure"}>Affiliate Disclosure</Link></li>
+						<li><Link href={"/disclaimer"}>Disclaimer</Link></li>
 					</ul>
 				</div>
 				<div className='text-white py-12 col-span-1 px-0 md:px-4'>
