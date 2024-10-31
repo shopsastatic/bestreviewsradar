@@ -830,7 +830,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 			{headings && headings?.length > 0 && (
 				<div className={`large-width grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
-					{(headings.length > 1 && dataRelatedArray.length > 0 || hydratedContent) && (
+					{((headings.length > 0 && dataRelatedArray.length > 0) || (headings.length > 1 && dataRelatedArray.length == 0)) && (
 						<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 							{headings?.length > 0 && (
 								<>
