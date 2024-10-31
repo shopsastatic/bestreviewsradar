@@ -62,19 +62,6 @@ const SingleHeader4: FC<SingleHeader4Props> = ({
           priority
         />
 
-        <div className=" space-y-10">
-          <div className="flex flex-col sm:flex-row justify-between sm:items-end space-y-5 sm:space-y-0 sm:space-x-5 rtl:space-x-reverse">
-            <PostMeta2
-              size="large"
-              className="leading-none flex-shrink-0"
-              hiddenCategories
-              avatarRounded="rounded-full shadow-inner"
-              post={{ ...post }}
-            />
-            <SingleMetaAction2 post={{ ...post }} />
-          </div>
-          <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>
-        </div>
       </div>
     </>
   );
