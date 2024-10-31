@@ -28,16 +28,16 @@ export default function Footer({ menuItems }: Props) {
 				<div className='text-white py-0 md:py-10 pt-16 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						{menus?.length > 0 && menus?.slice(0, 7)?.map((item: any) => (
-							<li><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
+						{menus?.length > 0 && menus?.slice(0, 7)?.map((item: any, index: any) => (
+							<li key={index}><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
 						))}
 					</ul>
 				</div>
 				<div className='text-white py-0 md:py-10 col-span-1'>
 					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						{menus?.length > 0 && menus?.slice(7, 14)?.map((item: any) => (
-							<li><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
+						{menus?.length > 0 && menus?.slice(7, 14)?.map((item: any, index: any) => (
+							<li key={index}><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
 						))}
 					</ul>
 				</div>
@@ -45,7 +45,7 @@ export default function Footer({ menuItems }: Props) {
 					<h5 className='border-b border-[#525252] py-2'>Contact</h5>
 					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
 						<li><Link href={"/about"}>About Us</Link></li>
-						<li><Link href={"/contact-us"}>Contact Us</Link></li>
+						<li><Link href={"/contact"}>Contact Us</Link></li>
 						<li><Link href={"/privacy-policy"}>Privacy Policy</Link></li>
 						<li><Link href={"/terms-of-service"}>Terms of Service</Link></li>
 						<li><Link href={"/categories"}>Categories</Link></li>

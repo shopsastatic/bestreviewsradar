@@ -35,7 +35,8 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
     name,
     ncTaxonomyMeta,
     featuredImageMeta,
-    children
+    children,
+    parent
   } = getCatgoryDataFromCategoryFragment(props.data.category);
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
@@ -44,20 +45,20 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
 
   const hasChild = children && Array.isArray(children.nodes) && children.nodes.length > 0;
 
-  if(!hasChild) {
+  if (!hasChild) {
     return (
       <PageLayout
-      headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
-      footerMenuItems={props.data?.footerMenuItems?.nodes || []}
-      pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
-      pageTitle={"Category " + name}
-      pageDescription={description || ""}
-      generalSettings={
-        props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
-      }
-    >
-      <ArchiveLayoutChild name={name} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
-    </PageLayout>
+        headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
+        footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
+        pageTitle={"Category " + name}
+        pageDescription={description || ""}
+        generalSettings={
+          props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
+        }
+      >
+        <ArchiveLayoutChild name={name} parent={parent} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
+      </PageLayout>
     )
   }
 

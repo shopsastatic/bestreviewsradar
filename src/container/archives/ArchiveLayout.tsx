@@ -67,18 +67,16 @@ const ArchiveLayout: FC<any> = ({
 								</div>
 
 								<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-									{child1?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-										<div className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
-											<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
-												<img className='w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-											</Link>
-											<div className='col-span-2 md:col-span-3'>
-												<Link href={item?.uri ?? "/"}>
-													<h4 className='font-semibold text-base'>{item?.title}</h4>
-												</Link>
-												<Link href={child1?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child1?.name}</Link>
+									{child1?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+										<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+											<div className='w-full col-span-1 md:col-span-2'>
+												<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
 											</div>
-										</div>
+											<div className='col-span-2 md:col-span-3'>
+												<h4 className='font-semibold text-base'>{item?.title}</h4>
+												<div className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child1?.name}</div>
+											</div>
+										</Link>
 									))}
 								</div>
 							</div>
@@ -94,18 +92,16 @@ const ArchiveLayout: FC<any> = ({
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-										{child2?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-											<div className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
-												<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
-													<img className='w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-												</Link>
-												<div className='col-span-2 md:col-span-3'>
-													<Link href={item?.uri ?? "/"}>
-														<h4 className='font-semibold text-base'>{item?.title}</h4>
-													</Link>
-													<Link href={child2?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child2?.name}</Link>
+										{child2?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+											<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+												<div className='w-full col-span-1 md:col-span-2'>
+													<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
 												</div>
-											</div>
+												<div className='col-span-2 md:col-span-3'>
+													<h4 className='font-semibold text-base'>{item?.title}</h4>
+													<div className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child2?.name}</div>
+												</div>
+											</Link>
 										))}
 									</div>
 								</div>
@@ -122,18 +118,16 @@ const ArchiveLayout: FC<any> = ({
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-										{child3?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
-											<div className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
-												<Link href={item?.uri ?? "/"} className='w-full col-span-1 md:col-span-2'>
-													<img className='w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
-												</Link>
-												<div className='col-span-2 md:col-span-3'>
-													<Link href={item?.uri ?? "/"}>
-														<h4 className='font-semibold text-base'>{item?.title}</h4>
-													</Link>
-													<Link href={child3?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child3?.name}</Link>
+										{child3?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+											<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
+												<div className='w-full col-span-1 md:col-span-2'>
+													<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
 												</div>
-											</div>
+												<div className='col-span-2 md:col-span-3'>
+													<h4 className='font-semibold text-base'>{item?.title}</h4>
+													<div className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child3?.name}</div>
+												</div>
+											</Link>
 										))}
 									</div>
 								</div>

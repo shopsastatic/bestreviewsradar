@@ -56,6 +56,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
 	let NoT = numberOfToplist?.numberOfToplist as any
+	console.log(NoT)
 
 	if(!NoT) {
 		NoT = 10

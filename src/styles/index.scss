@@ -103,6 +103,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.prose :where(a):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+    color: #0404e3;
+    font-weight: normal;
+}
+
 h1,
 h2,
 h3,

@@ -221,6 +221,12 @@
   color: #fff;
 }
 
+table tr th, table tr td {
+  border: 1px solid;
+  padding: 15px !important;
+  text-align: left;
+}
+
 .pros-cons-table {
   display: flex;
   width: 100%;
@@ -373,6 +379,28 @@ footer .container {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 10px;
   background-color: #fff;
+}
+
+.category-child-image {
+  transition: all .4s;
+}
+
+.category-child-item:hover .category-child-image {
+  transform: scale(1.1);
+  transition: all .4s;
+}
+
+.category-child-item h4 {
+  transition: all .4s;
+}
+
+.sec-3 p:last-child {
+  display: none !important;
+}
+
+.category-child-item:hover h4 {
+  text-decoration: underline;
+  transition: all .4s;
 }
 
 .related-prod-image {

@@ -104,19 +104,38 @@ const SingleHeader: FC<SingleHeaderProps> = ({
         <h1 className="post-title text-center my-5 md:my-12 font-extrabold leading-[1.1em] max-w-full md:max-w-[690px] mx-auto">{title}</h1>
 
         {!nocategory && (
-          <div className="hidden md:flex gap-2 items-center">
-            {cate?.map((item: any, index: any) => (
-              <React.Fragment key={item.id || index}>
-                <Link
-                  className="text-[13px] text-[#5B5E61]"
-                  href={item?.uri ?? '/'}
-                >
-                  {item.name}
-                </Link>
-                {cate && index < cate.length - 1 && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>}
-              </React.Fragment>
-            ))}
-          </div>
+          <>
+            <nav aria-label="Breadcrumb">
+              <ol className="breadcrumb hidden md:flex gap-2 items-center" itemScope itemType="https://schema.org/BreadcrumbList">
+                <li className="breadcrumb__item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                  <Link href="/" itemProp="item">
+                    <span itemProp="name" className="text-[13px] text-[#5B5E61]">Home</span>
+                  </Link>
+                  <meta itemProp="position" content="1" />
+                </li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>
+
+                {cate?.slice(0, -1)?.map((item: any, index: any) => (
+                  <React.Fragment key={item.id || index}>
+                    <li className="breadcrumb__item flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+                      <Link href={item?.uri ?? '/'} itemProp="item">
+                        <span itemProp="name" className="text-[13px] text-[#5B5E61]">{item.name}</span>
+                      </Link>
+                      <meta itemProp="position" content="2" />
+                    </li>
+                    {cate && index < cate.length - 1 && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="10" height="10"><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>}
+                  </React.Fragment>
+                ))}
+
+                <li className="breadcrumb__item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" aria-current="page">
+                  <Link href={cate?.[cate.length - 1].uri}>
+                    <span itemProp="name" className='text-[13px] text-[#5B5E61]'>{cate?.[cate.length - 1].name}</span>
+                    <meta itemProp="position" content="3" />
+                  </Link>
+                </li>
+              </ol>
+            </nav>
+          </>
         )}
 
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 justify-between">
