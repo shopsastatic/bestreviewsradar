@@ -106,7 +106,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
         {!nocategory && (
           <>
             <nav aria-label="Breadcrumb">
-              <ol className="breadcrumb hidden md:flex gap-1.5 items-center" itemScope itemType="https://schema.org/BreadcrumbList">
+              <ol className="breadcrumb hidden md:flex flex-wrap gap-1.5 items-center" itemScope itemType="https://schema.org/BreadcrumbList">
                 <li className="breadcrumb__item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
                   <Link href="/" itemProp="item">
                     <span itemProp="name" className="text-[13px] text-[#5B5E61]">Home</span>
