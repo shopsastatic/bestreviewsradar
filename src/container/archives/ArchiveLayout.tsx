@@ -103,7 +103,7 @@ const ArchiveLayout: FC<any> = ({
 													<Link href={item?.uri ?? "/"}>
 														<h4 className='font-semibold text-base'>{item?.title}</h4>
 													</Link>
-													<Link href={child2?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child1?.name}</Link>
+													<Link href={child2?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child2?.name}</Link>
 												</div>
 											</div>
 										))}
@@ -131,7 +131,7 @@ const ArchiveLayout: FC<any> = ({
 													<Link href={item?.uri ?? "/"}>
 														<h4 className='font-semibold text-base'>{item?.title}</h4>
 													</Link>
-													<Link href={child3?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child1?.name}</Link>
+													<Link href={child3?.uri ?? "/"} className='text-xs mt-4 inline-block w-fit text-[#2c5bb3]'>{child3?.name}</Link>
 												</div>
 											</div>
 										))}
