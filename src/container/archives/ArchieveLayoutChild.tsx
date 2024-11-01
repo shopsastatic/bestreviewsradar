@@ -43,7 +43,7 @@ const ArchiveLayoutChild: FC<any> = ({
 					<div className='category-breadcrumb ml-1 mt-2 flex items-center gap-2'>
 
 						<nav aria-label="Breadcrumb">
-							<ol className="breadcrumb hidden md:flex gap-1.5 items-center" itemScope itemType="https://schema.org/BreadcrumbList">
+							<ol className="breadcrumb hidden md:flex flex-wrap gap-1.5 items-center" itemScope itemType="https://schema.org/BreadcrumbList">
 								<li className="breadcrumb__item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 									<Link href="/" itemProp="item">
 										<span itemProp="name" className="hover:underline text-sm">Home</span>
