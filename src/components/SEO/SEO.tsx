@@ -17,9 +17,9 @@ const GET_SITE_SETTINGS = gql(`
       description
     }
   }
-`);
+`) as any;
 
-export default function SEO({ title, description, imageUrl, url }: Props) {
+export default function SEO({ title, description, imageUrl, url }: any) {
   // Use useQuery hook to execute the query
   const { data, loading, error } : any = useQuery(GET_SITE_SETTINGS);
   const router = useRouter();
