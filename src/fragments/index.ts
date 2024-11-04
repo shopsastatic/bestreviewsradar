@@ -28,14 +28,17 @@ export const NC_CATEGORY_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 	  name
 	  uri
 	  count
-	  parent {
-	 	... on CategoryToParentCategoryConnectionEdge {
-			node {
-				id
-				name
-				uri
-			}
-		} 
+	  seo {
+			metaDesc
+			metaKeywords
+			title
+	  }
+	  ancestors {
+	 	nodes {
+			id
+			name
+			uri
+		}
 	  }
 	  children {
 		nodes {
@@ -252,6 +255,11 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 			numberOfToplist
 		}
 		content
+		seo {
+			metaDesc
+			metaKeywords
+			title
+		}
 		author {
 			node {
 				description

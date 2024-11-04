@@ -2,13 +2,13 @@ import { TPostCard } from '@/components/Card2/Card2'
 import useGetPostsNcmazMetaByIds from '@/hooks/useGetPostsNcmazMetaByIds'
 import useHandleGetPostsArchivePage from '@/hooks/useHandleGetPostsArchivePage'
 import Link from 'next/link'
-import { FC } from 'react'
+import React, { FC } from 'react'
 
 
 const ArchiveLayoutChild: FC<any> = ({
 	children,
 	name,
-	parent,
+	ancestors,
 	initPosts: posts,
 	initPostsPageInfo,
 	tagDatabaseId,
@@ -36,6 +36,10 @@ const ArchiveLayoutChild: FC<any> = ({
 		categoryDatabaseId,
 	})
 
+	function categorySlug(uri: any) {
+		return uri.split('/').filter(Boolean).pop()
+	}
+
 	return (
 		<div className="mt-10">
 			<div className={`page-category`}>
@@ -52,13 +56,17 @@ const ArchiveLayoutChild: FC<any> = ({
 								</li>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="9" className='mt-0.5'><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>
 
-								<li className="breadcrumb__item flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-									<Link href={parent?.node?.uri ?? '/'} itemProp="item">
-										<span itemProp="name" className="hover:underline text-sm">{parent?.node?.name}</span>
-									</Link>
-									<meta itemProp="position" content="2" />
-								</li>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="9" className='mt-0.5'><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>
+								{ancestors?.nodes?.length > 0 && [...ancestors.nodes].reverse().map((parent: any, index: any) => (
+									<React.Fragment key={index}>
+										<li className="breadcrumb__item flex items-center" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+											<Link href={categorySlug(parent?.uri) ?? '/'} itemProp="item">
+												<span itemProp="name" className="hover:underline text-sm">{parent?.name}</span>
+											</Link>
+											<meta itemProp="position" content={index + 2} />
+										</li>
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="9" height="9" className='mt-0.5'><path d="M96 480c-8.188 0-16.38-3.125-22.62-9.375c-12.5-12.5-12.5-32.75 0-45.25L242.8 256L73.38 86.63c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0l192 192c12.5 12.5 12.5 32.75 0 45.25l-192 192C112.4 476.9 104.2 480 96 480z" fill="#5D6266" /></svg>
+									</React.Fragment>
+								))}
 
 								<li className="breadcrumb__item" itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" aria-current="page">
 									<span itemProp="name" className='text-sm'>{name}</span>

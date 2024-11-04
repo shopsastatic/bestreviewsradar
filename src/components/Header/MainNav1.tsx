@@ -162,7 +162,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 			</div>
 
 			<div className="header-bottom bg-[#252E43] hidden md:block">
-				<div className="max-w-[1200px] m-auto overflow-x-auto">
+				<div className="max-w-[1200px] m-auto overflow-x-auto overflow-y-hidden">
 					<Navigation menuItems={menuItems} className="flex text-white" />
 				</div>
 			</div>

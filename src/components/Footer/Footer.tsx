@@ -1,11 +1,9 @@
 import { FragmentType } from '@/__generated__'
 import { NC_FOOTER_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
-import WidgetAddSubscriberForm from '../WidgetAddSubscriberForm/WidgetAddSubscriberForm'
-import { NC_SITE_SETTINGS } from '@/contains/site-settings'
-import MyImage from '../MyImage'
 import { flatListToHierarchical } from '@faustwp/core'
 import { NcFooterMenuFieldsFragmentFragment } from '@/__generated__/graphql'
 import Link from 'next/link'
+import { ArrowRight, Shield, Globe, Heart, Award } from 'lucide-react'
 
 interface Props {
 	menuItems: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null
@@ -22,53 +20,208 @@ export default function Footer({ menuItems }: Props) {
 		childrenKey: 'children',
 	}) as FooterNavItemType[]
 
+	const awards = [
+		{
+			title: "Best Review Platform 2024",
+			organization: "Tech Excellence Awards",
+			icon: <Award className="w-6 h-6" />
+		},
+		{
+			title: "Most Trusted Tech Reviews",
+			organization: "Consumer Trust Alliance",
+			icon: <Shield className="w-6 h-6" />
+		}
+	];
+
+	const quickLinks = [
+		{
+			title: "Product Reviews",
+			links: [
+				{name: "Air-Fryers", slug: "air-fryers"},
+				{name: "Monitors", slug: "monitors"},
+				{name: "Cordless-Vacuums", slug: "cordless-vacuums"},
+				{name: "Gaming-Chairs", slug: "gaming-chairs"},
+				{name: "Robot-Vacuums", slug: "robot-vacuums"},
+				{name: "Baby-Monitors", slug: "baby-monitors"},
+				{name: "Wireless-Earbuds", slug: "wireless-earbuds"},
+				{name: "Standing-Desks", slug: "standing-desks"},
+			]
+		},
+		{
+			title: "Categories",
+			links: [
+				{name: "Smartphones", slug: "smartphones"},
+				{name: "Laptops & Computers", slug: "lapops-computers"},
+				{name: "Cameras & Photography", slug: "cameras-photography"},
+				{name: "Smart Home", slug: "smart-home"},
+				{name: "Audio & Headphones", slug: "audio-headphones"},
+				{name: "Gaming", slug: "gaming"},
+				{name: "TVs & Entertainment", slug: "tvs-entertaiment"},
+				{name: "Wearables", slug: "wearables"},
+			]
+		},
+		{
+			title: "About Us",
+			links: [
+				{name: "Our Story", slug: "about"},
+				{name: "Contact Us", slug: "contact"},
+				{name: "Terms of Service", slug: "terms-of-service"},
+				{name: "Privacy Policy", slug: "privacy-policy"},
+				{name: "Affiliate Disclosure", slug: "affiliate-disclosure"},
+				{name: "Disclaimer", slug: "disclaimer"},
+			]
+		}
+	];
+
 	return (
-		<footer className='bg-[#1C202C] mt-20'>
-			<div className='container grid grid-cols-1 gap-5 md:grid-cols-4'>
-				<div className='text-white py-0 md:py-10 pt-16 col-span-1'>
-					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						{menus?.length > 0 && menus?.slice(0, 7)?.map((item: any, index: any) => (
-							<li key={index}><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
-						))}
-					</ul>
-				</div>
-				<div className='text-white py-0 md:py-10 col-span-1'>
-					<h5 className='border-b border-[#525252] py-2'>Categories</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						{menus?.length > 0 && menus?.slice(7, 14)?.map((item: any, index: any) => (
-							<li key={index}><Link href={item?.uri ?? "/"}>{item?.label}</Link></li>
-						))}
-					</ul>
-				</div>
-				<div className='text-white py-0 md:py-10 col-span-1'>
-					<h5 className='border-b border-[#525252] py-2'>Contact</h5>
-					<ul className='text-sm text-[#b6c4d2] mt-3 flex flex-col gap-2.5 md:gap-4'>
-						<li><Link href={"/about"}>About Us</Link></li>
-						<li><Link href={"/contact"}>Contact Us</Link></li>
-						<li><Link href={"/privacy-policy"}>Privacy Policy</Link></li>
-						<li><Link href={"/terms-of-service"}>Terms of Service</Link></li>
-						<li><Link href={"/categories"}>Categories</Link></li>
-						<li><Link href={"/affiliate-disclosure"}>Affiliate Disclosure</Link></li>
-						<li><Link href={"/disclaimer"}>Disclaimer</Link></li>
-					</ul>
-				</div>
-				<div className='text-white py-12 col-span-1 px-0 md:px-4'>
-					<Link href={"/"}><img src="/images/logo-brr.png" width={160} alt="Logo Best Reviews Radar" /></Link>
-					<div className='flex items-center gap-2 mt-10'>
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16"><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 480c-123.5 0-224-100.5-224-224s100.5-224 224-224s224 100.5 224 224S379.5 480 256 480zM256 184c13.25 0 24-10.74 24-24c0-13.25-10.75-24-24-24S232 146.7 232 160C232 173.3 242.7 184 256 184zM304 352h-32V240C272 231.2 264.8 224 256 224H224C215.2 224 208 231.2 208 240S215.2 256 224 256h16v96h-32C199.2 352 192 359.2 192 368C192 376.8 199.2 384 208 384h96c8.836 0 16-7.164 16-16C320 359.2 312.8 352 304 352z" fill="#fff" /></svg>
-						<span className='text-sm'>Advertising Disclosure</span>
-					</div>
-					<div className='flex items-center gap-3 mt-4'>
-						<img src="/images/us.png" width={30} alt="" />
-						<span className='text-[#b6c4d2]'>United States</span>
+
+		<footer className="bg-gray-900 text-gray-300 mt-20">
+			{/* Newsletter Section */}
+			<div className="border-b border-gray-800">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div className="grid md:grid-cols-2 gap-12 items-center">
+						<div>
+							<h3 className="text-2xl font-bold text-white mb-2">
+								Stay Updated with Latest Reviews
+							</h3>
+							<p className="text-gray-400">
+								Get exclusive deals, product launches, and expert reviews delivered to your inbox
+							</p>
+						</div>
+						<div>
+							<form className="flex gap-2 flex-wrap flex-col md:flex-row">
+								<input
+									type="email"
+									placeholder="Enter your email"
+									className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+								/>
+								<button className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center md:justify-start gap-2">
+									<span>Subscribe</span>
+									<ArrowRight className="w-4 h-4" />
+								</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className='container footer-bottom py-5 pb-10'>
-				<p className='text-center text-xs md:text-sm text-[#b6c4d2]'>Amazon, Amazon Prime, the Amazon logo and Amazon Prime logo are trademarks of Amazon.com, Inc. or its affiliates</p>
-				<p className='text-center text-xs md:text-sm text-[#b6c4d2]'>Copyright © 2024 by BestReviewsRadar.com</p>
+			{/* Main Footer Content */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+				<div className="grid lg:grid-cols-5 gap-12">
+					{/* Company Info */}
+					<div className="lg:col-span-2 space-y-6">
+						<div>
+							<Link href={"/"} className="block w-fit mb-4">
+								<img src="/images/logo-brr.png" width="160" alt="Logo Best Reviews Radar"></img>
+							</Link>
+							<p className="text-gray-400 mb-6 text-[15px]">
+								Your trusted source for in-depth product reviews, comparisons, and buying guides. We help millions make confident purchasing decisions.
+							</p>
+						</div>
+
+						{/* Contact Info */}
+						{/* <div className="space-y-4">
+				<div className="flex items-center gap-3">
+				  <Mail className="w-5 h-5 text-blue-500" />
+				  <span>contact@bestreviewsradar.com</span>
+				</div>
+				<div className="flex items-center gap-3">
+				  <Phone className="w-5 h-5 text-blue-500" />
+				  <span>1-800-REVIEWS</span>
+				</div>
+				<div className="flex items-center gap-3">
+				  <MapPin className="w-5 h-5 text-blue-500" />
+				  <span>123 Review Street, Tech City, TC 12345</span>
+				</div>
+			  </div> */}
+
+						{/* Awards */}
+						<div className="space-y-4 pt-6">
+							<h4 className="text-white font-semibold">Recognition & Awards</h4>
+							<div className="grid grid-cols-2 gap-4">
+								{awards.map((award, index) => (
+									<div key={index} className="bg-gray-800 p-4 rounded-lg">
+										<div className="flex items-center gap-3 mb-2">
+											<div className="text-blue-500">
+												{award.icon}
+											</div>
+											<div className="text-sm font-medium text-white">{award.title}</div>
+										</div>
+										<div className="text-xs text-gray-400">{award.organization}</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						<div className="flex items-center gap-3 mt-4">
+							<img src="/images/us.png" width="30" alt="" />
+							<span className="text-[#b6c4d2]">United States</span>
+						</div>
+					</div>
+
+					{/* Quick Links */}
+					<div className="lg:col-span-3 grid md:grid-cols-3 gap-8">
+						{quickLinks.map((category, index) => (
+							<div key={index}>
+								<h4 className="text-white font-semibold mb-4">{category.title}</h4>
+								<ul className="space-y-4">
+									{category.links.map((link, linkIndex) => (
+										<li key={linkIndex}>
+											<Link href={link?.slug ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+												{link?.name}
+											</Link>
+										</li>
+									))}
+								</ul>
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* Bottom Bar */}
+				<div className="mt-16 pt-8 border-t border-gray-800">
+					<div className="grid md:grid-cols-2 gap-8 items-center">
+						{/* Copyright */}
+						<div className="text-sm text-gray-400">
+							Amazon, Amazon Prime, the Amazon logo and Amazon Prime logo are trademarks of Amazon.com, Inc. or its affiliates Copyright © 2024 BestReviewsRadar. All rights reserved.
+						</div>
+
+						{/* Trust Badges */}
+						<div className="flex items-center justify-center gap-6">
+							<div className="flex items-center gap-2">
+								<Shield className="w-5 h-5 text-blue-500" />
+								<span className="text-sm">Verified Reviews</span>
+							</div>
+							<div className="flex items-center gap-2">
+								<Globe className="w-5 h-5 text-blue-500" />
+								<span className="text-sm">Global Coverage</span>
+							</div>
+							<div className="flex items-center gap-2">
+								<Heart className="w-5 h-5 text-blue-500" />
+								<span className="text-sm">User Trusted</span>
+							</div>
+						</div>
+
+						{/* Social Links */}
+						{/* <div className="flex justify-end gap-4">
+				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+				  <Facebook className="w-5 h-5" />
+				</a>
+				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+				  <Twitter className="w-5 h-5" />
+				</a>
+				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+				  <Instagram className="w-5 h-5" />
+				</a>
+				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+				  <Linkedin className="w-5 h-5" />
+				</a>
+				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
+				  <Youtube className="w-5 h-5" />
+				</a>
+			  </div> */}
+					</div>
+				</div>
 			</div>
 		</footer>
 	)

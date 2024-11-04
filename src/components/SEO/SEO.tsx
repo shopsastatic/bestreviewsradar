@@ -1,70 +1,62 @@
+import { gql } from '@/__generated__';
 import Head from "next/head";
+import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
 
 interface Props {
-  title?: string | null;
-  description?: string | null;
-  imageUrl?: string | null;
-  url?: string | null;
+  title: any;
+  description: any;
+  imageUrl: any;
+  url: any;
 }
 
-/**
- * Provide SEO related meta tags to a page.
- *
- * @param {Props} props The props object.
- * @param {string} props.title Used for the page title, og:title, twitter:title, etc.
- * @param {string} props.description Used for the meta description, og:description, twitter:description, etc.
- * @param {string} props.imageUrl Used for the og:image and twitter:image. NOTE: Must be an absolute url.
- * @param {string} props.url Used for the og:url and twitter:url.
- *
- * @returns {React.ReactElement} The SEO component
- */
+const GET_SITE_SETTINGS = gql(`
+  query TestQuery {
+    generalSettings {
+      title
+      description
+    }
+  }
+`);
+
 export default function SEO({ title, description, imageUrl, url }: Props) {
-  if (!title && !description && !imageUrl && !url) {
+  // Use useQuery hook to execute the query
+  const { data, loading, error } : any = useQuery(GET_SITE_SETTINGS);
+  const router = useRouter();
+
+  // Get WordPress settings
+  const siteTitle = data?.generalSettings?.title;
+  const siteDescription = data?.generalSettings?.description;
+
+  // Use provided values or fall back to WordPress settings
+  const pageTitle = title || siteTitle;
+  const pageDescription = description?.replace(/<[^>]*>?/gm, "") || siteDescription;
+
+  // Don't render if no data available
+  if (!pageTitle && !pageDescription && !imageUrl && !url) {
     return null;
   }
 
-  const descriptionNoHtmlTags = description?.replace(/<[^>]*>?/gm, "") || "";
-
   return (
-    <>
-      <Head>
-        <meta property="og:type" content="website" />
-        <meta property="twitter:card" content="summary_large_image" />
-
-        {title && (
-          <>
-            <title>{title}</title>
-            <meta name="title" content={title} />
-            <meta property="og:title" content={title} />
-            <meta property="twitter:title" content={title} />
-          </>
-        )}
-
-        {!!descriptionNoHtmlTags && (
-          <>
-            <meta name="description" content={descriptionNoHtmlTags} />
-            <meta property="og:description" content={descriptionNoHtmlTags} />
-            <meta
-              property="twitter:description"
-              content={descriptionNoHtmlTags}
-            />
-          </>
-        )}
-
-        {imageUrl && (
-          <>
-            <meta property="og:image" content={imageUrl} />
-            <meta property="twitter:image" content={imageUrl} />
-          </>
-        )}
-
-        {url && (
-          <>
-            <meta property="og:url" content={url} />
-            <meta property="twitter:url" content={url} />
-          </>
-        )}
-      </Head>
-    </>
+    <Head>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="robots" content="index, follow" />
+      <link rel="canonical" href={url} />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta property="og:type" content="article" />
+      <meta property="og:site_name" content={data?.generalSettings?.title} />
+      <meta property="og:url" content={url} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={imageUrl} />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={imageUrl} />
+      <meta itemProp="name" content={title} />
+      <meta property="article:section" content="Best Reviews Radar" />
+    </Head>
   );
 }

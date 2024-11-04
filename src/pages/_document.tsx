@@ -24,24 +24,6 @@ export default class Document extends NextDocument {
 				dir={process.env.NEXT_PUBLIC_SITE_DIRECTION}
 			>
 				<Head>
-					<link
-						href={`${SITE_URL}/api/feeds/feed.json`}
-						rel="alternate"
-						type="application/feed+json"
-						title={SITE_TITLE + ' JSON Feed'}
-					/>
-					<link
-						href={`${SITE_URL}/api/feeds/rss.xml`}
-						rel="alternate"
-						type="application/rss+xml"
-						title={SITE_TITLE + ' XML Feed'}
-					/>
-					<link
-						href={`${SITE_URL}/api/feeds/feed.atom`}
-						rel="alternate"
-						type="application/atom+xml"
-						title={SITE_TITLE + ' Atom Feed'}
-					/>
 					<link rel="shortcut icon" href={v('/favicons/favicon.png')} />
 					<meta name="theme-color" content="#172A53" />
 					<script

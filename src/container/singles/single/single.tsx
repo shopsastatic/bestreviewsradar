@@ -23,6 +23,7 @@ const SingleType1: FC<SingleType1Props> = ({ post, showRightSidebar }) => {
     ncPostMetaData,
   } = getPostDataFromPostFragment(post || {});
   //
+
   const hasFeaturedImage = !!featuredImage?.sourceUrl;
 
   const imgWidth = featuredImage?.mediaDetails?.width || 1000;

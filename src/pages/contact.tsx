@@ -1,221 +1,279 @@
 import { gql } from '@/__generated__'
-import ButtonPrimary from '@/components/Button/ButtonPrimary'
-import Input from '@/components/Input/Input'
-import Label from '@/components/Label/Label'
-import Textarea from '@/components/Textarea/Textarea'
 import { FaustPage, getNextStaticProps } from '@faustwp/core'
 import PageLayout from '@/container/PageLayout'
 import {
 	GetReadingListPageQuery,
 	NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
-import getTrans from '@/utils/getTrans'
 import Heading from '@/components/Heading/Heading'
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
 import { NC_SITE_SETTINGS } from '@/contains/site-settings'
-import MyImage from '@/components/MyImage'
-import { PaperAirplaneIcon } from '@heroicons/react/24/outline'
-import { useMutation } from '@apollo/client'
-import { MUTATION_ADD_CONTACT_MESS_TO_WP } from '@/fragments/mutations'
-import toast from 'react-hot-toast'
-import Page404Content from '@/container/404Content'
-import Error from '@/components/Error'
-import Link from 'next/link'
-import { ArrowLeftIcon } from '@heroicons/react/24/solid'
-
-const PageContact = () => {
-	const T = getTrans()
-	const info = NC_SITE_SETTINGS.contact_page?.my_contact_info
-
-	const [mutationAddSubscriber, { data, loading, error, reset, called }] =
-		useMutation(MUTATION_ADD_CONTACT_MESS_TO_WP, {
-			variables: {
-				user_full_name: '',
-				user_email: '',
-				message: '',
-			},
-		})
-
-	let ERR = ''
-	let THANKS = ''
-
-	if (data && called && data?.ncmazFaustAddSentMessContactForm?.success) {
-		// thank you message after success subscribe
-		THANKS =
-			NC_SITE_SETTINGS.contact_page?.form?.success_message || 'Thank you!'
-	}
-
-	if (data && called && !data?.ncmazFaustAddSentMessContactForm?.success) {
-		ERR =
-			error?.message ||
-			data?.ncmazFaustAddSentMessContactForm?.errors ||
-			NC_SITE_SETTINGS.contact_page?.form?.error_message ||
-			'Error'
-	}
-
-	return (
-		<div className="grid gap-8 lg:grid-cols-2">
-			<div className="max-w-sm space-y-6">
-				{info?.map((item, index) => (
-					<div key={index}>
-						<h3
-							className="text-sm font-semibold uppercase tracking-wider dark:text-neutral-200"
-							dangerouslySetInnerHTML={{ __html: item?.title || '' }}
-						/>
-						{item?.desc && (
-							<span
-								className="mt-2 block text-neutral-500 dark:text-neutral-400"
-								dangerouslySetInnerHTML={{ __html: item.desc }}
-							/>
-						)}
-						{item?.name === 'socials' && (
-							<div className="mt-3 flex flex-wrap gap-4 md:order-2">
-								{NC_SITE_SETTINGS.site_socials?.map(item => (
-									<a
-										key={item?.name}
-										href={item?.url}
-										className="relative block"
-										target="_blank"
-										rel="noreferrer"
-									>
-										<span className="absolute -inset-0.5 hidden rounded-lg bg-neutral-400 dark:block"></span>
-										<span className="sr-only">{item?.name}</span>
-										<MyImage
-											width={20}
-											height={20}
-											className="max-h-5 opacity-60 hover:opacity-100"
-											src={item?.icon || ''}
-											alt={item?.name || ''}
-										/>
-									</a>
-								))}
-							</div>
-						)}
-					</div>
-				))}
-			</div>
-			<div className="border border-neutral-100 lg:hidden dark:border-neutral-700"></div>
-			<div>
-				<form
-					className="grid grid-cols-1 gap-6"
-					action="#"
-					method="post"
-					onSubmit={e => {
-						e.preventDefault()
-						const form = e.target as HTMLFormElement
-						const formData = new FormData(form)
-						const user_full_name = formData.get('user_full_name') as string
-						const user_email = formData.get('user_email') as string
-						const message = formData.get('message') as string
-						if (!user_full_name || !user_email || !message) {
-							toast.error(T['Please fill all fields'])
-							return
-						}
-						// check valid email
-						if (
-							!user_email.match(
-								/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-							)
-						) {
-							toast.error(T['Email are required!'])
-							return
-						}
-						mutationAddSubscriber({
-							variables: {
-								user_full_name,
-								user_email,
-								message,
-							},
-						})
-					}}
-				>
-					<label className="block">
-						<Label htmlFor="user_full_name">{T['Full name']}</Label>
-
-						<Input
-							name="user_full_name"
-							id="user_full_name"
-							required
-							type="text"
-							className="mt-1"
-						/>
-					</label>
-					<label className="block">
-						<Label htmlFor="user_email">{T['Email address']}</Label>
-
-						<Input
-							required
-							name="user_email"
-							id="user_email"
-							type="email"
-							className="mt-1"
-						/>
-					</label>
-					<label className="block">
-						<Label htmlFor="message">{T['Message']}</Label>
-
-						<Textarea
-							name="message"
-							id="message"
-							required
-							className="mt-1"
-							rows={6}
-						/>
-					</label>
-					<ButtonPrimary type="submit" loading={loading}>
-						<span>{T['Send Message']}</span>
-						<PaperAirplaneIcon className="ms-2 h-5 w-5 -rotate-[30deg]" />
-					</ButtonPrimary>
-				</form>
-
-				{ERR ? <Error className="mt-2 text-xs" error={ERR} /> : null}
-				{THANKS ? (
-					<div className="mt-2">
-						<p className="text-xs italic text-green-600">{THANKS}</p>
-
-						<Link
-							className="mt-5 flex items-center text-xs font-medium"
-							href="/"
-						>
-							<ArrowLeftIcon className="me-1 inline-block h-4 w-4" />
-							{T['Back to home']}
-						</Link>
-					</div>
-				) : null}
-			</div>
-		</div>
-	)
-}
+import {
+	Mail,
+	MessageCircle,
+	Phone,
+	MapPin,
+	Clock,
+	Send,
+	Facebook,
+	Twitter,
+	Linkedin,
+	Instagram,
+	HelpCircle,
+	FileText,
+	Users,
+	Building
+} from 'lucide-react';
 
 const Page: FaustPage<GetReadingListPageQuery> = props => {
-	if (NC_SITE_SETTINGS.contact_page?.enable === false) {
-		return (
-			<>
-				<Page404Content />
-			</>
-		)
-	}
+	const contactMethods = [
+		{
+			icon: <Mail className="w-6 h-6" />,
+			title: "Email Us",
+			description: "Send us your queries anytime",
+			availability: "Response within 24 hours",
+			action: "Send Email",
+			isPrimary: false
+		},
+	];
+
+	const faqs = [
+		{
+			question: "How do you select products for review?",
+			answer: "We choose products based on market demand, innovation, and consumer interest. Our selection process involves thorough market research and user feedback."
+		},
+		{
+			question: "Can I suggest a product for review?",
+			answer: "Yes! We welcome product suggestions from our community. Use our suggestion form to submit products you'd like us to review."
+		},
+		{
+			question: "How often do you update reviews?",
+			answer: "We regularly update our reviews to reflect new product releases, market changes, and long-term testing results."
+		}
+	];
 
 	return (
 		<PageLayout
 			headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
 			footerMenuItems={props.data?.footerMenuItems?.nodes || []}
 			pageFeaturedImageUrl={null}
-			pageTitle={NC_SITE_SETTINGS.contact_page?.title}
+			pageTitle="Contact"
 			generalSettings={
 				props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
 			}
 		>
-			<div className="container pb-20 pt-10 sm:py-20">
-				<main className="mx-auto max-w-5xl">
-					<Heading desc={NC_SITE_SETTINGS.contact_page?.sub_title}>
-						{NC_SITE_SETTINGS.contact_page?.title}
-					</Heading>
-					<div className="my-10 border-t border-neutral-100 dark:border-neutral-700"></div>
+			<div className="bg-gray-50">
+				{/* Hero Section */}
+				<div className="relative bg-gray-900 text-white">
+					<div className="absolute inset-0 bg-gradient-to-b from-blue-500/20 to-purple-500/20" />
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative">
+						<div className="text-center">
+							<h1 className="text-4xl md:text-5xl font-bold mb-6">
+								We're Here to
+								<span className="text-blue-400"> Help You</span>
+							</h1>
+							<p className="text-xl text-gray-300 max-w-2xl mx-auto">
+								Have questions about our reviews or need help finding the right product? Our team is here to assist you.
+							</p>
+						</div>
+					</div>
+				</div>
 
-					<PageContact />
-				</main>
+				{/* Contact Methods */}
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10">
+					<div className="grid grid-cols-1 gap-6 max-w-[420px] m-auto">
+						{contactMethods.map((method, index) => (
+							<div key={index} className="bg-white rounded-xl shadow-sm p-6">
+								<div className="flex flex-col items-center text-center">
+									<div className={`p-3 rounded-xl mb-4 ${method.isPrimary ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'
+										}`}>
+										{method.icon}
+									</div>
+									<h3 className="text-xl font-bold mb-2">{method.title}</h3>
+									<p className="text-gray-600 mb-2">{method.description}</p>
+									<div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+										<Clock className="w-4 h-4" />
+										<span>{method.availability}</span>
+									</div>
+									{/* <button className={`px-6 py-2 rounded-lg transition-colors ${method.isPrimary
+										? 'bg-blue-500 text-white hover:bg-blue-600'
+										: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+										}`}>
+										{method.action}
+									</button> */}
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* Contact Form Section */}
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+					<div className="grid lg:grid-cols-2 gap-12">
+						{/* Form */}
+						<div className="bg-white rounded-xl shadow-sm p-8">
+							<h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+							<form className="space-y-6">
+								<div className="grid md:grid-cols-2 gap-6">
+									<div>
+										<label className="block text-sm font-medium text-gray-700 mb-2">
+											First Name
+										</label>
+										<input
+											type="text"
+											className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+										/>
+									</div>
+									<div>
+										<label className="block text-sm font-medium text-gray-700 mb-2">
+											Last Name
+										</label>
+										<input
+											type="text"
+											className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+										/>
+									</div>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Email Address
+									</label>
+									<input
+										type="email"
+										className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Subject
+									</label>
+									<select className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+										<option>General Inquiry</option>
+										<option>Product Review Request</option>
+										<option>Partnership Opportunity</option>
+										<option>Technical Support</option>
+										<option>Other</option>
+									</select>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-700 mb-2">
+										Message
+									</label>
+									<textarea
+										rows={4}
+										className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+									></textarea>
+								</div>
+								<button
+									type="submit"
+									className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+								>
+									<Send className="w-4 h-4" />
+									<span>Send Message</span>
+								</button>
+							</form>
+						</div>
+
+						{/* Info & FAQs */}
+						<div className="space-y-8">
+							{/* Company Info */}
+							{/* <div className="bg-white rounded-xl shadow-sm p-8">
+								<h3 className="text-xl font-bold mb-6">Company Information</h3>
+								<div className="space-y-4">
+									<div className="flex items-start gap-4">
+										<div className="p-2 bg-gray-100 rounded-lg">
+											<Building className="w-5 h-5 text-gray-600" />
+										</div>
+										<div>
+											<h4 className="font-medium">Office Address</h4>
+											<p className="text-gray-600">123 Review Street, Tech City, TC 12345</p>
+										</div>
+									</div>
+									<div className="flex items-start gap-4">
+										<div className="p-2 bg-gray-100 rounded-lg">
+											<Clock className="w-5 h-5 text-gray-600" />
+										</div>
+										<div>
+											<h4 className="font-medium">Business Hours</h4>
+											<p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM EST</p>
+										</div>
+									</div>
+								</div>
+
+
+								<div className="mt-6 pt-6 border-t">
+									<h4 className="font-medium mb-4">Follow Us</h4>
+									<div className="flex gap-4">
+										{[Facebook, Twitter, Linkedin, Instagram].map((Icon, index) => (
+											<a
+												key={index}
+												href="#"
+												className="p-2 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200 transition-colors"
+											>
+												<Icon className="w-5 h-5" />
+											</a>
+										))}
+									</div>
+								</div>
+							</div> */}
+
+							{/* FAQs */}
+							<div className="bg-white rounded-xl shadow-sm p-8">
+								<h3 className="text-xl font-bold mb-6">Frequently Asked Questions</h3>
+								<div className="space-y-6">
+									{faqs.map((faq, index) => (
+										<div key={index}>
+											<h4 className="font-medium flex items-center gap-2 mb-2">
+												<HelpCircle className="w-5 h-5 text-blue-500" />
+												{faq.question}
+											</h4>
+											<p className="text-gray-600 ml-7">{faq.answer}</p>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{/* Additional Support Section */}
+				<div className="bg-gray-900 text-white py-16">
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="grid md:grid-cols-3 gap-8">
+							<div className="text-center">
+								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
+									<FileText className="w-8 h-8 text-blue-400" />
+								</div>
+								<h3 className="text-lg font-bold mb-2">Knowledge Base</h3>
+								<p className="text-gray-300 mb-4">Access our comprehensive guides and tutorials</p>
+								<button className="text-blue-400 hover:text-blue-300">
+									Browse Articles
+								</button>
+							</div>
+							<div className="text-center">
+								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
+									<Users className="w-8 h-8 text-blue-400" />
+								</div>
+								<h3 className="text-lg font-bold mb-2">Community Forum</h3>
+								<p className="text-gray-300 mb-4">Join discussions with other users and experts</p>
+								<button className="text-blue-400 hover:text-blue-300">
+									Visit Forum
+								</button>
+							</div>
+							<div className="text-center">
+								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
+									<MessageCircle className="w-8 h-8 text-blue-400" />
+								</div>
+								<h3 className="text-lg font-bold mb-2">Live Support</h3>
+								<p className="text-gray-300 mb-4">Get help from our support team in real-time</p>
+								<button className="text-blue-400 hover:text-blue-300">
+									Chat Now
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</PageLayout>
 	)

@@ -44,7 +44,7 @@ const DynamicSingleType5 = dynamic(
   () => import("../container/singles/single-5/single-5")
 );
 
-const Component: FaustTemplate<GetPostSiglePageQuery> = (props) => {
+const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   //  LOADING ----------
   if (props.loading) {
     return <>Loading...</>;
@@ -82,8 +82,9 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props) => {
     featuredImage,
     databaseId,
     excerpt,
+    seo
   } = getPostDataFromPostFragment(_post);
-
+  console.log(seo)
   //
   const {} = useGetPostsNcmazMetaByIds({
     posts: (IS_PREVIEW ? [] : [_post]) as TPostCard[],
@@ -175,6 +176,8 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props) => {
     );
   };
 
+  console.log(excerpt)
+
   return (
     <>
       <PageLayout
@@ -182,7 +185,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props) => {
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.sourceUrl}
         pageTitle={title}
-        pageDescription={excerpt || ""}
+        pageDescription={seo?.metaDesc || excerpt.replace(/<[^>]+>/g, '') || ""}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }

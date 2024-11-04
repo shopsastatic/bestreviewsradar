@@ -17,7 +17,7 @@ import { getImageDataFromImageFragment } from "@/utils/getImageDataFromImageFrag
 import { FaustTemplate } from "@faustwp/core";
 import { FireIcon, FolderIcon } from "@heroicons/react/24/outline";
 
-const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
+const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
   // LOADING ----------
   if (props.loading) {
     return <>Loading...</>;
@@ -36,8 +36,9 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
     ncTaxonomyMeta,
     featuredImageMeta,
     children,
-    parent
+    ancestors,
   } = getCatgoryDataFromCategoryFragment(props.data.category);
+  
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
   const _top10Categories =
@@ -51,13 +52,13 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
-        pageTitle={"Category " + name}
-        pageDescription={description || ""}
+        pageTitle={"Category " + (props?.data?.category?.seo?.title ?? name)}
+        pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <ArchiveLayoutChild name={name} parent={parent} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
+        <ArchiveLayoutChild name={name} ancestors={ancestors} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
       </PageLayout>
     )
   }
@@ -67,8 +68,8 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props) => {
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
       pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
-      pageTitle={"Category " + name}
-      pageDescription={description || ""}
+      pageTitle={"Category " + (props?.data?.category?.seo?.title ?? name)}
+        pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
       generalSettings={
         props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
       }

@@ -24,7 +24,6 @@ const ArchiveLayout: FC<any> = ({
 	})
 	//
 
-	console.log(childs)
 	const child1 = childs?.[0]
 	const child2 = childs?.[1]
 	const child3 = childs?.[2]
@@ -42,6 +41,10 @@ const ArchiveLayout: FC<any> = ({
 		categoryDatabaseId,
 	})
 
+	function categorySlug(uri: any) {
+		return uri.split('/').filter(Boolean).pop()
+	}
+
 	return (
 		<div className="mt-10">
 			<div className={`page-category`}>
@@ -51,7 +54,7 @@ const ArchiveLayout: FC<any> = ({
 					<div className='py-10 border-b border-slate-300'>
 						<ul className='flex gap-4 flex-wrap'>
 							{childs?.length > 0 && childs?.map((item: any, index: any) => (
-								<Link key={index} href={item?.uri ?? "/"} className='px-6 py-3 text-[#e06308] border border-[#e06308] rounded-xl hover:border-0 hover:bg-[#e06308] hover:text-white'>
+								<Link key={index} href={categorySlug(item?.uri) ?? "/"} className='cate-child-box px-6 py-3 bg-white rounded-xl'>
 									<li className='text-base font-semibold capitalize'>{item?.name}</li>
 								</Link>
 							))}
@@ -63,11 +66,11 @@ const ArchiveLayout: FC<any> = ({
 							<div className='mt-7'>
 								<div className='flex justify-between gap-3 items-center mb-10'>
 									<h2>{child1?.name}</h2>
-									<Link href={child1?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
+									<Link href={categorySlug(child1?.uri) ?? "/f"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
 								</div>
 
 								<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-									{child1?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+									{child1?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
 										<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
 											<div className='w-full col-span-1 md:col-span-2'>
 												<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
@@ -92,7 +95,7 @@ const ArchiveLayout: FC<any> = ({
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-										{child2?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+										{child2?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
 											<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
 												<div className='w-full col-span-1 md:col-span-2'>
 													<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />
@@ -118,7 +121,7 @@ const ArchiveLayout: FC<any> = ({
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
-										{child3?.posts?.nodes?.slice(0, 4)?.map((item: any, index: any) => (
+										{child3?.posts?.nodes?.slice(0, 6)?.map((item: any, index: any) => (
 											<Link href={item?.uri ?? "/"} className='category-child-item rounded-lg col-span-1 grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5' key={index}>
 												<div className='w-full col-span-1 md:col-span-2'>
 													<img className='category-child-image w-full h-[100px] object-cover object-center rounded-lg' src={item?.featuredImage?.node?.sourceUrl} alt={item?.featuredImage?.node?.altText} />

@@ -32,9 +32,6 @@ const AuthorPostsChild: FaustPage<GetAuthorWithPostsQuery> = props => {
 		NC_USER_FULL_FIELDS_FRAGMENT,
 		user || {},
 	)
-	const _top10Categories =
-		(props.data?.categories?.nodes as TCategoryCardFull[]) || []
-
 	//
 	const {} = useGetPostsNcmazMetaByIds({
 		posts: (posts?.nodes || []) as TPostCard[],
@@ -90,16 +87,6 @@ const AuthorPostsChild: FaustPage<GetAuthorWithPostsQuery> = props => {
 								onClickLoadmore={handleClickShowMore}
 							/>
 						</main>
-
-						{/* === SECTION 5 === */}
-						{NC_SITE_SETTINGS.author_page?.show_top_categories && (
-							<SectionTrendingTopic categories={_top10Categories} />
-						)}
-
-						{/* SUBCRIBES */}
-						{NC_SITE_SETTINGS.author_page?.show_newsletter_section && (
-							<SectionSubscribe2 />
-						)}
 					</div>
 				</AuthorLayout>
 			</PageLayout>

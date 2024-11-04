@@ -56,7 +56,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
 	let NoT = numberOfToplist?.numberOfToplist as any
-	console.log(NoT)
 
 	if(!NoT) {
 		NoT = 10
@@ -67,7 +66,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data } = await axios.get(`https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
+                const { data } = await axios.get(`http://temp5.local/wp-json/cegg/v1/data/${post_id}`);
                 setDataRelated(data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -829,8 +828,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			</div>
 
 			{headings && headings?.length > 0 && (
-				<div className={`large-width grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
-					{((headings.length > 0 && dataRelatedArray.length > 0) || (headings.length > 1 && dataRelatedArray.length == 0)) && (
+				<div className={`large-width p-5 grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'lg-grid-cols-1' : 'lg:grid-cols-12'} mt-20`}>
+					{((headings.length > 1 && dataRelatedArray.length > 0) || (headings.length > 1 && dataRelatedArray.length == 0)) && (
 						<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 							{headings?.length > 0 && (
 								<>
@@ -885,7 +884,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 												<img className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
 
 												<div className='block w-fit my-3 mt-1'>
-													<p className='font-semibold line-clamp-2 text-base'>{item?.title}</p>
+													<p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
 												</div>
 												<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
 												<div className='box-price flex flex-wrap items-end gap-4'>
@@ -918,31 +917,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				</div>
 			)}
 
-			<div className="container mt-20 flex flex-col items-center space-y-4 w-full">
-				<h3 className="font-bold text-2xl text-gray-700 text-center">Join now for exclusive deals and special offers!</h3>
-
-				<div className={`w-full flex justify-center transition-all duration-1000 ${!formVisible ? 'max-h-0 opacity-0' : 'max-h-screen opacity-100'}`}>
-					<form onSubmit={handleSignUp} className="w-full flex justify-center overflow-hidden transition-all duration-1000">
-						<div className="relative flex flex-col items-center space-x-2 w-full max-w-md">
-							<input
-								type="text"
-								placeholder="Email Address..."
-								className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-0"
-								required
-							/>
-							<button className="absolute top-0 bottom-0 right-0 bg-blue-500 border border-[#2563eb] text-white px-5 text-base font-bold rounded-full rounded-tl-none rounded-bl-none w-fit m-auto hover:bg-blue-600">
-								Sign Up
-							</button>
-						</div>
-					</form>
-				</div>
-
-				{thanksVisible && (
-					<div className="text-center text-green-500 font-semibold text-xl mt-4">
-						Thank you for subscribing!
-					</div>
-				)}
-			</div>
 			<div className="!my-0" ref={endedAnchorRef}></div>
 		</>
 	)

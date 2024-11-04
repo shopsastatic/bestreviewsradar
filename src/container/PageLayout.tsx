@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import SiteHeader from "./SiteHeader";
 import Footer from "@/components/Footer/Footer";
 import { FragmentType } from "@/__generated__";
+import { useRouter } from 'next/router';
 import {
   NC_FOOTER_MENU_QUERY_FRAGMENT,
   NC_PRIMARY_MENU_QUERY_FRAGMENT,
@@ -19,6 +20,8 @@ interface Props {
   pageDescription?: string | null | undefined;
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_URL;
+
 const PageLayout: FC<Props> = ({
   children,
   footerMenuItems,
@@ -28,12 +31,16 @@ const PageLayout: FC<Props> = ({
   generalSettings,
   pageDescription,
 }) => {
+  const router = useRouter()
+  const path = router.asPath;
+  const url = `${SITE_URL}${path}`;
   return (
     <>
       <SEO
         title={(pageTitle || "") + " - " + (generalSettings?.title || "")}
         description={pageDescription || generalSettings?.description || ""}
         imageUrl={pageFeaturedImageUrl}
+        url={url}
       />
 
       <SiteHeader
