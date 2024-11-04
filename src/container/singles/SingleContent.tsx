@@ -66,7 +66,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data } = await axios.get(`https://bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
+                const { data } = await axios.get(`https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
                 setDataRelated(data);
             } catch (error) {
                 console.error("Error fetching data:", error);
