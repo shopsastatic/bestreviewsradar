@@ -1,7 +1,6 @@
 'use client'
 
 import { FC, useState } from 'react'
-import NcModal from '@/components/NcModal/NcModal'
 import Button from '@/components/Button/Button'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import { FragmentType } from '@/__generated__'
@@ -130,66 +129,7 @@ const ModalTags: FC<ModalTagsProps> = ({}) => {
 
 	return (
 		<div className="nc-ModalTags">
-			<NcModal
-				contentExtraClass="max-w-screen-md"
-				renderTrigger={openModal => (
-					<Button
-						pattern="third"
-						fontSize="text-sm font-medium"
-						onClick={() => {
-							openModal()
-							queryGetTags()
-						}}
-					>
-						<svg
-							className="-ms-1.5 me-2 h-5 w-5"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M10 3L8 21"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-							<path
-								d="M16 3L14 21"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-							<path
-								d="M3.5 9H21.5"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-							<path
-								d="M2.5 15H20.5"
-								stroke="currentColor"
-								strokeWidth="1.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							/>
-						</svg>
-
-						<div>
-							<span className="hidden sm:inline">{T['Other tags']}</span>
-							<span className="inline sm:hidden">{T.Tags}</span>
-						</div>
-						<ChevronDownIcon
-							className="-me-1 ms-2 h-4 w-4"
-							aria-hidden="true"
-						/>
-					</Button>
-				)}
-				modalTitle={T['Discover other tags']}
-				renderContent={renderModalContent}
-			/>
+			
 		</div>
 	)
 }
