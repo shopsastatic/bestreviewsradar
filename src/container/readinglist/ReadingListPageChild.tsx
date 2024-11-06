@@ -22,7 +22,7 @@ import getTrans from "@/utils/getTrans";
 const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
   // START ----------
   const { isReady, isAuthenticated } = useSelector(
-    (state: RootState) => state.viewer.authorizedUser
+    (state: any) => state.viewer.authorizedUser
   );
   const [refetchTimes, setRefetchTimes] = useState(0);
   const T = getTrans();
@@ -52,10 +52,10 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
   );
 
   const { viewer, viewerReactionPosts } = useSelector(
-    (state: RootState) => state.viewer
+    (state: any) => state.viewer
   );
   const localSavedPostsList = useSelector(
-    (state: RootState) => state.localPostsSavedList.localSavedPosts
+    (state: any) => state.localPostsSavedList.localSavedPosts
   );
 
   // goi 1 lan duy nhat -

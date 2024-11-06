@@ -2,7 +2,6 @@
 
 import { FC, useEffect } from 'react'
 import twFocusClass from '@/utils/twFocusClass'
-import NcDropDown, { NcDropDownItem } from '@/components/NcDropDown/NcDropDown'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { FragmentType, gql } from '@/__generated__'
@@ -16,6 +15,7 @@ import { PostStatusEnum } from '@/__generated__/graphql'
 import { IS_CHISNGHIAX_DEMO_SITE } from '@/contains/site-settings'
 import errorHandling from '@/utils/errorHandling'
 import getTrans from '@/utils/getTrans'
+import NcDropDown from '../NcDropDown/NcDropDown'
 
 export type TPostActionId =
 	| 'copylink'
@@ -27,9 +27,7 @@ export type TPostActionId =
 
 const T = getTrans()
 
-export interface TPostActionitem extends NcDropDownItem<TPostActionId> {}
-
-export const POST_MORE_ACTIONS: TPostActionitem[] = [
+export const POST_MORE_ACTIONS: any = [
 	{
 		id: 'copylink',
 		name: T['Copy link'],
@@ -80,8 +78,8 @@ export interface Props {
 	iconClass?: string
 	dropdownPositon?: 'up' | 'down'
 	post:
-		| FragmentType<typeof NC_POST_FULL_FRAGMENT>
-		| FragmentType<typeof NC_POST_CARD_FRAGMENT>
+		| FragmentType<any>
+		| FragmentType<any>
 	isSingle?: boolean
 }
 
@@ -97,7 +95,7 @@ const PostActionDropdown: FC<Props> = ({
 	//
 	const router = useRouter()
 	const client = getApolloAuthClient()
-	const { viewer } = useSelector((state: RootState) => state.viewer)
+	const { viewer } = useSelector((state: any) => state.viewer)
 	//
 
 	const [
@@ -144,10 +142,10 @@ const PostActionDropdown: FC<Props> = ({
 		HAS_PERMISSION_DELETE = true
 	}
 
-	let POST_MORE_ACTIONS_FACT: TPostActionitem[] = [...POST_MORE_ACTIONS]
+	let POST_MORE_ACTIONS_FACT: any = [...POST_MORE_ACTIONS]
 
 	if (!isSingle) {
-		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.map(item => {
+		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.map((item: any) => {
 			if (item.id === 'commentThisPost') {
 				return { ...item, href: uri + '#comment' }
 			}
@@ -157,45 +155,45 @@ const PostActionDropdown: FC<Props> = ({
 
 	if (commentStatus !== 'open') {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'commentThisPost',
+			(item: any) => item.id !== 'commentThisPost',
 		)
 	}
 
 	if (status === 'pending') {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'moveToPending',
+			(item: any) => item.id !== 'moveToPending',
 		)
 	}
 	if (status === 'publish') {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'publishPost',
+			(item: any) => item.id !== 'publishPost',
 		)
 	}
 	if (status === 'trash') {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'moveToTrash',
+			(item: any) => item.id !== 'moveToTrash',
 		)
 	}
 	//
 	if (!HAS_PERMISSION_EDIT) {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'editPost' && item.id !== 'moveToPending',
+			(item: any) => item.id !== 'editPost' && item.id !== 'moveToPending',
 		)
 	}
 	if (!HAS_PERMISSION_PUBLISH) {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'publishPost',
+			(item: any) => item.id !== 'publishPost',
 		)
 	}
 	if (!HAS_PERMISSION_DELETE) {
 		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			item => item.id !== 'moveToTrash',
+			(item: any) => item.id !== 'moveToTrash',
 		)
 	}
 
 	//
 
-	const hanldeClickDropDown = (item: TPostActionitem) => {
+	const hanldeClickDropDown = (item: any) => {
 		if (item.id === 'copylink') {
 			navigator.clipboard.writeText(window.location.origin + uri || '')
 			toast.success(T['Link copied to clipboard'])
@@ -275,7 +273,7 @@ const PostActionDropdown: FC<Props> = ({
 			<NcDropDown
 				className={`flex items-center justify-center rounded-full text-neutral-500 dark:text-neutral-400 ${containerClassName} ${twFocusClass()}`}
 				triggerIconClass={iconClass}
-				data={POST_MORE_ACTIONS_FACT.map(item =>
+				data={POST_MORE_ACTIONS_FACT.map((item: any) =>
 					item.id === 'editPost'
 						? { ...item, href: '/edit/' + databaseId }
 						: item,

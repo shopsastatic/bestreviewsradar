@@ -37,7 +37,7 @@ const SingleCommentForm: FC<SingleCommentFormProps> = ({
   //
   const { openLoginModal } = useLoginModal();
   const { isReady, isAuthenticated } = useSelector(
-    (state: RootState) => state.viewer.authorizedUser
+    (state: any) => state.viewer.authorizedUser
   );
   let {
     isCreateNewCommentLoading,

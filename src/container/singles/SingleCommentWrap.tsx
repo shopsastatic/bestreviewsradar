@@ -54,11 +54,11 @@ const SingleCommentWrap: FC<SingleCommentWrapProps> = ({
 	//
 	const client = getApolloAuthClient()
 	const { isReady, isAuthenticated } = useSelector(
-		(state: RootState) => state.viewer.authorizedUser,
+		(state: any) => state.viewer.authorizedUser,
 	)
-	const { viewer } = useSelector((state: RootState) => state.viewer)
+	const { viewer } = useSelector((state: any) => state.viewer)
 	const commentCountOkFromStore = useSelector(
-		(state: RootState) =>
+		(state: any) =>
 			state.postsNcmazMetaDataOk[postDatabaseId]?.commentCount || 0,
 	)
 
