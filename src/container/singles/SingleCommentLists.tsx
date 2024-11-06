@@ -1,23 +1,18 @@
 import React, { FC } from "react";
 import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import CommentCard, {
-  TCommentHasChild,
-} from "@/components/CommentCard/CommentCard";
-import CommentCardSkeleton from "@/components/CommentCard/CommentCardSkeleton";
-import CommentCardFake from "@/components/CommentCard/CommentCardFake";
 import getTrans from "@/utils/getTrans";
 
 export interface SingleCommentListsProps {
   postDatabaseId: number;
-  aDataHierarchical: TCommentHasChild[] | null;
+  aDataHierarchical: any | null;
   loading?: boolean;
   hasNextPage?: boolean;
   onLoadmoreComments?: () => void;
-  onClickReply?: (comment: TCommentHasChild) => void;
-  onClickEdit?: (comment: TCommentHasChild) => void;
-  onClickDelete?: (comment: TCommentHasChild) => void;
+  onClickReply?: (comment: any) => void;
+  onClickEdit?: (comment: any) => void;
+  onClickDelete?: (comment: any) => void;
   onSubmitFormReply: (data: {
-    comment: TCommentHasChild;
+    comment: any;
     data: string;
   }) => void;
   onCancelFormReply: () => void;
@@ -38,9 +33,9 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({
   const T = getTrans();
 
   const renderCommentCard = (
-    comment: TCommentHasChild,
+    comment: any,
     index: number,
-    arr: TCommentHasChild[],
+    arr: any[],
     lv2 = false
   ) => {
     // new comment.parentId = null, thi day se la Lv1
@@ -78,22 +73,6 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({
             ></div>
           ) : null}
 
-          {comment.id.includes("fake-for-reply-") ? (
-            <CommentCardFake
-              size={comment.parentId ? "normal" : "large"}
-              comment={comment}
-              handleSubmitFormReply={onSubmitFormReply}
-              handleCancelFormReply={onCancelFormReply}
-            />
-          ) : (
-            <CommentCard
-              size={comment.parentId ? "normal" : "large"}
-              comment={comment}
-              onClickDelete={onClickDelete}
-              onClickEdit={onClickEdit}
-              onClickReply={onClickReply}
-            />
-          )}
         </div>
         {comment.children?.length ? (
           <ul
@@ -103,9 +82,6 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({
                 : "ps-[34px] sm:ps-[44px]"
             }`}
           >
-            {comment.children?.map((i, j, a) =>
-              renderCommentCard(i, j, a, !comment.parentId)
-            )}
           </ul>
         ) : null}
       </li>
@@ -121,13 +97,6 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({
       {/* lists */}
       <div className="mt-10 overflow-hidden">
         <ul className="nc-SingleCommentLists space-y-5">
-          {!aDataHierarchical?.length && loading ? (
-            <>
-              <CommentCardSkeleton />
-              <CommentCardSkeleton />
-              <CommentCardSkeleton />
-            </>
-          ) : null}
 
           {aDataHierarchical?.map(renderCommentCard)}
         </ul>
