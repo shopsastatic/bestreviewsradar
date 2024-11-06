@@ -3,14 +3,11 @@
 import { GetReadingListPageQuery } from "../../__generated__/graphql";
 import { FaustPage } from "@faustwp/core";
 import { useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
 import { useLazyQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Empty from "@/components/Empty";
 import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Card3 from "@/components/Card3/Card3";
 import updatePostFromUpdateQuery from "@/utils/updatePostFromUpdateQuery";
-import Card3Skeleton from "@/components/Card3/Card3Skeleton";
 import { QUERY_GET_POSTS_BY } from "@/fragments/queries";
 import { PostDataFragmentType } from "@/data/types";
 import errorHandling from "@/utils/errorHandling";
@@ -78,7 +75,7 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
 
     // phan nay danh cho user da dang nhap
     if (viewerReactionPosts?.length) {
-      ids = viewerReactionPosts.map((item) =>
+      ids = viewerReactionPosts.map((item: any) =>
         (item.title || "").split(",")[0].trim()
       );
     }
@@ -136,7 +133,7 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
   // phan nay danh cho user da dang nhap
   if (!!isAuthenticated) {
     currentPosts = currentPosts.filter((post) => {
-      return viewerReactionPosts?.some((item) => {
+      return viewerReactionPosts?.some((item: any) => {
         return item.title?.includes(post.databaseId + ",SAVE");
       });
     });
@@ -145,7 +142,7 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
   // phan nay danh cho user chua dang nhap
   if (isAuthenticated === false) {
     currentPosts = currentPosts.filter((post) => {
-      return localSavedPostsList?.some((item) => {
+      return localSavedPostsList?.some((item: any) => {
         return item === post.databaseId;
       });
     });
@@ -157,9 +154,6 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
       if (loading) {
         return (
           <div className="grid sm:grid-cols-1 gap-6 md:gap-8 mt-8 lg:mt-10">
-            {[1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-              <Card3Skeleton key={i} />
-            ))}
           </div>
         );
       }
@@ -171,9 +165,6 @@ const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
     // render posts
     return (
       <div className="grid sm:grid-cols-1 gap-6 md:gap-8 mt-8 lg:mt-10">
-        {currentPosts.map((post) => (
-          <Card3 key={post.databaseId} post={post} />
-        ))}
       </div>
     );
   };
