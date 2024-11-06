@@ -62,7 +62,7 @@ export default function SEO({ title, description, imageUrl, url, metaRobots }: a
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
       <meta itemProp="name" content={title} />
-      <meta property="article:section" content="Best Reviews Radar" />
+      <meta property="article:section" content="BestReviewsRadar" />
     </Head>
   );
 }
