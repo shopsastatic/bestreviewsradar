@@ -1,11 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import ButtonClose from '@/components/ButtonClose/ButtonClose'
 import { FragmentType } from '@/__generated__'
 import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
-import { flatListToHierarchical } from '@faustwp/core'
-import { useRouter } from 'next/router'
 import Link from 'next/link'
 import {
 	ChevronRight,
