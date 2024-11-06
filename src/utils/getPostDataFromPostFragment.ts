@@ -1,4 +1,3 @@
-import { TPostCard } from "@/components/Card2/Card2";
 import { FragmentType, useFragment } from "../__generated__";
 import {
   NC_IMAGE_MEDIA_HAS_DETAIL_FRAGMENT,
@@ -29,7 +28,7 @@ export function getPostDataFromPostFragment(
     | FragmentType<typeof NC_POST_CARD_FRAGMENT>
     | FragmentType<typeof NC_POST_FULL_FRAGMENT>
     | FragmentType<typeof NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT>
-    | TPostCard
+    | any
 ) {
   const query = useFragment(
     NC_POST_FULL_FRAGMENT,

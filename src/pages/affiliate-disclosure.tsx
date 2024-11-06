@@ -5,10 +5,9 @@ import {
     GetReadingListPageQuery,
     NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
-import Heading from '@/components/Heading/Heading'
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
-import { NC_SITE_SETTINGS } from '@/contains/site-settings'
+
 import {
     Shield,
     Lock,
