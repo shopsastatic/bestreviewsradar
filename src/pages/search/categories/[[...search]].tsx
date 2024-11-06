@@ -12,11 +12,9 @@ import ButtonPrimary from "@/components/Button/ButtonPrimary";
 import Empty from "@/components/Empty";
 import { useRouter } from "next/router";
 import { useLazyQuery } from "@apollo/client";
-import CardCategory4 from "@/components/CardCategory4/CardCategory4";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
 import errorHandling from "@/utils/errorHandling";
-import SearchPageLayout from "@/container/SearchPageLayout";
 import getTrans from "@/utils/getTrans";
 
 const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props) => {
@@ -124,31 +122,7 @@ const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props) => {
         props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
       }
     >
-      <SearchPageLayout top10Categories={[]}>
-        {/* LOOP ITEMS */}
-        {!currentCats.length && !loading ? (
-          <Empty />
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 gap-y-5 sm:gap-6 md:gap-8 mt-8 lg:mt-12">
-            {(currentCats || []).map((cat) => (
-              <CardCategory4 key={cat?.databaseId} term={cat || {}} />
-            ))}
-          </div>
-        )}
-
-        {/* PAGINATION */}
-        {hasNextPage ? (
-          <div className="mt-12 lg:mt-14 flex justify-center">
-            <ButtonPrimary
-              disabled={loading || !currentCats?.length}
-              loading={loading}
-              onClick={handleClickShowMore}
-            >
-              {T["Show me more"]}
-            </ButtonPrimary>
-          </div>
-        ) : null}
-      </SearchPageLayout>
+      Search
     </PageLayout>
   );
 };

@@ -1,13 +1,8 @@
 "use client";
 
 import { FragmentType, useFragment } from "@/__generated__";
-import AccountActionDropdown from "@/components/AccountActionDropdown/AccountActionDropdown";
 import Avatar from "@/components/Avatar/Avatar";
 import NcImage from "@/components/NcImage/NcImage";
-import SocialsList, {
-  TSocialsItem,
-} from "@/components/SocialsList/SocialsList";
-import SocialsShareDropdown from "@/components/SocialsShareDropdown/SocialsShareDropdown";
 import { NC_USER_FULL_FIELDS_FRAGMENT } from "@/fragments";
 import { getImageDataFromImageFragment } from "@/utils/getImageDataFromImageFragment";
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
@@ -21,7 +16,7 @@ interface Props {
 }
 
 const AuthorLayout: FC<Props> = ({ className = "", children, user }) => {
-  const { databaseId, description, name, ncUserMeta } = useFragment(
+  const { databaseId, description, name, ncUserMeta }: any = useFragment(
     NC_USER_FULL_FIELDS_FRAGMENT,
     user || {}
   );
@@ -29,21 +24,16 @@ const AuthorLayout: FC<Props> = ({ className = "", children, user }) => {
   const authorSlug = router.query.slug as string;
 
   const {
-    buymeacoffeUrl,
     facebookUrl,
     githubUrl,
-    instagramUrl,
     linkedinUrl,
-    mediumUrl,
     pinterestUrl,
     tiktokUrl,
-    twitchUrl,
     twitterUrl,
-    vimeoUrl,
     youtubeUrl,
-  } = ncUserMeta || {};
+  } = ncUserMeta as any || {};
 
-  let userSocials: TSocialsItem[] = [
+  let userSocials: any = [
     {
       name: "Facebook",
       href: ncUserMeta?.facebookUrl || "",
@@ -200,7 +190,7 @@ const AuthorLayout: FC<Props> = ({ className = "", children, user }) => {
     },
   ];
 
-  userSocials = userSocials.filter((item) => !!item.href);
+  userSocials = userSocials.filter((item: any) => !!item.href);
 
   return (
     <div className="">
@@ -262,19 +252,7 @@ const AuthorLayout: FC<Props> = ({ className = "", children, user }) => {
                     </span>
                   </a>
                 )}
-                <SocialsList socials={userSocials} />
               </div>
-            </div>
-
-            {/*  */}
-            <div className="absolute start-auto top-5 end-5 flex justify-end gap-2">
-              <SocialsShareDropdown sizeClass="w-10 h-10" />
-
-              <AccountActionDropdown
-                authorSlug={authorSlug}
-                containerClassName="h-10 w-10 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
-                userDatabaseId={databaseId}
-              />
             </div>
           </div>
         </div>

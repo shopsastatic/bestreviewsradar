@@ -3,8 +3,6 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
   PageTagGetTagQuery,
 } from "@/__generated__/graphql";
-import { TCategoryCardFull } from "@/components/CardCategory1/CardCategory1";
-import SocialsShareDropdown from "@/components/SocialsShareDropdown/SocialsShareDropdown";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
 import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
@@ -30,7 +28,7 @@ const Tag: FaustTemplate<PageTagGetTagQuery> = (props) => {
   const initPostsPageInfo = props.data?.tag?.posts?.pageInfo;
   const posts = props.data?.tag?.posts;
   const _top10Categories =
-    (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
+    (props.data?.categories?.nodes as any) || [];
   return (
     <>
       <PageLayout
@@ -77,11 +75,6 @@ const Tag: FaustTemplate<PageTagGetTagQuery> = (props) => {
                     {description}
                   </span>
                 </div>
-              </div>
-
-              {/*  */}
-              <div className="absolute top-5 end-5">
-                <SocialsShareDropdown />
               </div>
             </div>
           </div>

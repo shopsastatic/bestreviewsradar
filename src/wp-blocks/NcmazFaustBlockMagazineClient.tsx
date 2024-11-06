@@ -5,52 +5,9 @@ import Empty from "@/components/Empty";
 import ButtonPrimary from "@/components/Button/ButtonPrimary";
 import { QUERY_GET_POSTS_BY } from "@/fragments/queries";
 import updatePostFromUpdateQuery from "@/utils/updatePostFromUpdateQuery";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
-import { TPostCard } from "@/components/Card2/Card2";
-import SectionHero3 from "@/components/Sections/SectionHero3";
-import dynamic from "next/dynamic";
-import useGetPostsNcmazMetaByIds from "@/hooks/useGetPostsNcmazMetaByIds";
-import SectionMagazine5 from "../components/Sections/SectionMagazine5";
-import SectionMagazine8 from "../components/Sections/SectionMagazine8";
-import SectionMagazine2 from "../components/Sections/SectionMagazine2";
-import SectionMagazine6 from "../components/Sections/SectionMagazine6";
 import errorHandling from "@/utils/errorHandling";
 import { useEffect, useState } from "react";
 import getTrans from "@/utils/getTrans";
-
-const DynamicSectionMagazine1 = dynamic(
-  () => import("../components/Sections/SectionMagazine1")
-);
-const DynamicSectionMagazine3 = dynamic(
-  () => import("../components/Sections/SectionMagazine3")
-);
-const DynamicSectionMagazine4 = dynamic(
-  () => import("../components/Sections/SectionMagazine4")
-);
-const DynamicSectionMagazine7 = dynamic(
-  () => import("../components/Sections/SectionMagazine7")
-);
-const DynamicSectionMagazine8 = dynamic(
-  () => import("../components/Sections/SectionMagazine8")
-);
-const DynamicSectionMagazine9 = dynamic(
-  () => import("../components/Sections/SectionMagazine9")
-);
-const DynamicSectionMagazine10 = dynamic(
-  () => import("../components/Sections/SectionMagazine10")
-);
-const DynamicSectionMagazine11 = dynamic(
-  () => import("../components/Sections/SectionMagazine11")
-);
-const DynamicSectionGridPosts = dynamic(
-  () => import("../components/Sections/SectionGridPosts")
-);
-const DynamicSectionSliderPosts = dynamic(
-  () => import("../components/Sections/SectionSliderPosts")
-);
-const DynamicSectionLargeSlider = dynamic(
-  () => import("../components/Sections/SectionLargeSlider")
-);
 //
 
 const NcmazFaustBlockMagazineClient: WordPressBlock<
@@ -59,7 +16,7 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
     clientId?: string;
     parentClientId?: string;
     dataObject?: {
-      block_posts?: TPostCard[];
+      block_posts?: any;
       errors?: any[];
       queryVariables?: Record<string, any>;
       pageInfo?: {
@@ -87,7 +44,7 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
   const T = getTrans();
 
   const [dataInitPosts_state, setDataInitPosts_state] = useState<
-    TPostCard[] | null
+    any[] | null
   >();
   const [dataInitErrors_state, setDataInitErrors_state] = useState<
     any[] | null
@@ -120,7 +77,7 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
       ".ncmazfc-block-content-common-class"
     );
 
-    const dataInitPosts: TPostCard[] = JSON.parse(
+    const dataInitPosts: any = JSON.parse(
       contentNode?.getAttribute("data-ncmazfc-init-posts") || "null"
     );
     const dataInitErrors = JSON.parse(
@@ -142,10 +99,6 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
     setDataInitPageInfo_state(dataInitPageInfo);
   }, []);
 
-  //
-  useGetPostsNcmazMetaByIds({
-    posts: dataInitPosts || [],
-  });
   //
 
   const handleClickLoadmore = () => {
@@ -177,7 +130,7 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
   let dataLists = [
     ...(dataInitPosts || []),
     ...(getPostByVariablesFromSSRResult.data?.posts?.nodes || []),
-  ] as TPostCard[];
+  ] as any;
 
   const showLoadmoreButton = !getPostByVariablesFromSSRResult.data?.posts
     ? dataInitPageInfo?.hasNextPage === true
@@ -186,7 +139,6 @@ const NcmazFaustBlockMagazineClient: WordPressBlock<
 
   return (
     <>
-      {hasBackground ? <BackgroundSection /> : null}
       <MagazineLayoutType
         posts={dataLists || []}
         blockVariation={blockVariation}
@@ -211,7 +163,7 @@ export function MagazineLayoutType({
   blockVariation,
   error,
 }: {
-  posts: TPostCard[];
+  posts: any;
   blockVariation?: string | null;
   error: any;
 }) {
@@ -221,102 +173,6 @@ export function MagazineLayoutType({
 
   if (!posts || !posts?.length) {
     return <Empty />;
-  }
-
-  switch (blockVariation) {
-    case "magazine-1":
-      return <DynamicSectionMagazine1 posts={posts} />;
-    case "magazine-2":
-      return <SectionMagazine2 posts={posts} />;
-    case "magazine-3":
-      return <DynamicSectionMagazine3 posts={posts} />;
-    case "magazine-4":
-      return <DynamicSectionMagazine4 posts={posts} />;
-    case "magazine-5":
-      return <SectionMagazine5 posts={posts} />;
-    case "magazine-6":
-      return <SectionMagazine6 posts={posts} />;
-    case "magazine-7":
-      return <DynamicSectionMagazine7 posts={posts} />;
-    case "magazine-8":
-      return <SectionMagazine8 posts={posts} />;
-    case "magazine-9":
-      return <DynamicSectionMagazine9 posts={posts} />;
-    case "magazine-10":
-      return <DynamicSectionMagazine10 posts={posts} />;
-    case "magazine-11":
-      return <DynamicSectionMagazine11 posts={posts} />;
-    case "magazine-12":
-      return <DynamicSectionLargeSlider posts={posts} />;
-    case "magazine-13":
-      return <SectionHero3 posts={posts} />;
-
-    // Grids
-    case "grid-1":
-      return (
-        <DynamicSectionGridPosts
-          gridClass="lg:grid-cols-2 md:gap-8 lg:gap-10"
-          posts={posts}
-          postCardName="card3"
-        />
-      );
-    case "grid-2":
-      return <DynamicSectionGridPosts posts={posts} postCardName="card4" />;
-    case "grid-3":
-      return <DynamicSectionGridPosts posts={posts} postCardName="card7" />;
-    case "grid-4":
-      return <DynamicSectionGridPosts posts={posts} postCardName="card9" />;
-    case "grid-5":
-      return <DynamicSectionGridPosts posts={posts} postCardName="card10" />;
-    case "grid-6":
-      return (
-        <DynamicSectionGridPosts
-          gridClass="md:grid-cols-2 lg:grid-cols-3"
-          posts={posts}
-          postCardName="card10V2"
-        />
-      );
-    case "grid-7":
-      return <DynamicSectionGridPosts posts={posts} postCardName="card11" />;
-    case "grid-8":
-      return (
-        <DynamicSectionGridPosts
-          gridClass="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:!gap-6"
-          posts={posts}
-          postCardName="card14"
-        />
-      );
-    case "grid-9":
-      return (
-        <DynamicSectionGridPosts
-          gridClass="md:grid-cols-2 xl:grid-cols-3 !gap-6"
-          posts={posts}
-          postCardName="card15Podcast"
-        />
-      );
-
-    // Slider
-    case "slider-1":
-      return <DynamicSectionSliderPosts posts={posts} postCardName="card4" />;
-    case "slider-2":
-      return <DynamicSectionSliderPosts posts={posts} postCardName="card7" />;
-    case "slider-3":
-      return <DynamicSectionSliderPosts posts={posts} postCardName="card9" />;
-    case "slider-4":
-      return <DynamicSectionSliderPosts posts={posts} postCardName="card10" />;
-    case "slider-5":
-      return (
-        <DynamicSectionSliderPosts
-          perView={3}
-          posts={posts}
-          postCardName="card10V2"
-        />
-      );
-    case "slider-6":
-      return <DynamicSectionSliderPosts posts={posts} postCardName="card11" />;
-
-    default:
-      return <DynamicSectionMagazine9 posts={posts} />;
   }
 }
 

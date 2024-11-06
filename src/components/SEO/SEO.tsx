@@ -19,7 +19,7 @@ const GET_SITE_SETTINGS = gql(`
   }
 `) as any;
 
-export default function SEO({ title, description, imageUrl, url }: any) {
+export default function SEO({ title, description, imageUrl, url, metaRobots }: any) {
   // Use useQuery hook to execute the query
   const { data, loading, error } : any = useQuery(GET_SITE_SETTINGS);
   const router = useRouter();
@@ -37,11 +37,17 @@ export default function SEO({ title, description, imageUrl, url }: any) {
     return null;
   }
 
+  if(metaRobots == "noindex") {
+    metaRobots = "noindex, nofollow";
+  }else {
+    metaRobots = "index, follow";
+  }
+
   return (
     <Head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="robots" content="index, follow" />
+      <meta name="robots" content={metaRobots} />
       <link rel="canonical" href={url} />
       <title>{title}</title>
       <meta name="description" content={description} />

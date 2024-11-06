@@ -3,9 +3,6 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
   PageCategoryGetCategoryQuery,
 } from "@/__generated__/graphql";
-import { TCategoryCardFull } from "@/components/CardCategory1/CardCategory1";
-import MyImage from "@/components/MyImage";
-import SocialsShareDropdown from "@/components/SocialsShareDropdown/SocialsShareDropdown";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayoutChild from "@/container/archives/ArchieveLayoutChild";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
@@ -13,9 +10,7 @@ import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getCatgoryDataFromCategoryFragment } from "@/utils/getCatgoryDataFromCategoryFragment";
-import { getImageDataFromImageFragment } from "@/utils/getImageDataFromImageFragment";
 import { FaustTemplate } from "@faustwp/core";
-import { FireIcon, FolderIcon } from "@heroicons/react/24/outline";
 
 const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
   // LOADING ----------
@@ -42,7 +37,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
   const _top10Categories =
-    (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
+    (props.data?.categories?.nodes as any) || [];
 
   const hasChild = children && Array.isArray(children.nodes) && children.nodes.length > 0;
 

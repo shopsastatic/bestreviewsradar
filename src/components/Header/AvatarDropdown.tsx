@@ -8,7 +8,6 @@ import {
 } from '@headlessui/react'
 import { FC, Fragment, useEffect } from 'react'
 import Avatar from '@/components/Avatar/Avatar'
-import SwitchDarkMode2 from '@/components/SwitchDarkMode/SwitchDarkMode2'
 import Link from 'next/link'
 import {
 	BookmarkIcon,
@@ -31,17 +30,16 @@ import CircleLoading from '../Loading/CircleLoading'
 import { useRouter } from 'next/router'
 import getTrans from '@/utils/getTrans'
 import { UserIcon } from '../Icons/Icons'
-import toast from 'react-hot-toast'
 
 interface Props {
 	className?: string
 }
 export default function AvatarDropdown({ className = '' }: Props) {
 	const { isReady, isAuthenticated } = useSelector(
-		(state: RootState) => state.viewer.authorizedUser,
+		(state: any) => state.viewer.authorizedUser,
 	)
 	const { logout } = useLogout()
-	const { viewer } = useSelector((state: RootState) => state.viewer)
+	const { viewer } = useSelector((state: any) => state.viewer)
 	const { openLoginModal } = useLoginModal()
 	const router = useRouter()
 	const T = getTrans()
@@ -207,7 +205,6 @@ export default function AvatarDropdown({ className = '' }: Props) {
 						<p className="text-sm font-medium">{T['Dark theme']}</p>
 					</div>
 				</div>
-				<SwitchDarkMode2 />
 			</div>
 		)
 	}

@@ -1,5 +1,3 @@
-import { TPostCard } from '@/components/Card2/Card2'
-import useGetPostsNcmazMetaByIds from '@/hooks/useGetPostsNcmazMetaByIds'
 import useHandleGetPostsArchivePage from '@/hooks/useHandleGetPostsArchivePage'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -18,10 +16,6 @@ const ArchiveLayout: FC<any> = ({
 	childs
 }) => {
 	// START ----------
-	//
-	const { } = useGetPostsNcmazMetaByIds({
-		posts: (posts || []) as TPostCard[],
-	})
 	//
 
 	const child1 = childs?.[0]

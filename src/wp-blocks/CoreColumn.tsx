@@ -4,7 +4,7 @@ import { gql } from "@apollo/client";
 import { WordPressBlock, getStyles, useBlocksTheme } from "@faustwp/blocks";
 import React from "react";
 //
-const CoreColumn: WordPressBlock<CoreColumnFragmentFragment> = (props) => {
+const CoreColumn: WordPressBlock<CoreColumnFragmentFragment> = (props: any) => {
   // get the BlocksTheme object
   const theme = useBlocksTheme();
   const style = getStyles(theme, { ...props });

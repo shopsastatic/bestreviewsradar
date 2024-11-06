@@ -13,10 +13,6 @@ import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
 import { PostDataFragmentType } from "@/data/types";
 import GridPostsArchive from "@/components/GridPostsArchive";
-import useGetPostsNcmazMetaByIds from "@/hooks/useGetPostsNcmazMetaByIds";
-import { TPostCard } from "@/components/Card2/Card2";
-import { TCategoryCardFull } from "@/components/CardCategory1/CardCategory1";
-import SearchPageLayout from "@/container/SearchPageLayout";
 
 const Page: FaustPage<SearchPageQueryGetPostsBySearchQuery> = (props) => {
   const { posts } = props.data || {};
@@ -24,12 +20,8 @@ const Page: FaustPage<SearchPageQueryGetPostsBySearchQuery> = (props) => {
   const router = useRouter();
   const search = router.query.search?.[0] || "";
   const _top10Categories =
-    (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
+    (props.data?.categories?.nodes as any) || [];
 
-  //
-  const {} = useGetPostsNcmazMetaByIds({
-    posts: (posts?.nodes || []) as TPostCard[],
-  });
   //
 
   const {
@@ -55,17 +47,7 @@ const Page: FaustPage<SearchPageQueryGetPostsBySearchQuery> = (props) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <SearchPageLayout
-          top10Categories={_top10Categories}
-          handleChangeFilterPosts={handleChangeFilterPosts}
-        >
-          <GridPostsArchive
-            posts={currentPosts}
-            loading={loading}
-            showLoadmore={hasNextPage}
-            onClickLoadmore={handleClickShowMore}
-          />
-        </SearchPageLayout>
+        Search
       </PageLayout>
     </>
   );

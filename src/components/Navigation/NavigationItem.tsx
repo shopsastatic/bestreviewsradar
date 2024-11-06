@@ -9,7 +9,6 @@ import {
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
 import { FC, Fragment, useState } from 'react'
 import Link from 'next/link'
-import NcImage from '../NcImage/NcImage'
 import { FragmentType, useFragment } from '@/__generated__'
 import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import {
@@ -124,14 +123,6 @@ const NavigationItem: FC<NavigationItemProps> = ({
 													className="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch"
 												>
 													<div className="relative flex-none">
-														<NcImage
-															containerClassName="aspect-[2/1] w-full rounded-xl bg-neutral-100 sm:aspect-[16/9] sm:h-32 lg:h-auto z-0"
-															fill
-															className="rounded-xl object-cover"
-															src={post.featuredImage?.sourceUrl || ''}
-															sizes="300px"
-															alt={post.title || ''}
-														/>
 														<div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-neutral-900/10" />
 													</div>
 													<div>

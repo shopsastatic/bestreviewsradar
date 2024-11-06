@@ -73,6 +73,8 @@
   filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.09));
   border-radius: 6px;
   background-color: #fff;
+  top: -16px;
+  left: -6px;
 }
 
 .h-tag span {
@@ -87,6 +89,8 @@
 .prod-heading-tag {
   clip-path: polygon(100% 0, 70% 100%, 0 150%, 0 100%, 0 0);
   z-index: 10;
+  width: 42px;
+  height: 32px;
 }
 
 .prod-heading-tag::after {
@@ -183,6 +187,7 @@
 }
 
 .count-num {
+  top: 80px;
   left: -22.5px;
 }
 

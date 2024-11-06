@@ -10,14 +10,11 @@ import React from "react";
 import ButtonPrimary from "@/components/Button/ButtonPrimary";
 import Empty from "@/components/Empty";
 import { useRouter } from "next/router";
-import CardAuthorBox from "@/components/CardAuthorBox/CardAuthorBox";
 import { getUserDataFromUserCardFragment } from "@/utils/getUserDataFromUserCardFragment";
 import { useLazyQuery } from "@apollo/client";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
 import errorHandling from "@/utils/errorHandling";
-import { TCategoryCardFull } from "@/components/CardCategory1/CardCategory1";
-import SearchPageLayout from "@/container/SearchPageLayout";
 import getTrans from "@/utils/getTrans";
 
 const Page: FaustPage<SearchPageQueryGetUsersBySearchQuery> = (props) => {
@@ -25,7 +22,7 @@ const Page: FaustPage<SearchPageQueryGetUsersBySearchQuery> = (props) => {
   const initUsers = props.data?.users?.nodes;
   const initPageInfo = props.data?.users?.pageInfo;
   const _top10Categories =
-    (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
+    (props.data?.categories?.nodes as any) || [];
   const search = router.query.search?.[0] || "";
   const T = getTrans();
 
@@ -127,34 +124,7 @@ const Page: FaustPage<SearchPageQueryGetUsersBySearchQuery> = (props) => {
         props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
       }
     >
-      <SearchPageLayout top10Categories={_top10Categories}>
-        {/* LOOP ITEMS */}
-        {!currentUsers.length && !loading ? (
-          <Empty />
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8 mt-8 lg:mt-12">
-            {(currentUsers || []).map((user) => (
-              <CardAuthorBox
-                key={getUserDataFromUserCardFragment(user).databaseId}
-                author={user}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* PAGINATION */}
-        {hasNextPage ? (
-          <div className="mt-12 lg:mt-14 flex justify-center">
-            <ButtonPrimary
-              disabled={loading || !currentUsers?.length}
-              loading={loading}
-              onClick={handleClickShowMore}
-            >
-              {T["Show me more"]}
-            </ButtonPrimary>
-          </div>
-        ) : null}
-      </SearchPageLayout>
+      Search
     </PageLayout>
   );
 };

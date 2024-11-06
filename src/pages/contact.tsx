@@ -25,8 +25,22 @@ import {
 	Users,
 	Building
 } from 'lucide-react';
+import { useState } from 'react'
 
 const Page: FaustPage<GetReadingListPageQuery> = props => {
+	const [formData, setFormData] = useState({
+		firstName: '',
+		lastName: '',
+		email: '',
+		subject: 'General Inquiry',
+		message: ''
+	});
+
+	const [loading, setLoading] = useState(false);
+	const [submitStatus, setSubmitStatus] = useState<{
+		type: 'success' | 'error' | null;
+		message: string;
+	}>({ type: null, message: '' });
 	const contactMethods = [
 		{
 			icon: <Mail className="w-6 h-6" />,
@@ -52,6 +66,54 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 			answer: "We regularly update our reviews to reflect new product releases, market changes, and long-term testing results."
 		}
 	];
+
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value
+		});
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
+		setSubmitStatus({ type: null, message: '' });
+
+		try {
+			const response = await fetch('https://content.bestreviewsradar.com/wp-json/custom/v1/contact-form', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData)
+			});
+
+			const data = await response.json();
+
+			if (data.status === 'success') {
+				setSubmitStatus({
+					type: 'success',
+					message: 'Thank you for your message. We will contact you soon!'
+				});
+				setFormData({
+					firstName: '',
+					lastName: '',
+					email: '',
+					subject: 'General Inquiry',
+					message: ''
+				});
+			} else {
+				throw new Error(data.message);
+			}
+		} catch (error) {
+			setSubmitStatus({
+				type: 'error',
+				message: 'Sorry, there was an error sending your message. Please try again later.' + error
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<PageLayout
@@ -114,7 +176,7 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 						{/* Form */}
 						<div className="bg-white rounded-xl shadow-sm p-8">
 							<h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
-							<form className="space-y-6">
+							<form onSubmit={handleSubmit} className="space-y-6">
 								<div className="grid md:grid-cols-2 gap-6">
 									<div>
 										<label className="block text-sm font-medium text-gray-700 mb-2">
@@ -122,6 +184,10 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 										</label>
 										<input
 											type="text"
+											name="firstName"
+											value={formData.firstName}
+											onChange={handleInputChange}
+											required
 											className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
 										/>
 									</div>
@@ -131,6 +197,10 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 										</label>
 										<input
 											type="text"
+											name="lastName"
+											value={formData.lastName}
+											onChange={handleInputChange}
+											required
 											className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
 										/>
 									</div>
@@ -141,6 +211,10 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 									</label>
 									<input
 										type="email"
+										name="email"
+										value={formData.email}
+										onChange={handleInputChange}
+										required
 										className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
 									/>
 								</div>
@@ -148,7 +222,12 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 									<label className="block text-sm font-medium text-gray-700 mb-2">
 										Subject
 									</label>
-									<select className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+									<select
+										name="subject"
+										value={formData.subject}
+										onChange={handleInputChange}
+										className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+									>
 										<option>General Inquiry</option>
 										<option>Product Review Request</option>
 										<option>Partnership Opportunity</option>
@@ -161,16 +240,38 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 										Message
 									</label>
 									<textarea
+										name="message"
+										value={formData.message}
+										onChange={handleInputChange}
+										required
 										rows={4}
 										className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
 									></textarea>
 								</div>
+
+								{submitStatus.type && (
+									<div className={`p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+										}`}>
+										{submitStatus.message}
+									</div>
+								)}
+
 								<button
 									type="submit"
-									className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+									disabled={loading}
+									className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
 								>
-									<Send className="w-4 h-4" />
-									<span>Send Message</span>
+									{loading ? (
+										<>
+											<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+											<span>Sending...</span>
+										</>
+									) : (
+										<>
+											<Send className="w-4 h-4" />
+											<span>Send Message</span>
+										</>
+									)}
 								</button>
 							</form>
 						</div>
@@ -237,43 +338,6 @@ const Page: FaustPage<GetReadingListPageQuery> = props => {
 					</div>
 				</div>
 
-				{/* Additional Support Section */}
-				<div className="bg-gray-900 text-white py-16">
-					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-						<div className="grid md:grid-cols-3 gap-8">
-							<div className="text-center">
-								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
-									<FileText className="w-8 h-8 text-blue-400" />
-								</div>
-								<h3 className="text-lg font-bold mb-2">Knowledge Base</h3>
-								<p className="text-gray-300 mb-4">Access our comprehensive guides and tutorials</p>
-								<button className="text-blue-400 hover:text-blue-300">
-									Browse Articles
-								</button>
-							</div>
-							<div className="text-center">
-								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
-									<Users className="w-8 h-8 text-blue-400" />
-								</div>
-								<h3 className="text-lg font-bold mb-2">Community Forum</h3>
-								<p className="text-gray-300 mb-4">Join discussions with other users and experts</p>
-								<button className="text-blue-400 hover:text-blue-300">
-									Visit Forum
-								</button>
-							</div>
-							<div className="text-center">
-								<div className="inline-block p-3 bg-blue-500/20 rounded-xl mb-4">
-									<MessageCircle className="w-8 h-8 text-blue-400" />
-								</div>
-								<h3 className="text-lg font-bold mb-2">Live Support</h3>
-								<p className="text-gray-300 mb-4">Get help from our support team in real-time</p>
-								<button className="text-blue-400 hover:text-blue-300">
-									Chat Now
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 		</PageLayout>
 	)

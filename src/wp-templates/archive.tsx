@@ -4,8 +4,6 @@ import {
   PageArchiveGetArchiveQuery,
 } from "@/__generated__/graphql";
 import Alert from "@/components/Alert";
-import { TCategoryCardFull } from "@/components/CardCategory1/CardCategory1";
-import SocialsShareDropdown from "@/components/SocialsShareDropdown/SocialsShareDropdown";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
 import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
@@ -13,7 +11,6 @@ import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getPostFormatDataFromFragment } from "@/utils/getPostFormatDataFromFragment";
 import { FaustTemplate } from "@faustwp/core";
-import { FireIcon } from "@heroicons/react/24/outline";
 
 const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
   // LOADING ----------
@@ -57,7 +54,7 @@ const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
   const posts = props.data?.nodeByUri?.posts;
 
   const _top10Categories =
-    (props.data?.categories?.nodes as TCategoryCardFull[]) || [];
+    (props.data?.categories?.nodes as any) || [];
 
   return (
     <>

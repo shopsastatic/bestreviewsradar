@@ -1,7 +1,5 @@
 import { NcmazFaustBlockGroupFragmentFragment } from "@/__generated__/graphql";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
 import MyWordPressBlockViewer from "@/components/MyWordPressBlockViewer";
-import classNames from "@/utils/classNames";
 import { gql } from "@apollo/client";
 import { WordPressBlock, getStyles, useBlocksTheme } from "@faustwp/blocks";
 import React from "react";
@@ -26,21 +24,6 @@ const NcmazFaustBlockGroup: WordPressBlock<
       className={`NcmazFaustBlockGroup relative not-prose ${className || ""}`}
       style={style}
     >
-      {hasBackground && (
-        <BackgroundSection
-          className={classNames(
-            variation === "style2"
-              ? "bg-yellow-100/70 dark:bg-black/20"
-              : undefined,
-            variation === "style3"
-              ? "bg-green-100/70 dark:bg-black/20"
-              : undefined,
-            variation !== "style2" && variation !== "style3"
-              ? "bg-neutral-100/70 dark:bg-black/20"
-              : undefined
-          )}
-        />
-      )}
       {/* @ts-ignore */}
       <MyWordPressBlockViewer blocks={props.children} />
     </div>

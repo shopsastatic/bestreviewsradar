@@ -4,6 +4,7 @@ import { flatListToHierarchical } from '@faustwp/core'
 import { NcFooterMenuFieldsFragmentFragment } from '@/__generated__/graphql'
 import Link from 'next/link'
 import { ArrowRight, Shield, Globe, Heart, Award } from 'lucide-react'
+import { useState } from 'react'
 
 interface Props {
 	menuItems: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null
@@ -13,12 +14,42 @@ export type FooterNavItemType = NcFooterMenuFieldsFragmentFragment & {
 	children?: FooterNavItemType[]
 }
 
-export default function Footer({ menuItems }: Props) {
+export default function Footer({ menuItems }: any) {
+	const [email, setEmail] = useState('')
+	const [loading, setLoading] = useState(false)
+	const [status, setStatus] = useState<{
+		type: 'success' | 'error' | null,
+		message: string
+	}>({ type: null, message: '' })
 	const menus = flatListToHierarchical(menuItems || [], {
 		idKey: 'id',
 		parentKey: 'parentId',
 		childrenKey: 'children',
 	}) as FooterNavItemType[]
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		setLoading(true)
+		setStatus({ type: null, message: '' })
+
+		// Giả lập API call
+		try {
+			await new Promise(resolve => setTimeout(resolve, 1500)) // delay 1.5s
+
+			setStatus({
+				type: 'success',
+				message: "Thank you for subscribing! We'll keep you updated."
+			})
+			setEmail('') // Clear input
+		} catch (error) {
+			setStatus({
+				type: 'error',
+				message: 'Something went wrong. Please try again.'
+			})
+		} finally {
+			setLoading(false)
+		}
+	}
 
 	const awards = [
 		{
@@ -37,41 +68,39 @@ export default function Footer({ menuItems }: Props) {
 		{
 			title: "Product Reviews",
 			links: [
-				{name: "Air-Fryers", slug: "air-fryers"},
-				{name: "Monitors", slug: "monitors"},
-				{name: "Cordless-Vacuums", slug: "cordless-vacuums"},
-				{name: "Gaming-Chairs", slug: "gaming-chairs"},
-				{name: "Robot-Vacuums", slug: "robot-vacuums"},
-				{name: "Baby-Monitors", slug: "baby-monitors"},
-				{name: "Wireless-Earbuds", slug: "wireless-earbuds"},
-				{name: "Standing-Desks", slug: "standing-desks"},
+				{ name: "Air-Fryers", slug: "air-fryers" },
+				{ name: "Monitors", slug: "monitors" },
+				{ name: "Cordless-Vacuums", slug: "cordless-vacuums" },
+				{ name: "Gaming-Chairs", slug: "gaming-chairs" },
+				{ name: "Robot-Vacuums", slug: "robot-vacuums" },
+				{ name: "Baby-Monitors", slug: "baby-monitors" },
+				{ name: "Wireless-Earbuds", slug: "wireless-earbuds" },
+				{ name: "Standing-Desks", slug: "standing-desks" },
 			]
 		},
 		{
 			title: "Categories",
 			links: [
-				{name: "Smartphones", slug: "smartphones"},
-				{name: "Laptops & Computers", slug: "lapops-computers"},
-				{name: "Cameras & Photography", slug: "cameras-photography"},
-				{name: "Smart Home", slug: "smart-home"},
-				{name: "Audio & Headphones", slug: "audio-headphones"},
-				{name: "Gaming", slug: "gaming"},
-				{name: "TVs & Entertainment", slug: "tvs-entertaiment"},
-				{name: "Wearables", slug: "wearables"},
+				{ name: "Smartphones", slug: "smartphones" },
+				{ name: "Laptops & Computers", slug: "lapops-computers" },
+				{ name: "Cameras & Photography", slug: "cameras-photography" },
+				{ name: "Smart Home", slug: "smart-home" },
+				{ name: "Audio & Headphones", slug: "audio-headphones" },
+				{ name: "Gaming", slug: "gaming" },
+				{ name: "TVs & Entertainment", slug: "tvs-entertaiment" },
+				{ name: "Wearables", slug: "wearables" },
 			]
 		},
-		{
-			title: "About Us",
-			links: [
-				{name: "Our Story", slug: "about"},
-				{name: "Contact Us", slug: "contact"},
-				{name: "Terms of Service", slug: "terms-of-service"},
-				{name: "Privacy Policy", slug: "privacy-policy"},
-				{name: "Affiliate Disclosure", slug: "affiliate-disclosure"},
-				{name: "Disclaimer", slug: "disclaimer"},
-			]
-		}
 	];
+
+	const about_links = [
+		{ name: "Our Story", slug: "about" },
+		{ name: "Contact Us", slug: "contact" },
+		{ name: "Terms of Service", slug: "terms-of-service" },
+		{ name: "Privacy Policy", slug: "privacy-policy" },
+		{ name: "Affiliate Disclosure", slug: "affiliate-disclosure" },
+		{ name: "Disclaimer", slug: "disclaimer" },
+	]
 
 	return (
 
@@ -89,17 +118,48 @@ export default function Footer({ menuItems }: Props) {
 							</p>
 						</div>
 						<div>
-							<form className="flex gap-2 flex-wrap flex-col md:flex-row">
+							<form
+								onSubmit={handleSubmit}
+								className="flex gap-2 flex-wrap flex-col md:flex-row"
+							>
 								<input
 									type="email"
 									placeholder="Enter your email"
-									className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									disabled={loading}
+									required
+									className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
 								/>
-								<button className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center md:justify-start gap-2">
-									<span>Subscribe</span>
-									<ArrowRight className="w-4 h-4" />
+								<button
+									type="submit"
+									disabled={loading}
+									className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center md:justify-start gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+								>
+									{loading ? (
+										<>
+											<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+											<span>Subscribing...</span>
+										</>
+									) : (
+										<>
+											<span>Subscribe</span>
+											<ArrowRight className="w-4 h-4" />
+										</>
+									)}
 								</button>
 							</form>
+
+							{status.type && (
+								<div
+									className={`px-4 py-3 rounded-lg text-sm ${status.type === 'success'
+										? 'bg-green-500/10 text-green-500 border border-green-500/20'
+										: 'bg-red-500/10 text-red-500 border border-red-500/20'
+										}`}
+								>
+									{status.message}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -161,20 +221,42 @@ export default function Footer({ menuItems }: Props) {
 
 					{/* Quick Links */}
 					<div className="lg:col-span-3 grid md:grid-cols-3 gap-8">
-						{quickLinks.map((category, index) => (
-							<div key={index}>
-								<h4 className="text-white font-semibold mb-4">{category.title}</h4>
-								<ul className="space-y-4">
-									{category.links.map((link, linkIndex) => (
-										<li key={linkIndex}>
-											<Link href={link?.slug ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
-												{link?.name}
-											</Link>
-										</li>
-									))}
-								</ul>
-							</div>
-						))}
+						<div>
+							<h4 className="text-white font-semibold mb-4">Products Details</h4>
+							<ul className="space-y-4">
+								{menuItems?.length > 0 && menuItems?.slice(0, 8)?.map((link: any, linkIndex: any) => (
+									<li key={linkIndex}>
+										<Link href={link?.uri ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+											{link?.label}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+						<div>
+							<h4 className="text-white font-semibold mb-4">Categories</h4>
+							<ul className="space-y-4">
+								{menuItems?.length > 8 && menuItems?.slice(8, 20)?.map((link: any, linkIndex: any) => (
+									<li key={linkIndex}>
+										<Link href={link?.uri ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+											{link?.label}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
+						<div>
+							<h4 className="text-white font-semibold mb-4">About</h4>
+							<ul className="space-y-4">
+								{about_links.map((link: any, linkIndex: any) => (
+									<li key={linkIndex}>
+										<Link href={link?.slug ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+											{link?.name}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</div>
 					</div>
 				</div>
 

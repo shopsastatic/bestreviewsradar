@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { Provider } from "react-redux";
 import { store } from "@/stores/store";
 import { SiteWrapperChild } from "./SiteWrapperChild";
-import LoginModal from "./LoginModal";
 
 interface SiteWrapperProviderProps {
   children: React.ReactNode;
@@ -17,7 +16,6 @@ const SiteWrapperProvider: FC<SiteWrapperProviderProps> = ({
     <Provider store={store}>
       {children}
       <SiteWrapperChild {...props} />
-      <LoginModal />
     </Provider>
   );
 };

@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 import { getPostDataFromPostFragment } from "@/utils/getPostDataFromPostFragment";
-import { NC_POST_FULL_FRAGMENT } from "@/fragments";
-import { FragmentType } from "@/__generated__";
 import Link from "next/link";
 import { formatDate } from "@/components/FormatDate";
 
@@ -21,11 +19,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 }) => {
   const {
     title,
-    excerpt,
-    ncPostMetaData,
     categories,
-    commentCount,
-    databaseId,
     uri,
     author,
     date

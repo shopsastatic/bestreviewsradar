@@ -9,7 +9,7 @@ const NcmazFaustBlockMagazine: WordPressBlock<
     clientId?: string;
     parentClientId?: string;
   }
-> = (props) => {
+> = (props: any) => {
   const { hasBackground } = props.attributes || {};
 
   if (!props.renderedHtml) {

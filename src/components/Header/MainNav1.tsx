@@ -88,9 +88,9 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 
 	const searchSubmit = (e: any) => {
 		e.preventDefault()
-        if (searchValue.length > 0 && matchedCategories.length > 0) {
-            router.push('/' + matchedCategories?.[0]?.slug)
-        }
+		if (searchValue.length > 0 && matchedCategories.length > 0) {
+			router.push('/' + matchedCategories?.[0]?.slug)
+		}
 	}
 
 	return (
@@ -162,7 +162,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 			</div>
 
 			<div className="header-bottom bg-[#252E43] hidden md:block">
-				<div className="max-w-[1200px] m-auto overflow-x-auto overflow-y-hidden">
+				<div className="max-w-[1200px] m-auto overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40">
 					<Navigation menuItems={menuItems} className="flex text-white" />
 				</div>
 			</div>

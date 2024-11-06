@@ -24,12 +24,10 @@ import Empty from '../Empty'
 import { gql } from '@/__generated__'
 import { getApolloClient } from '@faustwp/core'
 import _, { set } from 'lodash'
-import { TPostCard } from '../Card2/Card2'
 import Loading from '../Button/Loading'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
 import ncFormatDate from '@/utils/formatDate'
 import MyImage from '../MyImage'
-import PostTypeFeaturedIcon from '../PostTypeFeaturedIcon/PostTypeFeaturedIcon'
 import { useRouter } from 'next/router'
 
 const T = getTrans()
@@ -84,7 +82,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [open, setOpen] = useState(false)
 	const [query, setQuery] = useState('')
-	const [posts, setPosts] = useState<TPostCard[]>([])
+	const [posts, setPosts] = useState<any>([])
 
 	const GQL = gql(`
 		#graphql
@@ -115,7 +113,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 				},
 			})
 			.then(res => {
-				setPosts((res?.data?.posts?.nodes as TPostCard[]) || [])
+				setPosts((res?.data?.posts?.nodes as any) || [])
 			})
 			.catch(err => {
 				console.log(err)
@@ -228,7 +226,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 	)
 }
 
-const CardPost = ({ post, focus }: { post: TPostCard; focus: boolean }) => {
+const CardPost = ({ post, focus }: { post: any; focus: boolean }) => {
 	const { title, date, categories, author, postFormats, featuredImage } =
 		getPostDataFromPostFragment(post)
 
@@ -265,13 +263,6 @@ const CardPost = ({ post, focus }: { post: TPostCard; focus: boolean }) => {
 					src={featuredImage?.sourceUrl || ''}
 					alt={title || 'Card Image'}
 				/>
-				<span className="absolute bottom-1 start-1">
-					<PostTypeFeaturedIcon
-						wrapSize="h-7 w-7"
-						iconSize="h-4 w-4"
-						postType={postFormats || ''}
-					/>
-				</span>
 			</div>
 		</div>
 	)

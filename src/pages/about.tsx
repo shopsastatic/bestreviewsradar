@@ -192,18 +192,6 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                         ))}
                     </div>
                 </div>
-
-                {/* Team Section */}
-                <div className="bg-gray-900 text-white py-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-12">
-                            <h2 className="text-3xl font-bold mb-4">Join Our Mission</h2>
-                            <p className="text-gray-300 max-w-2xl mx-auto">
-                                We're always looking for passionate individuals who share our vision of making online shopping decisions easier and more reliable.
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </PageLayout>
     )

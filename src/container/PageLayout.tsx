@@ -18,6 +18,7 @@ interface Props {
   pageFeaturedImageUrl?: string | null | undefined;
   generalSettings?: NcgeneralSettingsFieldsFragmentFragment | null | undefined;
   pageDescription?: string | null | undefined;
+  metaRobots?: String | null | undefined;
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_URL;
@@ -30,6 +31,7 @@ const PageLayout: FC<Props> = ({
   pageTitle,
   generalSettings,
   pageDescription,
+  metaRobots
 }) => {
   const router = useRouter()
   const path = router.asPath;
@@ -40,6 +42,7 @@ const PageLayout: FC<Props> = ({
         title={(pageTitle || "") + " - " + (generalSettings?.title || "")}
         description={pageDescription || generalSettings?.description || ""}
         imageUrl={pageFeaturedImageUrl}
+        metaRobots={metaRobots || "index"}
         url={url}
       />
 

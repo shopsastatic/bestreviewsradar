@@ -1,20 +1,17 @@
 import { gql } from "@/__generated__";
 import React, { useState } from 'react';
 import {
-  Search, ChevronRight, ChevronDown, UserCheck, ClipboardCheck, RefreshCw, Star, Award, Clock, ThumbsUp, TrendingUp, ArrowRight,
-  Shield, Database, BarChart2, Users, LineChart, Target, CheckCircle, Newspaper, Filter, Calendar, BookOpen, MessageCircle, Linkedin, Twitter, Mail,
-  Lightbulb, Tag, Share2, Phone, MapPin, Facebook, Instagram, Youtube, Globe, Heart, Eye,
+  Search, ChevronRight, Star, Award, Clock, ThumbsUp, TrendingUp, ArrowRight,
+  Shield, Database, BarChart2, Users, LineChart, Target, CheckCircle, Newspaper, Calendar, BookOpen, MessageCircle, Linkedin, Twitter, Mail,
+  Lightbulb, Tag, Eye,
   Smartphone,
   Laptop,
   Camera,
   Headphones,
   Tv,
-  Watch,
   HomeIcon,
-  GamepadIcon,
   Settings,
   Speaker,
-  TabletSmartphone,
   ArrowLeft
 } from 'lucide-react';
 import EntryHeader from "../components/entry-header";
@@ -32,18 +29,17 @@ const Page: FaustTemplate<GetPageQuery> = (props) => {
   const [activeStep, setActiveStep] = useState('research');
   const [activeTab, setActiveTab] = useState('popular');
   const [selectedExpert, setSelectedExpert] = useState(null);
-  const [showCategories, setShowCategories] = useState(false);
   const [activeView, setActiveView] = useState('trending');
   if (props.loading) {
     return <>Loading...</>;
   }
 
   // for this page
-  const { title, editorBlocks, featuredImage, ncPageMeta } =
-    props.data?.page || {};
+  const { title, editorBlocks, featuredImage } =
+    props.data?.page as any || {};
 
   const isGutenbergPage =
-    !!props.__SEED_NODE__?.isFrontPage || "";  // ncPageMeta?.isFullWithPage
+    !!props.__SEED_NODE__?.isFrontPage || "";
 
   const blocks = flatListToHierarchical(editorBlocks as any, {
     idKey: "clientId",
@@ -1709,18 +1705,6 @@ Page.query = gql(`
           altText
           sourceUrl
         }
-      }
-      editorBlocks(flat: true) {
-        __typename
-        renderedHtml
-        clientId
-        parentClientId
-        ...NcmazFaustBlockMagazineFragment
-        ...NcmazFaustBlockTermsFragment
-        ...NcmazFaustBlockCtaFragment
-        ...NcmazFaustBlockGroupFragment
-        ...CoreColumnsFragment
-        ...CoreColumnFragment
       }
     }
     # common query for all page 

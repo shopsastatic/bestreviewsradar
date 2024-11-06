@@ -45,7 +45,7 @@ export const NC_CATEGORY_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 			name
 			uri
 			... on Category {
-				posts {
+				posts (first: 12) {
 					nodes {
 						title
 						uri
@@ -60,68 +60,6 @@ export const NC_CATEGORY_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 			}
 		}
       }
-	  categorylayout {
-		subCategory1 {
-		  nodes {
-			name
-			uri
-			... on Category {
-			  posts(first: 5) {
-				nodes {
-				  id
-				  title
-				  uri
-				  author {
-				 	node {
-						name
-					} 
-				  }
-				  featuredImage {
-					node {
-					  sourceUrl
-					  altText
-					}
-				  }
-				}
-			  }
-			}
-		  }
-		}
-		subCategory2 {
-		  nodes {
-			name
-			uri
-			... on Category {
-			  posts(first: 4) {
-				nodes {
-				  id
-				  title
-				  uri
-				  author {
-				 	node {
-						name
-					} 
-				  }
-				  featuredImage {
-					node {
-					  sourceUrl
-					  altText
-					}
-				  }
-				}
-			  }
-			}
-		  }
-		}
-		topPost {
-		  nodes {
-		  	...on Post {
-				title
-				uri
-			}
-		  }
-		}
-	  }
 	  ncTaxonomyMeta {
 		color
 		featuredImage {
@@ -144,7 +82,7 @@ export const NC_CATEGORY_CARD_FIELD_NOT_IMAGE_FRAGMENT = gql(/* GraphQL */ `
 		ncTaxonomyMeta {
 			color
 		}
-		posts (first: 50) {
+		posts (first: 20) {
 			nodes {
 				...GetPostFields
 			}
@@ -204,50 +142,6 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		excerpt
 		databaseId
 		title
-		postData {
-			products (first: 20){
-			nodes {
-				...on SourceProduct {
-					productDatas {
-						general {
-							globalId
-							brand
-						}
-						price {
-							salePrice
-							originPrice
-							discount
-						}
-						additionals {
-							specifications
-							features
-						}
-						description
-						flexibleDescription {
-							content1
-							content2
-							content3
-						}
-						actions {
-							...on ProductDatasActionsItemLayout {
-								stores
-								actionsLink
-							}
-						}
-					}
-					title
-					featuredImage {
-						node {
-							sourceUrl
-							altText
-						}
-					}
-					menuOrder
-				}
-			}
-			}
-			points
-		}
 		amazonShortcode {
 			amazonShortcode
 		}
@@ -259,6 +153,7 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 			metaDesc
 			metaKeywords
 			title
+			metaRobotsNoindex
 		}
 		author {
 			node {
@@ -344,48 +239,6 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 export const NC_POST_CARD_FRAGMENT = gql(/* GraphQL */ `
 	fragment NcmazFcPostCardFields on Post {
 		...NcmazFcPostCardFieldsNOTNcmazGalleryImgs
-		ncmazGalleryImgs {
-			image1 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image2 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image3 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image4 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image5 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image6 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image7 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-			image8 {
-				node {
-					...NcmazFcImageFields
-				}
-			}
-		}
 	}
 `)
 export const NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT = gql(/* GraphQL */ `
@@ -415,21 +268,6 @@ export const NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT = gql(/* GraphQL */ `
 				...NcmazFcImageFields
 			}
 		}
-		postFormats {
-			nodes {
-				name
-				slug
-			}
-		}
-		ncmazVideoUrl {
-			videoUrl
-		}
-		ncmazAudioUrl {
-			audioUrl
-		}
-		ncPostMetaData {
-			...NcmazFcPostMetaFields
-		}
 	}
 `)
 
@@ -442,8 +280,6 @@ export const NC_POST_CARD_NOT_NCMAZ_MEDIA_FRAGMENT = gql(/* GraphQL */ `
 		status
 		modified
 		date
-		commentStatus
-		commentCount
 		excerpt
 		author {
 			node {
@@ -459,15 +295,6 @@ export const NC_POST_CARD_NOT_NCMAZ_MEDIA_FRAGMENT = gql(/* GraphQL */ `
 			node {
 				...NcmazFcImageFields
 			}
-		}
-		postFormats {
-			nodes {
-				name
-				slug
-			}
-		}
-		ncPostMetaData {
-			...NcmazFcPostMetaFields
 		}
 	}
 `)
@@ -524,19 +351,13 @@ export const NC_USER_SHORT_FOR_POST_CARD_FRAGMENT = gql(/* GraphQL */ `
 		username
 		name
 		ncUserMeta {
-			buymeacoffeUrl
 			color
 			facebookUrl
-			githubUrl
 			instagramUrl
 			linkedinUrl
-			mediumUrl
 			ncBio
 			pinterestUrl
-			twitchUrl
 			twitterUrl
-			vimeoUrl
-			websiteUrl
 			youtubeUrl
 			tiktokUrl
 			featuredImage {
@@ -562,19 +383,13 @@ export const NC_USER_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 		name
 		description
 		ncUserMeta {
-			buymeacoffeUrl
 			color
 			facebookUrl
 			githubUrl
-			instagramUrl
 			linkedinUrl
-			mediumUrl
 			ncBio
 			pinterestUrl
-			twitchUrl
 			twitterUrl
-			vimeoUrl
-			websiteUrl
 			youtubeUrl
 			tiktokUrl
 			featuredImage {

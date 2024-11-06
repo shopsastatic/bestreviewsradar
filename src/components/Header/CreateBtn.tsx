@@ -15,7 +15,7 @@ interface Props {
 
 const CreateBtn: FC<Props> = ({ className = 'hidden md:block ' }) => {
 	const { isReady, isAuthenticated } = useSelector(
-		(state: RootState) => state.viewer.authorizedUser,
+		(state: any) => state.viewer.authorizedUser,
 	)
 	const { openLoginModal } = useLoginModal()
 	const T = getTrans()
