@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react'
 
-const Page: FaustPage<GetReadingListPageQuery> = props => {
+const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
 	const [formData, setFormData] = useState({
 		firstName: '',
 		lastName: '',
