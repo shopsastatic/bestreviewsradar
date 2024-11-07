@@ -29,12 +29,6 @@ export async function myGetPaths() {
   posts = [
     ...categories.map((category) => ({ slug: "/" + category.slug })),
     ...posts,
-    { slug: "home-2" },
-    { slug: "home-3-podcast" },
-    { slug: "home-4-video" },
-    { slug: "home-5-gallery" },
-    { slug: "home-6" },
-    { slug: "search/posts/" },
   ];
 
   return posts.map((page) => ({
