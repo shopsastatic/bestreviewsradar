@@ -26,12 +26,12 @@ export interface NavigationItemProps {
 	menuItem: any
 }
 
-const NavigationItem: FC<NavigationItemProps> = ({
+const NavigationItem: FC<any> = ({
 	menuItem: menuItemProp,
 }) => {
 	const menuItem = useFragment(NC_PRIMARY_MENU_QUERY_FRAGMENT as any, menuItemProp) as any
 
-	const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([])
+	const [menuCurrentHovers, setMenuCurrentHovers] = useState<any[]>([])
 
 	const onMouseEnterMenu = (id: string) => {
 		setMenuCurrentHovers(state => [...state, id])
@@ -46,7 +46,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 	}
 
 	// ===================== MENU MEGAMENU =====================
-	const renderMegaMenu = (menu: NavItemType) => {
+	const renderMegaMenu = (menu: any) => {
 		if (!menu.children?.length && !menu.ncmazfaustMenu?.posts?.nodes.length) {
 			return null
 		}
@@ -111,7 +111,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 										className={`grid grid-cols-1 gap-10 sm:gap-8 lg:grid-cols-${postsColumns}`}
 									>
 										<h3 className="sr-only">Recent posts</h3>
-										{menu.ncmazfaustMenu?.posts?.nodes.map(p => {
+										{menu.ncmazfaustMenu?.posts?.nodes.map((p: any) => {
 											if (p.__typename !== 'Post') return null
 											const post = getPostDataFromPostFragment(
 												p as NcmazFcPostCardFieldsFragment,
@@ -164,7 +164,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 		)
 	}
 
-	const renderMegaMenuNavlink = (item: NavItemType) => {
+	const renderMegaMenuNavlink = (item: any) => {
 		return (
 			<li key={item.id} className={`${item.cssClasses?.join(' ')}`}>
 				<Link
@@ -180,7 +180,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 	}
 
 	// ===================== MENU DROPDOW =====================
-	const renderDropdownMenu = (menuDropdown: NavItemType) => {
+	const renderDropdownMenu = (menuDropdown: any) => {
 		const isHover = menuCurrentHovers.includes(menuDropdown.id)
 		return (
 			<Popover
@@ -234,7 +234,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 		)
 	}
 
-	const renderDropdownMenuNavlinkHasChild = (item: NavItemType) => {
+	const renderDropdownMenuNavlinkHasChild = (item: any) => {
 		const isHover = menuCurrentHovers.includes(item.id)
 		return (
 			<Popover
@@ -289,7 +289,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 		)
 	}
 
-	const renderDropdownMenuNavlink = (item: NavItemType) => {
+	const renderDropdownMenuNavlink = (item: any) => {
 		return (
 			<Link
 				className="flex items-center rounded-md px-4 py-2 font-normal text-white hover:underline underline-offset-2"
@@ -309,7 +309,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 	}
 
 	// ===================== MENU MAIN MENU =====================
-	const renderMainItem = (item: NavItemType) => {
+	const renderMainItem = (item: any) => {
 		const isLink = !item.children?.length && !item.ncmazfaustMenu?.isMegaMenu
 		const ItemC = isLink ? Link : 'div'
 		return (

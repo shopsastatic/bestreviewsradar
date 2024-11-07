@@ -90,7 +90,7 @@ const PostActionDropdown: FC<Props> = ({
 	post,
 	isSingle = false,
 }) => {
-	const { databaseId, uri, author, status, commentStatus } =
+	const { databaseId, uri, author, status } =
 		getPostDataFromPostFragment(post || {})
 	//
 	const router = useRouter()
@@ -151,12 +151,6 @@ const PostActionDropdown: FC<Props> = ({
 			}
 			return item
 		})
-	}
-
-	if (commentStatus !== 'open') {
-		POST_MORE_ACTIONS_FACT = POST_MORE_ACTIONS_FACT.filter(
-			(item: any) => item.id !== 'commentThisPost',
-		)
 	}
 
 	if (status === 'pending') {
