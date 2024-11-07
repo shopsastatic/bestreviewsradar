@@ -6,7 +6,7 @@ import { FragmentType } from "@/__generated__";
 import { NC_POST_FULL_FRAGMENT } from "@/fragments";
 
 export interface SingleType1Props {
-  post: FragmentType<typeof NC_POST_FULL_FRAGMENT>;
+  post: any;
   showRightSidebar?: boolean;
 }
 

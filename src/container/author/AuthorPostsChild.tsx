@@ -12,7 +12,7 @@ import { getImageDataFromImageFragment } from '@/utils/getImageDataFromImageFrag
 import { PostDataFragmentType } from '@/data/types'
 import AuthorLayout from '@/container/AuthorPageLayout'
 
-const AuthorPostsChild: FaustPage<GetAuthorWithPostsQuery> = props => {
+const AuthorPostsChild: FaustPage<any> = props => {
 	const { user } = props.data || {}
 
 	const posts = user?.posts as any
