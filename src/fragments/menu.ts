@@ -9,7 +9,7 @@ export const NC_PRIMARY_MENU_QUERY_FRAGMENT = gql(`
         parentId
         databaseId
     }
-`);
+`) as any;
 
 export const NC_FOOTER_MENU_QUERY_FRAGMENT = gql(`
 fragment NcFooterMenuFieldsFragment on MenuItem {
@@ -20,4 +20,4 @@ fragment NcFooterMenuFieldsFragment on MenuItem {
       databaseId
       id
 }
-`);
+`) as any;

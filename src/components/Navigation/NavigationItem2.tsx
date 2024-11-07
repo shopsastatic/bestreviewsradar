@@ -20,7 +20,7 @@ import { NcmazFcPostCardFieldsFragment } from '@/__generated__/graphql'
 export interface Props extends NavigationItemProps {}
 
 const NavigationItem2: FC<Props> = ({ menuItem: menuItemProp }) => {
-	const menuItem = useFragment(NC_PRIMARY_MENU_QUERY_FRAGMENT, menuItemProp)
+	const menuItem = useFragment(NC_PRIMARY_MENU_QUERY_FRAGMENT, menuItemProp) as any
 
 	// ===================== MENU MEGAMENU =====================
 	const renderMegaMenu = (menu: NavItemType) => {
@@ -79,7 +79,7 @@ const NavigationItem2: FC<Props> = ({ menuItem: menuItemProp }) => {
 														colColumns === 0 ? 'hidden' : ''
 													}`}
 												>
-													{menu.children?.map((item, index) => (
+													{menu.children?.map((item: any, index: any) => (
 														<div
 															key={index}
 															className={item.cssClasses?.join(' ')}
@@ -224,7 +224,7 @@ const NavigationItem2: FC<Props> = ({ menuItem: menuItemProp }) => {
 							>
 								<PopoverPanel className="absolute end-0 top-full z-20 mt-3.5 w-56">
 									<ul className="relative grid space-y-1 rounded-2xl bg-white py-3 text-sm shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-neutral-900 dark:ring-white dark:ring-opacity-10">
-										{menuDropdown.children?.map(i => {
+										{menuDropdown.children?.map((i: any) => {
 											if (i.children?.length) {
 												return renderDropdownMenuNavlinkHasChild(i)
 											} else {
@@ -271,7 +271,7 @@ const NavigationItem2: FC<Props> = ({ menuItem: menuItemProp }) => {
 						>
 							<PopoverPanel className="absolute left-full top-0 z-10 w-56 pl-2">
 								<ul className="relative grid space-y-1 rounded-xl bg-white py-3 text-sm shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-neutral-900 dark:ring-white dark:ring-opacity-10">
-									{item.children?.map(i => {
+									{item.children?.map((i: any) => {
 										if (i.children?.length) {
 											return renderDropdownMenuNavlinkHasChild(i)
 										} else {
