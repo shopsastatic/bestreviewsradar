@@ -18,6 +18,5 @@ export function getImageDataFromImageFragment(
     ...featuredImage,
     sourceUrl: featuredImage?.sourceUrl || "",
     altText: featuredImage?.altText || "",
-    caption: featuredImage?.caption || "",
   };
 }
