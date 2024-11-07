@@ -23,7 +23,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   useEffect(() => {
     if (isMounted && router.isReady && 'e' in router.query) {
       const _post = props.data?.post || {};
-      window.open(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-admin/post.php?post=${_post.databaseId}&action=edit`, '_blank');
+      window.open(`https://content.bestreviewsradar.com/wp-admin/post.php?post=${_post.databaseId}&action=edit`, '_blank');
       
       const pathWithoutQuery = router.asPath.split('?')[0];
       router.replace(pathWithoutQuery, undefined, { shallow: true });
