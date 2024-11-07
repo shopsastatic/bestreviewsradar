@@ -15,6 +15,7 @@ export type FooterNavItemType = NcFooterMenuFieldsFragmentFragment & {
 }
 
 export default function Footer({ menuItems }: any) {
+	console.log(menuItems)
 	const [email, setEmail] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [status, setStatus] = useState<{
@@ -62,35 +63,6 @@ export default function Footer({ menuItems }: any) {
 			organization: "Consumer Trust Alliance",
 			icon: <Shield className="w-6 h-6" />
 		}
-	];
-
-	const quickLinks = [
-		{
-			title: "Product Reviews",
-			links: [
-				{ name: "Air-Fryers", slug: "air-fryers" },
-				{ name: "Monitors", slug: "monitors" },
-				{ name: "Cordless-Vacuums", slug: "cordless-vacuums" },
-				{ name: "Gaming-Chairs", slug: "gaming-chairs" },
-				{ name: "Robot-Vacuums", slug: "robot-vacuums" },
-				{ name: "Baby-Monitors", slug: "baby-monitors" },
-				{ name: "Wireless-Earbuds", slug: "wireless-earbuds" },
-				{ name: "Standing-Desks", slug: "standing-desks" },
-			]
-		},
-		{
-			title: "Categories",
-			links: [
-				{ name: "Smartphones", slug: "smartphones" },
-				{ name: "Laptops & Computers", slug: "lapops-computers" },
-				{ name: "Cameras & Photography", slug: "cameras-photography" },
-				{ name: "Smart Home", slug: "smart-home" },
-				{ name: "Audio & Headphones", slug: "audio-headphones" },
-				{ name: "Gaming", slug: "gaming" },
-				{ name: "TVs & Entertainment", slug: "tvs-entertaiment" },
-				{ name: "Wearables", slug: "wearables" },
-			]
-		},
 	];
 
 	const about_links = [
@@ -226,7 +198,7 @@ export default function Footer({ menuItems }: any) {
 							<ul className="space-y-4">
 								{menuItems?.length > 0 && menuItems?.slice(0, 8)?.map((link: any, linkIndex: any) => (
 									<li key={linkIndex}>
-										<Link href={link?.uri ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+										<Link href={link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
 											{link?.label}
 										</Link>
 									</li>
@@ -238,7 +210,7 @@ export default function Footer({ menuItems }: any) {
 							<ul className="space-y-4">
 								{menuItems?.length > 8 && menuItems?.slice(8, 20)?.map((link: any, linkIndex: any) => (
 									<li key={linkIndex}>
-										<Link href={link?.uri ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+										<Link href={link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
 											{link?.label}
 										</Link>
 									</li>
