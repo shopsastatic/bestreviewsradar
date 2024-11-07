@@ -101,11 +101,6 @@ Category.query = gql(`
 query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!)  {
     category(id: $id) {
        ...NcmazFcCategoryFullFieldsFragment
-       posts(first: 9, where: {orderby: {field: DATE, order: DESC}}) {
-        nodes {
-          ...NcmazFcPostCardFields
-        }
-      }
     }
     # common query for all page 
     generalSettings {
