@@ -21,9 +21,9 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
 
   const cleanUrl = pathname.replace(/^\/|\/$/g, '');
   const segments = cleanUrl.split('/').filter(Boolean);
-  // if (segments.length >= 2) {
-  //   return <Page404Content />;
-  // }
+  if (segments.length >= 2) {
+    return <Page404Content />;
+  }
 
   // LOADING ----------
   if (props.loading) {
