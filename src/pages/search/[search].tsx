@@ -4,10 +4,6 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 const Page: FaustPage<{}> = () => {
-  const router = useRouter();
-  useEffect(() => {
-    router.push("/search/posts/" + router.query.search || "");
-  }, []);
 
   return <div></div>;
 };
