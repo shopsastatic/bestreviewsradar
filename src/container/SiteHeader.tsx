@@ -12,7 +12,7 @@ export const { useGlobalState: useGlobalStateHeaderStyle } =
 	createGlobalState(initialState)
 
 interface Props {
-	menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[]
+	menuItems: any
 	siteTitle?: string | null
 	siteDescription?: string | null
 }

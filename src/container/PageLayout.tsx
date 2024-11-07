@@ -13,7 +13,7 @@ import { NcgeneralSettingsFieldsFragmentFragment } from "@/__generated__/graphql
 interface Props {
   children: React.ReactNode;
   pageTitle?: string | null | undefined;
-  headerMenuItems?: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[];
+  headerMenuItems?: any;
   footerMenuItems?: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null;
   pageFeaturedImageUrl?: string | null | undefined;
   generalSettings?: NcgeneralSettingsFieldsFragmentFragment | null | undefined;

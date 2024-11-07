@@ -30,7 +30,7 @@ import {
 
 
 export interface NavMobileProps {
-	menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[]
+	menuItems: any
 	onClickClose?: () => void
 }
 

@@ -9,7 +9,7 @@ const DynamicNavigationItem = dynamic(() => import('./NavigationItem'))
 
 interface Props {
 	className?: string
-	menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[]
+	menuItems: any
 	variation?: 'nav1' | 'nav2'
 	maxItemsToShow?: number
 }

@@ -19,17 +19,17 @@ import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment
 import ncFormatDate from '@/utils/formatDate'
 
 export type NavItemType = NcPrimaryMenuFieldsFragmentFragment & {
-	children?: NavItemType[]
+	children?: any
 }
 
 export interface NavigationItemProps {
-	menuItem: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>
+	menuItem: any
 }
 
 const NavigationItem: FC<NavigationItemProps> = ({
 	menuItem: menuItemProp,
 }) => {
-	const menuItem = useFragment(NC_PRIMARY_MENU_QUERY_FRAGMENT, menuItemProp)
+	const menuItem = useFragment(NC_PRIMARY_MENU_QUERY_FRAGMENT as any, menuItemProp) as any
 
 	const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([])
 
@@ -92,7 +92,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 										colColumns === 0 ? 'hidden' : ''
 									}`}
 								>
-									{menu.children?.map((item, index) => (
+									{menu.children?.map((item: any, index: any) => (
 										<div key={index} className={item.cssClasses?.join(' ')}>
 											<Link
 												href={item.uri || ''}
@@ -211,7 +211,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 								className="sub-menu absolute left-0 top-full z-10 w-56 transform"
 							>
 								<ul className="relative grid space-y-1 mt-0.5 bg-[#252E43] py-3 text-sm shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-neutral-900 dark:ring-white dark:ring-opacity-10">
-									{menuDropdown.children?.map(i => {
+									{menuDropdown.children?.map((i: any) => {
 										if (i.children?.length) {
 											return renderDropdownMenuNavlinkHasChild(i)
 										} else {
@@ -266,7 +266,7 @@ const NavigationItem: FC<NavigationItemProps> = ({
 								className="sub-menu absolute left-full top-0 z-10 w-56 pl-2"
 							>
 								<ul className="relative grid space-y-1 rounded-xl bg-white py-3 text-sm shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-neutral-900 dark:ring-white dark:ring-opacity-10">
-									{item.children?.map(i => {
+									{item.children?.map((i: any) => {
 										if (i.children?.length) {
 											return renderDropdownMenuNavlinkHasChild(i)
 										} else {

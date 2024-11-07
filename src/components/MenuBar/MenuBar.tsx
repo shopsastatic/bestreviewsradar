@@ -8,7 +8,7 @@ import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 
 export interface MenuBarProps {
-	menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[]
+	menuItems: any
 	className?: any
 }
 const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className }) => {
