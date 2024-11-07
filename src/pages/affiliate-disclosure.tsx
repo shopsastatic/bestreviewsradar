@@ -18,7 +18,7 @@ import {
     FileText
 } from 'lucide-react';
 
-const Page: FaustPage<GetReadingListPageQuery> = props => {
+const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
     return (
         <PageLayout
             headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
@@ -146,7 +146,7 @@ Page.query = gql(`
 export function getStaticProps(ctx: GetStaticPropsContext) {
     return getNextStaticProps(ctx, {
         Page,
-        revalidate: 3600,
+        revalidate: 900,
     })
 }
 

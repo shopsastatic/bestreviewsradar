@@ -17,7 +17,7 @@ import PageLayout from "@/container/PageLayout";
 import errorHandling from "@/utils/errorHandling";
 import getTrans from "@/utils/getTrans";
 
-const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props) => {
+const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props: any) => {
   const router = useRouter();
   const initCategories = props.data?.categories?.nodes;
   const initPageInfo = props.data?.categories?.pageInfo;

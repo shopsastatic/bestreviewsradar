@@ -14,7 +14,7 @@ import PageLayout from "@/container/PageLayout";
 import { PostDataFragmentType } from "@/data/types";
 import GridPostsArchive from "@/components/GridPostsArchive";
 
-const Page: FaustPage<SearchPageQueryGetPostsBySearchQuery> = (props) => {
+const Page: FaustPage<SearchPageQueryGetPostsBySearchQuery> = (props: any) => {
   const { posts } = props.data || {};
 
   const router = useRouter();

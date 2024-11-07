@@ -12,7 +12,7 @@ import { getTagDataFromTagFragment } from "@/utils/getTagDataFromTagFragment";
 import { FaustTemplate } from "@faustwp/core";
 import { FireIcon, HashtagIcon } from "@heroicons/react/24/outline";
 
-const Tag: FaustTemplate<PageTagGetTagQuery> = (props) => {
+const Tag: FaustTemplate<PageTagGetTagQuery> = (props: any) => {
   // LOADING ----------
   if (props.loading) {
     return <>Loading...</>;

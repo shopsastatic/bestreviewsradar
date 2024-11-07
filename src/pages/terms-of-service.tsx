@@ -19,7 +19,7 @@ import {
     Scale
 } from 'lucide-react';
 
-const Page: FaustPage<GetReadingListPageQuery> = props => {
+const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
     return (
         <PageLayout
             headerMenuItems={props.data?.primaryMenuItems?.nodes || []}

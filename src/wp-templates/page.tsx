@@ -25,7 +25,7 @@ import PageLayout from "@/container/PageLayout";
 import MyWordPressBlockViewer from "@/components/MyWordPressBlockViewer";
 import Link from "next/link";
 
-const Page: FaustTemplate<GetPageQuery> = (props) => {
+const Page: FaustTemplate<GetPageQuery> = (props: any) => {
   const [activeStep, setActiveStep] = useState('research');
   const [activeTab, setActiveTab] = useState('popular');
   const [selectedExpert, setSelectedExpert] = useState(null);
