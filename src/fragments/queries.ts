@@ -14,7 +14,7 @@ export const GET_USER_META_BY_ID = gql(`#graphql
       }
     }
   }
-`);
+`) as any;
 
 export const QUERY_GET_POSTS_BY = gql(/* GraphQL */ `
   query QueryGetPostsBy(
@@ -55,7 +55,7 @@ export const QUERY_GET_POSTS_BY = gql(/* GraphQL */ `
       }
     }
   }
-`);
+`) as any;
 //
 export const QUERY_GET_TOP_10_CATEGORIES = gql(/* GraphQL */ `
   query QueryGet10Categories($first: Int = 10) {
@@ -65,7 +65,7 @@ export const QUERY_GET_TOP_10_CATEGORIES = gql(/* GraphQL */ `
       }
     }
   }
-`);
+`) as any;
 
 export const QUERY_GET_CATEGORIES = gql(/* GraphQL */ `
   query QueryGetCategories($after: String, $first: Int = 10) {
@@ -79,7 +79,7 @@ export const QUERY_GET_CATEGORIES = gql(/* GraphQL */ `
       }
     }
   }
-`);
+`) as any;
 
 export const QUERY_GET_TAGS = gql(/* GraphQL */ `
   query QueryGetTags($after: String = "", $first: Int = 5) {
@@ -94,4 +94,4 @@ export const QUERY_GET_TAGS = gql(/* GraphQL */ `
       }
     }
   }
-`);
+`) as any;

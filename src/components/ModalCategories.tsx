@@ -18,7 +18,7 @@ const ModalCategories: FC<ModalCategoriesProps> = () => {
 	const T = getTrans()
 
 	const [queryGetCategories, { loading, error, data, fetchMore, refetch }] =
-		useLazyQuery(QUERY_GET_CATEGORIES, {
+		useLazyQuery(QUERY_GET_CATEGORIES as any, {
 			variables: { first: 20 },
 			notifyOnNetworkStatusChange: true,
 			context: {
