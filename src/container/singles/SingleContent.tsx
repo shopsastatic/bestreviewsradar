@@ -81,7 +81,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const post_id = post?.databaseId
 
 	const { data, error, isLoading } = useSWR(
-        post_id ? `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}` : null,
+        post_id ? `https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}` : null,
         fetcher,
         {
             revalidateOnFocus: false,
