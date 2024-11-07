@@ -68,7 +68,7 @@ export const QUERY_GET_TOP_10_CATEGORIES = gql(/* GraphQL */ `
 `);
 
 export const QUERY_GET_CATEGORIES = gql(/* GraphQL */ `
-  query QueryGetCategories($after: String, $first: Int = 20) {
+  query QueryGetCategories($after: String, $first: Int = 10) {
     categories(first: $first, after: $after) {
       nodes {
         ...NcmazFcCategoryFullFieldsFragment
@@ -82,33 +82,11 @@ export const QUERY_GET_CATEGORIES = gql(/* GraphQL */ `
 `);
 
 export const QUERY_GET_TAGS = gql(/* GraphQL */ `
-  query QueryGetTags($after: String = "", $first: Int = 20) {
+  query QueryGetTags($after: String = "", $first: Int = 5) {
     tags(first: $first, after: $after) {
       nodes {
         __typename
         ...NcmazFcTagShortFieldsFragment
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
-      }
-    }
-  }
-`);
-
-export const QUERY_GET_POSTS_BY_USER_REACTION = gql(/* GraphQL */ `
-  query QueryGetPostsByUserReact(
-    $after: String
-    $first: Int = 20
-    $inUserAndReaction: String
-  ) {
-    posts(
-      first: $first
-      after: $after
-      where: { inUserAndReaction: $inUserAndReaction }
-    ) {
-      nodes {
-        ...NcmazFcPostCardFields
       }
       pageInfo {
         endCursor

@@ -3,6 +3,7 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
   PageCategoryGetCategoryQuery,
 } from "@/__generated__/graphql";
+import Page404Content from "@/container/404Content";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayoutChild from "@/container/archives/ArchieveLayoutChild";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
@@ -11,8 +12,19 @@ import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getCatgoryDataFromCategoryFragment } from "@/utils/getCatgoryDataFromCategoryFragment";
 import { FaustTemplate } from "@faustwp/core";
+import { useRouter } from 'next/router'
 
 const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
+  const router = useRouter()
+
+  const pathname = router.asPath
+
+  const cleanUrl = pathname.replace(/^\/|\/$/g, '');
+  const segments = cleanUrl.split('/').filter(Boolean);
+  if (segments.length >= 2) {
+    return <Page404Content />;
+  }
+
   // LOADING ----------
   if (props.loading) {
     return <>Loading...</>;
@@ -28,16 +40,15 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
     count,
     description,
     name,
+    uri,
     ncTaxonomyMeta,
     featuredImageMeta,
     children,
     ancestors,
   } = getCatgoryDataFromCategoryFragment(props.data.category);
-  
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
-  const _top10Categories =
-    (props.data?.categories?.nodes as any) || [];
+
 
   const hasChild = children && Array.isArray(children.nodes) && children.nodes.length > 0;
 
@@ -64,7 +75,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
       pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
       pageTitle={"Category " + (props?.data?.category?.seo?.title ?? name)}
-        pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
+      pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
       generalSettings={
         props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
       }
@@ -75,7 +86,6 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
         initPostsPageInfo={initPostsPageInfo}
         categoryDatabaseId={databaseId}
         taxonomyType="category"
-        top10Categories={_top10Categories}
         childs={children?.nodes}
       ></ArchiveLayout>
     </PageLayout>
@@ -84,29 +94,14 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
 
 Category.variables = ({ id }) => ({
   id,
-  first: GET_POSTS_FIRST_COMMON,
   headerLocation: PRIMARY_LOCATION,
   footerLocation: FOOTER_LOCATION,
 });
 
 Category.query = gql(`
-query PageCategoryGetCategory($id: ID!, $first: Int, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!)  {
+query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!)  {
     category(id: $id) {
        ...NcmazFcCategoryFullFieldsFragment
-      posts(first: $first, where: {orderby: {field: DATE, order: DESC}}) {
-        nodes {
-          ...NcmazFcPostCardFields
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
-        }
-      }
-    }
-    categories(first:10, where: { orderby: COUNT, order: DESC }) {
-      nodes {
-        ...NcmazFcCategoryFullFieldsFragment
-      }
     }
     # common query for all page 
     generalSettings {

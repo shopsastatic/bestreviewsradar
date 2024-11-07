@@ -2,7 +2,7 @@ import { gql } from "@/__generated__";
 import React, { useState } from 'react';
 import {
   Search, ChevronRight, Star, Award, Clock, ThumbsUp, TrendingUp, ArrowRight,
-  Shield, Database, BarChart2, Users, LineChart, Target, CheckCircle, Newspaper, Calendar, BookOpen, MessageCircle, Linkedin, Twitter, Mail,
+  Shield, Database, BarChart2, Users, LineChart, Target, CheckCircle, Newspaper, Calendar, BookOpen, Linkedin, Twitter, Mail,
   Lightbulb, Tag, Eye,
   Smartphone,
   Laptop,
@@ -1697,9 +1697,6 @@ Page.query = gql(`
   query GetPage($databaseId: ID!, $asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
     page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
-      ncPageMeta {
-        isFullWithPage
-      }
       featuredImage {
         node {
           altText

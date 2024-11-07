@@ -99,20 +99,6 @@ Archive.query = gql(`
       id
       ... on PostFormat {
         ...NcmazFcPostFormatFullFieldsFragment
-        posts(first: $first, where: {orderby: {field: DATE, order: DESC}}) {
-          nodes {
-            ...NcmazFcPostCardFields
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-        }
-      }
-    }
-    categories(first:10, where: { orderby: COUNT, order: DESC }) {
-      nodes {
-        ...NcmazFcCategoryFullFieldsFragment
       }
     }
      # common query for all page 

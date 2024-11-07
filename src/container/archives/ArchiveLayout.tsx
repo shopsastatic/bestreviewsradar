@@ -7,6 +7,7 @@ import { FC } from 'react'
 const ArchiveLayout: FC<any> = ({
 	children,
 	name,
+	uri,
 	initPosts: posts,
 	initPostsPageInfo,
 	tagDatabaseId,

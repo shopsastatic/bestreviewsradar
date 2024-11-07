@@ -14,12 +14,6 @@ import NextNProgress from "nextjs-progressbar";
 import themeJson from "../../theme.json";
 import { GoogleAnalytics } from "nextjs-google-analytics";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -35,11 +29,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           }}
         >
           <SiteWrapperProvider {...pageProps}>
-            <style jsx global>{`
-              html {
-                font-family: ${poppins.style.fontFamily};
-              }
-            `}</style>
             <NextNProgress color="#818cf8" />
             <Component {...pageProps} key={router.asPath} />
             <Toaster

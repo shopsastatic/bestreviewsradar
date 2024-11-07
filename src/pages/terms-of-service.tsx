@@ -236,7 +236,7 @@ Page.query = gql(`
 export function getStaticProps(ctx: GetStaticPropsContext) {
     return getNextStaticProps(ctx, {
         Page,
-        revalidate: 900,
+        revalidate: 3600,
     })
 }
 

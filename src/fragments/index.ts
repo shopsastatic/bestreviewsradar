@@ -45,7 +45,7 @@ export const NC_CATEGORY_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 			name
 			uri
 			... on Category {
-				posts (first: 12) {
+				posts (first: 6) {
 					nodes {
 						title
 						uri
@@ -82,7 +82,7 @@ export const NC_CATEGORY_CARD_FIELD_NOT_IMAGE_FRAGMENT = gql(/* GraphQL */ `
 		ncTaxonomyMeta {
 			color
 		}
-		posts (first: 20) {
+		posts (first: 10) {
 			nodes {
 				...GetPostFields
 			}
@@ -134,11 +134,8 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 	fragment NcmazFcPostFullFields on Post {
 		__typename
 		uri
-		modified
 		date
-		commentStatus
 		status
-		commentCount
 		excerpt
 		databaseId
 		title
@@ -166,72 +163,9 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 				...NcmazFcCategoryCardFieldsNotImage
 			}
 		}
-		tags(first: 20) {
-			nodes {
-				...NcmazFcTagShortFieldsFragment
-			}
-		}
 		featuredImage {
 			node {
 				...NcmazFcImageHasDetailFields
-			}
-		}
-		postFormats {
-			nodes {
-				id
-				name
-				slug
-			}
-		}
-		ncmazVideoUrl {
-			videoUrl
-		}
-		ncmazAudioUrl {
-			audioUrl
-		}
-		ncPostMetaData {
-			...NcmazFcPostMetaFullFields
-		}
-		ncmazGalleryImgs {
-			image1 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image2 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image3 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image4 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image5 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image6 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image7 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
-			}
-			image8 {
-				node {
-					...NcmazFcImageHasDetailFields
-				}
 			}
 		}
 	}
@@ -314,11 +248,6 @@ export const NC_IMAGE_MEDIA_HAS_DETAIL_FRAGMENT = gql(/* GraphQL */ `
 		altText
 		databaseId
 		sourceUrl
-		caption
-		mediaDetails {
-			height
-			width
-		}
 	}
 `)
 

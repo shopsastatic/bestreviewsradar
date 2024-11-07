@@ -1,14 +1,52 @@
 'use client'
 
-import { FC, forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { FC, forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import useIntersectionObserver from '@/hooks/useIntersectionObserver'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
 import Alert from '@/components/Alert'
 import Link from 'next/link'
 import axios from 'axios'
+import useSWR from 'swr'
 
 export interface SingleContentProps {
 	post: any
+}
+
+interface CacheData {
+	data: any;
+	timestamp: number;
+}
+
+const CACHE_KEY = 'related_prod_data';
+const CACHE_DURATION = 6 * 60 * 60 * 1000;
+
+const fetcher = async (url: string) => {
+    try {
+        const cachedData = localStorage.getItem(CACHE_KEY + url);
+        
+        if (cachedData) {
+            const parsedCache: CacheData = JSON.parse(cachedData);
+            const now = new Date().getTime();
+            
+            if (now - parsedCache.timestamp < CACHE_DURATION) {
+                return parsedCache.data;
+            }
+            localStorage.removeItem(CACHE_KEY + url);
+        }
+
+        const response = await axios.get(url);
+        const data = response.data;
+
+        localStorage.setItem(CACHE_KEY + url, JSON.stringify({
+            data,
+            timestamp: new Date().getTime()
+        }));
+
+        return data;
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
 }
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
@@ -36,30 +74,29 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	} = getPostDataFromPostFragment(post || {})
 	let NoT = numberOfToplist?.numberOfToplist as any
 
-	if(!NoT) {
+	if (!NoT) {
 		NoT = 10
 	}
 
 	const post_id = post?.databaseId
 
-	useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { data } = await axios.get(`https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
-                setDataRelated(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
+	const { data, error, isLoading } = useSWR(
+        post_id ? `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}` : null,
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            dedupingInterval: CACHE_DURATION,
+            errorRetryCount: 3
+        }
+    );
 
-        fetchData();
-    }, [post_id]);
-
-	let dataRelatedArray = [] as any
-
-	if(dataRelated?.Amazon) {
-		dataRelatedArray = Object.values(dataRelated?.Amazon);
-	}
+    const dataRelatedArray = useMemo(() => {
+        if (data?.Amazon) {
+            return Object.values(data.Amazon) as any;
+        }
+        return [];
+    }, [data]);
 
 
 	//	
@@ -280,60 +317,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			</>
 		)
 	}
-
-	const calculateRating = (rateIndex: any) => {
-		let tag = "Very Good";
-		let point = 9.7;
-
-		switch (rateIndex) {
-			case 1:
-				tag = "Exceptional";
-				point = 9.9;
-				break;
-			case 2:
-				tag = "Exceptional";
-				point = 9.7;
-				break;
-			case 3:
-				tag = "Excellent";
-				point = 9.4;
-				break;
-			case 4:
-				tag = "Excellent";
-				point = 9.2;
-				break;
-			case 5:
-				tag = "Excellent";
-				point = 9.0;
-				break;
-			case 6:
-				tag = "Excellent";
-				point = 8.9;
-				break;
-			case 7:
-				tag = "Very Good";
-				point = 8.7;
-				break;
-			case 8:
-				tag = "Very Good";
-				point = 8.5;
-				break;
-			case 9:
-				tag = "Very Good";
-				point = 8.4;
-				break;
-			case 10:
-				tag = "Good";
-				point = 8.2;
-				break;
-			default:
-				tag = "Good";
-				point = 8.0;
-				break;
-		}
-
-		return { tag, point };
-	};
 
 	const slugify = (text: string) => {
 		return text

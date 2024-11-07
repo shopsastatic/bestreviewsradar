@@ -7,43 +7,7 @@ export const NC_PRIMARY_MENU_QUERY_FRAGMENT = gql(`
         path  
         label
         parentId
-        cssClasses
         databaseId
-        ncmazfaustMenu {
-          __typename
-          isMegaMenu
-          numberOfMenuColumns
-          posts {
-            nodes {
-              id
-              ... on Post {
-                __typename
-                databaseId
-                title
-                uri
-                modified
-                date
-                excerpt
-                categories {
-                  nodes {
-                    ...NcmazFcCategoryCardFieldsNotImage
-                  }
-                }
-                featuredImage {
-                  node {
-                    ...NcmazFcImageFields
-                  }
-                }
-                postFormats {
-                  nodes {
-                    name
-                    slug
-                  }
-                }
-              }
-            }
-          }
-      }
     }
 `);
 

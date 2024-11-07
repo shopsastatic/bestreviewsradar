@@ -10,17 +10,32 @@ import PageLayout from "@/container/PageLayout";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { useRouter } from "next/router";
 import SingleHeader from "@/container/singles/SingleHeader";
+import { useEffect, useState } from "react";
 
 const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
-  //  LOADING ----------
-  if (props.loading) {
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && router.isReady && 'e' in router.query) {
+      const _post = props.data?.post || {};
+      window.open(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-admin/post.php?post=${_post.databaseId}&action=edit`, '_blank');
+      
+      const pathWithoutQuery = router.asPath.split('?')[0];
+      router.replace(pathWithoutQuery, undefined, { shallow: true });
+    }
+  }, [isMounted, router.isReady, router.query, props.data]);
+
+  if (props.loading || !router.isReady || !isMounted) {
     return <>Loading...</>;
   }
 
-  const router = useRouter();
-  const IS_PREVIEW = router.pathname === "/preview";
-
   const _post = props.data?.post || {};
+  const IS_PREVIEW = router.pathname === "/preview";
 
   const {
     title,
@@ -29,7 +44,6 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
     excerpt,
     seo
   } = getPostDataFromPostFragment(_post);
-  //
 
   return (
     <>
@@ -54,7 +68,6 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
 Component.variables = ({ databaseId }, ctx) => {
   return {
     databaseId,
-    post_databaseId: Number(databaseId || 0),
     asPreview: ctx?.asPreview,
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
@@ -62,14 +75,9 @@ Component.variables = ({ databaseId }, ctx) => {
 };
 
 Component.query = gql(`
-  query GetPostSiglePage($databaseId: ID!, $post_databaseId: Int,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetPostSiglePage($databaseId: ID!,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
     post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
     ...NcmazFcPostFullFields
-    }
-    posts(where: {isRelatedOfPostId:$post_databaseId}) {
-      nodes {
-      ...PostCardFieldsNOTNcmazMEDIA
-      }
     }
     categories(first:10, where: { orderby: COUNT, order: DESC }) {
       nodes {
