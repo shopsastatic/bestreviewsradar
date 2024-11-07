@@ -49,7 +49,6 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
 
-
   const hasChild = children && Array.isArray(children.nodes) && children.nodes.length > 0;
 
   if (!hasChild) {
@@ -102,6 +101,11 @@ Category.query = gql(`
 query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!)  {
     category(id: $id) {
        ...NcmazFcCategoryFullFieldsFragment
+       posts(first: 9, where: {orderby: {field: DATE, order: DESC}}) {
+        nodes {
+          ...NcmazFcPostCardFields
+        }
+      }
     }
     # common query for all page 
     generalSettings {
