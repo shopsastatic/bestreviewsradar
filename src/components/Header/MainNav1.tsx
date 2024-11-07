@@ -15,7 +15,7 @@ export interface Category {
 }
 
 export interface MainNav1Props {
-  menuItems: FragmentType<typeof NC_PRIMARY_MENU_QUERY_FRAGMENT>[];
+  menuItems: FragmentType<any>[];
   title?: string | null;
   description?: string | null;
 }
