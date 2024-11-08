@@ -13,13 +13,13 @@ const DynamicMenuBar = dynamic(() => import('@/components/MenuBar/MenuBar'), {
 
 export interface MainNav2Props extends MainNav1Props {}
 
-const MainNav2: FC<MainNav2Props> = ({ menuItems, description, title }) => {
+const MainNav2: FC<MainNav2Props> = ({ menuItems, description, title, sidebarItems }) => {
 	return (
 		<div className="nc-MainNav3 relative z-10 border-b border-neutral-200/70 bg-white dark:border-transparent dark:bg-neutral-900">
 			<div className="px-4 xl:container">
 				<div className="flex h-16 justify-between sm:h-20">
 					<div className="flex flex-1 items-center lg:hidden">
-						<DynamicMenuBar menuItems={menuItems} />
+						<DynamicMenuBar menuItems={menuItems} sidebarItems={sidebarItems} />
 					</div>
 
 					<div className="hidden items-center gap-x-3 sm:gap-x-8 lg:flex">
@@ -38,6 +38,7 @@ const MainNav2: FC<MainNav2Props> = ({ menuItems, description, title }) => {
 						<Navigation
 							maxItemsToShow={3}
 							menuItems={menuItems}
+							sidebarItems={sidebarItems}
 							variation="nav2"
 							className="hidden lg:flex"
 						/>
