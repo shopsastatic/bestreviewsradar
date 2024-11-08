@@ -65,7 +65,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				icon: <Smartphone className="w-5 h-5" />,
 				subCategories: children.map(child => ({
 					name: child.label,
-					slug: child.uri.replace(/\//g, '')
+					slug: child?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop()
 				}))
 			};
 		});
