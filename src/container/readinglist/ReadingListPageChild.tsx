@@ -1,6 +1,5 @@
 "use client";
 
-import { GetReadingListPageQuery } from "../../__generated__/graphql";
 import { FaustPage } from "@faustwp/core";
 import { useSelector } from "react-redux";
 import { useLazyQuery } from "@apollo/client";
@@ -16,7 +15,7 @@ import getTrans from "@/utils/getTrans";
 
 //
 
-const ReadingListPageChild: FaustPage<GetReadingListPageQuery> = (props) => {
+const ReadingListPageChild: FaustPage<any> = (props) => {
   // START ----------
   const { isReady, isAuthenticated } = useSelector(
     (state: any) => state.viewer.authorizedUser
