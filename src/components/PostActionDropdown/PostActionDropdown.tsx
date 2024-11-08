@@ -112,7 +112,7 @@ const PostActionDropdown: FC<Props> = ({
 			onCompleted: data => {
 				toast.dismiss()
 				toast.success(T['Post updated'])
-				router.refresh()
+				// router.refresh()
 			},
 			onError: error => {
 				toast.dismiss()
