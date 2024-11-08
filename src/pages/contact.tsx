@@ -80,7 +80,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
 		setSubmitStatus({ type: null, message: '' });
 
 		try {
-			const response = await fetch('https://content.bestreviewsradar.com/wp-json/custom/v1/contact-form', {
+			const response = await fetch('${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/custom/v1/contact-form', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
