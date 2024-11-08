@@ -21,32 +21,35 @@ const CACHE_KEY = 'related_prod_data';
 const CACHE_DURATION = 6 * 60 * 60 * 1000;
 
 const fetcher = async (url: string) => {
-    try {
-        const cachedData = localStorage.getItem(CACHE_KEY + url);
-        
-        if (cachedData) {
-            const parsedCache: CacheData = JSON.parse(cachedData);
-            const now = new Date().getTime();
-            
-            if (now - parsedCache.timestamp < CACHE_DURATION) {
-                return parsedCache.data;
-            }
-            localStorage.removeItem(CACHE_KEY + url);
-        }
+	try {
+		const cachedData = localStorage.getItem(CACHE_KEY + url);
 
-        const response = await axios.get(url);
-        const data = response.data;
+		if (cachedData) {
+			const parsedCache: CacheData = JSON.parse(cachedData);
+			const now = new Date().getTime();
 
-        localStorage.setItem(CACHE_KEY + url, JSON.stringify({
-            data,
-            timestamp: new Date().getTime()
-        }));
+			if (now - parsedCache.timestamp < CACHE_DURATION) {
+				return parsedCache.data;
+			}
+			localStorage.removeItem(CACHE_KEY + url);
+		}
 
-        return data;
-    } catch (error) {
-        console.error('Fetch error:', error);
-        throw error;
-    }
+		const response = await axios.get(url, {
+			maxRedirects: 25,
+			timeout: 10000
+		});
+		const data = response.data;
+
+		localStorage.setItem(CACHE_KEY + url, JSON.stringify({
+			data,
+			timestamp: new Date().getTime()
+		}));
+
+		return data;
+	} catch (error) {
+		console.error('Fetch error:', error);
+		throw error;
+	}
 }
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
@@ -81,22 +84,22 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const post_id = post?.databaseId
 
 	const { data, error, isLoading } = useSWR(
-        post_id ? `https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}` : null,
-        fetcher,
-        {
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            dedupingInterval: CACHE_DURATION,
-            errorRetryCount: 3
-        }
-    );
+		post_id ? `https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}` : null,
+		fetcher,
+		{
+			revalidateOnFocus: false,
+			revalidateOnReconnect: false,
+			dedupingInterval: CACHE_DURATION,
+			errorRetryCount: 3
+		}
+	);
 
-    const dataRelatedArray = useMemo(() => {
-        if (data?.Amazon) {
-            return Object.values(data.Amazon) as any;
-        }
-        return [];
-    }, [data]);
+	const dataRelatedArray = useMemo(() => {
+		if (data?.Amazon) {
+			return Object.values(data.Amazon) as any;
+		}
+		return [];
+	}, [data]);
 
 
 	//	
