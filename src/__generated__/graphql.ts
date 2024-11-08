@@ -42,7 +42,7 @@ export type AcfBlock = {
   renderedHtml?: Maybe<Scalars['String']['output']>;
 };
 
-/** Connection between the Categorylayout type and the ContentNode type */
+/** Connection between the NcmazfaustMenu type and the ContentNode type */
 export type AcfContentNodeConnection = Connection & ContentNodeConnection & {
   __typename?: 'AcfContentNodeConnection';
   /** Edges for the AcfContentNodeConnection connection */
@@ -102,41 +102,6 @@ export type AcfMediaItemConnectionEdge = Edge & MediaItemConnectionEdge & OneToO
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: MediaItem;
-};
-
-/** Connection between the Categorylayout type and the TermNode type */
-export type AcfTermNodeConnection = Connection & TermNodeConnection & {
-  __typename?: 'AcfTermNodeConnection';
-  /** Edges for the AcfTermNodeConnection connection */
-  edges: Array<AcfTermNodeConnectionEdge>;
-  /** The nodes of the connection, without the edges */
-  nodes: Array<TermNode>;
-  /** Information about pagination in a connection. */
-  pageInfo: AcfTermNodeConnectionPageInfo;
-};
-
-/** An edge in a connection */
-export type AcfTermNodeConnectionEdge = Edge & TermNodeConnectionEdge & {
-  __typename?: 'AcfTermNodeConnectionEdge';
-  /** A cursor for use in pagination */
-  cursor?: Maybe<Scalars['String']['output']>;
-  /** The item at the end of the edge */
-  node: TermNode;
-};
-
-/** Page Info on the &quot;AcfTermNodeConnection&quot; */
-export type AcfTermNodeConnectionPageInfo = PageInfo & TermNodeConnectionPageInfo & WpPageInfo & {
-  __typename?: 'AcfTermNodeConnectionPageInfo';
-  /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['String']['output']>;
-  /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars['Boolean']['output'];
-  /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars['Boolean']['output'];
-  /** Raw schema for page */
-  seo?: Maybe<SeoPostTypePageInfo>;
-  /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars['String']['output']>;
 };
 
 /** The &quot;AmazonShortcode&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
@@ -208,7 +173,7 @@ export type BlockWithSupportsAnchor = {
 };
 
 /** The category type */
-export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & WithAcfCategorylayout & WithAcfNcTaxonomyMeta & {
+export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermNode & MenuItemLinkable & Node & TermNode & UniformResourceIdentifiable & WithAcfNcTaxonomyMeta & {
   __typename?: 'Category';
   /** The ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<CategoryToAncestorsCategoryConnection>;
@@ -217,8 +182,6 @@ export type Category = DatabaseIdentifier & HierarchicalNode & HierarchicalTermN
    * @deprecated Deprecated in favor of databaseId
    */
   categoryId?: Maybe<Scalars['Int']['output']>;
-  /** Fields of the Categorylayout ACF Field Group */
-  categorylayout?: Maybe<Categorylayout>;
   /** Connection between the category type and its children categories. */
   children?: Maybe<CategoryToCategoryConnection>;
   /** @deprecated Deprecated in favor of using Next.js pages */
@@ -804,91 +767,6 @@ export type CategoryToTaxonomyConnectionEdge = Edge & OneToOneConnection & Taxon
   cursor?: Maybe<Scalars['String']['output']>;
   /** The node of the connection, without the edges */
   node: Taxonomy;
-};
-
-/** The &quot;Categorylayout&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type Categorylayout = AcfFieldGroup & AcfFieldGroupFields & Categorylayout_Fields & {
-  __typename?: 'Categorylayout';
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;taxonomy&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  subCategory1?: Maybe<AcfTermNodeConnection>;
-  /** Field of the &quot;taxonomy&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  subCategory2?: Maybe<AcfTermNodeConnection>;
-  /** Field of the &quot;relationship&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  topPost?: Maybe<AcfContentNodeConnection>;
-};
-
-
-/** The &quot;Categorylayout&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type CategorylayoutSubCategory1Args = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-/** The &quot;Categorylayout&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type CategorylayoutSubCategory2Args = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-/** The &quot;Categorylayout&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type CategorylayoutTopPostArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** Interface representing fields of the ACF &quot;Categorylayout&quot; Field Group */
-export type Categorylayout_Fields = {
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;taxonomy&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  subCategory1?: Maybe<AcfTermNodeConnection>;
-  /** Field of the &quot;taxonomy&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  subCategory2?: Maybe<AcfTermNodeConnection>;
-  /** Field of the &quot;relationship&quot; Field Type added to the schema as part of the &quot;Categorylayout&quot; Field Group */
-  topPost?: Maybe<AcfContentNodeConnection>;
-};
-
-
-/** Interface representing fields of the ACF &quot;Categorylayout&quot; Field Group */
-export type Categorylayout_FieldsSubCategory1Args = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-/** Interface representing fields of the ACF &quot;Categorylayout&quot; Field Group */
-export type Categorylayout_FieldsSubCategory2Args = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-/** Interface representing fields of the ACF &quot;Categorylayout&quot; Field Group */
-export type Categorylayout_FieldsTopPostArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  before?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** A Comment object */
@@ -9842,8 +9720,31 @@ export type MenuConnectionPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
+/** The &quot;MenuImage&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type MenuImage = AcfFieldGroup & AcfFieldGroupFields & MenuImage_Fields & {
+  __typename?: 'MenuImage';
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
+  menuImage?: Maybe<Scalars['String']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;MenuImage&quot; Field Group */
+export type MenuImage_Fields = {
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
+  menuImage?: Maybe<Scalars['String']['output']>;
+};
+
 /** Navigation menu items are the individual items assigned to a menu. These are rendered as the links in a navigation menu. */
-export type MenuItem = DatabaseIdentifier & Node & WithAcfNcmazfaustMenu & {
+export type MenuItem = DatabaseIdentifier & Node & WithAcfMenuImage & WithAcfNcmazfaustMenu & {
   __typename?: 'MenuItem';
   /** Connection between the MenuItem type and the MenuItem type */
   childItems?: Maybe<MenuItemToMenuItemConnection>;
@@ -9872,6 +9773,8 @@ export type MenuItem = DatabaseIdentifier & Node & WithAcfNcmazfaustMenu & {
   locations?: Maybe<Array<Maybe<MenuLocationEnum>>>;
   /** The Menu a MenuItem is part of */
   menu?: Maybe<MenuItemToMenuConnectionEdge>;
+  /** Fields of the MenuImage ACF Field Group */
+  menuImage?: Maybe<MenuImage>;
   /**
    * WP ID of the menu item.
    * @deprecated Deprecated in favor of the databaseId field
@@ -10050,6 +9953,8 @@ export type MenuItemToMenuItemLinkableConnectionEdge = Edge & MenuItemLinkableCo
 export enum MenuLocationEnum {
   /** Put the menu in the footer location */
   Footer = 'FOOTER',
+  /** Put the menu in the main_menu location */
+  MainMenu = 'MAIN_MENU',
   /** Put the menu in the primary location */
   Primary = 'PRIMARY'
 }
@@ -13186,198 +13091,6 @@ export type Previewable = {
   previewRevisionId?: Maybe<Scalars['ID']['output']>;
 };
 
-/** The &quot;ProductDatas&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatas = AcfFieldGroup & AcfFieldGroupFields & ProductDatas_Fields & {
-  __typename?: 'ProductDatas';
-  /** Field of the &quot;flexible_content&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  actions?: Maybe<Array<Maybe<ProductDatasActions_Layout>>>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  additionals?: Maybe<ProductDatasAdditionals>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  description?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  flexibleDescription?: Maybe<ProductDatasFlexibleDescription>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  general?: Maybe<ProductDatasGeneral>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  price?: Maybe<ProductDatasPrice>;
-};
-
-/** The &quot;ProductDatasActionsItemLayout&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatasActionsItemLayout = AcfFieldGroup & AcfFieldGroupFields & ProductDatasActionsItemLayout_Fields & ProductDatasActions_Layout & {
-  __typename?: 'ProductDatasActionsItemLayout';
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasActionsItemLayout&quot; Field Group */
-  actionsLink?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasActionsItemLayout&quot; Field Group */
-  stores?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatasActionsItemLayout&quot; Field Group */
-export type ProductDatasActionsItemLayout_Fields = {
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasActionsItemLayout&quot; Field Group */
-  actionsLink?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasActionsItemLayout&quot; Field Group */
-  stores?: Maybe<Scalars['String']['output']>;
-};
-
-/** Layout of the &quot;actions&quot; Field of the &quot;ProductDatas&quot; Field Group Field */
-export type ProductDatasActions_Layout = {
-  /** The name of the ACF Flex Field Layout */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-/** The &quot;ProductDatasAdditionals&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatasAdditionals = AcfFieldGroup & AcfFieldGroupFields & ProductDatasAdditionals_Fields & {
-  __typename?: 'ProductDatasAdditionals';
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasAdditionals&quot; Field Group */
-  features?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasAdditionals&quot; Field Group */
-  specifications?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatasAdditionals&quot; Field Group */
-export type ProductDatasAdditionals_Fields = {
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasAdditionals&quot; Field Group */
-  features?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasAdditionals&quot; Field Group */
-  specifications?: Maybe<Scalars['String']['output']>;
-};
-
-/** The &quot;ProductDatasFlexibleDescription&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatasFlexibleDescription = AcfFieldGroup & AcfFieldGroupFields & ProductDatasFlexibleDescription_Fields & {
-  __typename?: 'ProductDatasFlexibleDescription';
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content1?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content2?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content3?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatasFlexibleDescription&quot; Field Group */
-export type ProductDatasFlexibleDescription_Fields = {
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content1?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content2?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatasFlexibleDescription&quot; Field Group */
-  content3?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-};
-
-/** The &quot;ProductDatasGeneral&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatasGeneral = AcfFieldGroup & AcfFieldGroupFields & ProductDatasGeneral_Fields & {
-  __typename?: 'ProductDatasGeneral';
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasGeneral&quot; Field Group */
-  brand?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasGeneral&quot; Field Group */
-  globalId?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatasGeneral&quot; Field Group */
-export type ProductDatasGeneral_Fields = {
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasGeneral&quot; Field Group */
-  brand?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasGeneral&quot; Field Group */
-  globalId?: Maybe<Scalars['String']['output']>;
-};
-
-/** The &quot;ProductDatasPrice&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
-export type ProductDatasPrice = AcfFieldGroup & AcfFieldGroupFields & ProductDatasPrice_Fields & {
-  __typename?: 'ProductDatasPrice';
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  discount?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  originPrice?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  salePrice?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatasPrice&quot; Field Group */
-export type ProductDatasPrice_Fields = {
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  discount?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  originPrice?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;ProductDatasPrice&quot; Field Group */
-  salePrice?: Maybe<Scalars['String']['output']>;
-};
-
-/** Interface representing fields of the ACF &quot;ProductDatas&quot; Field Group */
-export type ProductDatas_Fields = {
-  /** Field of the &quot;flexible_content&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  actions?: Maybe<Array<Maybe<ProductDatasActions_Layout>>>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  additionals?: Maybe<ProductDatasAdditionals>;
-  /** Field of the &quot;textarea&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  description?: Maybe<Scalars['String']['output']>;
-  /**
-   * The name of the field group
-   * @deprecated Use __typename instead
-   */
-  fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  flexibleDescription?: Maybe<ProductDatasFlexibleDescription>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  general?: Maybe<ProductDatasGeneral>;
-  /** Field of the &quot;group&quot; Field Type added to the schema as part of the &quot;ProductDatas&quot; Field Group */
-  price?: Maybe<ProductDatasPrice>;
-};
-
 /** The reading setting type */
 export type ReadingSettings = {
   __typename?: 'ReadingSettings';
@@ -16459,7 +16172,7 @@ export type Settings = {
 };
 
 /** The SourceProduct type */
-export type SourceProduct = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithAuthor & NodeWithFeaturedImage & NodeWithPageAttributes & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & WithAcfProductDatas & {
+export type SourceProduct = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & NodeWithAuthor & NodeWithFeaturedImage & NodeWithPageAttributes & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
   __typename?: 'SourceProduct';
   /** Connection between the NodeWithAuthor type and the User type */
   author?: Maybe<NodeWithAuthorToUserConnectionEdge>;
@@ -16535,8 +16248,6 @@ export type SourceProduct = ContentNode & DatabaseIdentifier & MenuItemLinkable 
   previewRevisionDatabaseId?: Maybe<Scalars['Int']['output']>;
   /** Whether the object is a node in the preview state */
   previewRevisionId?: Maybe<Scalars['ID']['output']>;
-  /** Fields of the ProductDatas ACF Field Group */
-  productDatas?: Maybe<ProductDatas>;
   /** The Yoast SEO data of the ContentNode */
   seo?: Maybe<PostTypeSeo>;
   /** The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name field and the post_name column in the database for the &quot;post_objects&quot; table. */
@@ -19686,10 +19397,10 @@ export type WithAcfAmazonShortcode = {
   amazonShortcode?: Maybe<AmazonShortcode>;
 };
 
-/** Provides access to fields of the &quot;Categorylayout&quot; ACF Field Group via the &quot;categorylayout&quot; field */
-export type WithAcfCategorylayout = {
-  /** Fields of the Categorylayout ACF Field Group */
-  categorylayout?: Maybe<Categorylayout>;
+/** Provides access to fields of the &quot;MenuImage&quot; ACF Field Group via the &quot;menuImage&quot; field */
+export type WithAcfMenuImage = {
+  /** Fields of the MenuImage ACF Field Group */
+  menuImage?: Maybe<MenuImage>;
 };
 
 /** Provides access to fields of the &quot;NcPageMeta&quot; ACF Field Group via the &quot;ncPageMeta&quot; field */
@@ -19744,12 +19455,6 @@ export type WithAcfNcmazfaustMenu = {
 export type WithAcfNumberOfToplist = {
   /** Fields of the NumberOfToplist ACF Field Group */
   numberOfToplist?: Maybe<NumberOfToplist>;
-};
-
-/** Provides access to fields of the &quot;ProductDatas&quot; ACF Field Group via the &quot;productDatas&quot; field */
-export type WithAcfProductDatas = {
-  /** Fields of the ProductDatas ACF Field Group */
-  productDatas?: Maybe<ProductDatas>;
 };
 
 /** Provides access to fields of the &quot;RebuildNextjsButton&quot; ACF Field Group via the &quot;rebuildNextjsButton&quot; field */
