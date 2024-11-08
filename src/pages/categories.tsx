@@ -6,10 +6,10 @@ import Textarea from '@/components/Textarea/Textarea'
 import { FaustPage, getNextStaticProps } from '@faustwp/core'
 import PageLayout from '@/container/PageLayout'
 import {
-  GetReadingListPageQuery,
+  GetCategoriesPageDataQuery,
   NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
 import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import {
@@ -37,7 +37,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link'
 
-const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
+const Page: FaustPage<GetCategoriesPageDataQuery> = (props: any) => {
   const topCategories = [
     {
       id: 'electronics',
@@ -350,6 +350,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={null}
       pageTitle="Categories"
       generalSettings={
@@ -438,12 +439,13 @@ Page.variables = () => {
   return {
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
+    sidebarLocation: SIDEBAR_LOCATION
   }
 }
 
 // Note***: tat ca cac query trong cac page deu phai co generalSettings, no duoc su dung o compoent Wrap
 Page.query = gql(`
-  query GetReadingListData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetCategoriesPageData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     # common query for all page 
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
@@ -456,6 +458,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location: $footerLocation }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
     # thêm truy vấn để lấy danh mục cha

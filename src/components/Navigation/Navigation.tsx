@@ -9,7 +9,8 @@ const DynamicNavigationItem = dynamic(() => import('./NavigationItem'))
 
 interface Props {
 	className?: string
-	menuItems: any
+	menuItems: any,
+	sidebarItems: any
 	variation?: 'nav1' | 'nav2'
 	maxItemsToShow?: number
 }
@@ -19,6 +20,7 @@ const Navigation: FC<Props> = ({
 	menuItems,
 	variation,
 	maxItemsToShow,
+	sidebarItems
 }) => {
 	let menus = flatListToHierarchical(menuItems, {
 		idKey: 'id',

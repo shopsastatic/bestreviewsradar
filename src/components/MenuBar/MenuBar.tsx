@@ -8,10 +8,11 @@ import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 
 export interface MenuBarProps {
-	menuItems: any
+	menuItems: any,
+	sidebarItems: any,
 	className?: any
 }
-const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className, sidebarItems }) => {
 	const [isVisable, setIsVisable] = useState(false)
 	const pathname = usePathname()
 
@@ -55,6 +56,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ menuItems, className }) => {
 								<div className="w-full max-w-sm overflow-hidden transition-all">
 									<NavMobile
 										menuItems={menuItems}
+										sidebarItems={sidebarItems}
 										onClickClose={handleCloseMenu}
 									/>
 								</div>

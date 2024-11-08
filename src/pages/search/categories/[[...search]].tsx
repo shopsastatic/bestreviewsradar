@@ -12,7 +12,7 @@ import ButtonPrimary from "@/components/Button/ButtonPrimary";
 import Empty from "@/components/Empty";
 import { useRouter } from "next/router";
 import { useLazyQuery } from "@apollo/client";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
 import errorHandling from "@/utils/errorHandling";
 import getTrans from "@/utils/getTrans";
@@ -59,40 +59,6 @@ const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props: any) 
     }
   );
 
-  const handleClickShowMore = () => {
-    if (!getCategoriesBySearchResult.called) {
-      return getCategoriesBySearch({
-        variables: {
-          search,
-          after: initPageInfo?.endCursor,
-        },
-      });
-    }
-
-    getCategoriesBySearchResult.fetchMore({
-      variables: {
-        search,
-        after: getCategoriesBySearchResult.data?.categories?.pageInfo.endCursor,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult || !fetchMoreResult.categories?.nodes) {
-          return prev;
-        }
-        return {
-          ...prev,
-          categories: {
-            ...prev.categories,
-            nodes: [
-              ...(prev.categories?.nodes || []),
-              ...(fetchMoreResult.categories?.nodes || []),
-            ],
-            pageInfo: fetchMoreResult.categories?.pageInfo,
-          },
-        };
-      },
-    });
-  };
-
   // data for render
   let currentCats = (initCategories ||
     []) as NcmazFcCategoryFullFieldsFragmentFragment[];
@@ -116,6 +82,7 @@ const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props: any) 
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={null}
       pageTitle={"Search"}
       generalSettings={
@@ -146,11 +113,12 @@ Page.variables = ({ params }) => {
     first: GET_CATEGORIES_FIRST_COMMON,
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
+    sidebarLocation: SIDEBAR_LOCATION
   };
 };
 
 Page.query = gql(`
-  query SearchPageQueryGetCategoriesBySearch ( $first: Int,  $search: String = "", $after: String, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum! )  {
+  query SearchPageQueryGetCategoriesBySearch ( $first: Int,  $search: String = "", $after: String, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!)  {
     categories (first: $first, after: $after, where: {search: $search, }) {
         nodes {
              ...NcmazFcCategoryFullFieldsFragment
@@ -173,6 +141,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
     # end common query

@@ -16,6 +16,7 @@ export interface Category {
 
 export interface MainNav1Props {
   menuItems: FragmentType<any>[];
+  sidebarItems: FragmentType<any>[];
   title?: string | null;
   description?: string | null;
 }
@@ -92,7 +93,7 @@ const LoadingSpinner = () => (
   <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-900 border-t-transparent" />
 );
 
-const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
+const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description, sidebarItems }) => {
   const router = useRouter();
   const [isShowResults, setIsShowResults] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -147,7 +148,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
               />
             </Link>
             <div className="items-center hidden md:flex">
-              <MenuBar menuItems={menuItems} />
+              <MenuBar menuItems={menuItems} sidebarItems={sidebarItems}/>
             </div>
             <div ref={searchContainerRef} className="relative ml-10 hidden min-[895px]:block md:min-w-[400px] lg:min-w-[500px] xl:min-w-[700px]">
               <form onSubmit={handleSubmit} className="relative">
@@ -189,6 +190,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
             <SearchIconBtn className="!text-white hidden max-[895px]:block" />
             <MenuBar
               menuItems={menuItems}
+              sidebarItems={sidebarItems}
               className="p-0 ml-0 block md:hidden"
             />
           </div>
@@ -199,6 +201,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
         <div className="max-w-[1200px] m-auto overflow-x-auto overflow-y-hidden [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 hover:[&::-webkit-scrollbar-thumb]:bg-white/40">
           <Navigation
             menuItems={menuItems}
+            sidebarItems={sidebarItems}
             className="flex text-white"
           />
         </div>

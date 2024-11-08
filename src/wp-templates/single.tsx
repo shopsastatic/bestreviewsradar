@@ -7,7 +7,7 @@ import { FaustTemplate } from "@faustwp/core";
 import SingleContent from "@/container/singles/SingleContent";
 import { getPostDataFromPostFragment } from "@/utils/getPostDataFromPostFragment";
 import PageLayout from "@/container/PageLayout";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import { useRouter } from "next/router";
 import SingleHeader from "@/container/singles/SingleHeader";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  console.log(props)
 
   useEffect(() => {
     setIsMounted(true);
@@ -50,6 +51,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.sourceUrl}
         pageTitle={title}
         pageDescription={seo?.metaDesc || excerpt.replace(/<[^>]+>/g, '') || ""}
@@ -71,11 +73,12 @@ Component.variables = ({ databaseId }, ctx) => {
     asPreview: ctx?.asPreview,
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
+    sidebarLocation: SIDEBAR_LOCATION
   };
 };
 
 Component.query = gql(`
-  query GetPostSiglePage($databaseId: ID!,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetPostSiglePage($databaseId: ID!,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
     ...NcmazFcPostFullFields
     }
@@ -95,6 +98,11 @@ Component.query = gql(`
     footerMenuItems: menuItems(where: {location:$footerLocation}, first: 20) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
   }

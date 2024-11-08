@@ -7,7 +7,7 @@ import Alert from "@/components/Alert";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
 import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getPostFormatDataFromFragment } from "@/utils/getPostFormatDataFromFragment";
 import { FaustTemplate } from "@faustwp/core";
@@ -61,6 +61,7 @@ const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={null}
         pageTitle={"Archive " + name}
         pageDescription={description || ""}
@@ -90,10 +91,11 @@ Archive.variables = ({ uri }) => ({
   first: GET_POSTS_FIRST_COMMON,
   headerLocation: PRIMARY_LOCATION,
   footerLocation: FOOTER_LOCATION,
+  sidebarLocation: SIDEBAR_LOCATION
 });
 
 Archive.query = gql(`
- query PageArchiveGetArchive($uri: String! = "", $first: Int, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+ query PageArchiveGetArchive($uri: String! = "", $first: Int, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
   nodeByUri(uri: $uri) {
       uri
       id
@@ -113,6 +115,11 @@ Archive.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
     # end common query for all page

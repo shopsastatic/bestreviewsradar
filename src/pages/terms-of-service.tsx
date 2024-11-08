@@ -2,11 +2,11 @@ import { gql } from '@/__generated__'
 import { FaustPage, getNextStaticProps } from '@faustwp/core'
 import PageLayout from '@/container/PageLayout'
 import {
-    GetReadingListPageQuery,
+    GetAffDisPageQuery,
     NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
 import Heading from '@/components/Heading/Heading'
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
 import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import {
@@ -19,11 +19,12 @@ import {
     Scale
 } from 'lucide-react';
 
-const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
+const Page: FaustPage<GetAffDisPageQuery> = (props: any) => {
     return (
         <PageLayout
             headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
             footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+            sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
             pageFeaturedImageUrl={null}
             pageTitle="Terms Of Service"
             generalSettings={
@@ -211,11 +212,12 @@ Page.variables = () => {
     return {
         headerLocation: PRIMARY_LOCATION,
         footerLocation: FOOTER_LOCATION,
+        sidebarLocation: SIDEBAR_LOCATION
     }
 }
 
 Page.query = gql(`
-  query GetReadingListPage($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetTermsPage($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     # common query for all page 
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
@@ -228,6 +230,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
   }

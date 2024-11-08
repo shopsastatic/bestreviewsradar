@@ -3,7 +3,7 @@ import { FaustPage, getNextStaticProps } from "@faustwp/core";
 import { gql } from "@/__generated__";
 import { GetAuthorWithPostsQuery } from "@/__generated__/graphql";
 import React from "react";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import AuthorPostsChild from "@/container/author/AuthorPostsChild";
 import Page404Content from "@/container/404Content";
 
@@ -38,11 +38,12 @@ Page.variables = ({ params }) => {
     id: params?.slug,
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
+    sidebarLocation: SIDEBAR_LOCATION
   };
 };
 
 Page.query = gql(`
-  query GetAuthorWithPosts($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetAuthorWithPosts($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     user(id: $id, idType: SLUG) {
       ...NcmazFcUserFullFields
       posts(first:  12, where: {orderby: {field: DATE, order: DESC}}) {
@@ -63,6 +64,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 20) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
     # end common query for all page

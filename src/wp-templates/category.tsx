@@ -8,7 +8,7 @@ import PageLayout from "@/container/PageLayout";
 import ArchiveLayoutChild from "@/container/archives/ArchieveLayoutChild";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
 import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getCatgoryDataFromCategoryFragment } from "@/utils/getCatgoryDataFromCategoryFragment";
 import { FaustTemplate } from "@faustwp/core";
@@ -72,6 +72,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
       pageTitle={"Category " + (props?.data?.category?.seo?.title ?? name)}
       pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
@@ -95,10 +96,11 @@ Category.variables = ({ id }) => ({
   id,
   headerLocation: PRIMARY_LOCATION,
   footerLocation: FOOTER_LOCATION,
+  sidebarLocation: SIDEBAR_LOCATION
 });
 
 Category.query = gql(`
-query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!)  {
+query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!)  {
     category(id: $id) {
        ...NcmazFcCategoryFullFieldsFragment
        posts(first: 9, where: {orderby: {field: DATE, order: DESC}}) {
@@ -119,6 +121,11 @@ query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $foo
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 40) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
  }`);

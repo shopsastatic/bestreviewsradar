@@ -20,7 +20,7 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
 } from "../__generated__/graphql";
 import { FaustTemplate, flatListToHierarchical } from "@faustwp/core";
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
 import MyWordPressBlockViewer from "@/components/MyWordPressBlockViewer";
 import Link from "next/link";
@@ -1048,6 +1048,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
         pageTitle={title}
         generalSettings={
@@ -1689,12 +1690,13 @@ Page.variables = ({ databaseId }, ctx) => {
     asPreview: ctx?.asPreview,
     headerLocation: PRIMARY_LOCATION,
     footerLocation: FOOTER_LOCATION,
+    sidebarLocation: SIDEBAR_LOCATION
   };
 };
 
 // Note***: tat ca cac query trong cac page deu phai co generalSettings, no duoc su dung o compoent Wrap
 Page.query = gql(`
-  query GetPage($databaseId: ID!, $asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetPage($databaseId: ID!, $asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     page(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       featuredImage {
@@ -1716,6 +1718,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 40) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
   }

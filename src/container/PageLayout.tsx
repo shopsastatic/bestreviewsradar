@@ -15,6 +15,7 @@ interface Props {
   pageTitle?: string | null | undefined;
   headerMenuItems?: any;
   footerMenuItems?: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null;
+  sidebarMenuItems?: any;
   pageFeaturedImageUrl?: string | null | undefined;
   generalSettings?: NcgeneralSettingsFieldsFragmentFragment | null | undefined;
   pageDescription?: string | null | undefined;
@@ -27,6 +28,7 @@ const PageLayout: FC<Props> = ({
   children,
   footerMenuItems,
   headerMenuItems,
+  sidebarMenuItems,
   pageFeaturedImageUrl,
   pageTitle,
   generalSettings,
@@ -50,6 +52,7 @@ const PageLayout: FC<Props> = ({
         siteTitle={generalSettings?.title}
         siteDescription={generalSettings?.description}
         menuItems={headerMenuItems || []}
+        sidebarItems={sidebarMenuItems || []}
       />
 
       {children}

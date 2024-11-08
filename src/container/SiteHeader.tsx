@@ -12,46 +12,28 @@ export const { useGlobalState: useGlobalStateHeaderStyle } =
 	createGlobalState(initialState)
 
 interface Props {
-	menuItems: any
+	menuItems: any,
+	sidebarItems: any,
 	siteTitle?: string | null
 	siteDescription?: string | null
 }
 
-const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
+const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle, sidebarItems }) => {
 	//
 	useThemeMode()
 	const [headerStyle] = useGlobalStateHeaderStyle('headerStyle')
-
+	
 	//
 
 	const renderHeader = () => {
-		switch (headerStyle) {
-			case 'style1':
-				return (
-					<MainNav1
-						menuItems={menuItems}
-						title={siteTitle}
-						description={siteDescription}
-					/>
-				)
-			case 'style2':
-				return (
-					<MainNav1
-						menuItems={menuItems}
-						title={siteTitle}
-						description={siteDescription}
-					/>
-				)
-
-			default:
-				return (
-					<MainNav1
-						menuItems={menuItems}
-						title={siteTitle}
-						description={siteDescription}
-					/>
-				)
-		}
+		return (
+			<MainNav1
+				menuItems={menuItems}
+				title={siteTitle}
+				description={siteDescription}
+				sidebarItems={sidebarItems}
+			/>
+		)
 	}
 
 	return (

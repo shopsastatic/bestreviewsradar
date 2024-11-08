@@ -2,10 +2,10 @@ import { gql } from '@/__generated__'
 import { FaustPage, getNextStaticProps } from '@faustwp/core'
 import PageLayout from '@/container/PageLayout'
 import {
-    GetReadingListPageQuery,
+    GetAboutPageDataQuery,
     NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
-import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
+import { FOOTER_LOCATION, PRIMARY_LOCATION, SIDEBAR_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
 import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import {
@@ -21,7 +21,7 @@ import {
     Book
   } from 'lucide-react';
 
-const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
+const Page: FaustPage<GetAboutPageDataQuery> = (props: any) => {
     const milestones = [
         {
             year: 2019,
@@ -82,6 +82,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
         <PageLayout
             headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
             footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+            sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
             pageFeaturedImageUrl={null}
             pageTitle="About"
             generalSettings={
@@ -201,12 +202,13 @@ Page.variables = () => {
     return {
         headerLocation: PRIMARY_LOCATION,
         footerLocation: FOOTER_LOCATION,
+        sidebarLocation: SIDEBAR_LOCATION
     }
 }
 
 // Note***: tat ca cac query trong cac page deu phai co generalSettings, no duoc su dung o compoent Wrap
 Page.query = gql(`
-  query GetReadingListData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetAboutPageData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!, $sidebarLocation: MenuLocationEnum!) {
     # common query for all page 
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
@@ -219,6 +221,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location: $footerLocation }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: {location:$sidebarLocation}, first: 200) {
+      nodes {
+        ...sidebarMenuFieldsFragment
       }
     }
     # thêm truy vấn để lấy danh mục cha
