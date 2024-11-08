@@ -86,7 +86,7 @@ const ArchiveLayout: FC<any> = ({
 								<div>
 									<div className='flex justify-between items-center mb-10'>
 										<h2>{child2?.name}</h2>
-										<Link href={child2?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
+										<Link href={categorySlug(child2?.uri) ?? "/"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>
@@ -112,7 +112,7 @@ const ArchiveLayout: FC<any> = ({
 								<div>
 									<div className='flex justify-between items-center mb-10 mt-14'>
 										<h2>{child3?.name}</h2>
-										<Link href={child3?.uri ?? "/"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
+										<Link href={categorySlug(child3?.uri) ?? "/"} className='hover:underline text-[#2c5bb3]'><p className='min-w-max'>View More</p></Link>
 									</div>
 
 									<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 mt-4'>

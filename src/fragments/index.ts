@@ -167,6 +167,20 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		}
 	}
 `)
+
+export const POST_BY_CHILD_CATEGORY = gql(/* GraphQL */ `
+	fragment ChildCategoryPosts on Post {
+		title
+		uri
+		featuredImage {
+			node {
+				altText
+				sourceUrl
+			}
+		}
+	}
+`)
+
 export const NC_POST_CARD_FRAGMENT = gql(/* GraphQL */ `
 	fragment NcmazFcPostCardFields on Post {
 		...NcmazFcPostCardFieldsNOTNcmazGalleryImgs
