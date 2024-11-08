@@ -1,3 +1,4 @@
+export const runtime = "edge"
 import { gql } from "@/__generated__";
 import React, { useState } from 'react';
 import {
