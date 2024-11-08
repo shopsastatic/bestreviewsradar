@@ -39,7 +39,7 @@ const PageLayout: FC<Props> = ({
   return (
     <>
       <SEO
-        title={pageTitle || generalSettings?.title}
+        title={pageTitle || generalSettings?.title || ""}
         description={pageDescription || generalSettings?.description || ""}
         imageUrl={pageFeaturedImageUrl}
         metaRobots={metaRobots || "index"}
