@@ -197,7 +197,7 @@ export default function Footer({ menuItems }: any) {
 							<ul className="space-y-4">
 								{menuItems?.length > 0 && menuItems?.slice(0, 8)?.map((link: any, linkIndex: any) => (
 									<li key={linkIndex}>
-										<Link href={link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+										<Link href={"/" + (link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/")} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
 											{link?.label}
 										</Link>
 									</li>
@@ -209,7 +209,7 @@ export default function Footer({ menuItems }: any) {
 							<ul className="space-y-4">
 								{menuItems?.length > 8 && menuItems?.slice(8, 20)?.map((link: any, linkIndex: any) => (
 									<li key={linkIndex}>
-										<Link href={link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+										<Link href={"/" + (link?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/")} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
 											{link?.label}
 										</Link>
 									</li>
@@ -221,7 +221,7 @@ export default function Footer({ menuItems }: any) {
 							<ul className="space-y-4">
 								{about_links.map((link: any, linkIndex: any) => (
 									<li key={linkIndex}>
-										<Link href={link?.slug ?? "/"} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
+										<Link href={"/" + (link?.slug ?? "/")} className="text-gray-400 text-[15px] hover:text-[#ffa125] hover:underline hover:underline-offset-4 transition-colors">
 											{link?.name}
 										</Link>
 									</li>

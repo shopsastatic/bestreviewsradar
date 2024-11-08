@@ -316,7 +316,7 @@ const NavigationItem: FC<any> = ({
 			<div className="flex h-12 flex-shrink-0 items-center">
 				<ItemC
 					className="relative inline-flex cursor-pointer items-center text-white px-7 py-3.5 text-sm hover:text-[#ffa125] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[#ffa125]"
-					href={isLink ? item.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() || '' : ''}
+					href={isLink ? ("/" + item.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop()) || '' : ''}
 				>
 					{item.label}
 					{item.children?.length ? (
