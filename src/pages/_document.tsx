@@ -24,7 +24,7 @@ export default class Document extends NextDocument {
 				dir={process.env.NEXT_PUBLIC_SITE_DIRECTION}
 			>
 				<Head>
-					<link rel="shortcut icon" href={v('/favicons.ico')} />
+					<link rel="shortcut icon" href={v('/favicon.ico')} />
 					<meta name="theme-color" content="#172A53" />
 					<script
 						dangerouslySetInnerHTML={{

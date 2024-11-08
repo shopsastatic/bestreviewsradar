@@ -15,7 +15,6 @@ export type FooterNavItemType = NcFooterMenuFieldsFragmentFragment & {
 }
 
 export default function Footer({ menuItems }: any) {
-	console.log(menuItems)
 	const [email, setEmail] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [status, setStatus] = useState<{

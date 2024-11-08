@@ -79,9 +79,6 @@ export const NC_CATEGORY_CARD_FIELD_NOT_IMAGE_FRAGMENT = gql(/* GraphQL */ `
 		count
 		databaseId
 		parentDatabaseId
-		ncTaxonomyMeta {
-			color
-		}
 		posts (first: 10) {
 			nodes {
 				...GetPostFields
@@ -184,8 +181,6 @@ export const NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT = gql(/* GraphQL */ `
 		status
 		modified
 		date
-		commentStatus
-		commentCount
 		excerpt
 		author {
 			node {
