@@ -1,10 +1,9 @@
-import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
 export default function Banner() {
-	const description = NC_SITE_SETTINGS.top_banner?.description
-	const enable = NC_SITE_SETTINGS.top_banner?.enable
-	const end_link = NC_SITE_SETTINGS.top_banner?.end_link || {
+	const description = ""
+	const enable = true
+	const end_link = {
 		url: '',
 		text: '',
 		new_tab: false,

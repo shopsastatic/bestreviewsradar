@@ -9,9 +9,6 @@ const NcmazFaustBlockCta: WordPressBlock<
 > = props => {
 	const { renderedHtml } = props || {}
 
-	const initErrorMessage = NC_SITE_SETTINGS.subcription_widget?.error_message
-	const initSuccessMessage =
-		NC_SITE_SETTINGS.subcription_widget?.success_message || 'Thank you!'
 	const blockRef = React.useRef<HTMLDivElement>(null)
 
 	return (

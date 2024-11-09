@@ -59,17 +59,6 @@ const quickActions: PersonType[] = [
 		uri: '/search/categories/',
 	},
 ]
-const explores: PersonType[] =
-	NC_SITE_SETTINGS.search_page?.recommended_searches?.items
-		?.map((item, index) => {
-			return {
-				type: 'recommended_searches',
-				name: item?.title || '',
-				icon: SearchIcon,
-				uri: item?.url || '/search/posts/' + item?.title,
-			}
-		})
-		.filter(Boolean) || []
 
 interface Props {
 	renderTrigger?: () => ReactNode

@@ -2,8 +2,8 @@ import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import { FolderIcon } from '@heroicons/react/24/outline'
 
 export default function Empty({
-	mainText = NC_SITE_SETTINGS.empty_state?.title || '',
-	subText = NC_SITE_SETTINGS.empty_state?.description || '',
+	mainText = '',
+	subText = '',
 	className = 'text-center py-8',
 }: {
 	className?: string

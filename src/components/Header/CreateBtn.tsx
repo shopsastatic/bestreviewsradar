@@ -20,10 +20,6 @@ const CreateBtn: FC<Props> = ({ className = 'hidden md:block ' }) => {
 	const { openLoginModal } = useLoginModal()
 	const T = getTrans()
 
-	if (NC_SITE_SETTINGS['submissions-settings']?.enable === false) {
-		return null
-	}
-
 	return (
 		<div className={`LangDropdown ${className}`}>
 			<Link
