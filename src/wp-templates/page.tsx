@@ -12,7 +12,10 @@ import {
   HomeIcon,
   Settings,
   Speaker,
-  ArrowLeft
+  ArrowLeft,
+  Home,
+  Monitor,
+  Heart
 } from 'lucide-react';
 import EntryHeader from "../components/entry-header";
 import {
@@ -49,118 +52,92 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
   if (props.__SEED_NODE__?.isFrontPage) {
     const title = "Homepage";
     const categories = [
-      { name: 'Technology', href: '#', icon: <Star size={14} /> },
-      { name: 'Home & Living', href: '#', icon: <Award size={14} /> },
-      { name: 'Health', href: '#', icon: <ThumbsUp size={14} /> },
-      { name: 'Sports', href: '#', icon: <Clock size={14} /> }
-    ];
-
-    const comparisons = [
-      {
-        id: 1,
-        title: 'Best Gaming Laptops 2024',
-        description: 'In-depth comparison of top gaming laptops, featuring the latest GPUs and processors',
-        image: 'https://images.unsplash.com/photo-1684127987312-43455fd95925?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Technology',
-        trending: true,
-        metrics: {
-          reviews: '250+',
-          updated: 'Weekly',
-          score: '9.8/10'
-        }
-      },
-      {
-        id: 2,
-        title: 'Smart Home Security',
-        description: 'Compare leading home security systems with AI-powered features',
-        image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Home & Living',
-        featured: true,
-        metrics: {
-          reviews: '180+',
-          updated: 'Monthly',
-          score: '9.5/10'
-        }
-      },
-      {
-        id: 3,
-        title: 'Premium Headphones',
-        description: 'Expert analysis of noise-cancelling and sound quality performance',
-        image: 'https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?q=80&w=2013&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Technology',
-        metrics: {
-          reviews: '150+',
-          updated: 'Weekly',
-          score: '9.3/10'
-        }
-      },
-      {
-        id: 4,
-        title: 'Fitness Trackers',
-        description: 'Comprehensive guide to the latest health monitoring devices',
-        image: 'https://plus.unsplash.com/premium_photo-1681433386259-1ea114ca923d?q=80&w=2060&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Health',
-        featured: true,
-        metrics: {
-          reviews: '200+',
-          updated: 'Monthly',
-          score: '9.4/10'
-        }
-      }
+      { name: 'Electronics', href: '/electronics/', icon: <Smartphone size={14} /> },
+      { name: 'Home & Kitchen', href: '/home-kitchen/', icon: <Home size={14} /> },
+      { name: 'Computers', href: '/computers-accessories-277298/', icon: <Monitor size={14} /> },
+      { name: 'Health & Household', href: '/health-household/', icon: <Heart size={14} /> }
     ];
 
     const comparisons1 = [
       {
         id: 1,
-        title: 'Top Travel Photography Tips 2024',
+        title: '12 Best Commercial Vacuum Sealers for Food Storage',
         description: 'Professional photography techniques for capturing stunning travel moments and landscapes',
-        image: 'https://images.unsplash.com/photo-1684127987312-43455fd95925?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Photography',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/11/vacuum-sealer-2048px-9836-2x1-1.webp',
+        category: 'Vacuum Sealers',
         trending: true,
+        slug: "/top-commercial-vacuum-sealer-147832/",
         metrics: {
-          reviews: '180+',
           updated: 'Weekly',
           score: '9.7/10'
         }
       },
       {
         id: 2,
-        title: 'Sustainable Garden Design',
+        title: '8 Premium Smartphone Breathalyzers Based on Lab Testing',
         description: 'Create an eco-friendly garden with water-saving and native plant techniques',
-        image: 'https://plus.unsplash.com/premium_photo-1668930508685-af79c83e23af?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Gardening',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/11/top-breathalyzers.webp',
+        category: 'Breathalyzers',
         featured: true,
+        slug: "/top-smartphone-breathalyzers-741852/",
         metrics: {
-          reviews: '165+',
           updated: 'Monthly',
           score: '9.4/10'
         }
       },
       {
         id: 3,
-        title: 'Gourmet Coffee Brewing Guide',
+        title: 'Top 10 Stealth Radar Detectors For Urban Driving 2024',
         description: 'Master the art of brewing perfect coffee with expert barista techniques',
-        image: 'https://images.unsplash.com/photo-1495774856032-8b90bbb32b32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Food & Beverage',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/11/Best-Radar-Detector.jpg',
+        category: 'Radar Detectors',
+        slug: "/best-stealth-radar-detectors-963852/",
         metrics: {
-          reviews: '220+',
           updated: 'Weekly',
           score: '9.6/10'
         }
       },
+    ];
+
+    const comparisons = [
       {
-        id: 4,
-        title: 'Indoor Rock Climbing Essentials',
-        description: 'Complete guide to getting started with indoor climbing and bouldering',
-        image: 'https://plus.unsplash.com/premium_photo-1663956122265-2671aa5c955f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        category: 'Sports',
-        featured: true,
+        id: 1,
+        title: 'Top Grounding Bed Sheets Reviews for Better Sleep 2024',
+        description: 'In-depth comparison of top gaming laptops, featuring the latest GPUs and processors',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/10/grounding-bed-sheets-review-5.jpg',
+        category: 'Sheets & Pillowcases',
+        trending: true,
+        slug: "/grounding-bed-sheets-review/",
         metrics: {
-          reviews: '175+',
+          updated: 'Weekly',
+          score: '9.8/10'
+        }
+      },
+      {
+        id: 2,
+        title: 'Top 15 Smart Home Security Cameras - Professional Review 2024',
+        description: 'Compare leading home security systems with AI-powered features',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/10/security-cameras-scaled.jpg',
+        category: 'Surveillance Cameras',
+        featured: true,
+        slug: "/top-smart-home-security-cameras-394756/",
+        metrics: {
           updated: 'Monthly',
+          score: '9.5/10'
+        }
+      },
+      {
+        id: 3,
+        title: 'Top 5 Premium Brand Wireless Earbuds Ranked',
+        description: 'Expert analysis of noise-cancelling and sound quality performance',
+        image: 'https://content.bestreviewsradar.com/wp-content/uploads/2024/10/best-wireless-earbuds-scaled.jpg',
+        category: 'Earbud Headphones',
+        slug: "/top-5-premium-brand-wireless-earbuds-ranked/",
+        metrics: {
+          updated: 'Weekly',
           score: '9.3/10'
         }
-      }
+      },
     ];
 
     const steps = [
@@ -371,11 +348,12 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
       popular: [
         {
           id: 1,
-          title: "Best Gaming Laptops of 2024",
-          category: "Technology",
-          image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?q=80&w=1957&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Top 12 High-Refresh Gaming Monitors Worth Every Dollar",
+          category: "Monitors",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/gaming-monitors.jpg",
           rating: 4.8,
           reviewCount: 1250,
+          slug: "/top-gaming-monitors-refresh-rate-369741/",
           badges: ['Editor\'s Choice', 'Best Value'],
           summary: "Comprehensive comparison of top gaming laptops with the latest GPUs and processors",
           lastUpdated: "2 days ago",
@@ -383,11 +361,12 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
         },
         {
           id: 2,
-          title: "Top Rated Air Purifiers",
-          category: "Home",
-          image: "https://plus.unsplash.com/premium_photo-1690291494818-068ed0f63c42?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Best Air Purifiers 2024 - Top 10 Expert Tested Models",
+          category: "Tools & Home Improvement",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-air-purifiers-2024.jpg",
           rating: 4.9,
           reviewCount: 980,
+          slug: "/best-air-purifiers-2024-top-10-expert-tested-models/",
           badges: ['Best Seller', 'Most Reviewed'],
           summary: "In-depth analysis of the most effective air purifiers for different room sizes",
           lastUpdated: "1 week ago",
@@ -395,11 +374,12 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
         },
         {
           id: 3,
-          title: "Premium Noise-Cancelling Headphones",
-          category: "Audio",
-          image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Best Noise-Cancelling Gaming Headsets 2024",
+          category: "Video Games",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-noise-cancelling-gaming-headsets.jpg",
           rating: 4.7,
           reviewCount: 856,
+          slug: "/best-noise-cancelling-gaming-headsets-2024/",
           badges: ['Premium Pick'],
           summary: "Detailed comparison of high-end noise-cancelling headphones with sound quality tests",
           lastUpdated: "3 days ago",
@@ -409,33 +389,36 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
       guides: [
         {
           id: 4,
-          title: "How to Choose the Perfect Coffee Machine",
-          category: "Kitchen",
-          image: "https://plus.unsplash.com/premium_photo-1661281243564-5acf9a1797ed?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "10 Premium Smart Ceiling Fans with Voice Control 2024",
+          category: "Ceiling Fans",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-ceiling-fans-scaled.jpeg",
           readCount: "125K",
           badges: ['Beginner Friendly'],
+          slug: "/best-smart-ceiling-fans-voice-control-123567/",
           summary: "Everything you need to know about different types of coffee makers and brewing methods",
           lastUpdated: "1 day ago",
           readTime: "20 min read"
         },
         {
           id: 5,
-          title: "Smart Home Security Buying Guide",
-          category: "Home Security",
-          image: "https://images.unsplash.com/photo-1716789340025-4eb6813bc8cb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Professional-Grade Solar Security Cameras Based on Field Tests",
+          category: "Bullet Cameras",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-security-cameras.jpg",
           readCount: "98K",
           badges: ['Expert Guide'],
+          slug: "/best-solar-surveillance-cameras-test-845627/",
           summary: "Complete guide to choosing and setting up your smart home security system",
           lastUpdated: "4 days ago",
           readTime: "25 min read"
         },
         {
           id: 6,
-          title: "Understanding 4K TV Technologies",
-          category: "Electronics",
-          image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "12 Best High-End Bookshelf Speakers Under $1000 – Expert Rated",
+          category: "Bookshelf Speakers",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-bookshelf-speakers-scaled.jpg",
           readCount: "156K",
           badges: ['Technical Guide'],
+          slug: "/best-high-end-bookshelf-speakers-budget-928374/",
           summary: "Detailed explanation of different TV technologies and how to choose the right one",
           lastUpdated: "1 week ago",
           readTime: "22 min read"
@@ -444,33 +427,36 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
       latest: [
         {
           id: 7,
-          title: "2024 Smartphone Comparison",
-          category: "Mobile",
-          image: "https://images.unsplash.com/photo-1722710682945-76bc77e18db2?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Top 10 Stealth Radar Detectors For Urban Driving 2024",
+          category: "Radar Detectors",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-radardetector.jpg",
           rating: 4.9,
           badges: ['New', 'Trending'],
+          slug: "/best-stealth-radar-detectors-963852/",
           summary: "Latest comparison of flagship smartphones with camera and performance tests",
           lastUpdated: "Today",
           readTime: "16 min read"
         },
         {
           id: 8,
-          title: "Best Robot Vacuums Updated",
-          category: "Smart Home",
-          image: "https://plus.unsplash.com/premium_photo-1726916921674-a1c318ad465e?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "Top-Rated Robot Vacuums for Pet Hair - Expert Reviews",
+          category: "Robotic Vacuums",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/best-robot-vacuums-20.jpg",
           rating: 4.8,
           badges: ['Updated', 'Price Drop Alert'],
+          slug: "/top-rated-robot-vacuums-for-pet-hair-expert-reviews/",
           summary: "Newly updated comparison with the latest models and price changes",
           lastUpdated: "Yesterday",
           readTime: "14 min read"
         },
         {
           id: 9,
-          title: "Gaming Monitor Roundup",
-          category: "Gaming",
-          image: "https://images.unsplash.com/photo-1725274041617-b1c998bb5b9c?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          title: "4K Gaming Monitors After Extensive Testing",
+          category: "Monitors",
+          image: "https://content.bestreviewsradar.com/wp-content/uploads/2024/11/4k-gaming-monitors.jpg",
           rating: 4.7,
           badges: ['New Models Added'],
+          slug: "/best-4k-gaming-monitors-tested-147258/",
           summary: "Updated review including the latest gaming monitors with HDMI 2.1",
           lastUpdated: "2 days ago",
           readTime: "19 min read"
@@ -1007,24 +993,27 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
 
     const trendingTopics = [
       {
-        title: "iPhone 15 Pro vs Samsung S24 Ultra",
+        title: "Best 10 Personal Breathalyzers in 2024",
         views: "125K",
         rating: 4.8,
-        category: "Smartphones",
+        category: "Breathalyzers",
+        slug: "/best-personal-breathalyzers-147823/",
         date: "Updated today"
       },
       {
-        title: "Best Gaming Laptops of 2024",
+        title: "Premium Baby Monitors - Luxury Features Ranked",
         views: "98K",
         rating: 4.9,
-        category: "Laptops",
+        category: "Baby Monitors",
+        slug: "/premium-baby-monitors-luxury-features-ranked/",
         date: "2 days ago"
       },
       {
-        title: "Top Wireless Earbuds Compared",
+        title: "10 Most Comfortable Wireless Earbuds Reviewed",
         views: "86K",
         rating: 4.7,
         category: "Audio",
+        slug: "/10-most-comfortable-wireless-earbuds-reviewed/",
         date: "1 day ago"
       }
     ];
@@ -1032,15 +1021,17 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
     const featuredCollections = [
       {
         icon: <Settings className="w-6 h-6" />,
-        title: "Tech Essentials",
+        title: "Robotic Vacuums",
         description: "Must-have gadgets for 2024",
-        color: "from-blue-500/20 to-purple-500/20"
+        color: "from-blue-500/20 to-purple-500/20",
+        slug: "/robotic-vacuums-392484/"
       },
       {
         icon: <Speaker className="w-6 h-6" />,
         title: "Audio Guide",
         description: "Ultimate sound comparison",
-        color: "from-green-500/20 to-blue-500/20"
+        color: "from-green-500/20 to-blue-500/20",
+        slug: "/earbud-headphones-961978/"
       }
     ];
 
@@ -1140,14 +1131,15 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                     {activeView === 'trending' ? (
                       /* Trending Topics */
                       trendingTopics.map((topic, index) => (
-                        <div
+                        <Link
+                          href={topic?.slug ?? "/"}
                           key={index}
-                          className="p-4 rounded-xl bg-gray-800/50 hover:bg-gray-700/50 transition-colors cursor-pointer"
+                          className="block w-full p-4 rounded-xl bg-gray-800/50 hover:bg-gray-700/50 transition-colors cursor-pointer"
                         >
                           <div className="flex justify-between items-start mb-2">
                             <div className="flex-1">
                               <div className="text-sm text-blue-400 mb-1">{topic.category}</div>
-                              <h3 className="font-medium text-white">{topic.title}</h3>
+                              <h3 className="font-medium text-white text-xl">{topic.title}</h3>
                             </div>
                           </div>
                           <div className="flex items-center gap-4 text-sm text-gray-400">
@@ -1164,7 +1156,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                               <span>{topic.date}</span>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       ))
                     ) : (
                       /* Categories */
@@ -1172,9 +1164,9 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                         {/* Main Categories */}
                         <div className="grid gap-3">
                           {categories.map((category: any, index: any) => (
-                            <a
+                            <Link
                               key={index}
-                              href="#"
+                              href={category?.href ?? "/"}
                               className="flex items-center justify-between p-3 rounded-xl bg-gray-700/50 hover:bg-gray-700 transition-colors group"
                             >
                               <div className="flex items-center gap-3">
@@ -1194,7 +1186,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                                 )}
                                 <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-gray-300" />
                               </div>
-                            </a>
+                            </Link>
                           ))}
                         </div>
 
@@ -1203,7 +1195,8 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                           <h3 className="text-lg font-semibold text-white mb-4">Featured Collections</h3>
                           <div className="grid grid-cols-2 gap-4">
                             {featuredCollections.map((collection, index) => (
-                              <div
+                              <Link
+                              href={collection?.slug ?? "/"}
                                 key={index}
                                 className={`p-4 rounded-xl bg-gradient-to-br ${collection.color} border border-gray-700 cursor-pointer hover:border-gray-600 transition-colors`}
                               >
@@ -1212,7 +1205,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                                 </div>
                                 <h4 className="font-medium text-white mb-1">{collection.title}</h4>
                                 <p className="text-sm text-gray-400">{collection.description}</p>
-                              </div>
+                              </Link>
                             ))}
                           </div>
                         </div>
@@ -1231,22 +1224,22 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                 <h1 className="text-2xl font-bold text-center md:text-start">Expert Product Reviews</h1>
                 <div className="flex gap-2 flex-wrap justify-center md:justify-start mt-3 md:mt-0">
                   {categories.map((category) => (
-                    <a
+                    <Link
                       key={category.name}
                       href={category.href}
                       className="flex items-center gap-1 px-3 py-1.5 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors text-sm"
                     >
                       {category.icon}
                       {category.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
 
               {/* Comparisons Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {comparisons1.slice(1).map((comparison) => (
-                  <div key={comparison.id} className="bg-gray-50 rounded-xl p-0 md:p-4">
+                {comparisons1.map((comparison) => (
+                  <Link href={comparison?.slug ?? "/"} key={comparison.id} className="bg-gray-50 rounded-xl p-0 md:p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="relative rounded-lg overflow-hidden">
                         <img
@@ -1278,22 +1271,15 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                           <div className="text-xs text-gray-500">Score</div>
                         </div>
                       </div>
-                      <a
-                        href="#"
-                        className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
-                      >
-                        <span>View details</span>
-                        <ArrowRight size={16} />
-                      </a>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
               {/* Additional Comparisons Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {comparisons.slice(1).map((comparison) => (
-                  <div key={comparison.id} className="bg-gray-50 rounded-xl p-0 md:p-4">
+                {comparisons.map((comparison) => (
+                  <Link href={comparison?.slug ?? "/"} key={comparison.id} className="bg-gray-50 rounded-xl p-0 md:p-4">
                     <div className="flex flex-col space-y-3">
                       <div className="relative rounded-lg overflow-hidden">
                         <img
@@ -1325,15 +1311,8 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                           <div className="text-xs text-gray-500">Score</div>
                         </div>
                       </div>
-                      <a
-                        href="#"
-                        className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700"
-                      >
-                        <span>View details</span>
-                        <ArrowRight size={16} />
-                      </a>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -1468,10 +1447,10 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
 
               {/* CTA */}
               <div className="mt-16 text-center">
-                <div className="inline-flex items-center gap-2 bg-blue-500 text-white px-8 py-4 rounded-full hover:bg-blue-600 transition-colors cursor-pointer">
+                <Link href={"/categories"} className="inline-flex items-center gap-2 bg-blue-500 text-white px-8 py-4 rounded-full hover:bg-blue-600 transition-colors cursor-pointer">
                   <span className="font-semibold">Start Reading Our Reviews</span>
                   <ThumbsUp className="w-5 h-5" />
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -1521,7 +1500,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
               {/* Content Grid */}
               <div className="grid md:grid-cols-3 gap-8">
                 {content[activeTab]?.map((item: any) => (
-                  <div key={item.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
+                  <Link href={item?.slug ?? "/"} key={item.id} className="bg-white rounded-xl shadow-sm overflow-hidden">
                     {/* Image */}
                     <div className="relative">
                       <img
@@ -1569,77 +1548,27 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                           <span>•</span>
                           <span>{item.readTime}</span>
                         </div>
-                        <a
-                          href="#"
+                        <div
                           className="flex items-center gap-1 text-blue-500 hover:text-blue-600 font-medium"
                         >
                           <span>Read more</span>
                           <ArrowRight className="w-4 h-4" />
-                        </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
 
               {/* View All CTA */}
               <div className="mt-12 text-center">
-                <a
-                  href="#"
+                <Link
+                  href="/categories"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   <span className="font-medium">View All Reviews</span>
                   <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {/* Header */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-                <div>
-                  <h2 className="text-3xl font-bold mb-2">Latest News & Tips</h2>
-                  <p className="text-gray-600">Stay updated with the latest tech news and expert buying advice</p>
-                </div>
-                <div className="flex gap-2 bg-white p-1 rounded-lg shadow-sm">
-                  {tabs2.map((tab: any) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab2(tab.id)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${activeTab2 === tab.id
-                        ? 'bg-blue-500 text-white'
-                        : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                    >
-                      {tab.icon}
-                      <span className="font-medium">{tab.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Content Grid */}
-              <div className="grid md:grid-cols-3 gap-8">
-                {content2[activeTab2]?.map((article: any) => (
-                  <ArticleCard
-                    key={article.id}
-                    article={article}
-                    showHighlights={activeTab2 === 'tips'}
-                  />
-                ))}
-              </div>
-
-              {/* View All CTA */}
-              <div className="mt-12 text-center">
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-                >
-                  <span>View All {activeTab2 === 'news' ? 'News' : 'Tips'}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>
