@@ -13,15 +13,12 @@ import {
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { IS_CHISNGHIAX_DEMO_SITE } from '@/contains/site-settings'
-import { useGlobalStateHeaderStyle } from './SiteHeader'
 
 const ControlSettingsDemo = () => {
 	// FOR OUR DEMO PAGE, use do not use this, you can delete it.
 	const [themeDir, setThemeDIr] = useState<'rtl' | 'ltr'>(
 		process.env.NEXT_PUBLIC_SITE_DIRECTION as 'rtl' | 'ltr',
 	)
-
-	const [headerStyle, setHeaderStyle] = useGlobalStateHeaderStyle('headerStyle')
 
 	const router = useRouter()
 
@@ -47,23 +44,6 @@ const ControlSettingsDemo = () => {
 		return (
 			<div>
 				<span className="text-sm font-medium">Header styles</span>
-				<div className="mt-1.5 flex items-center space-x-2 rtl:space-x-reverse">
-					{['style1', 'style2', 'style3'].map(style => {
-						return (
-							<div
-								key={style}
-								className={`flex cursor-pointer select-none items-center rounded-full px-3.5 py-1.5 text-xs font-medium uppercase ${
-									headerStyle === style
-										? 'bg-black text-white shadow-lg shadow-black/10 dark:bg-neutral-200 dark:text-black'
-										: 'border border-neutral-300 hover:border-neutral-400 dark:border-neutral-700 dark:hover:border-neutral-500'
-								}`}
-								onClick={() => setHeaderStyle(style)}
-							>
-								{style}
-							</div>
-						)
-					})}
-				</div>
 			</div>
 		)
 	}
