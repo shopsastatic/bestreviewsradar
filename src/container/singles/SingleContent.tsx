@@ -94,12 +94,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		}
 	);
 
+	
 	const dataRelatedArray = useMemo(() => {
 		if (data?.Amazon) {
 			return Object.values(data.Amazon) as any;
 		}
 		return [];
 	}, [data]);
+	console.log(data, dataRelatedArray)
 
 
 	//	
