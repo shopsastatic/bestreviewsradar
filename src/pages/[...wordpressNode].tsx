@@ -13,7 +13,7 @@ export async function myGetPaths() {
   );
   const getAllCategories = await fetch(
     process.env.NEXT_PUBLIC_WORDPRESS_URL?.replace(/\/$/, "") +
-      "/wp-json/wp/v2/categories?per_page=100&_fields=slug"
+      "/wp-json/wp/v2/categories?per_page=120&_fields=slug"
   );
 
   let posts = (await response.json()) as any[];
