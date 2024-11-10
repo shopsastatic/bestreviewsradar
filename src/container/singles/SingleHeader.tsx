@@ -30,7 +30,11 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     if (!Array.isArray(categories) || categories.length === 0) {
       return [];
     }
-    const categoryMap = categories.reduce((acc: any, category: any) => {
+    categories = categories.filter((c: any) => {
+      return c?.name != "Arborist Merchandising Root" && c.name != "Self Service" && c.name != "Custom Stores"
+    })
+
+    let categoryMap = categories.reduce((acc: any, category: any) => {
       acc[category.databaseId] = category;
       return acc;
     }, {});
@@ -56,6 +60,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
   }
 
   let cate = sortCategories(categories.nodes)
+  console.log(cate)
 
   const getBaseURL = () => {
     if (typeof window !== 'undefined') {

@@ -45,9 +45,21 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
     featuredImageMeta,
     children,
     ancestors,
-  } = getCatgoryDataFromCategoryFragment(props.data.category);
+  } = getCatgoryDataFromCategoryFragment(props.data.category) as any;
   const initPostsPageInfo = props.data?.category?.posts?.pageInfo;
   const posts = props.data?.category?.posts;
+
+  let ances = {
+    nodes: ancestors?.nodes?.filter((ancestor: any) => ancestor?.name !== "Arborist Merchandising Root" && ancestor.name !== "Self Service" && ancestor.name !== "Custom Stores")
+  };
+  let cateName = name;
+  if(cateName == "Arborist Merchandising Root" || cateName == "Custom Stores" || cateName == "Self Service") {
+    cateName = "";
+  }
+
+  let cateChild = {
+    nodes: children?.nodes?.filter((child: any) => child?.name !== "Arborist Merchandising Root" && child.name !== "Self Service" && child.name !== "Custom Stores")
+  };
 
   const hasChild = children && Array.isArray(children.nodes) && children.nodes.length > 0;
 
@@ -63,7 +75,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <ArchiveLayoutChild name={name} ancestors={ancestors} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
+        <ArchiveLayoutChild name={cateName} ancestors={ances} initPosts={posts?.nodes as PostDataFragmentType[] | null}></ArchiveLayoutChild>
       </PageLayout>
     )
   }
@@ -85,7 +97,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
         initPostsPageInfo={initPostsPageInfo}
         categoryDatabaseId={databaseId}
         taxonomyType="category"
-        childs={children?.nodes}
+        childs={cateChild?.nodes}
       ></ArchiveLayout>
     </PageLayout>
   );
