@@ -67,7 +67,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				...(children.length > 0 && {
 					subCategories: children.map((child: any) => ({
 						name: child.label,
-						slug: child.uri,
+						slug: getLastPath(child.uri),
 						id: child.id
 					}))
 				})
@@ -76,6 +76,14 @@ const NavMobile: React.FC<NavMobileProps> = ({
 	}
 
 	const mainMenus = transformMenuItems(menuItems)
+
+	function getLastPath(url: any) {
+		const cleanUrl = url.replace(/\/$/, '');
+		
+		const lastSegment = cleanUrl.split('/').pop();
+		
+		return lastSegment + '/';
+	}
 
 
 
