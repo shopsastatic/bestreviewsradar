@@ -225,10 +225,15 @@
   color: #fff;
 }
 
+table {
+  max-width: 100%;
+  overflow: scroll;
+}
+
 table tr th,
 table tr td {
   border: 1px solid;
-  padding: 15px !important;
+  padding: 12px !important;
   text-align: left;
 }
 
