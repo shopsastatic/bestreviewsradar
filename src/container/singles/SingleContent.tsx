@@ -51,7 +51,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data } = await axios.get(`https://content.bestreviewsradar.com/wp-json/cegg/v1/data/${post_id}`);
+                const { data } = await axios.get(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`);
                 setDataRelated(data);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -516,11 +516,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 												<span className='line-clamp-1 block mb-2 text-sm truncate'>{item?.productDatas?.description}</span>
 												<div className='box-price flex flex-wrap items-end gap-4'>
 													{item?.price > 0 && (
-														<span className='font-bold text-base'>${item?.price}</span>
+														<span className='font-bold text-base'>${Number(item?.price)?.toFixed(2)}</span>
 													)}
 													<div className='flex items-center gap-4'>
 														{item?.priceOld > 0 && (
-															<span className='text-sm line-through text-[#444]'>${item?.priceOld}</span>
+															<span className='text-sm line-through text-[#444]'>${Number(item?.priceOld)?.toFixed(2)}</span>
 														)}
 														{item?.percentageSaved > 0 && (
 															<span className='text-sm text-red-700 '>({item?.percentageSaved}% OFF)</span>
