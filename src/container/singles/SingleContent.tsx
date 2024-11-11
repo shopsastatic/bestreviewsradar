@@ -48,18 +48,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const post_id = post?.databaseId
 
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const { data } = await axios.get(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`);
-				setDataRelated(data);
-			} catch (error) {
-				console.error("Error fetching data:", error);
-			}
-		};
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const { data } = await axios.get(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`);
+	// 			setDataRelated(data);
+	// 		} catch (error) {
+	// 			console.error("Error fetching data:", error);
+	// 		}
+	// 	};
 
-		fetchData();
-	}, [post_id]);
+	// 	fetchData();
+	// }, [post_id]);
 
 	let dataRelatedArray = [] as any
 

@@ -9728,8 +9728,8 @@ export type MenuImage = AcfFieldGroup & AcfFieldGroupFields & MenuImage_Fields &
    * @deprecated Use __typename instead
    */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;select&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
-  menuImage?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
+  menuImage?: Maybe<Scalars['String']['output']>;
 };
 
 /** Interface representing fields of the ACF &quot;MenuImage&quot; Field Group */
@@ -9739,8 +9739,8 @@ export type MenuImage_Fields = {
    * @deprecated Use __typename instead
    */
   fieldGroupName?: Maybe<Scalars['String']['output']>;
-  /** Field of the &quot;select&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
-  menuImage?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Field of the &quot;wysiwyg&quot; Field Type added to the schema as part of the &quot;MenuImage&quot; Field Group */
+  menuImage?: Maybe<Scalars['String']['output']>;
 };
 
 /** Navigation menu items are the individual items assigned to a menu. These are rendered as the links in a navigation menu. */
