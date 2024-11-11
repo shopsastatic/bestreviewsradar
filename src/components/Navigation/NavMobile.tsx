@@ -63,7 +63,6 @@ const NavMobile: React.FC<NavMobileProps> = ({
 				id: parent.id,
 				name: parent.label,
 				uri: parent.uri,
-				icon: <Smartphone className="w-5 h-5" />,
 				...(children.length > 0 && {
 					subCategories: children.map((child: any) => ({
 						name: child.label,
@@ -84,10 +83,6 @@ const NavMobile: React.FC<NavMobileProps> = ({
 		
 		return lastSegment + '/';
 	}
-
-
-
-	// const mainMenus = [
 	// 	{
 	// 		id: 'electronics',
 	// 		name: 'Electronics',
@@ -764,7 +759,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 											<div className="text-gray-600">{menu.icon}</div>
 											<span>{menu.name}</span>
 										</div>
-										<ChevronRight className="w-4 h-4 text-gray-400" />
+										<ChevronRight className="w-5 h-5 text-gray-600" />
 									</button>
 								))}
 							</div>
@@ -809,7 +804,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 												>
 													<div className="flex items-center justify-between">
 														<span>{subCategory.name}</span>
-														<ChevronRight className="w-4 h-4 text-gray-400" />
+														<ChevronRight className="w-5 h-5 text-gray-600" />
 													</div>
 												</Link>
 											))}
