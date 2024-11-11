@@ -21,3 +21,16 @@ fragment NcFooterMenuFieldsFragment on MenuItem {
       id
 }
 `) as any;
+
+
+export const NC_SIDEBAR_MENU_QUERY_FRAGMENT = gql(`
+    fragment NcSideBarMenuFieldsFragment on MenuItem {
+          databaseId
+          uri
+          label
+          parentId
+          databaseId
+          id
+    }
+`) as any;
+    

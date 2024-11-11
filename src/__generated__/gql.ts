@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$first: Int\n\t\t\t$search: String\n\t\t) {\n\t\t\tposts(first: $first, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\t...NcmazFcPostCardFields\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t": types.SearchFormQueryGetPostsBySearchDocument,
+    "\n  query GetMenuSideBar {\n    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {\n      nodes {\n        ...NcSideBarMenuFieldsFragment\n      }\n    }\n  }\n": types.GetMenuSideBarDocument,
     "mutation myMutationUpdatePostToPublishOrPending($id: ID = \"\", $status: PostStatusEnum ) {\n      updatePost(input: {id: $id, status: $status}) {\n        clientMutationId\n      }\n    }": types.MyMutationUpdatePostToPublishOrPendingDocument,
     "\n  query TestQuery {\n    generalSettings {\n      title\n      description\n    }\n  }\n": types.TestQueryDocument,
     "\n\tfragment NcgeneralSettingsFieldsFragment on GeneralSettings {\n      __typename\n      description\n      title\n\t}\n": types.NcgeneralSettingsFieldsFragmentFragmentDoc,
@@ -37,6 +38,7 @@ const documents = {
     "\n\tfragment NcmazFcUserFullFields on User {\n\t\tid\n\t\tdatabaseId\n\t\turi\n\t\tusername\n\t\tname\n\t\tdescription\n\t\tncUserMeta {\n\t\t\tcolor\n\t\t\tfacebookUrl\n\t\t\tgithubUrl\n\t\t\tlinkedinUrl\n\t\t\tncBio\n\t\t\tpinterestUrl\n\t\t\ttwitterUrl\n\t\t\tyoutubeUrl\n\t\t\ttiktokUrl\n\t\t\tfeaturedImage {\n\t\t\t\tnode {\n\t\t\t\t\t...NcmazFcImageFields\n\t\t\t\t}\n\t\t\t}\n\t\t\tbackgroundImage {\n\t\t\t\tnode {\n\t\t\t\t\t...NcmazFcImageFields\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.NcmazFcUserFullFieldsFragmentDoc,
     "\n    fragment NcPrimaryMenuFieldsFragment on MenuItem {  \n        id  \n        uri\n        path  \n        label\n        parentId\n        databaseId\n    }\n": types.NcPrimaryMenuFieldsFragmentFragmentDoc,
     "\nfragment NcFooterMenuFieldsFragment on MenuItem {\n      databaseId\n      uri\n      label\n      parentId\n      databaseId\n      id\n}\n": types.NcFooterMenuFieldsFragmentFragmentDoc,
+    "\n    fragment NcSideBarMenuFieldsFragment on MenuItem {\n          databaseId\n          uri\n          label\n          parentId\n          databaseId\n          id\n    }\n": types.NcSideBarMenuFieldsFragmentFragmentDoc,
     "#graphql\n  query MyQueryGetCMSUser($id: ID!) {\n    user(id: $id, idType: DATABASE_ID) {\n      databaseId\n      ncUserMeta {\n        ncBio\n        featuredImage {\n            node {\n              ...NcmazFcImageFields\n            }\n          }\n      }\n    }\n  }\n": types.MyQueryGetCmsUserDocument,
     "\n  query QueryGetPostsBy(\n    $in: [ID] = null\n    $first: Int = 20\n    $after: String = null\n    $author: Int = null\n    $categoryId: Int = null\n    $categoryName: String = null\n    $tagId: String = null\n    $day: Int = null\n    $month: Int = null\n    $year: Int = null\n    $search: String = \"\"\n    $field: PostObjectsConnectionOrderbyEnum = DATE\n    $order: OrderEnum = DESC\n  ) {\n    posts(\n      first: $first\n      after: $after\n      where: {\n        in: $in\n        author: $author\n        categoryId: $categoryId\n        categoryName: $categoryName\n        tagId: $tagId\n        dateQuery: { day: $day, month: $month, year: $year }\n        search: $search\n        orderby: { field: $field, order: $order }\n      }\n    ) {\n      nodes {\n        ...NcmazFcPostCardFields\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n      }\n    }\n  }\n": types.QueryGetPostsByDocument,
     "\n  query QueryGet10Categories($first: Int = 10) {\n    categories(first: $first, where: { orderby: COUNT, order: DESC }) {\n      nodes {\n        ...NcmazFcCategoryFullFieldsFragment\n      }\n    }\n  }\n": types.QueryGet10CategoriesDocument,
@@ -83,6 +85,10 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$first: Int\n\t\t\t$search: String\n\t\t) {\n\t\t\tposts(first: $first, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\t...NcmazFcPostCardFields\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"): (typeof documents)["\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$first: Int\n\t\t\t$search: String\n\t\t) {\n\t\t\tposts(first: $first, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\t...NcmazFcPostCardFields\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetMenuSideBar {\n    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {\n      nodes {\n        ...NcSideBarMenuFieldsFragment\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetMenuSideBar {\n    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {\n      nodes {\n        ...NcSideBarMenuFieldsFragment\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -175,6 +181,10 @@ export function gql(source: "\n    fragment NcPrimaryMenuFieldsFragment on MenuI
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\nfragment NcFooterMenuFieldsFragment on MenuItem {\n      databaseId\n      uri\n      label\n      parentId\n      databaseId\n      id\n}\n"): (typeof documents)["\nfragment NcFooterMenuFieldsFragment on MenuItem {\n      databaseId\n      uri\n      label\n      parentId\n      databaseId\n      id\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    fragment NcSideBarMenuFieldsFragment on MenuItem {\n          databaseId\n          uri\n          label\n          parentId\n          databaseId\n          id\n    }\n"): (typeof documents)["\n    fragment NcSideBarMenuFieldsFragment on MenuItem {\n          databaseId\n          uri\n          label\n          parentId\n          databaseId\n          id\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

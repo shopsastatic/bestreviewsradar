@@ -60,7 +60,6 @@ const SingleHeader: FC<SingleHeaderProps> = ({
   }
 
   let cate = sortCategories(categories.nodes)
-  console.log(cate)
 
   const getBaseURL = () => {
     if (typeof window !== 'undefined') {
