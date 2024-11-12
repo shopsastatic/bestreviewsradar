@@ -26,24 +26,17 @@ import {
 	ThumbsUp,
 	Filter
 } from 'lucide-react';
+import Link from 'next/link'
 
 const AuthorPostsChild: FaustPage<any> = props => {
 	const { user } = props.data || {}
 	const [activeTab, setActiveTab] = useState('articles');
 
+	const expertise = user?.expert?.areasOfExpertise?.split("\r\n")
+
 	// Example data for author
 	const authorData = {
-		name: user?.name,
-		role: "Senior Technology Editor",
-		image: user?.ncUserMeta?.featuredImage?.node?.sourceUrl,
 		bio: user?.ncBio,
-		expertise: [
-			"Smartphones & Mobile Devices",
-			"Laptops & Computing",
-			"Smart Home Technology",
-			"Consumer Electronics",
-			"Photography Equipment"
-		],
 		metrics: {
 			articles: "450+",
 			reviews: "280+",
@@ -55,65 +48,12 @@ const AuthorPostsChild: FaustPage<any> = props => {
 			{ name: "Tech Expert", icon: <BarChart className="w-5 h-5" /> },
 			{ name: "Community Leader", icon: <MessageSquare className="w-5 h-5" /> }
 		],
-		featuredArticles: [
-			{
-				id: 1,
-				title: "The Ultimate iPhone 15 Pro Max vs Samsung S24 Ultra Comparison",
-				category: "Smartphones",
-				image: "/api/placeholder/600/300",
-				date: "2 days ago",
-				views: "125K",
-				rating: 4.8,
-				featured: true,
-				excerpt: "A comprehensive comparison of 2024's most powerful flagship smartphones, covering everything from camera capabilities to battery life."
-			},
-			{
-				id: 2,
-				title: "Best Laptops for Professionals in 2024",
-				category: "Laptops",
-				image: "/api/placeholder/600/300",
-				date: "1 week ago",
-				views: "98K",
-				rating: 4.9,
-				excerpt: "An in-depth guide to choosing the perfect laptop for professional work, comparing top models from leading manufacturers."
-			},
-			{
-				id: 3,
-				title: "Smart Home Hub Comparison: 2024 Edition",
-				category: "Smart Home",
-				image: "/api/placeholder/600/300",
-				date: "2 weeks ago",
-				views: "85K",
-				rating: 4.7,
-				excerpt: "Everything you need to know about the latest smart home hubs and how they can transform your living space."
-			}
-		],
-		recentArticles: [
-			{
-				id: 4,
-				title: "MacBook Pro M3 Max Review: The Ultimate Creator's Laptop?",
-				category: "Laptops",
-				image: "https://images.unsplash.com/photo-1484807352052-23338990c6c6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-				date: "3 days ago",
-				rating: 4.9,
-				views: "45K"
-			},
-			{
-				id: 5,
-				title: "Top 5 Wireless Earbuds for Every Budget",
-				category: "Audio",
-				image: "https://images.unsplash.com/photo-1627989580309-bfaf3e58af6f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-				date: "5 days ago",
-				rating: 4.7,
-				views: "38K"
-			}
-		],
 		categories: [
-			{ name: "Smartphones", count: 120 },
-			{ name: "Laptops", count: 85 },
-			{ name: "Smart Home", count: 65 },
-			{ name: "Audio", count: 45 },
-			{ name: "Accessories", count: 95 }
+			{ name: "Electronics", slug: "electronics"},
+			{ name: "Home & Kitchen", slug: "home-kitchen"},
+			{ name: "Computers", slug: "computers-accessories-277298"},
+			{ name: "Health & HouseHold", slug: "health-household"},
+			{ name: "Baby Products", slug: "baby-products"}
 		]
 	};
 
@@ -159,17 +99,17 @@ const AuthorPostsChild: FaustPage<any> = props => {
 								<div className="space-y-6">
 									<div className="flex items-center gap-6">
 										<img
-											src={authorData.image}
-											alt={authorData.name}
+											src={user?.ncUserMeta?.featuredImage?.node?.sourceUrl}
+											alt={user?.name}
 											className="w-24 h-24 rounded-full object-cover"
 										/>
 										<div>
-											<h1 className="text-3xl font-bold mb-2">{authorData.name}</h1>
-											<p className="text-gray-300">{authorData.role}</p>
+											<h1 className="text-3xl font-bold mb-2">{user?.name}</h1>
+											<p className="text-gray-300">{user?.ncUserMeta?.ncBio}</p>
 										</div>
 									</div>
 
-									<p className="text-gray-300">{authorData.bio}</p>
+									<p className="text-gray-300">{user?.description}</p>
 
 									{/* Badges */}
 									<div className="flex flex-wrap gap-4">
@@ -227,8 +167,8 @@ const AuthorPostsChild: FaustPage<any> = props => {
 											key={tab}
 											onClick={() => setActiveTab(tab)}
 											className={`px-4 py-2 rounded-lg transition-colors ${activeTab === tab
-													? 'bg-blue-500 text-white'
-													: 'bg-white text-gray-600 hover:bg-gray-100'
+												? 'bg-blue-500 text-white'
+												: 'bg-white text-gray-600 hover:bg-gray-100'
 												}`}
 										>
 											{tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -238,80 +178,82 @@ const AuthorPostsChild: FaustPage<any> = props => {
 
 								{/* Featured Articles */}
 								<div className="space-y-8 mb-12">
-									{authorData.featuredArticles.map((article) => (
-										<div
-											key={article.id}
-											className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all"
+									{user?.posts?.nodes?.length > 0 && user?.posts?.nodes?.slice(0, 3)?.map((article: any, index: any) => (
+										<Link
+											href={article?.uri ?? "/"}
+											key={index}
+											className="block w-full bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all"
 										>
 											<div className="p-6">
-												<div className="flex justify-between items-start mb-4">
+												<div className="flex justify-between items-start mb-4 relative">
 													<div>
-														<span className="text-sm text-blue-500 mb-2 block">
-															{article.category}
+														<span className="text-sm text-blue-500 mb-2 block mt-8 md:mt-0">
+															{article?.categories?.nodes?.[article.categories.nodes.length - 1].name}
 														</span>
 														<h3 className="text-xl font-bold mb-2 hover:text-blue-600 transition-colors">
 															{article.title}
 														</h3>
 													</div>
-													{article.featured && (
-														<span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
+													{index == 1 && (
+														<span className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs md:text-sm absolute left-0 md:left-auto md:right-0 -top-1">
+															Most Reviewed
+														</span>
+													)}
+													{index != 1 && (
+														<span className="flex items-center min-w-[100px] gap-2 bg-[#facc15] text-yellow-900 px-3 py-1 rounded-full text-xs md:text-sm absolute left-0 md:left-auto md:right-0 -top-1">
+															<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-star">
+																<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+															</svg>
 															Featured
 														</span>
 													)}
+
 												</div>
 												<p className="text-gray-600 mb-4">{article.excerpt}</p>
-												<div className="flex items-center justify-between text-sm text-gray-500">
-													<div className="flex items-center gap-4">
-														<div className="flex items-center gap-1">
+												<div className="flex justify-between text-sm text-gray-500">
+													<div className="flex gap-4">
+														<div className="flex gap-1">
 															<Clock className="w-4 h-4" />
-															<span>{article.date}</span>
-														</div>
-														<div className="flex items-center gap-1">
-															<Eye className="w-4 h-4" />
-															<span>{article.views}</span>
+															<span>{index == 0 ? "1 days ago" : "2 days ago"}</span>
 														</div>
 													</div>
-													<div className="flex items-center gap-1">
-														<Star className="w-4 h-4 text-yellow-400 fill-current" />
-														<span>{article.rating}</span>
+													<div className="flex items-center gap-1 mt-2">
+														<img className='max-w-24' src={article?.featuredImage?.node?.sourceUrl} alt="" />
 													</div>
 												</div>
 											</div>
-										</div>
+										</Link>
 									))}
 								</div>
 
 								{/* Recent Articles Grid */}
-								<div className="grid md:grid-cols-2 gap-6">
-									{authorData.recentArticles.map((article) => (
-										<div
-											key={article.id}
+								<div className="grid lg:grid-cols-2 gap-6">
+									{user?.posts?.nodes?.length > 0 && user?.posts?.nodes?.slice(3, 5)?.map((article: any, index: any) => (
+										<Link
+											href={article?.uri ?? "/"}
+											key={index}
 											className="bg-white rounded-xl overflow-hidden p-4 flex gap-6"
 										>
 											<img
-												src={article.image}
-												alt={article.title}
-												className="w-32 h-24 object-cover rounded-lg"
+												src={article.featuredImage?.node?.sourceUrl}
+												alt={article.featuredImage?.node?.altText}
+												className="w-28 md:w-32 h-24 object-cover rounded-lg"
 											/>
 											<div className="flex-1">
 												<span className="text-sm text-blue-500 mb-1 block">
 													{article.category}
 												</span>
-												<h3 className="font-bold mb-2 hover:text-blue-600 transition-colors">
+												<h4 className="font-bold mb-2 hover:text-blue-600 transition-colors">
 													{article.title}
-												</h3>
+												</h4>
 												<div className="flex items-center justify-between text-sm text-gray-500">
 													<div className="flex items-center gap-2">
 														<Clock className="w-4 h-4" />
-														<span>{article.date}</span>
-													</div>
-													<div className="flex items-center gap-1">
-														<Star className="w-4 h-4 text-yellow-400 fill-current" />
-														<span>{article.rating}</span>
+														<span>1w ago</span>
 													</div>
 												</div>
 											</div>
-										</div>
+										</Link>
 									))}
 								</div>
 							</div>
@@ -319,35 +261,35 @@ const AuthorPostsChild: FaustPage<any> = props => {
 							{/* Sidebar */}
 							<div className="md:w-80">
 								{/* Expertise */}
-								<div className="bg-white rounded-xl p-6 mb-6">
-									<h3 className="font-bold text-lg mb-4">Areas of Expertise</h3>
-									<div className="space-y-2">
-										{authorData.expertise.map((item, index) => (
-											<div
-												key={index}
-												className="flex items-center gap-2 text-gray-600"
-											>
-												<ThumbsUp className="w-4 h-4 text-blue-500" />
-												<span>{item}</span>
-											</div>
-										))}
+								{expertise?.length > 0 && (
+									<div className="bg-white rounded-xl p-6 mb-6">
+										<h3 className="font-bold text-lg mb-4">Areas of Expertise</h3>
+										<div className="space-y-2">
+											{expertise.map((item: any, index: any) => (
+												<div
+													key={index}
+													className="flex items-center gap-2 text-gray-600"
+												>
+													<ThumbsUp className="w-4 h-4 text-blue-500" />
+													<span>{item}</span>
+												</div>
+											))}
+										</div>
 									</div>
-								</div>
+								)}
 
 								{/* Categories */}
 								<div className="bg-white rounded-xl p-6">
 									<h3 className="font-bold text-lg mb-4">Top Categories</h3>
 									<div className="space-y-3">
 										{authorData.categories.map((category) => (
-											<div
+											<Link
+												href={('/'+category?.slug)}
 												key={category.name}
 												className="flex items-center justify-between text-gray-600"
 											>
 												<span>{category.name}</span>
-												<span className="text-sm bg-gray-100 px-2 py-1 rounded-full">
-													{category.count} articles
-												</span>
-											</div>
+											</Link>
 										))}
 									</div>
 								</div>

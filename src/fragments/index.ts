@@ -309,6 +309,10 @@ export const NC_USER_SHORT_FOR_POST_CARD_FRAGMENT = gql(/* GraphQL */ `
 				}
 			}
 		}
+		description
+		expert {
+			areasOfExpertise
+		}
 	}
 `)
 
@@ -320,6 +324,9 @@ export const NC_USER_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 		username
 		name
 		description
+		expert {
+			areasOfExpertise
+		}
 		ncUserMeta {
 			color
 			facebookUrl
