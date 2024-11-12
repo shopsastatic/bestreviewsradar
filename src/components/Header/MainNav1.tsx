@@ -155,7 +155,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
                   onChange={(e) => handleSearch(e.target.value)}
                   onFocus={() => setIsShowResults(true)}
                   id="search-input" placeholder="Search..." name="hsearch" autoComplete="off" className="w-full focus:ring-0 border-opacity-0 py-2.5 text-base shadow-md pe-3 sm:pe-5 text-neutral-800 rounded"></input>
-                <button type="submit" className="absolute top-[1px] bottom-[1px] right-0 px-5 flex justify-center bg-[#eeeeee] items-center z-10 rounded-tr rounded-br" disabled={isLoading}>
+                <button type="submit" aria-label="Search" className="absolute top-[1px] bottom-[1px] right-0 px-5 flex justify-center bg-[#eeeeee] items-center z-10 rounded-tr rounded-br" disabled={isLoading}>
 
                   {isLoading ? <LoadingSpinner /> : <SearchIcon />}
                 </button>

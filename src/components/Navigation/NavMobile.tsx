@@ -41,8 +41,6 @@ const NavMobile: React.FC<NavMobileProps> = ({
 	const [selectedMenu, setSelectedMenu] = useState(null);
 	const [menuDirection, setMenuDirection] = useState('forward');
 
-	console.log(menuItems)
-
 	const handleMenuSelect = (menuId: any) => {
 		setMenuDirection('forward');
 		setSelectedMenu(menuId);

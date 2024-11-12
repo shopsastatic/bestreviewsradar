@@ -39,13 +39,8 @@ export default function CookiestBoxPopover() {
 					<div className="overflow-hidden shadow-lg ring-1 ring-black ring-opacity-5">
 						<div className="container flex items-center justify-between gap-5 bg-white px-4 py-5 text-xs sm:px-5 dark:bg-black">
 							<span>
-								We use cookies to enhance your experience with us. To learn more - please refer to our privacy policy.{' '}
-								<Link
-									className="font-medium text-[#2f8fed] underline underline-offset-2"
-									href="/privacy-policy"
-								>
-									Learn More
-								</Link>
+								We use cookies to enhance your experience with us. To learn more - please refer to our <Link className="font-medium text-[#2f8fed] underline underline-offset-2"
+									href="/privacy-policy">privacy policy</Link>.
 							</span>
 
 							<button className='py-2.5 px-4 font-medium text-sm rounded-2xl border border-[#2f8fed] text-[#2f8fed]' onClick={handleAccept}>Accept</button>

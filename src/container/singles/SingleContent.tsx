@@ -505,11 +505,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-3`}>
+									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-6`}>
 										{dataRelatedArray.slice(NoT, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
-												<img loading='lazy' className='related-prod-image mx-auto rounded-[8px] max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.featuredImage?.node?.altText} />
-												<img loading='lazy' className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="" />
+												<img loading='lazy' className='related-prod-image mx-auto rounded-[8px] max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.title} />
+												<img loading='lazy' className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="Amazon logo" />
 
 												<div className='block w-fit my-3 mt-1'>
 													<p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
@@ -528,9 +528,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 														)}
 													</div>
 												</div>
-												<div className='p-2.5 block w-full mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl'>
-													<button className='text-center text-sm w-full text-white font-semibold'>View Deal</button>
-												</div>
+												<button className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]" aria-label="View Deal">View Deal</button>
 											</Link>
 										))}
 									</div>
