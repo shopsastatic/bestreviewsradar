@@ -90,6 +90,8 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
   return (
     <div>
       <button
+        type='button'
+        aria-label='menu-mobile'
         onClick={() => {
           setIsVisible(!isVisible)
         }}
