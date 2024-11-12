@@ -7,12 +7,19 @@ import "@/styles/index.scss";
 import { AppProps } from "next/app";
 import { WordPressBlocksProvider, fromThemeJson } from "@faustwp/blocks";
 import blocks from "@/wp-blocks";
-import { Poppins } from "next/font/google";
+import { Inter, Noto_Sans} from "next/font/google";
 import SiteWrapperProvider from "@/container/SiteWrapperProvider";
 import { Toaster } from "react-hot-toast";
 import NextNProgress from "nextjs-progressbar";
 import themeJson from "../../theme.json";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+
+const inter = Inter({
+  weight: ["400", "600", "700", "800"],
+  preload: true,
+  subsets: ["latin"],
+  variable: "--inter-font",
+})
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

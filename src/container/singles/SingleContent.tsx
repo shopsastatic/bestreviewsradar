@@ -86,7 +86,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const [activeHeading, setActiveHeading] = useState<string>('');
 	const cRef = useRef<HTMLDivElement>(null) as any;
 	const [hydratedContent, setHydratedContent] = useState(content);
-	const [isVisible, setIsVisible] = useState(false);
+	const [isVisibleTop, setIsVisibleTop] = useState(false);
 	const relatedRef = useRef(null);
 	const menuRef = useRef(null) as any;
 	const buttonRef = useRef(null) as any;
@@ -96,6 +96,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		}
 	};
 
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	};
 
 	useEffect(() => {
 		var learnMoreBtn = document.getElementById('learnMoreBtn');

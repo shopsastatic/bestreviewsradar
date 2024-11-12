@@ -7,7 +7,6 @@ import { FragmentType, gql } from '@/__generated__'
 import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import { useQuery } from '@apollo/client'
-
 export interface MenuBarProps {
   menuItems?: any
   className?: string
