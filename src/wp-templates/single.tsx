@@ -51,7 +51,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.sourceUrl}
-        pageTitle={title}
+        pageTitle={seo?.title || title}
         pageDescription={seo?.metaDesc || excerpt.replace(/<[^>]+>/g, '') || ""}
         metaRobots={seo?.metaRobotsNoindex}
         generalSettings={
