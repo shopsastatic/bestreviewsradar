@@ -57,7 +57,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
             leaveTo="opacity-0"
           >
             <div
-              className="fixed inset-0 bg-neutral-900 bg-opacity-50"
+              className="fixed inset-0 bg-black bg-opacity-70"
               onClick={handleCloseMenu}
             />
           </Transition.Child>

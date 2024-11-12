@@ -377,7 +377,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
             {topCategories.map((category) => (
               <div
                 key={category.id}
-                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300"
+                className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300"
               >
                 {/* Card Header */}
                 <div className="p-6 pb-0">

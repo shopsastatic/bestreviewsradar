@@ -508,7 +508,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									<div className={`grid grid-cols-1 ${headings.length == 1 && dataRelatedArray.length > 0 ? 'md:grid-cols-3 md:gap-7' : 'md:grid-cols-2 md:gap-10'} gap-6`}>
 										{dataRelatedArray.slice(NoT, 50).map((item: any, index: any) => (
 											<Link href={item.url ?? "/"} className='col-span-1 related-prod-child' key={index}>
-												<img loading='lazy' className='related-prod-image mx-auto rounded-[8px] max-w-[120px] w-[120px] h-[120px] mb-3' src={item?.img ?? "/"} alt={item?.title} />
+												<div className='max-h-[94px] h-full m-auto mb-3'>
+													<img loading='lazy' className='related-prod-image mx-auto rounded-[8px] h-full' src={item?.img ?? "/"} alt={item?.title} />
+												</div>
 												<img loading='lazy' className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]' src="/images/posts/amazon.webp" alt="Amazon logo" />
 
 												<div className='block w-fit my-3 mt-1'>

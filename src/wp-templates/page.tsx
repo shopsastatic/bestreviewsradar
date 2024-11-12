@@ -1070,10 +1070,12 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
 
                   {/* CTA Buttons */}
                   <div className="flex flex-wrap gap-4">
-                    <button className="px-8 py-4 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors flex items-center gap-2">
-                      <span className="font-medium">Explore Reviews</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </button>
+                    <Link href={"/categories"}>
+                      <button className="px-8 py-4 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors flex items-center gap-2">
+                        <span className="font-medium">Explore Categories</span>
+                        <ArrowRight className="w-5 h-5" />
+                      </button>
+                    </Link>
                     <button
                       onClick={() => setActiveView(activeView === 'trending' ? 'categories' : 'trending')}
                       className="px-8 py-4 bg-gray-800 text-white rounded-xl hover:bg-gray-700 transition-colors"
@@ -1196,7 +1198,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
                           <div className="grid grid-cols-2 gap-4">
                             {featuredCollections.map((collection, index) => (
                               <Link
-                              href={collection?.slug ?? "/"}
+                                href={collection?.slug ?? "/"}
                                 key={index}
                                 className={`p-4 rounded-xl bg-gradient-to-br ${collection.color} border border-gray-700 cursor-pointer hover:border-gray-600 transition-colors`}
                               >

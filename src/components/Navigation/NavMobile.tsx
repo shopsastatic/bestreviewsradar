@@ -723,7 +723,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
 	// ];
 
 	return (
-		<div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+		<div>
 			<div className="fixed left-0 top-0 bottom-0 w-96 bg-white text-gray-900 shadow-xl overflow-hidden max-w-full">
 				<div className="relative h-full">
 					{/* Main Menu */}
