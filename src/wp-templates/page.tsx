@@ -32,7 +32,7 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
   const [activeStep, setActiveStep] = useState('research');
   const [activeTab, setActiveTab] = useState('popular');
   const [selectedExpert, setSelectedExpert] = useState(null);
-  const [activeView, setActiveView] = useState('trending');
+  const [activeView, setActiveView] = useState('reviews');
   if (props.loading) {
     return <>Loading...</>;
   }
