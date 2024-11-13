@@ -9,7 +9,7 @@ export default function Page(props: WordPressTemplateProps) {
 export async function myGetPaths() {
   const response = await fetch(
     process.env.NEXT_PUBLIC_WORDPRESS_URL?.replace(/\/$/, "") +
-      "/wp-json/wp/v2/posts?per_page=20&_fields=slug"
+      "/wp-json/wp/v2/posts?per_page=100&_fields=slug"
   );
   const getAllCategories = await fetch(
     process.env.NEXT_PUBLIC_WORDPRESS_URL?.replace(/\/$/, "") +
