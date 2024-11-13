@@ -34,10 +34,10 @@
   border-bottom-width: 2px;
   border-color: transparent;
   background-color: #fff;
-  border-radius: 18px;
+  border-radius: 0.375rem;
   margin-bottom: 30px;
   position: relative;
-  box-shadow: 0 0 #0000,0 0 #0000,0 0 #0000,0 0 #0000,0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .prod-item .prod-child:last-child {
@@ -63,7 +63,7 @@
 }
 
 .prod-child:hover {
-  box-shadow: 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 0 #0000, 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   border-color: #dce0ea;
   transition: all .4s;
 }
