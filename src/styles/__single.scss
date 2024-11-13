@@ -517,6 +517,15 @@ footer .container {
   padding-bottom: 16px;
 }
 
+.toggle-button {
+  display: flex;
+  color: #0a7ced;
+}
+
+.toggle-button.mob {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .heading-poligon {
     padding: 10px 20px 40px;
@@ -531,6 +540,14 @@ footer .container {
 }
 
 @media (max-width: 767px) {
+  .toggle-button {
+    display: none;
+  }
+
+  .toggle-button.mob {
+    display: flex;
+  }
+
   .prod-feature {
     padding-top: 2.5rem;
     width: calc(100% - 90px);

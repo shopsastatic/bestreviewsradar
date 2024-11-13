@@ -94,56 +94,53 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	useEffect(() => {
 		// Set Max Height
-		document.querySelectorAll('.toggle-button').forEach((button, index) => {
-			let content = document.querySelectorAll('.max-h-content')[index] as any;
+		const initializeToggleButtons = (selector: string) => {
+			document.querySelectorAll(selector).forEach((button, index) => {
+				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
+				let isExpanded = false;
 
-			let isExpanded = false;
+				button.addEventListener('click', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
 
-			button.addEventListener('click', function (event) {
-				event.preventDefault();
-				event.stopPropagation();
-				event.stopPropagation();
-				if (isExpanded) {
-					content.style.maxHeight = '276px';
-					button.innerHTML = `Show More
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="17"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        <g id="Primary">
-                        <path
-                            id="Vector (Stroke)"
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
-                            fill="#1575d4" />
-                        </g>
-                    </svg>`;
-				} else {
-					content.style.maxHeight = content.scrollHeight + 'px';
-					button.innerHTML = `Show Less
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="17"
-                        height="17"
-                        viewBox="0 0 16 16"
-                        fill="none"
-						style="transform: rotate(180deg); transition: transform 0.3s ease;"
-                        <g id="Primary">
-                        <path
-                            id="Vector (Stroke)"
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
-                            fill="#1575d4" />
-                        </g>
-                    </svg>`;
-				}
-				isExpanded = !isExpanded;
+					const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
+						${text}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="17"
+							height="17"
+							viewBox="0 0 16 16"
+							fill="none"
+							${rotateIcon ? 'style="transform: rotate(180deg); transition: transform 0.3s ease;"' : ''}
+						>
+							<g id="Primary">
+								<path
+									id="Vector (Stroke)"
+									fillRule="evenodd"
+									clipRule="evenodd"
+									d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+									fill="#1575d4"
+								/>
+							</g>
+						</svg>
+					`;
+
+					if (isExpanded) {
+						content.style.maxHeight = '276px';
+						button.innerHTML = getButtonHTML('Show More');
+					} else {
+						content.style.maxHeight = content.scrollHeight + 'px';
+						button.innerHTML = getButtonHTML('Show Less', true);
+					}
+
+					isExpanded = !isExpanded;
+				});
 			});
-		});
+		};
+
+		// Initialize for both desktop and mobile
+		initializeToggleButtons('.toggle-button:not(.mob)');
+		initializeToggleButtons('.toggle-button.mob');
 
 		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
