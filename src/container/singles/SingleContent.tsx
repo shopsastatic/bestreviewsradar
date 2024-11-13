@@ -1,12 +1,11 @@
 'use client'
 
-import { FC, forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import useIntersectionObserver from '@/hooks/useIntersectionObserver'
+import { FC, useEffect, useRef, useState } from 'react'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
 import Alert from '@/components/Alert'
 import Link from 'next/link'
 import axios from 'axios'
-import useSWR from 'swr'
+import ScrollTop from '@/components/ScrollTop'
 
 export interface SingleContentProps {
 	post: any
@@ -23,15 +22,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
 	const [dataRelated, setDataRelated] = useState<any>({});
+	const contentRef = useRef(null);
+	const [showTooltip, setShowTooltip] = useState(false);
+	const tooltipRef = useRef<HTMLDivElement>(null);
+	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
+	const [activeHeading, setActiveHeading] = useState<string>('');
+	const cRef = useRef<HTMLDivElement>(null) as any;
+	const relatedRef = useRef(null);
 
-	const endedAnchorEntry = useIntersectionObserver(endedAnchorRef, {
-		threshold: 0,
-		root: null,
-		rootMargin: '0%',
-		freezeOnceVisible: false,
-	})
-
-	//
 	//
 	const {
 		content,
@@ -40,6 +38,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		amazonShortcode,
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
+	const [hydratedContent, setHydratedContent] = useState(content);
+
 	let NoT = numberOfToplist?.numberOfToplist as any
 
 	if (!NoT) {
@@ -67,40 +67,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		dataRelatedArray = Object.values(dataRelated?.Amazon);
 	}
 
-
-	//	
-
 	const amzShortcode = amazonShortcode as any
 	//
-	const [showMoreStore, setShowMoreStore] = useState(false);
-	const ctRef = useRef(null) as any;
-	const contentRef = useRef(null);
-	const [maxHeights, setMaxHeights] = useState<number[]>([]);
-	const [expandedItems, setExpandedItems] = useState<boolean[]>([]);
-	const [activeIndex, setActiveIndex] = useState<number | null>(null);
-	const [formVisible, setFormVisible] = useState(true);
-	const [thanksVisible, setThanksVisible] = useState(false);
-	const [showTooltip, setShowTooltip] = useState(false);
-	const tooltipRef = useRef<HTMLDivElement>(null);
-	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
-	const [activeHeading, setActiveHeading] = useState<string>('');
-	const cRef = useRef<HTMLDivElement>(null) as any;
-	const [hydratedContent, setHydratedContent] = useState(content);
-	const [isVisibleTop, setIsVisibleTop] = useState(false);
-	const relatedRef = useRef(null);
-	const menuRef = useRef(null) as any;
-	const buttonRef = useRef(null) as any;
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false);
 		}
-	};
-
-	const scrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth',
-		});
 	};
 
 	useEffect(() => {
@@ -118,7 +90,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				learnMoreContent?.classList.remove('block');
 			}
 		});
+	})
 
+	useEffect(() => {
 		// Set Max Height
 		document.querySelectorAll('.toggle-button').forEach((button, index) => {
 			let content = document.querySelectorAll('.max-h-content')[index] as any;
@@ -177,45 +151,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		};
 	}, []);
 
-	const handleClickTooltip = () => {
-		setShowTooltip(!showTooltip);
-	};
-
-	const contentRefs = useRef([]) as any;
-
-	const handleSignUp = (e: any) => {
-		e.preventDefault();
-
-		setFormVisible(false);
-
-		setTimeout(() => {
-			setThanksVisible(true);
-		}, 1000);
-	};
-
-	const toggleExpand = (index: number) => {
-		setExpandedItems((prevExpandedItems) => {
-			const newExpandedItems = [...prevExpandedItems];
-			newExpandedItems[index] = !newExpandedItems[index];
-
-			if (newExpandedItems[index] && contentRefs.current[index]) {
-				const content = contentRefs.current[index] as any;
-				setMaxHeights((prevMaxHeights) => {
-					const newMaxHeights = [...prevMaxHeights];
-					newMaxHeights[index] = content.scrollHeight;
-					return newMaxHeights;
-				});
-			}
-
-			return newExpandedItems;
-		});
-	};
-
-	const toggleStores = (index: number) => {
-		setShowMoreStore(!showMoreStore)
-		setActiveIndex(prevIndex => prevIndex === index ? null : index);
-	};
-
 	useEffect(() => {
 		const handleProgressIndicator = () => {
 			const entryContent = contentRef.current as any
@@ -249,28 +184,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			window?.removeEventListener('scroll', handleProgressIndicatorHeadeEvent)
 		}
 	}, [])
-
-
-	const transToArray = (str: any) => {
-		const descriptionArray = str
-			.trim()
-			.split('\n')
-			.filter((line: any) => line.trim() !== '');
-
-
-		return descriptionArray
-	}
-
-	function parseSP(data: any) {
-		if (data) {
-			return data.trim().split('\n').map((item: any) => {
-				const label = item.trim().split(' ');
-				return label
-			});
-		} else {
-			return []
-		}
-	}
 
 	const renderAlert = () => {
 		if (status === 'publish') {
@@ -459,6 +372,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				{renderAlert()}
 				{/* content */}
 				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
+				<ScrollTop></ScrollTop>
 			</div>
 
 			{headings && headings?.length > 0 && (
