@@ -4,7 +4,7 @@
   "version": "2.5.0",
   "scripts": {
     "dev": "npm run generate && concurrently \"faust dev\" \"npm run watch-codegen\"",
-    "build": "export NODE_OPTIONS='--max-old-space-size=4096' && faust build",
+    "build": "export NODE_OPTIONS='--max-old-space-size=4096' && faust build  && rm -f public/sitemap*.xml",
     "postbuild": "next-sitemap",
     "generate": "faust generatePossibleTypes",
     "start": "faust start",
