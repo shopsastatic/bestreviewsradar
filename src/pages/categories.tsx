@@ -56,7 +56,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
   }
   let topCategories = []
 
-  if(data) {
+  if (data) {
     topCategories = transformMenuItems(data?.categoryItems?.nodes)
   }
 
@@ -104,7 +104,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                   <div className="p-6 pb-0">
                     <div className="flex items-start justify-between mb-4">
                       <Link className="flex items-start gap-3" href={category?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}>
-                        <div dangerouslySetInnerHTML={{__html: category.icon}} className={`p-2 rounded-lg ${category.featured ? 'bg-blue-50 text-blue-500' : 'bg-blue-50 text-blue-500'
+                        <div dangerouslySetInnerHTML={{ __html: category.icon }} className={`p-2 rounded-lg ${category.featured ? 'bg-blue-50 text-blue-500' : 'bg-blue-50 text-blue-500'
                           }`}>
                         </div>
                         <div>
@@ -121,28 +121,30 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                   </div>
 
                   {/* Sub Categories */}
-                  <div className="p-6 pt-3">
-                    <div className="space-y-3">
-                      {category.subCategories.map((sub: any, index: any) => (
-                        <Link
-                          key={index}
-                          href={sub?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}
-                          className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
-                        >
-                          <ChevronRight className="w-4 h-4" />
-                          <span>{sub?.name}</span>
-                        </Link>
-                      ))}
-                    </div>
+                  {category?.subCategories?.length > 0 && (
+                    <div className="p-6 pt-3">
+                      <div className="space-y-3">
+                        {category.subCategories.map((sub: any, index: any) => (
+                          <Link
+                            key={index}
+                            href={sub?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}
+                            className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                            <span>{sub?.name}</span>
+                          </Link>
+                        ))}
+                      </div>
 
-                    {/* View All Button */}
-                    <Link href={category?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}>
-                      <button className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
-                        <span>Show More</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </Link>
-                  </div>
+                      {/* View All Button */}
+                      <Link href={category?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}>
+                        <button className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
+                          <span>Show More</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               ))}
           </div>
