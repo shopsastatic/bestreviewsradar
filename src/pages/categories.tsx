@@ -29,11 +29,6 @@ const CATEGORIES = gql(`
   }
 `) as any
 
-const iconMap: { [key: string]: React.ReactNode } = {
-  ChevronRight: <ChevronRight className="w-6 h-6" />,
-};
-
-
 const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
   const { data, loading, error } = useQuery(CATEGORIES)
   function transformMenuItems(items: any) {
@@ -108,7 +103,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                   {/* Card Header */}
                   <div className="p-6 pb-0">
                     <div className="flex items-start justify-between mb-4">
-                      <Link className="flex items-start gap-3" href={category?.slug}>
+                      <Link className="flex items-start gap-3" href={category?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}>
                         <div dangerouslySetInnerHTML={{__html: category.icon}} className={`p-2 rounded-lg ${category.featured ? 'bg-blue-50 text-blue-500' : 'bg-blue-50 text-blue-500'
                           }`}>
                         </div>
@@ -131,7 +126,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                       {category.subCategories.map((sub: any, index: any) => (
                         <Link
                           key={index}
-                          href={sub?.slug}
+                          href={sub?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}
                           className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
                         >
                           <ChevronRight className="w-4 h-4" />
@@ -141,7 +136,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
                     </div>
 
                     {/* View All Button */}
-                    <Link href={category?.slug}>
+                    <Link href={category?.slug?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"}>
                       <button className="w-full mt-6 flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors">
                         <span>Show More</span>
                         <ArrowRight className="w-4 h-4" />
