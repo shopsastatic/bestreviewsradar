@@ -12,18 +12,8 @@ import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getCatgoryDataFromCategoryFragment } from "@/utils/getCatgoryDataFromCategoryFragment";
 import { FaustTemplate } from "@faustwp/core";
-import { useRouter } from 'next/router'
 
 const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
-  const router = useRouter()
-
-  const pathname = router.asPath
-
-  const cleanUrl = pathname.replace(/^\/|\/$/g, '');
-  const segments = cleanUrl.split('/').filter(Boolean);
-  // if (segments.length >= 2) {
-  //   return <Page404Content />;
-  // }
 
   // LOADING ----------
   if (props.loading) {
