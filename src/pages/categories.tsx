@@ -21,7 +21,7 @@ const SkeletonCard = () => (
 
 const CATEGORIES = gql(`
   query GetCategories {
-    categoryItems: menuItems(where: { location: CATEGORIES }, first: 100) {
+    categoryItems: menuItems(where: { location: CATEGORIES }, first: 200) {
       nodes {
         ...NcCategoryFieldsFragment
       }
