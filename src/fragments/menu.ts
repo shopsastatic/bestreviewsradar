@@ -34,3 +34,19 @@ export const NC_SIDEBAR_MENU_QUERY_FRAGMENT = gql(`
     }
 `) as any;
     
+
+export const NC_CATEGORY_QUERY_FRAGMENT = gql(`
+    fragment NcCategoryFieldsFragment on MenuItem {
+          databaseId
+          uri
+          label
+          parentId
+          databaseId
+          id
+          menuAddons {
+            menuIcon
+            trending
+          }
+    }
+`) as any;
+    
