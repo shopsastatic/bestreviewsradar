@@ -9,6 +9,7 @@ module.exports = withFaust({
 	reactStrictMode: true,
 	experimental: {
 		typedRoutes: false,
+		generateSitemaps: false
 	},
 	images: {
 		remotePatterns: [

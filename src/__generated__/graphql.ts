@@ -1916,6 +1916,8 @@ export type CoreAudioAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;autoplay&quot; field on the &quot;CoreAudioAttributes&quot; block or block attributes */
   autoplay?: Maybe<Scalars['Boolean']['output']>;
+  /** The &quot;blob&quot; field on the &quot;CoreAudioAttributes&quot; block or block attributes */
+  blob?: Maybe<Scalars['String']['output']>;
   /** The &quot;caption&quot; field on the &quot;CoreAudioAttributes&quot; block or block attributes */
   caption?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreAudioAttributes&quot; block or block attributes */
@@ -2136,6 +2138,10 @@ export type CoreButtonsAttributes = BlockWithSupportsAnchor & {
   align?: Maybe<Scalars['String']['output']>;
   /** The anchor field for the block. */
   anchor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;backgroundColor&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
+  backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;cssClassName&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
@@ -2144,6 +2150,8 @@ export type CoreButtonsAttributes = BlockWithSupportsAnchor & {
   fontFamily?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
   fontSize?: Maybe<Scalars['String']['output']>;
+  /** The &quot;gradient&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
+  gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;layout&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
   layout?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreButtonsAttributes&quot; block or block attributes */
@@ -2236,6 +2244,8 @@ export type CoreCategoriesAttributes = {
   __typename?: 'CoreCategoriesAttributes';
   /** The &quot;align&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   align?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;displayAsDropdown&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
@@ -2244,6 +2254,8 @@ export type CoreCategoriesAttributes = {
   fontFamily?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   fontSize?: Maybe<Scalars['String']['output']>;
+  /** The &quot;label&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
+  label?: Maybe<Scalars['String']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
@@ -2252,12 +2264,16 @@ export type CoreCategoriesAttributes = {
   showEmpty: Scalars['Boolean']['output'];
   /** The &quot;showHierarchy&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   showHierarchy: Scalars['Boolean']['output'];
+  /** The &quot;showLabel&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
+  showLabel: Scalars['Boolean']['output'];
   /** The &quot;showOnlyTopLevel&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   showOnlyTopLevel: Scalars['Boolean']['output'];
   /** The &quot;showPostCounts&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   showPostCounts: Scalars['Boolean']['output'];
   /** The &quot;style&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
   style?: Maybe<Scalars['BlockAttributesObject']['output']>;
+  /** The &quot;taxonomy&quot; field on the &quot;CoreCategoriesAttributes&quot; block or block attributes */
+  taxonomy: Scalars['String']['output'];
 };
 
 /** A block used for editing the site */
@@ -2478,6 +2494,8 @@ export type CoreCommentAuthorNameAttributes = {
   __typename?: 'CoreCommentAuthorNameAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CoreCommentAuthorNameAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentAuthorNameAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentAuthorNameAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentAuthorNameAttributes&quot; block or block attributes */
@@ -2532,6 +2550,8 @@ export type CoreCommentContentAttributes = {
   __typename?: 'CoreCommentContentAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CoreCommentContentAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentContentAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentContentAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentContentAttributes&quot; block or block attributes */
@@ -2582,6 +2602,8 @@ export type CoreCommentDateAttributes = {
   __typename?: 'CoreCommentDateAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CoreCommentDateAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentDateAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentDateAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentDateAttributes&quot; block or block attributes */
@@ -2634,6 +2656,8 @@ export type CoreCommentEditLinkAttributes = {
   __typename?: 'CoreCommentEditLinkAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CoreCommentEditLinkAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentEditLinkAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentEditLinkAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentEditLinkAttributes&quot; block or block attributes */
@@ -2684,6 +2708,8 @@ export type CoreCommentReplyLinkAttributes = {
   __typename?: 'CoreCommentReplyLinkAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CoreCommentReplyLinkAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentReplyLinkAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentReplyLinkAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentReplyLinkAttributes&quot; block or block attributes */
@@ -2732,6 +2758,8 @@ export type CoreCommentTemplateAttributes = {
   __typename?: 'CoreCommentTemplateAttributes';
   /** The &quot;align&quot; field on the &quot;CoreCommentTemplateAttributes&quot; block or block attributes */
   align?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreCommentTemplateAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreCommentTemplateAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreCommentTemplateAttributes&quot; block or block attributes */
@@ -3040,6 +3068,8 @@ export type CoreCommentsTitleAttributes = {
   gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;level&quot; field on the &quot;CoreCommentsTitleAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CoreCommentsTitleAttributes&quot; block or block attributes */
+  levelOptions?: Maybe<Scalars['BlockAttributesArray']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreCommentsTitleAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreCommentsTitleAttributes&quot; block or block attributes */
@@ -3298,6 +3328,10 @@ export type CoreFileAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreFileAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;blob&quot; field on the &quot;CoreFileAttributes&quot; block or block attributes */
+  blob?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreFileAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreFileAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;displayPreview&quot; field on the &quot;CoreFileAttributes&quot; block or block attributes */
@@ -3452,6 +3486,8 @@ export type CoreGalleryAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreGalleryAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreGalleryAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;caption&quot; field on the &quot;CoreGalleryAttributes&quot; block or block attributes */
   caption?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreGalleryAttributes&quot; block or block attributes */
@@ -3603,6 +3639,8 @@ export type CoreHeadingAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;content&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
@@ -3617,6 +3655,8 @@ export type CoreHeadingAttributes = BlockWithSupportsAnchor & {
   gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;level&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
+  levelOptions?: Maybe<Scalars['BlockAttributesArray']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreHeadingAttributes&quot; block or block attributes */
@@ -3751,6 +3791,8 @@ export type CoreImageAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;aspectRatio&quot; field on the &quot;CoreImageAttributes&quot; block or block attributes */
   aspectRatio?: Maybe<Scalars['String']['output']>;
+  /** The &quot;blob&quot; field on the &quot;CoreImageAttributes&quot; block or block attributes */
+  blob?: Maybe<Scalars['String']['output']>;
   /** The &quot;borderColor&quot; field on the &quot;CoreImageAttributes&quot; block or block attributes */
   borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;caption&quot; field on the &quot;CoreImageAttributes&quot; block or block attributes */
@@ -3825,6 +3867,8 @@ export type CoreLatestCommentsAttributes = {
   __typename?: 'CoreLatestCommentsAttributes';
   /** The &quot;align&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   align?: Maybe<Scalars['String']['output']>;
+  /** The &quot;backgroundColor&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
+  backgroundColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;commentsToShow&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
@@ -3839,12 +3883,16 @@ export type CoreLatestCommentsAttributes = {
   fontFamily?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   fontSize?: Maybe<Scalars['String']['output']>;
+  /** The &quot;gradient&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
+  gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   metadata?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;style&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
   style?: Maybe<Scalars['BlockAttributesObject']['output']>;
+  /** The &quot;textColor&quot; field on the &quot;CoreLatestCommentsAttributes&quot; block or block attributes */
+  textColor?: Maybe<Scalars['String']['output']>;
 };
 
 /** A block used for editing the site */
@@ -4007,6 +4055,8 @@ export type CoreListAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreListAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreListAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreListAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;cssClassName&quot; field on the &quot;CoreListAttributes&quot; block or block attributes */
@@ -4040,8 +4090,10 @@ export type CoreListAttributes = BlockWithSupportsAnchor & {
 };
 
 /** A block used for editing the site */
-export type CoreListItem = EditorBlock & PageEditorBlock & {
+export type CoreListItem = BlockWithSupportsAnchor & EditorBlock & PageEditorBlock & {
   __typename?: 'CoreListItem';
+  /** The anchor field for the block. */
+  anchor?: Maybe<Scalars['String']['output']>;
   /** The API version of the Gutenberg Block */
   apiVersion?: Maybe<Scalars['Int']['output']>;
   /** Attributes of the CoreListItem Block Type */
@@ -4065,8 +4117,14 @@ export type CoreListItem = EditorBlock & PageEditorBlock & {
 };
 
 /** Attributes of the CoreListItem Block Type */
-export type CoreListItemAttributes = {
+export type CoreListItemAttributes = BlockWithSupportsAnchor & {
   __typename?: 'CoreListItemAttributes';
+  /** The anchor field for the block. */
+  anchor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;backgroundColor&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
+  backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;content&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
@@ -4075,6 +4133,8 @@ export type CoreListItemAttributes = {
   fontFamily?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
   fontSize?: Maybe<Scalars['String']['output']>;
+  /** The &quot;gradient&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
+  gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
@@ -4083,6 +4143,8 @@ export type CoreListItemAttributes = {
   placeholder?: Maybe<Scalars['String']['output']>;
   /** The &quot;style&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
   style?: Maybe<Scalars['BlockAttributesObject']['output']>;
+  /** The &quot;textColor&quot; field on the &quot;CoreListItemAttributes&quot; block or block attributes */
+  textColor?: Maybe<Scalars['String']['output']>;
 };
 
 /** A block used for editing the site */
@@ -4113,6 +4175,10 @@ export type CoreLoginout = EditorBlock & PageEditorBlock & {
 /** Attributes of the CoreLoginout Block Type */
 export type CoreLoginoutAttributes = {
   __typename?: 'CoreLoginoutAttributes';
+  /** The &quot;backgroundColor&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
+  backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;displayLoginAsForm&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
@@ -4121,6 +4187,8 @@ export type CoreLoginoutAttributes = {
   fontFamily?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
   fontSize?: Maybe<Scalars['String']['output']>;
+  /** The &quot;gradient&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
+  gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreLoginoutAttributes&quot; block or block attributes */
@@ -4169,6 +4237,8 @@ export type CoreMediaTextAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreMediaTextAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreMediaTextAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreMediaTextAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;focalPoint&quot; field on the &quot;CoreMediaTextAttributes&quot; block or block attributes */
@@ -4477,6 +4547,10 @@ export type CoreNavigationSubmenuAttributes = {
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;description&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
   description?: Maybe<Scalars['String']['output']>;
+  /** The &quot;fontFamily&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
+  fontFamily?: Maybe<Scalars['String']['output']>;
+  /** The &quot;fontSize&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
+  fontSize?: Maybe<Scalars['String']['output']>;
   /** The &quot;id&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
   id?: Maybe<Scalars['Float']['output']>;
   /** The &quot;isTopLevelItem&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
@@ -4493,6 +4567,8 @@ export type CoreNavigationSubmenuAttributes = {
   opensInNewTab: Scalars['Boolean']['output'];
   /** The &quot;rel&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
   rel?: Maybe<Scalars['String']['output']>;
+  /** The &quot;style&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
+  style?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;title&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
   title?: Maybe<Scalars['String']['output']>;
   /** The &quot;type&quot; field on the &quot;CoreNavigationSubmenuAttributes&quot; block or block attributes */
@@ -4663,6 +4739,8 @@ export type CoreParagraphAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreParagraphAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreParagraphAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreParagraphAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;content&quot; field on the &quot;CoreParagraphAttributes&quot; block or block attributes */
@@ -4761,6 +4839,8 @@ export type CorePostAuthorAttributes = {
   avatarSize: Scalars['Float']['output'];
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostAuthorAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostAuthorAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;byline&quot; field on the &quot;CorePostAuthorAttributes&quot; block or block attributes */
   byline?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostAuthorAttributes&quot; block or block attributes */
@@ -4821,6 +4901,8 @@ export type CorePostAuthorBiographyAttributes = {
   __typename?: 'CorePostAuthorBiographyAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostAuthorBiographyAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostAuthorBiographyAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostAuthorBiographyAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CorePostAuthorBiographyAttributes&quot; block or block attributes */
@@ -4871,6 +4953,8 @@ export type CorePostAuthorNameAttributes = {
   __typename?: 'CorePostAuthorNameAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostAuthorNameAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostAuthorNameAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostAuthorNameAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CorePostAuthorNameAttributes&quot; block or block attributes */
@@ -4975,6 +5059,8 @@ export type CorePostCommentsFormAttributes = {
   __typename?: 'CorePostCommentsFormAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostCommentsFormAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostCommentsFormAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostCommentsFormAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontSize&quot; field on the &quot;CorePostCommentsFormAttributes&quot; block or block attributes */
@@ -5075,6 +5161,8 @@ export type CorePostDateAttributes = {
   __typename?: 'CorePostDateAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostDateAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostDateAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostDateAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;displayType&quot; field on the &quot;CorePostDateAttributes&quot; block or block attributes */
@@ -5131,6 +5219,8 @@ export type CorePostExcerptAttributes = {
   __typename?: 'CorePostExcerptAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostExcerptAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostExcerptAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostExcerptAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;excerptLength&quot; field on the &quot;CorePostExcerptAttributes&quot; block or block attributes */
@@ -5369,6 +5459,8 @@ export type CorePostTermsAttributes = {
   __typename?: 'CorePostTermsAttributes';
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostTermsAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostTermsAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostTermsAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CorePostTermsAttributes&quot; block or block attributes */
@@ -5429,6 +5521,8 @@ export type CorePostTitleAttributes = {
   align?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
@@ -5441,6 +5535,8 @@ export type CorePostTitleAttributes = {
   isLink: Scalars['Boolean']['output'];
   /** The &quot;level&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
+  levelOptions?: Maybe<Scalars['BlockAttributesArray']['output']>;
   /** The &quot;linkTarget&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
   linkTarget: Scalars['String']['output'];
   /** The &quot;lock&quot; field on the &quot;CorePostTitleAttributes&quot; block or block attributes */
@@ -5491,6 +5587,8 @@ export type CorePreformattedAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CorePreformattedAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CorePreformattedAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CorePreformattedAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;content&quot; field on the &quot;CorePreformattedAttributes&quot; block or block attributes */
@@ -5905,6 +6003,8 @@ export type CoreQueryTitleAttributes = {
   align?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
@@ -5915,6 +6015,8 @@ export type CoreQueryTitleAttributes = {
   gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;level&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
+  levelOptions?: Maybe<Scalars['BlockAttributesArray']['output']>;
   /** The &quot;lock&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreQueryTitleAttributes&quot; block or block attributes */
@@ -5963,10 +6065,14 @@ export type CoreQuote = BlockWithSupportsAnchor & EditorBlock & PageEditorBlock 
 /** Attributes of the CoreQuote Block Type */
 export type CoreQuoteAttributes = BlockWithSupportsAnchor & {
   __typename?: 'CoreQuoteAttributes';
+  /** The &quot;align&quot; field on the &quot;CoreQuoteAttributes&quot; block or block attributes */
+  align?: Maybe<Scalars['String']['output']>;
   /** The anchor field for the block. */
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreQuoteAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreQuoteAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;citation&quot; field on the &quot;CoreQuoteAttributes&quot; block or block attributes */
   citation?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreQuoteAttributes&quot; block or block attributes */
@@ -6343,6 +6449,8 @@ export type CoreSiteTaglineAttributes = {
   align?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
@@ -6353,6 +6461,8 @@ export type CoreSiteTaglineAttributes = {
   gradient?: Maybe<Scalars['String']['output']>;
   /** The &quot;level&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
+  levelOptions: Scalars['BlockAttributesArray']['output'];
   /** The &quot;lock&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
   lock?: Maybe<Scalars['BlockAttributesObject']['output']>;
   /** The &quot;metadata&quot; field on the &quot;CoreSiteTaglineAttributes&quot; block or block attributes */
@@ -6397,6 +6507,8 @@ export type CoreSiteTitleAttributes = {
   align?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
@@ -6409,6 +6521,8 @@ export type CoreSiteTitleAttributes = {
   isLink: Scalars['Boolean']['output'];
   /** The &quot;level&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
   level: Scalars['Float']['output'];
+  /** The &quot;levelOptions&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
+  levelOptions: Scalars['BlockAttributesArray']['output'];
   /** The &quot;linkTarget&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
   linkTarget: Scalars['String']['output'];
   /** The &quot;lock&quot; field on the &quot;CoreSiteTitleAttributes&quot; block or block attributes */
@@ -6503,6 +6617,8 @@ export type CoreSocialLinksAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreSocialLinksAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreSocialLinksAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreSocialLinksAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;customIconBackgroundColor&quot; field on the &quot;CoreSocialLinksAttributes&quot; block or block attributes */
@@ -6749,6 +6865,8 @@ export type CoreTagCloudAttributes = {
   __typename?: 'CoreTagCloudAttributes';
   /** The &quot;align&quot; field on the &quot;CoreTagCloudAttributes&quot; block or block attributes */
   align?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreTagCloudAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreTagCloudAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreTagCloudAttributes&quot; block or block attributes */
@@ -6849,6 +6967,8 @@ export type CoreTermDescriptionAttributes = {
   align?: Maybe<Scalars['String']['output']>;
   /** The &quot;backgroundColor&quot; field on the &quot;CoreTermDescriptionAttributes&quot; block or block attributes */
   backgroundColor?: Maybe<Scalars['String']['output']>;
+  /** The &quot;borderColor&quot; field on the &quot;CoreTermDescriptionAttributes&quot; block or block attributes */
+  borderColor?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreTermDescriptionAttributes&quot; block or block attributes */
   className?: Maybe<Scalars['String']['output']>;
   /** The &quot;fontFamily&quot; field on the &quot;CoreTermDescriptionAttributes&quot; block or block attributes */
@@ -7010,6 +7130,8 @@ export type CoreVideoAttributes = BlockWithSupportsAnchor & {
   anchor?: Maybe<Scalars['String']['output']>;
   /** The &quot;autoplay&quot; field on the &quot;CoreVideoAttributes&quot; block or block attributes */
   autoplay?: Maybe<Scalars['Boolean']['output']>;
+  /** The &quot;blob&quot; field on the &quot;CoreVideoAttributes&quot; block or block attributes */
+  blob?: Maybe<Scalars['String']['output']>;
   /** The &quot;caption&quot; field on the &quot;CoreVideoAttributes&quot; block or block attributes */
   caption?: Maybe<Scalars['String']['output']>;
   /** The &quot;className&quot; field on the &quot;CoreVideoAttributes&quot; block or block attributes */
@@ -9974,6 +10096,8 @@ export type MenuItemToMenuItemLinkableConnectionEdge = Edge & MenuItemLinkableCo
 
 /** Registered menu locations */
 export enum MenuLocationEnum {
+  /** Put the menu in the categories location */
+  Categories = 'CATEGORIES',
   /** Put the menu in the footer location */
   Footer = 'FOOTER',
   /** Put the menu in the main_menu location */
@@ -10171,6 +10295,12 @@ export enum MimeTypeEnum {
   ImageGif = 'IMAGE_GIF',
   /** image/heic mime type. */
   ImageHeic = 'IMAGE_HEIC',
+  /** image/heic-sequence mime type. */
+  ImageHeicSequence = 'IMAGE_HEIC_SEQUENCE',
+  /** image/heif mime type. */
+  ImageHeif = 'IMAGE_HEIF',
+  /** image/heif-sequence mime type. */
+  ImageHeifSequence = 'IMAGE_HEIF_SEQUENCE',
   /** image/jpeg mime type. */
   ImageJpeg = 'IMAGE_JPEG',
   /** image/png mime type. */
