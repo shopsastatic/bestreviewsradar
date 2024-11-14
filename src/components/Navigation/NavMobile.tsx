@@ -1,29 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FragmentType } from '@/__generated__'
-import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import Link from 'next/link'
 import {
 	ChevronRight,
 	ChevronLeft,
-	Smartphone,
-	Monitor,
-	Home,
-	Wrench,
-	Heart,
-	Sparkles,
-	Briefcase,
-	Flower,
-	Dumbbell,
-	Music2,
-	Scissors,
-	BookOpen,
-	Music,
-	Palette,
-	Settings,
-	Activity,
-	Laptop,
 	X,
 
 } from 'lucide-react';
