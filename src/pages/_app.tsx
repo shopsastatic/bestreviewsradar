@@ -1,5 +1,5 @@
 import "../../faust.config";
-import React, { useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
@@ -17,14 +17,6 @@ import { WordPressBlocksProvider, fromThemeJson } from "@faustwp/blocks";
 import blocks from "@/wp-blocks";
 import themeJson from "../../theme.json";
 
-// Dynamic imports
-const SiteWrapperProvider = dynamic(() => import("@/container/SiteWrapperProvider"));
-const Toaster = dynamic(() => import("react-hot-toast").then(mod => mod.Toaster));
-const NextNProgress = dynamic(() => import("nextjs-progressbar"));
-const GoogleAnalytics = dynamic(() => 
-  import("nextjs-google-analytics").then(mod => mod.GoogleAnalytics)
-);
-
 // Font configurations
 const inter = Inter({
   weight: ["400", "600", "700", "800"],
@@ -32,16 +24,34 @@ const inter = Inter({
   variable: "--inter-font",
   display: 'swap',
   preload: true,
-  fallback: ['system-ui', '-apple-system', 'Segoe UI'],
+  fallback: ['system-ui', 'arial', 'sans-serif'],
 });
 
 const noto_san = Noto_Sans({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
-  variable: "--noto-font",
+  variable: "--noto-font", 
   display: 'swap',
   preload: true,
-  fallback: ['system-ui', '-apple-system', 'Segoe UI'],
+  fallback: ['system-ui', 'arial', 'sans-serif'],
+});
+
+// Dynamic imports with ssr: false to avoid hydration issues
+const SiteWrapperProvider = dynamic(() => import("@/container/SiteWrapperProvider"), {
+  ssr: true
+});
+
+const Toaster = dynamic(() => import("react-hot-toast").then(mod => mod.Toaster), {
+  ssr: false
+});
+
+const NextNProgress = dynamic(() => import("nextjs-progressbar"), {
+  ssr: false
+});
+
+const GoogleAnalytics = dynamic(() => 
+  import("nextjs-google-analytics").then(mod => mod.GoogleAnalytics), {
+  ssr: false
 });
 
 // WordPress blocks configuration
@@ -50,44 +60,49 @@ const wpBlocksConfig = {
   theme: fromThemeJson(themeJson),
 };
 
+function ClientOnly({ children }: { children: React.ReactNode }) {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  const preloadComponents = useCallback(() => {
-    import("@/container/SiteWrapperProvider");
-    import("react-hot-toast");
-    import("nextjs-progressbar");
-  }, []);
-
-  useEffect(() => {
-    preloadComponents();
-  }, [preloadComponents]);
-
   return (
-    <>
-      <style jsx global>{`
-        :root {
-          --inter-font: ${inter.style.fontFamily};
-          --noto-font: ${noto_san.style.fontFamily};
-        }
-        html {
-          font-family: var(--inter-font);
-        }
-        html, body, .large-width, .prod-child {
-          font-family: var(--inter-font);
-        }
-        .heading-tag-text {
-          font-family: var(--noto-font);
-        }
-      `}</style>
+    <FaustProvider pageProps={pageProps}>
+      <WordPressBlocksProvider config={wpBlocksConfig}>
+        <SiteWrapperProvider {...pageProps}>
+          <style jsx global>{`
+            :root {
+              --inter-font: ${inter.style.fontFamily};
+              --noto-font: ${noto_san.style.fontFamily};
+            }
+            html {
+              font-family: var(--inter-font);
+            }
+            html, body, .large-width, .prod-child {
+              font-family: var(--inter-font);
+            }
+            .heading-tag-text {
+              font-family: var(--noto-font);
+            }
+          `}</style>
 
-      {/* <GoogleAnalytics trackPageViews /> */}
-      <FaustProvider pageProps={pageProps}>
-        <WordPressBlocksProvider config={wpBlocksConfig}>
-          <SiteWrapperProvider {...pageProps}>
-            <main className={`${inter.variable} ${noto_san.variable}`}>
+          <main className={`${inter.variable} ${noto_san.variable}`}>
+            <Component {...pageProps} key={router.asPath} />
+            
+            {/* Wrap client-side only components */}
+            <ClientOnly>
               <NextNProgress color="#818cf8" />
-              <Component {...pageProps} key={router.asPath} />
               <Toaster
                 position="bottom-left"
                 toastOptions={{
@@ -98,10 +113,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 }}
                 containerClassName="text-sm"
               />
-            </main>
-          </SiteWrapperProvider>
-        </WordPressBlocksProvider>
-      </FaustProvider>
-    </>
+              {/* <GoogleAnalytics trackPageViews /> */}
+            </ClientOnly>
+          </main>
+        </SiteWrapperProvider>
+      </WordPressBlocksProvider>
+    </FaustProvider>
   );
 }

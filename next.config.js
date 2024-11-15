@@ -20,6 +20,11 @@ const nextConfig = {
   
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+  },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
   },
 
   experimental: {
