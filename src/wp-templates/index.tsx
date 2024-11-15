@@ -6,7 +6,6 @@ import main from "./main";
 import archive from "./archive";
 
 export default {
-  // front page will a specifycally page
   page,
   single,
   category,

@@ -1,7 +1,4 @@
-import MyImage from '@/components/MyImage'
 import SEO from '@/components/SEO/SEO'
-import { NC_SITE_SETTINGS } from '@/contains/site-settings'
-import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Page404Content() {

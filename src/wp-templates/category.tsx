@@ -3,11 +3,9 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
   PageCategoryGetCategoryQuery,
 } from "@/__generated__/graphql";
-import Page404Content from "@/container/404Content";
 import PageLayout from "@/container/PageLayout";
 import ArchiveLayoutChild from "@/container/archives/ArchieveLayoutChild";
 import ArchiveLayout from "@/container/archives/ArchiveLayout";
-import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { PostDataFragmentType } from "@/data/types";
 import { getCatgoryDataFromCategoryFragment } from "@/utils/getCatgoryDataFromCategoryFragment";
@@ -27,11 +25,8 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
   // START ----------
   const {
     databaseId,
-    count,
     description,
     name,
-    uri,
-    ncTaxonomyMeta,
     featuredImageMeta,
     children,
     ancestors,

@@ -4,7 +4,6 @@ import {
   NcgeneralSettingsFieldsFragmentFragment,
 } from "../__generated__/graphql";
 import { FaustTemplate } from "@faustwp/core";
-import SingleContent from "@/container/singles/SingleContent";
 import { getPostDataFromPostFragment } from "@/utils/getPostDataFromPostFragment";
 import PageLayout from "@/container/PageLayout";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
@@ -20,27 +19,12 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
     setIsMounted(true);
   }, []);
 
-  // useEffect(() => {
-  //   if (isMounted && router.isReady && 'e' in router.query) {
-  //     const _post = props.data?.post || {};
-  //     window.open(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-admin/post.php?post=${_post.databaseId}&action=edit`, '_blank');
-      
-  //     const pathWithoutQuery = router.asPath.split('?')[0];
-  //     router.replace(pathWithoutQuery, undefined, { shallow: true });
-  //   }
-  // }, [isMounted, router.isReady, router.query, props.data]);
-
-  // if (props.loading || !router.isReady || !isMounted) {
-  //   return <>Loading...</>;
-  // }
-
   const _post = props.data?.post || {};
   const IS_PREVIEW = router.pathname === "/preview";
 
   const {
     title,
     featuredImage,
-    databaseId,
     excerpt,
     seo
   } = getPostDataFromPostFragment(_post);
@@ -58,8 +42,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <SingleHeader post={_post} />
-        <SingleContent post={_post} />
+        1
       </PageLayout>
     </>
   );
