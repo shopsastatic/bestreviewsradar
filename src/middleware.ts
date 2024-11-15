@@ -9,6 +9,7 @@ export function middleware(request: NextRequest) {
         pathname === '/' ||
         pathname.includes('favicon') ||
         pathname.startsWith('/images/') ||
+        pathname.startsWith('/author/') ||
         pathname.startsWith('/public/')) {
         return NextResponse.next()
     }
@@ -30,7 +31,7 @@ export function middleware(request: NextRequest) {
 export const config = {
     matcher: [
         // Match tất cả ngoại trừ
-        '/((?!api|_next/static|_next/image|favicon.ico|images|public).*)',
+        '/((?!api|_next/static|_next/image|favicon.ico|images|public|author).*)',
         '/:path*'
     ]
 }
