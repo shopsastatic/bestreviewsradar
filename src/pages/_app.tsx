@@ -53,7 +53,6 @@ const wpBlocksConfig = {
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  // Preload critical components
   const preloadComponents = useCallback(() => {
     import("@/container/SiteWrapperProvider");
     import("react-hot-toast");
@@ -82,7 +81,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }
       `}</style>
 
-      <GoogleAnalytics trackPageViews />
+      {/* <GoogleAnalytics trackPageViews /> */}
       <FaustProvider pageProps={pageProps}>
         <WordPressBlocksProvider config={wpBlocksConfig}>
           <SiteWrapperProvider {...pageProps}>
