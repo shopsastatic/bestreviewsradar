@@ -9,7 +9,6 @@ module.exports = withFaust({
 	reactStrictMode: true,
 	experimental: {
 		typedRoutes: false,
-		generateSitemaps: false
 	},
 	images: {
 		remotePatterns: [
@@ -104,4 +103,46 @@ module.exports = withFaust({
 			},
 		]
 	},
+	compress: true,
+	webpack: (config, { dev, isServer }) => {
+		// Chỉ áp dụng cho production build
+		if (!dev && !isServer) {
+		  config.optimization = {
+			...config.optimization,
+			splitChunks: {
+			  chunks: 'all',
+			  minSize: 20000,
+			  maxSize: 70000,
+			  cacheGroups: {
+				framework: {
+				  name: 'framework',
+				  chunks: 'all',
+				  test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
+				  priority: 40,
+				  enforce: true
+				},
+				commons: {
+				  name: 'commons',
+				  chunks: 'all', 
+				  minChunks: 2,
+				  reuseExistingChunk: true,
+				  priority: 20
+				},
+				lib: {
+				  test(module) {
+					return module.size() > 50000
+				  },
+				  name(module) {
+					return `chunk-${module.libIdent({context: __dirname})}`
+				  },
+				  priority: 15,
+				  minChunks: 1,
+				  reuseExistingChunk: true
+				}
+			  }
+			}
+		  }
+		}
+		return config
+	}
 })
