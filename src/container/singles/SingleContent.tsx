@@ -11,186 +11,186 @@ import debounce from 'lodash/debounce'
 
 // Types
 export interface SingleContentProps {
-  post: any
+	post: any
 }
 
 interface CacheData {
-  data: any;
-  timestamp: number;
+	data: any;
+	timestamp: number;
 }
 
 // RelatedProduct Component with Image optimization
 const RelatedProduct = memo(({ item }: { item: any }) => (
-  <Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
-    <div className='max-h-[94px] h-full m-auto mb-3'>
-      <img 
-        loading='lazy'
-        className='related-prod-image mx-auto rounded-[8px] h-full'
-        src={item?.img ?? "/"} 
-        alt={item?.title}
-      />
-    </div>
-    <img 
-      loading='lazy'
-      className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]'
-      src="/images/posts/amazon.webp"
-      alt="Amazon logo"
-    />
-    <div className='block w-fit my-3 mt-1'>
-      <p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
-    </div>
-    <span className='line-clamp-1 block mb-2 text-sm truncate'>
-      {item?.productDatas?.description}
-    </span>
-    <div className='box-price flex flex-wrap items-end gap-4'>
-      {item?.price > 0 && (
-        <span className='font-bold text-base'>
-          ${Number(item?.price)?.toFixed(2)}
-        </span>
-      )}
-      <div className='flex items-center gap-4'>
-        {item?.priceOld > 0 && (
-          <span className='text-sm line-through text-[#444]'>
-            ${Number(item?.priceOld)?.toFixed(2)}
-          </span>
-        )}
-        {item?.percentageSaved > 0 && (
-          <span className='text-sm text-red-700'>
-            ({item?.percentageSaved}% OFF)
-          </span>
-        )}
-      </div>
-    </div>
-    <button 
-      className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]" 
-      aria-label="View Deal"
-    >
-      View Deal
-    </button>
-  </Link>
+	<Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
+		<div className='max-h-[94px] h-full m-auto mb-3'>
+			<img
+				loading='lazy'
+				className='related-prod-image mx-auto rounded-[8px] h-full'
+				src={item?.img ?? "/"}
+				alt={item?.title}
+			/>
+		</div>
+		<img
+			loading='lazy'
+			className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]'
+			src="/images/posts/amazon.webp"
+			alt="Amazon logo"
+		/>
+		<div className='block w-fit my-3 mt-1'>
+			<p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
+		</div>
+		<span className='line-clamp-1 block mb-2 text-sm truncate'>
+			{item?.productDatas?.description}
+		</span>
+		<div className='box-price flex flex-wrap items-end gap-4'>
+			{item?.price > 0 && (
+				<span className='font-bold text-base'>
+					${Number(item?.price)?.toFixed(2)}
+				</span>
+			)}
+			<div className='flex items-center gap-4'>
+				{item?.priceOld > 0 && (
+					<span className='text-sm line-through text-[#444]'>
+						${Number(item?.priceOld)?.toFixed(2)}
+					</span>
+				)}
+				{item?.percentageSaved > 0 && (
+					<span className='text-sm text-red-700'>
+						({item?.percentageSaved}% OFF)
+					</span>
+				)}
+			</div>
+		</div>
+		<button
+			className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]"
+			aria-label="View Deal"
+		>
+			View Deal
+		</button>
+	</Link>
 ))
 
 RelatedProduct.displayName = 'RelatedProduct'
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
-  // Refs
-  const endedAnchorRef = useRef<HTMLDivElement>(null)
-  const progressRef = useRef<HTMLButtonElement>(null)
-  const contentRef = useRef(null)
-  const tooltipRef = useRef<HTMLDivElement>(null)
-  const [showTooltip, setShowTooltip] = useState(false)
-  const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
-  const [activeHeading, setActiveHeading] = useState<string>('')
-  const cRef = useRef<HTMLDivElement>(null) as any
-  const relatedRef = useRef(null)
+	// Refs
+	const endedAnchorRef = useRef<HTMLDivElement>(null)
+	const progressRef = useRef<HTMLButtonElement>(null)
+	const contentRef = useRef(null)
+	const tooltipRef = useRef<HTMLDivElement>(null)
+	const [showTooltip, setShowTooltip] = useState(false)
+	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
+	const [activeHeading, setActiveHeading] = useState<string>('')
+	const cRef = useRef<HTMLDivElement>(null) as any
+	const relatedRef = useRef(null)
 
-  const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
-  const [dataRelated, setDataRelated] = useState<any>({})
-  
-  // Get post data
-  const {
-	  content,
-    status,
-    date,
-    amazonShortcode,
-    numberOfToplist
-} = getPostDataFromPostFragment(post || {})
-const [hydratedContent, setHydratedContent] = useState(content)
+	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
+	const [dataRelated, setDataRelated] = useState<any>({})
 
-  let NoT = numberOfToplist?.numberOfToplist as any
-  if (!NoT) {
-    NoT = 10
-  }
+	// Get post data
+	const {
+		content,
+		status,
+		date,
+		amazonShortcode,
+		numberOfToplist
+	} = getPostDataFromPostFragment(post || {})
+	const [hydratedContent, setHydratedContent] = useState(content)
 
-  const post_id = post?.databaseId
+	let NoT = numberOfToplist?.numberOfToplist as any
+	if (!NoT) {
+		NoT = 10
+	}
 
-  // Fetch related data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cacheKey = `related-data-${post_id}`
-        const cached = sessionStorage.getItem(cacheKey)
-        
-        if (cached) {
-          const { data, timestamp } = JSON.parse(cached)
-          const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
-          
-          if (!isExpired) {
-            setDataRelated(data)
-            return
-          }
-        }
+	const post_id = post?.databaseId
 
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
-        )
-        
-        setDataRelated(data)
-        sessionStorage.setItem(cacheKey, JSON.stringify({
-          data,
-          timestamp: Date.now()
-        }))
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      }
-    }
+	// Fetch related data
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const cacheKey = `related-data-${post_id}`
+				const cached = sessionStorage.getItem(cacheKey)
 
-    fetchData()
-  }, [post_id])
+				if (cached) {
+					const { data, timestamp } = JSON.parse(cached)
+					const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
 
-  let dataRelatedArray = [] as any
-  if (dataRelated?.Amazon) {
-    dataRelatedArray = Object.values(dataRelated?.Amazon)
-  }
+					if (!isExpired) {
+						setDataRelated(data)
+						return
+					}
+				}
 
-  const amzShortcode = amazonShortcode as any
+				const { data } = await axios.get(
+					`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
+				)
 
-  // Handle click outside
-  const handleClickOutside = (event: MouseEvent) => {
-    if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-      setShowTooltip(false)
-    }
-  }
+				setDataRelated(data)
+				sessionStorage.setItem(cacheKey, JSON.stringify({
+					data,
+					timestamp: Date.now()
+				}))
+			} catch (error) {
+				console.error("Error fetching data:", error)
+			}
+		}
 
-  // Learn more button functionality
-  useEffect(() => {
-    const learnMoreBtn = document.getElementById('learnMoreBtn')
-    const learnMoreContent = document.getElementById('learnMoreContent')
-    
-    const handleLearnMore = (event: any) => {
-      learnMoreContent?.classList.remove('hidden')
-      learnMoreContent?.classList.add('block')
-      event.stopPropagation()
-    }
+		fetchData()
+	}, [post_id])
 
-    const handleClickOutsideLearnMore = (event: any) => {
-      if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
-        learnMoreContent?.classList.add('hidden')
-        learnMoreContent?.classList.remove('block')
-      }
-    }
+	let dataRelatedArray = [] as any
+	if (dataRelated?.Amazon) {
+		dataRelatedArray = Object.values(dataRelated?.Amazon)
+	}
 
-    learnMoreBtn?.addEventListener('click', handleLearnMore)
-    document.addEventListener('click', handleClickOutsideLearnMore)
+	const amzShortcode = amazonShortcode as any
 
-    return () => {
-      learnMoreBtn?.removeEventListener('click', handleLearnMore)
-      document.removeEventListener('click', handleClickOutsideLearnMore)
-    }
-  }, [])
+	// Handle click outside
+	const handleClickOutside = (event: MouseEvent) => {
+		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+			setShowTooltip(false)
+		}
+	}
 
-  // Toggle button functionality
-  useEffect(() => {
-    const initializeToggleButtons = (selector: string) => {
-      document.querySelectorAll(selector).forEach((button, index) => {
-        let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
-        let isExpanded = false;
+	// Learn more button functionality
+	useEffect(() => {
+		const learnMoreBtn = document.getElementById('learnMoreBtn')
+		const learnMoreContent = document.getElementById('learnMoreContent')
 
-        button.addEventListener('click', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
+		const handleLearnMore = (event: any) => {
+			learnMoreContent?.classList.remove('hidden')
+			learnMoreContent?.classList.add('block')
+			event.stopPropagation()
+		}
 
-          const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
+		const handleClickOutsideLearnMore = (event: any) => {
+			if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
+				learnMoreContent?.classList.add('hidden')
+				learnMoreContent?.classList.remove('block')
+			}
+		}
+
+		learnMoreBtn?.addEventListener('click', handleLearnMore)
+		document.addEventListener('click', handleClickOutsideLearnMore)
+
+		return () => {
+			learnMoreBtn?.removeEventListener('click', handleLearnMore)
+			document.removeEventListener('click', handleClickOutsideLearnMore)
+		}
+	}, [])
+
+	// Toggle button functionality
+	useEffect(() => {
+		const initializeToggleButtons = (selector: string) => {
+			document.querySelectorAll(selector).forEach((button, index) => {
+				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
+				let isExpanded = false;
+
+				button.addEventListener('click', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
             ${text}
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -212,331 +212,328 @@ const [hydratedContent, setHydratedContent] = useState(content)
             </svg>
           `;
 
-          if (isExpanded) {
-            content.style.maxHeight = '276px';
-            button.innerHTML = getButtonHTML('Show More');
-          } else {
-            content.style.maxHeight = content.scrollHeight + 'px';
-            button.innerHTML = getButtonHTML('Show Less', true);
-          }
+					if (isExpanded) {
+						content.style.maxHeight = '276px';
+						button.innerHTML = getButtonHTML('Show More');
+					} else {
+						content.style.maxHeight = content.scrollHeight + 'px';
+						button.innerHTML = getButtonHTML('Show Less', true);
+					}
 
-          isExpanded = !isExpanded;
-        });
-      });
-    };
+					isExpanded = !isExpanded;
+				});
+			});
+		};
 
-    initializeToggleButtons('.toggle-button:not(.mob)');
-    initializeToggleButtons('.toggle-button.mob');
+		initializeToggleButtons('.toggle-button:not(.mob)');
+		initializeToggleButtons('.toggle-button.mob');
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 
-  // Progress indicator
-  useEffect(() => {
-    const handleProgressIndicator = () => {
-      const entryContent = contentRef.current as any;
-      const progressBarContent = progressRef.current;
+	// Progress indicator
+	useEffect(() => {
+		const handleProgressIndicator = () => {
+			const entryContent = contentRef.current as any;
+			const progressBarContent = progressRef.current;
 
-      if (!entryContent || !progressBarContent) return;
+			if (!entryContent || !progressBarContent) return;
 
-      const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
-      let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-      let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
+			const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
+			let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+			let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
 
-      progressBarContent.innerText = scrolled.toFixed(0) + '%';
-      setIsShowScrollToTop(scrolled >= 100);
-    };
+			progressBarContent.innerText = scrolled.toFixed(0) + '%';
+			setIsShowScrollToTop(scrolled >= 100);
+		};
 
-    const debouncedProgressIndicator = debounce(() => {
-      requestAnimationFrame(handleProgressIndicator);
-    }, 100);
+		const debouncedProgressIndicator = debounce(() => {
+			requestAnimationFrame(handleProgressIndicator);
+		}, 100);
 
-    handleProgressIndicator();
-    window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
-    
-    return () => {
-      window.removeEventListener('scroll', debouncedProgressIndicator);
-      debouncedProgressIndicator.cancel();
-    };
-  }, []);
+		handleProgressIndicator();
+		window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
 
-  // Alert render
-  const renderAlert = () => {
-    if (status === 'publish') return null;
-    
-    if (status === 'future') {
-      return (
-        <Alert type="warning">
-          This post is scheduled. It will be published on {date}.
-        </Alert>
-      );
-    }
-    
-    return (
-      <Alert type="warning">
-        This post is {status}. It will not be visible on the website until it is published.
-      </Alert>
-    );
-  };
+		return () => {
+			window.removeEventListener('scroll', debouncedProgressIndicator);
+			debouncedProgressIndicator.cancel();
+		};
+	}, []);
 
-  // Slugify text
-  const slugify = (text: string) => {
-    return text
-      .toString()
-      .toLowerCase()
-      .trim()
-      .replace(/[\s\W-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  };
+	// Alert render
+	const renderAlert = () => {
+		if (status === 'publish') return null;
 
-  // Process content and extract headings
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+		if (status === 'future') {
+			return (
+				<Alert type="warning">
+					This post is scheduled. It will be published on {date}.
+				</Alert>
+			);
+		}
 
-    const updateContentWithHeadings = () => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(content, 'text/html');
-      const h2Elements = Array.from(doc.querySelectorAll('h2'));
+		return (
+			<Alert type="warning">
+				This post is {status}. It will not be visible on the website until it is published.
+			</Alert>
+		);
+	};
 
-      h2Elements.forEach((heading) => {
-        const slugifiedText = slugify(heading.textContent || `heading`);
-        heading.id = `toc-${slugifiedText}`;
-      });
+	// Slugify text
+	const slugify = (text: string) => {
+		return text
+			.toString()
+			.toLowerCase()
+			.trim()
+			.replace(/[\s\W-]+/g, '-')
+			.replace(/^-+|-+$/g, '');
+	};
 
-      const tables = Array.from(doc.querySelectorAll('table'));
-      tables.forEach((table) => {
-        let hasProsOrCons = false;
+	// Process content and extract headings
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
 
-        const firstRow = table.querySelector('tr');
-        if (firstRow) {
-          const tdElements = Array.from(firstRow.querySelectorAll('td'));
-          tdElements.forEach((td: any) => {
-            const text = td.textContent.toLowerCase();
-            if (text.includes('pros') || text.includes('cons')) {
-              hasProsOrCons = true;
-            }
-          });
-        }
+		const updateContentWithHeadings = () => {
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(content, 'text/html');
+			const h2Elements = Array.from(doc.querySelectorAll('h2'));
 
-        if (hasProsOrCons) {
-          const newDivWrapper = document.createElement('div');
-          newDivWrapper.classList.add('pros-cons-table');
+			h2Elements.forEach((heading) => {
+				const slugifiedText = slugify(heading.textContent || `heading`);
+				heading.id = `toc-${slugifiedText}`;
+			});
 
-          const thead = table.querySelector('thead');
-          if (thead) {
-            const theadDiv = document.createElement('div');
-            theadDiv.classList.add('thead-wrapper');
+			const tables = Array.from(doc.querySelectorAll('table'));
+			tables.forEach((table) => {
+				let hasProsOrCons = false;
 
-            Array.from(thead.querySelectorAll('th')).forEach((th) => {
-              const thDiv = document.createElement('div');
-              thDiv.classList.add('thead-cell');
-              thDiv.innerHTML = th.innerHTML;
-              theadDiv.appendChild(thDiv);
-            });
+				const firstRow = table.querySelector('tr');
+				if (firstRow) {
+					const tdElements = Array.from(firstRow.querySelectorAll('td'));
+					tdElements.forEach((td: any) => {
+						const text = td.textContent.toLowerCase();
+						if (text.includes('pros') || text.includes('cons')) {
+							hasProsOrCons = true;
+						}
+					});
+				}
 
-            newDivWrapper.appendChild(theadDiv);
-          }
+				if (hasProsOrCons) {
+					const newDivWrapper = document.createElement('div');
+					newDivWrapper.classList.add('pros-cons-table');
 
-          const rows = Array.from(table.querySelectorAll('tbody tr'));
-          const columns = [] as any[];
+					const thead = table.querySelector('thead');
+					if (thead) {
+						const theadDiv = document.createElement('div');
+						theadDiv.classList.add('thead-wrapper');
 
-          rows.forEach((row) => {
-            const cells = Array.from(row.querySelectorAll('td'));
-            cells.forEach((cell, cellIndex) => {
-              if (!columns[cellIndex]) {
-                columns[cellIndex] = [];
-              }
+						Array.from(thead.querySelectorAll('th')).forEach((th) => {
+							const thDiv = document.createElement('div');
+							thDiv.classList.add('thead-cell');
+							thDiv.innerHTML = th.innerHTML;
+							theadDiv.appendChild(thDiv);
+						});
 
-              if (cell.innerHTML) {
-                const icon = cellIndex === 0 
-                  ? '<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>'
-                  : '<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path></svg>';
-                columns[cellIndex].push(icon + cell.innerHTML);
-              }
-            });
-          });
+						newDivWrapper.appendChild(theadDiv);
+					}
 
-          columns.forEach((columnData) => {
-            const columnDiv = document.createElement('div');
-            columnDiv.classList.add('pros-cons-item');
+					const rows = Array.from(table.querySelectorAll('tbody tr'));
+					const columns = [] as any[];
 
-            columnData.forEach((cellContent: string) => {
-              const cellDiv = document.createElement('div');
-              cellDiv.classList.add('cell');
-              cellDiv.innerHTML = cellContent;
-              columnDiv.appendChild(cellDiv);
-            });
+					rows.forEach((row) => {
+						const cells = Array.from(row.querySelectorAll('td'));
+						cells.forEach((cell, cellIndex) => {
+							if (!columns[cellIndex]) {
+								columns[cellIndex] = [];
+							}
 
-            newDivWrapper.appendChild(columnDiv);
-          });
+							if (cell.innerHTML) {
+								const icon = cellIndex === 0
+									? '<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>'
+									: '<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path></svg>';
+								columns[cellIndex].push(icon + cell.innerHTML);
+							}
+						});
+					});
 
-          table.replaceWith(newDivWrapper);
-        }
-      });
+					columns.forEach((columnData) => {
+						const columnDiv = document.createElement('div');
+						columnDiv.classList.add('pros-cons-item');
 
-      const updatedContent = doc.body.innerHTML;
-      const headingData = [
-        { id: 'toc-related-deal', text: 'Related Deals' },
-        ...h2Elements.map((heading) => ({
-          id: heading.id,
-          text: heading.textContent || '',
-        }))
-      ];
+						columnData.forEach((cellContent: string) => {
+							const cellDiv = document.createElement('div');
+							cellDiv.classList.add('cell');
+							cellDiv.innerHTML = cellContent;
+							columnDiv.appendChild(cellDiv);
+						});
 
-      setHeadings(headingData);
-      setHydratedContent(updatedContent);
-    };
+						newDivWrapper.appendChild(columnDiv);
+					});
 
-    updateContentWithHeadings();
-  }, [content]);
+					table.replaceWith(newDivWrapper);
+				}
+			});
 
-  // Handle scroll for active heading
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      const sections = cRef.current?.querySelectorAll('h2');
-      if (!sections) return;
+			const updatedContent = doc.body.innerHTML;
+			const headingData = [
+				{ id: 'toc-related-deal', text: 'Related Deals' },
+				...h2Elements.map((heading) => ({
+					id: heading.id,
+					text: heading.textContent || '',
+				}))
+			];
 
-      let currentActiveId = '';
-      const sectionPositions = Array.from(sections).map((section: any) => ({
-        id: section.id,
-        top: section.getBoundingClientRect().top - 150
-      }));
+			setHeadings(headingData);
+			setHydratedContent(updatedContent);
+		};
 
-      for (let i = 0; i < sectionPositions.length; i++) {
-        const currentSection = sectionPositions[i];
-        const nextSection = sectionPositions[i + 1];
+		updateContentWithHeadings();
+	}, [content]);
 
-        if (nextSection) {
-          if (currentSection.top <= 0 && nextSection.top > 0) {
-            currentActiveId = currentSection.id;
-            break;
-          }
-        } else {
-          if (currentSection.top <= 0) {
-            currentActiveId = currentSection.id;
-          }
-        }
-      }
+	// Handle scroll for active heading
+	useEffect(() => {
+		const handleScroll = debounce(() => {
+			const sections = cRef.current?.querySelectorAll('h2');
+			if (!sections) return;
 
-      if (currentActiveId && currentActiveId !== activeHeading) {
-        setActiveHeading(currentActiveId);
-      }
-    }, 100);
+			let currentActiveId = '';
+			const sectionPositions = Array.from(sections).map((section: any) => ({
+				id: section.id,
+				top: section.getBoundingClientRect().top - 150
+			}));
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+			for (let i = 0; i < sectionPositions.length; i++) {
+				const currentSection = sectionPositions[i];
+				const nextSection = sectionPositions[i + 1];
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      handleScroll.cancel();
-    };
-  }, [activeHeading]);
+				if (nextSection) {
+					if (currentSection.top <= 0 && nextSection.top > 0) {
+						currentActiveId = currentSection.id;
+						break;
+					}
+				} else {
+					if (currentSection.top <= 0) {
+						currentActiveId = currentSection.id;
+					}
+				}
+			}
 
-  return (
-    <>
-      <div className='container'>
-        {renderAlert()}
-        <div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
-        <ScrollTop />
-      </div>
+			if (currentActiveId && currentActiveId !== activeHeading) {
+				setActiveHeading(currentActiveId);
+			}
+		}, 100);
 
-      {headings && headings?.length > 0 && (
-        <div className={`large-width p-5 grid grid-cols-1 ${
-          headings.length === 1 && dataRelatedArray.length > 0 
-            ? 'lg-grid-cols-1' 
-            : 'lg:grid-cols-12'
-        } mt-20`}>
-          {((headings.length > 1 && dataRelatedArray.length > 0) || 
-            (headings.length > 1 && dataRelatedArray.length === 0)) && (
-            <div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
-              {headings?.length > 0 && (
-                <p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>
-                  On This Page
-                </p>
-              )}
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		handleScroll();
 
-              <ul className='mt-4 flex-col gap-6 hidden lg:flex'>
-                {headings.map((heading) => (
-                  <li
-                    key={heading.id}
-                    className={`border-l-2 transition-[padding-left, border-color, color] ${
-                      activeHeading === heading.id
-                        ? 'duration-300 font-semibold border-blue-600'
-                        : 'duration-300 font-normal border-transparent'
-                    }`}
-                  >
-                    <a 
-                      href={`#${heading.id}`} 
-                      className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${
-                        activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
-                      }`}
-                    >
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			handleScroll.cancel();
+		};
+	}, [activeHeading]);
 
-              <ul className='mt-4 flex-col gap-5 flex lg:hidden'>
-                {headings.map((heading) => (
-                  <li
-                    key={heading.id}
-                    className={`border-l-2 transition-[padding-left, border-color, color] ${
-                      activeHeading === heading.id
-                        ? 'duration-300 font-semibold border-blue-600'
-                        : 'duration-300 font-normal border-transparent'
-                    }`}
-                  >
-                    <a 
-                      href={`#${heading.id}`}
-                      className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${
-                        activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
-                      }`}
-                    >
-                      {heading.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+	return (
+		<>
+			<div className='container'>
+				{renderAlert()}
+				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
+				<ScrollTop />
+			</div>
 
-          <div className='col-span-8' ref={cRef}>
-            {dataRelatedArray.length > 0 && (
-              <>
-                <h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
-                <div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-                  <div className={`grid grid-cols-1 ${
-                    headings.length === 1 && dataRelatedArray.length > 0 
-                      ? 'md:grid-cols-3 md:gap-7' 
-                      : 'md:grid-cols-2 md:gap-10'
-                  } gap-6`}>
-                    {dataRelatedArray.slice(NoT, 50).map((item: any, index: number) => (
-                      <RelatedProduct key={`${item.title}-${index}`} item={item} />
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-            
-            {hydratedContent && (
-              <div 
-                ref={contentRef}
-                className='summary-content'
-                dangerouslySetInnerHTML={{ __html: hydratedContent }}
-              />
-            )}
-          </div>
-        </div>
-      )}
+			{headings && headings?.length > 0 && (
+				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
+						? 'lg-grid-cols-1'
+						: 'lg:grid-cols-12'
+					} mt-20`}>
+					{((headings.length > 1 && dataRelatedArray.length > 0) ||
+						(headings.length > 1 && dataRelatedArray.length === 0)) && (
+							<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
+								{headings?.length > 0 && (
+									<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>
+										On This Page
+									</p>
+								)}
 
-      <div className="!my-0" ref={endedAnchorRef} />
-    </>
-  );
+								<ul className='mt-4 flex-col gap-6 hidden lg:flex'>
+									{headings.map((heading) => (
+										<li
+											key={heading.id}
+											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+													? 'duration-300 font-semibold border-blue-600'
+													: 'duration-300 font-normal border-transparent'
+												}`}
+										>
+											<a
+												href={`#${heading.id}`}
+												className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
+													}`}
+											>
+												{heading.text}
+											</a>
+										</li>
+									))}
+								</ul>
+
+								<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
+									{headings.map((heading) => (
+										<li
+											key={heading.id}
+											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
+													? 'duration-300 font-semibold border-blue-600'
+													: 'duration-300 font-normal border-transparent'
+												}`}
+										>
+											<a
+												href={`#${heading.id}`}
+												className={`text-[15px] font-medium text-[#42495f] duration-500 block ease-in-out ${activeHeading === heading.id ? 'translate-x-5' : 'translate-x-0'
+													}`}
+											>
+												{heading.text}
+											</a>
+										</li>
+									))}
+								</ul>
+							</div>
+						)}
+
+					{(headings.length > 0 && dataRelatedArray.length == 0 || headings.length > 1 && dataRelatedArray.length > 0) && (
+						<div></div>
+					)}
+
+					<div className='col-span-8' ref={cRef}>
+						{dataRelatedArray.length > 0 && (
+							<>
+								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
+								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
+									<div className={`grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
+											? 'md:grid-cols-3 md:gap-7'
+											: 'md:grid-cols-2 md:gap-10'
+										} gap-6`}>
+										{dataRelatedArray.slice(NoT, 50).map((item: any, index: number) => (
+											<RelatedProduct key={`${item.title}-${index}`} item={item} />
+										))}
+									</div>
+								</div>
+							</>
+						)}
+
+						{hydratedContent && (
+							<div
+								ref={contentRef}
+								className='summary-content'
+								dangerouslySetInnerHTML={{ __html: hydratedContent }}
+							/>
+						)}
+					</div>
+				</div>
+			)}
+
+			<div className="!my-0" ref={endedAnchorRef} />
+		</>
+	);
 };
 
 export default SingleContent;
-  
