@@ -131,7 +131,7 @@ class CacheService {
         return null;
       }
       this.updateMetrics(key);
-      return {"categories": cachedItem.categories, "posts": cachedItem.posts};
+      return {"categories": cachedItem.categories};
     }
 
     return null;
@@ -149,7 +149,7 @@ class CacheService {
     this.saveMetrics();
   }
 
-  public updateCache(term: string, categories: any, posts: any): void {
+  public updateCache(term: string, categories: any): void {
     if (!this.isClient()) return;
 
     const key = term.toLowerCase();
@@ -157,12 +157,11 @@ class CacheService {
 
     this.cache[key] = {
       categories,
-      posts,
       timestamp: Date.now()
     };
 
     // Nếu từ hiện tại không có kết quả và dài hơn 2 ký tự, thêm vào emptyPrefixes
-    if (categories.length === 0 && posts.length == 0 && currentWord.length >= MIN_SEARCH_LENGTH) {
+    if (categories.length === 0 && currentWord.length >= MIN_SEARCH_LENGTH) {
       this.emptyPrefixes.add(currentWord);
     }
 

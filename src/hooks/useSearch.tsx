@@ -76,15 +76,8 @@ export const useSearch = (options: UseSearchOptions = {}) => {
                 }))
                 : [];
 
-            const posts = response.data.status === 'success'
-                ? response.data.posts.map((post: any) => ({
-                    ...post,
-                    name: decodeHTMLEntities(post.title)
-                }))
-                : [];
-
-            cacheService.updateCache(term, categories, posts);
-            setResults({categories, posts});
+            cacheService.updateCache(term, categories);
+            setResults(categories);
             lastSearchTime.current = now;
 
             if (pendingSearch.current && pendingSearch.current !== term) {
@@ -94,7 +87,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
             }
         } catch (err) {
             setError('Error searching categories');
-            cacheService.updateCache(term, [], []);
+            cacheService.updateCache(term, []);
             setResults([]);
         } finally {
             setIsLoading(false);
