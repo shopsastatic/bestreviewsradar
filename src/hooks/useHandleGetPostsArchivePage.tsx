@@ -23,7 +23,7 @@ interface Props {
   search?: string | null;
 }
 
-export default function useHandleGetPostsArchivePage(props: Props) {
+export default function useHandleGetPostsArchivePage(props: any) {
   const {
     categoryDatabaseId,
     initPosts: posts,
@@ -32,6 +32,7 @@ export default function useHandleGetPostsArchivePage(props: Props) {
     authorDatabaseId,
     categorySlug,
     search,
+    categories
   } = props;
 
   const [filterParam, setfilterParam] =

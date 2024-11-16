@@ -1,4 +1,3 @@
-// services/cacheService.ts
 const CACHE_KEY = 'category_search_cache';
 const METRICS_KEY = 'search_metrics';
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
@@ -112,7 +111,7 @@ class CacheService {
     return words[words.length - 1];
   }
 
-  public searchInCache(term: string): any[] | null {
+  public searchInCache(term: string): any | null {
     if (term.length < MIN_SEARCH_LENGTH) return null;
 
     const currentWord = this.getCurrentWord(term);
@@ -132,7 +131,7 @@ class CacheService {
         return null;
       }
       this.updateMetrics(key);
-      return cachedItem.categories;
+      return {"categories": cachedItem.categories, "posts": cachedItem.posts};
     }
 
     return null;
@@ -150,7 +149,7 @@ class CacheService {
     this.saveMetrics();
   }
 
-  public updateCache(term: string, categories: any[]): void {
+  public updateCache(term: string, categories: any, posts: any): void {
     if (!this.isClient()) return;
 
     const key = term.toLowerCase();
@@ -158,11 +157,12 @@ class CacheService {
 
     this.cache[key] = {
       categories,
+      posts,
       timestamp: Date.now()
     };
 
     // Nếu từ hiện tại không có kết quả và dài hơn 2 ký tự, thêm vào emptyPrefixes
-    if (categories.length === 0 && currentWord.length >= MIN_SEARCH_LENGTH) {
+    if (categories.length === 0 && posts.length == 0 && currentWord.length >= MIN_SEARCH_LENGTH) {
       this.emptyPrefixes.add(currentWord);
     }
 

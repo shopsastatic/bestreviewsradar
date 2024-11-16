@@ -106,18 +106,21 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
   } = useSearch({
     minLength: 2,
     debounceMs: DEBOUNCE_TIME
-  });
+  }) as any;
+
+  const categoryResults = results?.categories
 
   const handleSelect = (category: Category) => {
     router.push(`/${category.slug}`);
-    setIsShowResults(false); // Ẩn kết quả sau khi chọn
+    setIsShowResults(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (results.length > 0) {
-      handleSelect(results[0]);
-    }
+    const searchVal = e.target[0].value
+    router.push({
+      pathname: `/search/${searchVal}`,
+    });
   };
 
   useEffect(() => {
@@ -154,7 +157,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
                 <input type="search" value={searchValue}
                   onChange={(e) => handleSearch(e.target.value)}
                   onFocus={() => setIsShowResults(true)}
-                  id="search-input" placeholder="Search..." name="hsearch" autoComplete="off" className="w-full focus:ring-0 border-opacity-0 py-2.5 text-base shadow-md pe-3 sm:pe-5 text-neutral-800 rounded"></input>
+                  id="search-input" placeholder="Search..." autoComplete="off" className="w-full focus:ring-0 border-opacity-0 py-2.5 text-base shadow-md pe-3 sm:pe-5 text-neutral-800 rounded"></input>
                 <button type="submit" aria-label="Search" className="absolute top-[1px] bottom-[1px] right-0 px-5 flex justify-center bg-[#eeeeee] items-center z-10 rounded-tr rounded-br" disabled={isLoading}>
 
                   {isLoading ? <LoadingSpinner /> : <SearchIcon />}
@@ -163,9 +166,9 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
 
 
               {/* Chỉ hiển thị kết quả khi có kết quả và isShowResults = true */}
-              {isShowResults && results.length > 0 && (
+              {isShowResults && categoryResults?.length > 0 && (
                 <SearchResults
-                  results={results}
+                  results={categoryResults}
                   searchValue={searchValue}
                   onSelect={handleSelect}
                 />

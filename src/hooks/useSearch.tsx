@@ -26,7 +26,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
     } = options;
 
     const [searchValue, setSearchValue] = useState('');
-    const [results, setResults] = useState<Category[]>([]);
+    const [results, setResults] = useState<any>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +51,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
         setIsLoading(true);
         setError(null);
 
+
         try {
             const cachedResults = cacheService.searchInCache(term);
             if (cachedResults !== null) {
@@ -64,10 +65,9 @@ export const useSearch = (options: UseSearchOptions = {}) => {
                 {
                     params: {
                         keyword: term,
-                        limit: 20
                     }
                 }
-            );
+            )
 
             const categories = response.data.status === 'success'
                 ? response.data.categories.map((category: Category) => ({
@@ -76,8 +76,15 @@ export const useSearch = (options: UseSearchOptions = {}) => {
                 }))
                 : [];
 
-            cacheService.updateCache(term, categories);
-            setResults(categories);
+            const posts = response.data.status === 'success'
+                ? response.data.posts.map((post: any) => ({
+                    ...post,
+                    name: decodeHTMLEntities(post.title)
+                }))
+                : [];
+
+            cacheService.updateCache(term, categories, posts);
+            setResults({categories, posts});
             lastSearchTime.current = now;
 
             if (pendingSearch.current && pendingSearch.current !== term) {
@@ -87,7 +94,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
             }
         } catch (err) {
             setError('Error searching categories');
-            cacheService.updateCache(term, []);
+            cacheService.updateCache(term, [], []);
             setResults([]);
         } finally {
             setIsLoading(false);
