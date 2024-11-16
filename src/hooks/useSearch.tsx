@@ -86,7 +86,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
                 performSearch(nextSearch);
             }
         } catch (err) {
-            setError('Error searching categories');
+            setError('No results found');
             cacheService.updateCache(term, []);
             setResults([]);
         } finally {
