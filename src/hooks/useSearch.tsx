@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef } from 'react';
 import { cacheService } from '../services/cacheService';
 import axios from 'axios';
+import { gql } from '@/__generated__';
+import { getApolloClient } from '@faustwp/core';
 
 function decodeHTMLEntities(text: string): string {
     const textarea = document.createElement('textarea');
@@ -33,6 +35,7 @@ export const useSearch = (options: UseSearchOptions = {}) => {
     const debounceTimer = useRef<NodeJS.Timeout>();
     const lastSearchTime = useRef<number>(Date.now());
     const pendingSearch = useRef<string | null>(null);
+    const client = getApolloClient()
 
     const performSearch = useCallback(async (term: string) => {
         const now = Date.now();

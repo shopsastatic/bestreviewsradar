@@ -61,8 +61,8 @@ const Page: any = (props: any) => {
               <h2 className="text-2xl md:text-3xl">Categories</h2>
               <div className="py-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {listCate.map((cate: any) => (
-                    <Link href={cate?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center">
+                  {listCate.map((cate: any, index: any) => (
+                    <Link key={index} href={cate?.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? "/"} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow flex items-center">
                       <h3 className="text-gray-700 text-base font-semibold">{cate?.name}</h3>
                     </Link>
                   ))}
