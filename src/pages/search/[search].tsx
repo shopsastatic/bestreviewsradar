@@ -48,7 +48,12 @@ const Page: any = (props: any) => {
         }
       >
         <div className="container my-20">
-          <h1 className="font-extrabold">Result for: {search}</h1>
+          {(listCate?.length > 0 || currentPosts?.length > 0) && (
+            <h1 className="font-extrabold">Result for: {search}</h1>
+          )}
+          {(listCate?.length <= 0 && currentPosts?.length <= 0) && (
+            <h1 className="font-extrabold">No result found for: {search}</h1>
+          )}
           <hr className="mt-5"/>
 
           {listCate?.length > 0 && (
