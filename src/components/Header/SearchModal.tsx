@@ -55,7 +55,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 
 	const GQL = gql(`
 		#graphql
-		query SearchFormQueryGetPostsBySearch(
+		query SearchCategoryQuery2(
 			$search: String
 		) {
 			categories(first: 10, where: { search: $search }) {
@@ -213,7 +213,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 													))
 												) : (
 													<div className="py-5 text-center">
-														<Empty />
+														<p>Enter to find more search results</p>
 													</div>
 												)}
 											</ul>

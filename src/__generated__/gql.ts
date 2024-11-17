@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t": types.SearchFormQueryGetPostsBySearchDocument,
+    "\n\t\t#graphql\n\t\tquery SearchCategoryQuery2(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t": types.SearchCategoryQuery2Document,
     "\n  query GetMenuSideBar {\n    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {\n      nodes {\n        ...NcSideBarMenuFieldsFragment\n      }\n    }\n  }\n": types.GetMenuSideBarDocument,
     "mutation myMutationUpdatePostToPublishOrPending($id: ID = \"\", $status: PostStatusEnum ) {\n      updatePost(input: {id: $id, status: $status}) {\n        clientMutationId\n      }\n    }": types.MyMutationUpdatePostToPublishOrPendingDocument,
     "\n  query TestQuery {\n    generalSettings {\n      title\n      description\n    }\n  }\n": types.TestQueryDocument,
@@ -90,7 +90,7 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"): (typeof documents)["\n\t\t#graphql\n\t\tquery SearchFormQueryGetPostsBySearch(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"];
+export function gql(source: "\n\t\t#graphql\n\t\tquery SearchCategoryQuery2(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"): (typeof documents)["\n\t\t#graphql\n\t\tquery SearchCategoryQuery2(\n\t\t\t$search: String\n\t\t) {\n\t\t\tcategories(first: 10, where: { search: $search }) {\n\t\t\t\tnodes {\n\t\t\t\t\tname\n\t\t\t\t\turi\n\t\t\t\t}\n\t\t\t\tpageInfo {\n\t\t\t\t\tendCursor\n\t\t\t\t\thasNextPage\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
