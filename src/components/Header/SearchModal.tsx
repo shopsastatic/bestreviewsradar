@@ -190,7 +190,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 									</button>
 								</form>
 
-								<div className="max-h-[70vh] overflow-y-auto">
+								<div className="max-h-[200px] overflow-y-auto">
 									{isLoading && (
 										<div className="flex w-full items-center justify-center py-5">
 											<Loading />
