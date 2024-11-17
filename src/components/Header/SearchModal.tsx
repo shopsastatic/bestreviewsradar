@@ -29,6 +29,7 @@ import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment
 import ncFormatDate from '@/utils/formatDate'
 import MyImage from '../MyImage'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const T = getTrans()
 
@@ -38,27 +39,6 @@ interface PersonType {
 	type: string
 	icon: typeof PostSearchIcon
 }
-
-const quickActions: PersonType[] = [
-	{
-		type: 'quick-action',
-		name: T['Search posts'],
-		icon: PostSearchIcon,
-		uri: '/search/posts/',
-	},
-	{
-		type: 'quick-action',
-		name: T['Search authors'],
-		icon: UserSearchIcon,
-		uri: '/search/authors/',
-	},
-	{
-		type: 'quick-action',
-		name: T['Search categories'],
-		icon: CategoriesIcon,
-		uri: '/search/categories/',
-	},
-]
 
 interface Props {
 	renderTrigger?: () => ReactNode
@@ -76,12 +56,12 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 	const GQL = gql(`
 		#graphql
 		query SearchFormQueryGetPostsBySearch(
-			$first: Int
 			$search: String
 		) {
-			posts(first: $first, where: { search: $search }) {
+			categories(first: 10, where: { search: $search }) {
 				nodes {
-					...NcmazFcPostCardFields
+					name
+					uri
 				}
 				pageInfo {
 					endCursor
@@ -102,7 +82,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 				},
 			})
 			.then(res => {
-				setPosts((res?.data?.posts?.nodes as any) || [])
+				setPosts((res?.data?.categories?.nodes as any) || [])
 			})
 			.catch(err => {
 				console.log(err)
@@ -115,12 +95,33 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 	useEffect(() => {
 		if (query !== '') {
 			fetchData(query)
-			setPosts([])
 		}
 	}, [query])
 
 	const handleSetSearchValue = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setQuery(e.target.value)
+	}
+
+	const handleResultClick = async (uri: string) => {
+		if (!uri) return
+		try {
+			await router.push(uri)
+			setOpen(false)
+		} catch (error) {
+			console.error('Navigation error:', error)
+		}
+	}
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		if (!query.trim()) return
+
+		try {
+			await router.push(`/search/${encodeURIComponent(query.trim())}`)
+			setOpen(false)
+		} catch (error) {
+			console.error('Navigation error:', error)
+		}
 	}
 
 	return (
@@ -135,7 +136,7 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 				)}
 			</div>
 
-			<Transition show={open} afterLeave={() => setQuery('')} appear>
+			<Transition show={open} appear>
 				<Dialog className={`relative z-50`} onClose={setOpen}>
 					<TransitionChild
 						enter="ease-out duration-200"
@@ -158,102 +159,73 @@ const SearchModal: FC<Props> = ({ renderTrigger, triggerClassName = '' }) => {
 							leaveTo="opacity-0 translate-y-20 sm:translate-y-0 sm:scale-95"
 						>
 							<DialogPanel className="mx-auto w-full max-w-2xl transform divide-y divide-gray-100 self-end overflow-hidden bg-white shadow-2xl ring-1 ring-black/5 transition-all sm:self-start sm:rounded-xl dark:divide-gray-700 dark:bg-neutral-800 dark:ring-white/10">
-								<Combobox
-									onChange={(item?: PersonType) => {
-										if (!item?.uri) {
-											return
-										}
-										if (item.type === 'quick-action') {
-											router.push(item.uri + query)
-											setOpen(false)
-											return
-										}
-										router.push(item.uri || '')
-										setOpen(false)
-									}}
-									form="search-form-combobox"
-								>
-									<div className="relative">
-										<MagnifyingGlassIcon
-											className="pointer-events-none absolute start-4 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-300"
-											aria-hidden="true"
+								<form onSubmit={handleSubmit} className="relative">
+									<MagnifyingGlassIcon
+										className="pointer-events-none absolute start-4 top-3.5 h-5 w-5 text-gray-400 dark:text-gray-300"
+										aria-hidden="true"
+									/>
+									<div className="pe-9">
+										<input
+											type="text"
+											autoFocus
+											name="search"
+											className="h-12 w-full border-0 bg-transparent pe-4 ps-11 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-300"
+											placeholder='Search...'
+											value={query}
+											onChange={(e) => {
+												setQuery(e.target.value)
+												_.debounce(handleSetSearchValue, 200)(e)
+											}}
 										/>
-										<div className="pe-9">
-											<ComboboxInput
-												autoFocus
-												className="h-12 w-full border-0 bg-transparent pe-4 ps-11 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-0 dark:text-gray-100 dark:placeholder:text-gray-300"
-												placeholder='Search...'
-												onChange={_.debounce(handleSetSearchValue, 200)}
-												onBlur={() => setQuery('')}
-											/>
-										</div>
-										<button
-											className="absolute end-3 top-1/2 z-10 -translate-y-1/2 text-xs text-neutral-400 focus:outline-none sm:end-4 dark:text-neutral-300"
-											onClick={() => setOpen(false)}
-											type="button"
-										>
-											<XMarkIcon className="block h-5 w-5 sm:hidden" />
-											<span className="hidden sm:block">
-												<kbd className="font-sans">Esc</kbd>
-											</span>
-										</button>
 									</div>
+									<button
+										type="button"
+										className="absolute end-3 top-1/2 z-10 -translate-y-1/2 text-xs text-neutral-400 focus:outline-none sm:end-4 dark:text-neutral-300"
+										onClick={() => setOpen(false)}
+									>
+										<XMarkIcon className="block h-5 w-5 sm:hidden" />
+										<span className="hidden sm:block">
+											<kbd className="font-sans">Esc</kbd>
+										</span>
+									</button>
+								</form>
 
+								<div className="max-h-[70vh] overflow-y-auto">
 									{isLoading && (
 										<div className="flex w-full items-center justify-center py-5">
 											<Loading />
 										</div>
 									)}
 
-								</Combobox>
+									{query !== '' && !isLoading && (
+										<div className="p-2 pt-0">
+											<ul className="divide-y divide-gray-100 text-sm text-gray-700 dark:divide-gray-700 dark:text-gray-300">
+												{posts.length ? (
+													posts.map((post: any) => (
+														<li key={post.uri}>
+															<Link
+																href={post.uri?.replace(/^\/|\/$/g, '')?.split('/')?.pop() ?? ""}
+																className="block w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700"
+															>
+																{post.name}
+															</Link>
+														</li>
+													))
+												) : (
+													<div className="py-5 text-center">
+														<Empty />
+													</div>
+												)}
+											</ul>
+										</div>
+									)}
+								</div>
 							</DialogPanel>
 						</TransitionChild>
 					</div>
 				</Dialog>
 			</Transition>
 		</>
-	)
-}
-
-const CardPost = ({ post, focus }: { post: any; focus: boolean }) => {
-	const { title, date, categories, author, postFormats, featuredImage } =
-		getPostDataFromPostFragment(post)
-
-	return (
-		<div
-			className={`group relative flex flex-row-reverse gap-3 rounded-2xl p-4 sm:gap-5 ${focus ? '' : ''}`}
-		>
-			<div className="space-y-3">
-				<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-					<p className="text-xs leading-6 text-neutral-500 xl:text-sm dark:text-neutral-400">
-						<span className="capitalize">{author?.name || ''}</span>
-						{author?.name && ' · '}
-						<time dateTime={date} className="leading-6">
-							{ncFormatDate(date)}
-						</time>
-					</p>
-
-					<span className="relative z-10 rounded-full bg-neutral-50 px-3 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800/80">
-						{categories?.nodes?.[0]?.name || ''}
-					</span>
-				</div>
-				<h4 className="mt-2 text-sm font-medium leading-6 text-neutral-900 dark:text-neutral-300">
-					<span dangerouslySetInnerHTML={{ __html: post.title || '' }}></span>
-				</h4>
-			</div>
-
-			<div
-				className={`relative z-0 hidden h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl sm:block`}
-			>
-				<MyImage
-					sizes="(max-width: 600px) 180px, 400px"
-					className="h-full w-full object-cover"
-					fill
-					src={featuredImage?.sourceUrl || ''}
-					alt={title || 'Card Image'}
-				/>
-			</div>
-		</div>
 	)
 }
 
