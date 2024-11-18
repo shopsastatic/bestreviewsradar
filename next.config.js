@@ -11,15 +11,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: true,
-  
+
   // Performance
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
-  
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -138,83 +138,81 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      if (process.env.ANALYZE === 'true') {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerPort: 8888,
-            openAnalyzer: true
-          })
-        )
-      }
+    if (process.env.ANALYZE === 'true') {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'server',
+          analyzerPort: 8888,
+          openAnalyzer: true
+        })
+      )
+    }
 
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
-        splitChunks: {
-          chunks: 'all',
-          minSize: 20000,
-          maxSize: 70000,
-          cacheGroups: {
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        minSize: 20000,
+        maxSize: 70000,
+        cacheGroups: {
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true,
+          },
+          styles: {
+            name: 'styles',
+            test: /\.(css|scss|sass)$/,
+            chunks: 'all',
+            minSize: 10000,
+            enforce: true,
+          },
+          media: {
+            test: /\.(png|jpg|jpeg|gif|svg|webp)$/,
+            minSize: 10000,
+            maxSize: 70000,
+            chunks: 'all',
+            enforce: true,
+            name(module) {
+              return `media/[name].[hash]`
+            }
+          },
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            minSize: 20000,
+            enforce: true
+          },
+          framework: {
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
+            priority: 40,
+            enforce: true,
+          },
+          lib: {
+            test(module) {
+              return module.size() > 50000
             },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              minSize: 10000,
-              enforce: true,
+            name(module) {
+              const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
+              return `chunk-${name?.split('/').pop()}`
             },
-            media: {
-              test: /\.(png|jpg|jpeg|gif|svg|webp)$/,
-              minSize: 10000,
-              maxSize: 70000,
-              chunks: 'all',
-              enforce: true,
-              name(module) {
-                return `media/[name].[hash]`
-              }
-            },
-            vendors: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-              minSize: 20000,
-              enforce: true
-            },
-            framework: {
-              name: 'framework',
-              test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
-              priority: 40,
-              enforce: true,
-            },
-            lib: {
-              test(module) {
-                return module.size() > 50000
-              },
-              name(module) {
-                const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
-                return `chunk-${name?.split('/').pop()}`
-              },
-              priority: 30,
-              minChunks: 1,
-              reuseExistingChunk: true,
-            },
-            commons: {
-              name: 'commons',
-              minChunks: 2,
-              priority: 20,
-              reuseExistingChunk: true,
-            },
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
+          commons: {
+            name: 'commons',
+            minChunks: 2,
+            priority: 20,
+            reuseExistingChunk: true,
           },
         },
-      }
+      },
     }
 
     return config
