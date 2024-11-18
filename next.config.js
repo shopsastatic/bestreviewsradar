@@ -1,6 +1,7 @@
 const { withFaust, getWpHostname } = require('@faustwp/core')
 const { createSecureHeaders } = require('next-secure-headers')
 const path = require('path')
+const webpack = require('webpack') 
 
 /**
  * @type {import('next').NextConfig}
