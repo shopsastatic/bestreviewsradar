@@ -30,15 +30,16 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 		query: SITEMAP_QUERY,
 		variables: {
 			after,
-			noCache: true
+			noCache: true,
 		},
 		fetchPolicy: 'no-cache',
 		context: {
 			headers: {
 				'Cache-Control': 'no-cache',
 				'Pragma': 'no-cache'
-			}
-		}
+			},
+			uri: `https://content.bestreviewsradar.com/index.php?graphql&noCache=${Date.now()}`
+		},
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]
