@@ -138,88 +138,72 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
-    config.optimization = {
-      ...config.optimization,
-      moduleIds: 'deterministic',
-      runtimeChunk: 'single',
-      minimize: true,
-      splitChunks: {
-        chunks: 'all',
-        minSize: 5000,
-        maxSize: 70000,
-        enforceSizeThreshold: 50000,
-        cacheGroups: {
-          default: false,
-          defaultVendors: false,
-          
-          framework: {
-            name: 'framework',
-            test: /[\\/]node_modules[\\/](react|react-dom|next|@next|@babel\/runtime)[\\/]/,
-            priority: 50,
-            enforce: true,
-            chunks: 'all',
-            reuseExistingChunk: true,
-          },
-
-          commons: {
-            name: 'commons',
-            minChunks: 2,
-            priority: 40,
-            enforce: true,
-            chunks: 'all',
-            reuseExistingChunk: true,
-          },
-
-          lib: {
-            test(module) {
-              return module.size() > 20000 && /node_modules/.test(module.context || '')
-            },
-            name(module) {
-              const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
-              return `chunk-${name?.split('/').pop()}`
-            },
-            priority: 30,
-            minChunks: 1,
-            reuseExistingChunk: true,
-            enforce: true,
-          },
-
-          styles: {
-            name: 'styles',
-            test: /\.(css|scss|sass)$/,
-            chunks: 'all',
-            minSize: 3000,
-            priority: 20,
-            enforce: true,
-            reuseExistingChunk: true,
-          },
-
-          media: {
-            name: 'media',
-            test: /\.(png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|eot)$/,
-            minSize: 3000,
-            maxSize: 70000,
-            chunks: 'all',
-            priority: 20,
-            enforce: true,
-            reuseExistingChunk: true,
-          },
-
-          vendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            enforce: true,
-            chunks: 'all',
-            minSize: 5000,
-            reuseExistingChunk: true,
-          }
+    // Chỉ áp dụng khi build cho client-side trong production
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        moduleIds: 'deterministic',
+        runtimeChunk: {
+          name: 'runtime', // Đổi thành object thay vì 'single'
         },
-      },
-      concatenateModules: true,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 5000,
+          maxSize: 70000,
+          cacheGroups: {
+            framework: {
+              name: 'framework',
+              test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 20,
+              reuseExistingChunk: true,
+            },
+            lib: {
+              test(module) {
+                return module.size() > 20000
+              },
+              name(module) {
+                const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
+                return `chunk-${name?.split('/').pop()}`
+              },
+              priority: 30,
+              minChunks: 1,
+              reuseExistingChunk: true,
+            },
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss|sass)$/,
+              chunks: 'all',
+              enforce: true,
+            },
+            media: {
+              test: /\.(png|jpg|jpeg|gif|svg|webp|ico)$/,
+              chunks: 'all',
+              enforce: true,
+              name(module) {
+                return `media/[name].[hash]`
+              }
+            },
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module) {
+                const packageName = module.context.match(
+                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                )[1]
+                return `vendor.${packageName.replace('@', '')}`
+              },
+              priority: 10,
+            },
+          },
+        },
+      }
     }
 
-    
     return config
   },
 
