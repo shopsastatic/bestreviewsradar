@@ -38,7 +38,7 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 				'Cache-Control': 'no-cache',
 				'Pragma': 'no-cache'
 			},
-			uri: `https://content.bestreviewsradar.com/index.php?graphql&noCache}`
+			uri: `https://content.bestreviewsradar.com/index.php?graphql&noCache=${Date.now()}`
 		},
 	})
 
