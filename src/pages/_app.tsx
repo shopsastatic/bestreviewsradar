@@ -4,6 +4,7 @@ import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
 import dynamic from 'next/dynamic';
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 // Styles
 import "@/styles/globals.css";
@@ -46,11 +47,6 @@ const Toaster = dynamic(() => import("react-hot-toast").then(mod => mod.Toaster)
 });
 
 const NextNProgress = dynamic(() => import("nextjs-progressbar"), {
-  ssr: false
-});
-
-const GoogleAnalytics = dynamic(() => 
-  import("nextjs-google-analytics").then(mod => mod.GoogleAnalytics), {
   ssr: false
 });
 
@@ -113,7 +109,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 }}
                 containerClassName="text-sm"
               />
-              <GoogleAnalytics trackPageViews />
+              <GoogleAnalytics gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
             </ClientOnly>
           </main>
         </SiteWrapperProvider>
