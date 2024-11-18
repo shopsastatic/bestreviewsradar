@@ -7,12 +7,12 @@ const client = getApolloClient()
 const SITE_URL = process.env.NEXT_PUBLIC_URL
 
 const SITEMAP_QUERY = gql`
-	query SitemapQuery2($after: String) {
+	query SitemapQuery2($after: String, $noCache: Boolean) {
 		contentNodes(
 			where: { contentTypes: [POST] }
 			first: 50
 			after: $after
-		) {
+		) @skip(if: $noCache) @include(if: !$noCache) {
 			pageInfo {
 				hasNextPage
 				endCursor
@@ -30,6 +30,7 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 		query: SITEMAP_QUERY,
 		variables: {
 			after,
+			noCache: true
 		},
 		fetchPolicy: 'no-cache',
 		context: {
