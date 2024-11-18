@@ -113,7 +113,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 }}
                 containerClassName="text-sm"
               />
-              {/* <GoogleAnalytics trackPageViews /> */}
+              <GoogleAnalytics trackPageViews />
             </ClientOnly>
           </main>
         </SiteWrapperProvider>
