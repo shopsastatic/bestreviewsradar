@@ -138,88 +138,99 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
-    if (!dev && !isServer) {
-      if (process.env.ANALYZE === 'true') {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerPort: 8888,
-            openAnalyzer: true
-          })
-        )
-      }
-
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        runtimeChunk: 'single',
-        splitChunks: {
-          chunks: 'all',
-          minSize: 20000,
-          maxSize: 70000,
-          cacheGroups: {
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
-            },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              minSize: 10000,
-              enforce: true,
-            },
-            media: {
-              test: /\.(png|jpg|jpeg|gif|svg|webp)$/,
-              minSize: 10000,
-              maxSize: 70000,
-              chunks: 'all',
-              enforce: true,
-              name(module) {
-                return `media/[name].[hash]`
-              }
-            },
-            vendors: {
-              test: /[\\/]node_modules[\\/]/,
-              name: 'vendors',
-              chunks: 'all',
-              minSize: 20000,
-              enforce: true
-            },
-            framework: {
-              name: 'framework',
-              test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
-              priority: 40,
-              enforce: true,
-            },
-            lib: {
-              test(module) {
-                return module.size() > 50000
-              },
-              name(module) {
-                const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
-                return `chunk-${name?.split('/').pop()}`
-              },
-              priority: 30,
-              minChunks: 1,
-              reuseExistingChunk: true,
-            },
-            commons: {
-              name: 'commons',
-              minChunks: 2,
-              priority: 20,
-              reuseExistingChunk: true,
-            },
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+      minimize: true,
+      splitChunks: {
+        chunks: 'all',
+        minSize: 5000,
+        maxSize: 70000,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          default: false,
+          defaultVendors: false,
+          
+          framework: {
+            name: 'framework',
+            test: /[\\/]node_modules[\\/](react|react-dom|next|@next|@babel\/runtime)[\\/]/,
+            priority: 50,
+            enforce: true,
+            chunks: 'all',
+            reuseExistingChunk: true,
           },
+
+          // Commons cho code dùng chung
+          commons: {
+            name: 'commons',
+            minChunks: 2,
+            priority: 40,
+            enforce: true,
+            chunks: 'all',
+            reuseExistingChunk: true,
+          },
+
+          // Library chunks
+          lib: {
+            test(module) {
+              return module.size() > 20000 && /node_modules/.test(module.context || '')
+            },
+            name(module) {
+              const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
+              return `chunk-${name?.split('/').pop()}`
+            },
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+            enforce: true,
+          },
+
+          // Styles
+          styles: {
+            name: 'styles',
+            test: /\.(css|scss|sass)$/,
+            chunks: 'all',
+            minSize: 3000, // Giảm để bắt file CSS nhỏ
+            priority: 20,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+
+          // Media files
+          media: {
+            name: 'media',
+            test: /\.(png|jpg|jpeg|gif|svg|webp|ico|woff|woff2|ttf|eot)$/,
+            minSize: 3000,
+            maxSize: 70000,
+            chunks: 'all',
+            priority: 20,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+
+          vendors: {
+            name: 'vendors',
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            enforce: true,
+            chunks: 'all',
+            minSize: 5000,
+            reuseExistingChunk: true,
+          }
         },
-      }
+      },
+    }
+
+    if (!dev) {
+      config.plugins.push(
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
+      )
     }
 
     return config
   },
-
   distDir: '.next',
   output: 'standalone',
 }
