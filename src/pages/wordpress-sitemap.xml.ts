@@ -31,6 +31,7 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 		variables: {
 			after,
 		},
+		fetchPolicy: 'no-cache',
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]
@@ -43,7 +44,7 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 }
 
 // Sitemap component
-export default function WPSitemap() {}
+export default function WPSitemap() { }
 
 // collect all the post
 export const getServerSideProps: GetServerSideProps = async ctx => {

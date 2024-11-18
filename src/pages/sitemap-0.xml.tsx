@@ -31,6 +31,7 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 		variables: {
 			after,
 		},
+		fetchPolicy: 'no-cache',
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]

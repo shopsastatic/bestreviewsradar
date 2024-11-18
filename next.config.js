@@ -11,15 +11,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: true,
-
+  
   // Performance
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
-
+  
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -146,8 +146,8 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 120000,
-          maxSize: 150000,
+          minSize: 20000,
+          maxSize: 70000,
           cacheGroups: {
             framework: {
               name: 'framework',
@@ -173,38 +173,6 @@ const nextConfig = {
               priority: 20,
               reuseExistingChunk: true,
             },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              minSize: 100000,
-              priority: 10,
-              enforce: true,
-              reuseExistingChunk: true,
-            },
-
-            media: {
-              name: 'media',
-              test: /\.(png|jpg|jpeg|gif|svg|webp|ico)$/,
-              minSize: 100000,
-              maxSize: 120000,
-              chunks: 'all',
-              priority: 10,
-              enforce: true,
-              name(module) {
-                return `media/[name].[hash]`
-              }
-            },
-
-            vendors: {
-              name: 'vendors',
-              test: /[\\/]node_modules[\\/]/,
-              priority: 10,
-              enforce: true,
-              chunks: 'all',
-              minSize: 100000,
-              reuseExistingChunk: true,
-            }
           },
         },
       }
