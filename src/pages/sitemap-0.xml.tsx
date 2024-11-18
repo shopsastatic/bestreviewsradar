@@ -7,12 +7,12 @@ const client = getApolloClient()
 const SITE_URL = process.env.NEXT_PUBLIC_URL
 
 const SITEMAP_QUERY = gql`
-	query SitemapQuery2($after: String, $noCache: Boolean) {
+	query SitemapQuery2($after: String) {
 		contentNodes(
 			where: { contentTypes: [POST] }
 			first: 50
 			after: $after
-		) @skip(if: $noCache) @include(if: !$noCache) {
+		) {
 			pageInfo {
 				hasNextPage
 				endCursor
