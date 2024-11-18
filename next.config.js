@@ -124,6 +124,30 @@ const nextConfig = {
           ],
         }),
       },
+      {
+        source: '/sitemap-0.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate'
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache'
+          },
+          {
+            key: 'Expires',
+            value: '0'
+          },
+          ...createSecureHeaders({
+            xssProtection: false,
+            frameGuard: [
+              'allow-from',
+              { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
+            ],
+          })
+        ]
+      }
     ]
   },
 
