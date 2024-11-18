@@ -159,6 +159,35 @@ const nextConfig = {
           minSize: 20000,
           maxSize: 70000,
           cacheGroups: {
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss|sass)$/,
+              chunks: 'all',
+              minSize: 10000,
+              enforce: true,
+            },
+            media: {
+              test: /\.(png|jpg|jpeg|gif|svg|webp)$/,
+              minSize: 10000,
+              maxSize: 70000,
+              chunks: 'all',
+              enforce: true,
+              name(module) {
+                return `media/[name].[hash]`
+              }
+            },
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all',
+              minSize: 20000,
+              enforce: true
+            },
             framework: {
               name: 'framework',
               test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
