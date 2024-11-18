@@ -11,15 +11,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: true,
-  
+
   // Performance
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
-  
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -130,6 +130,14 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'no-store, no-cache, must-revalidate, proxy-revalidate'
+          },
+          {
+            key: 'CDN-Cache-Control',
+            value: 'no-store'
+          },
+          {
+            key: 'Cloudflare-CDN-Cache-Control',
+            value: 'no-store'
           },
           {
             key: 'Pragma',
