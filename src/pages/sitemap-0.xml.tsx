@@ -32,6 +32,12 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 			after,
 		},
 		fetchPolicy: 'no-cache',
+		context: {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Pragma': 'no-cache'
+			}
+		}
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]
@@ -44,17 +50,17 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 }
 
 // Sitemap component
-export default function WPSitemap() {}
+export default function WPSitemap() { }
 
 // collect all the post
 export const getServerSideProps: GetServerSideProps = async ctx => {
 	ctx.res.setHeader(
 		'Cache-Control',
 		'no-store, no-cache, must-revalidate, proxy-revalidate'
-	  )
-	  ctx.res.setHeader('Pragma', 'no-cache')
-	  ctx.res.setHeader('Expires', '0')
-	  
+	)
+	ctx.res.setHeader('Pragma', 'no-cache')
+	ctx.res.setHeader('Expires', '0')
+
 	const nodes = await getAllWPContent()
 
 	const allRoutes = nodes.reduce((acc, node) => {

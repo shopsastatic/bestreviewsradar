@@ -32,6 +32,12 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 			after,
 		},
 		fetchPolicy: 'no-cache',
+		context: {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Pragma': 'no-cache'
+			}
+		}
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]
@@ -54,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ctx => {
 	)
 	ctx.res.setHeader('Pragma', 'no-cache')
 	ctx.res.setHeader('Expires', '0')
-	
+
 	const nodes = await getAllWPContent()
 
 	const allRoutes = nodes.reduce((acc, node) => {
