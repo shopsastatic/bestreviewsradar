@@ -173,38 +173,6 @@ const nextConfig = {
               priority: 20,
               reuseExistingChunk: true,
             },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              minSize: 3000,
-              priority: 10,
-              enforce: true,
-              reuseExistingChunk: true,
-            },
-
-            media: {
-              name: 'media',
-              test: /\.(png|jpg|jpeg|gif|svg|webp|ico)$/,
-              minSize: 3000,
-              maxSize: 70000,
-              chunks: 'all',
-              priority: 10,
-              enforce: true,
-              name(module) {
-                return `media/[name].[hash]`
-              }
-            },
-
-            vendors: {
-              name: 'vendors',
-              test: /[\\/]node_modules[\\/]/,
-              priority: 10,
-              enforce: true,
-              chunks: 'all',
-              minSize: 5000,
-              reuseExistingChunk: true,
-            }
           },
         },
       }
