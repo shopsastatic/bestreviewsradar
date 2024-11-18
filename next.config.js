@@ -11,15 +11,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: true,
-  
+
   // Performance
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
-  
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -146,8 +146,8 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 5000,
-          maxSize: 70000,
+          minSize: 70000,
+          maxSize: 100000,
           cacheGroups: {
             framework: {
               name: 'framework',
