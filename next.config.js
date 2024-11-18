@@ -116,13 +116,23 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        headers: createSecureHeaders({
-          xssProtection: false,
-          frameGuard: [
-            'allow-from',
-            { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
-          ],
-        }),
+        headers: [
+          ...createSecureHeaders({
+            xssProtection: false,
+            frameGuard: [
+              'allow-from',
+              { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
+            ],
+          }),
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=604800',
+          },
+          {
+            key: 'Expires',
+            value: new Date(Date.now() + 604800000).toUTCString(),
+          }
+        ],
       },
     ]
   },
