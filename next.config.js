@@ -11,15 +11,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   generateEtags: true,
-
+  
   // Performance
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
-
+  
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-    reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+	reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -116,39 +116,37 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        headers: [
-          ...createSecureHeaders({
-            xssProtection: false,
-            frameGuard: [
-              'allow-from',
-              { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
-            ],
-          }),
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=604800',
-          },
-          {
-            key: 'Expires',
-            value: new Date(Date.now() + 604800000).toUTCString(),
-          }
-        ],
+        headers: createSecureHeaders({
+          xssProtection: false,
+          frameGuard: [
+            'allow-from',
+            { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
+          ],
+        }),
       },
     ]
   },
 
   webpack: (config, { dev, isServer }) => {
-    // Chỉ áp dụng khi build cho client-side trong production
-    if (!isServer) {
+    if (!dev && !isServer) {
+      if (process.env.ANALYZE === 'true') {
+        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+        config.plugins.push(
+          new BundleAnalyzerPlugin({
+            analyzerMode: 'server',
+            analyzerPort: 8888,
+            openAnalyzer: true
+          })
+        )
+      }
+
       config.optimization = {
         ...config.optimization,
         moduleIds: 'deterministic',
-        runtimeChunk: {
-          name: 'runtime', // Đổi thành object thay vì 'single'
-        },
+        runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 5000,
+          minSize: 20000,
           maxSize: 70000,
           cacheGroups: {
             framework: {
@@ -157,15 +155,9 @@ const nextConfig = {
               priority: 40,
               enforce: true,
             },
-            commons: {
-              name: 'commons',
-              minChunks: 2,
-              priority: 20,
-              reuseExistingChunk: true,
-            },
             lib: {
               test(module) {
-                return module.size() > 20000
+                return module.size() > 50000
               },
               name(module) {
                 const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
@@ -175,29 +167,11 @@ const nextConfig = {
               minChunks: 1,
               reuseExistingChunk: true,
             },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              enforce: true,
-            },
-            media: {
-              test: /\.(png|jpg|jpeg|gif|svg|webp|ico)$/,
-              chunks: 'all',
-              enforce: true,
-              name(module) {
-                return `media/[name].[hash]`
-              }
-            },
-            vendors: {
-              test: /[\\/]node_modules[\\/]/,
-              name(module) {
-                const packageName = module.context.match(
-                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                )[1]
-                return `vendor.${packageName.replace('@', '')}`
-              },
-              priority: 10,
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 20,
+              reuseExistingChunk: true,
             },
           },
         },
