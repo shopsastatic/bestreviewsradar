@@ -38,8 +38,10 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
   }
 
   // for this page
-  const { title, editorBlocks, featuredImage } =
+  const { title, editorBlocks, featuredImage, seo } =
     props.data?.page as any || {};
+
+    console.log(seo)
 
   const isGutenbergPage =
     !!props.__SEED_NODE__?.isFrontPage || "";
@@ -1040,7 +1042,8 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
-        pageTitle={title}
+        pageTitle={seo?.title || title || ""}
+        pageDescription={seo?.metaDesc}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
@@ -1586,7 +1589,8 @@ const Page: FaustTemplate<GetPageQuery> = (props: any) => {
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.node?.sourceUrl}
-        pageTitle={title}
+        pageTitle={seo?.title || title || ""}
+        pageDescription={seo?.metaDesc}
         generalSettings={
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
@@ -1633,6 +1637,11 @@ Page.query = gql(`
           altText
           sourceUrl
         }
+      }
+      seo {
+        metaDesc
+        metaKeywords
+        title
       }
     }
     # common query for all page 

@@ -146,6 +146,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
                 src="/images/logo-brr.png"
                 alt="Logo Best Reviews Radar"
                 width={140}
+                height={'100%'}
                 className="h-auto"
               />
             </Link>

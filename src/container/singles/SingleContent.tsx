@@ -8,6 +8,8 @@ import axios from 'axios'
 import ScrollTop from '@/components/ScrollTop'
 import Image from 'next/image'
 import debounce from 'lodash/debounce'
+import SinglePopup from '@/components/SinglePopup'
+import { useRouter } from 'next/router'
 
 // Types
 export interface SingleContentProps {
@@ -19,7 +21,7 @@ interface CacheData {
 	timestamp: number;
 }
 
-// RelatedProduct Component with Image optimization
+
 const RelatedProduct = memo(({ item }: { item: any }) => (
 	<Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
 		<div className='max-h-[94px] h-full m-auto mb-3'>
@@ -73,6 +75,7 @@ const RelatedProduct = memo(({ item }: { item: any }) => (
 RelatedProduct.displayName = 'RelatedProduct'
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
+	const router = useRouter()
 	// Refs
 	const endedAnchorRef = useRef<HTMLDivElement>(null)
 	const progressRef = useRef<HTMLButtonElement>(null)
@@ -441,12 +444,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				{renderAlert()}
 				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 				<ScrollTop />
+				{router.query.gclid != undefined && (
+					<SinglePopup prod={dataRelatedArray[0]} />
+				)}
 			</div>
 
 			{headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
-						? 'lg-grid-cols-1'
-						: 'lg:grid-cols-12'
+					? 'lg-grid-cols-1'
+					: 'lg:grid-cols-12'
 					} mt-20`}>
 					{((headings.length > 1 && dataRelatedArray.length > 0) ||
 						(headings.length > 1 && dataRelatedArray.length === 0)) && (
@@ -462,8 +468,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<li
 											key={heading.id}
 											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-													? 'duration-300 font-semibold border-blue-600'
-													: 'duration-300 font-normal border-transparent'
+												? 'duration-300 font-semibold border-blue-600'
+												: 'duration-300 font-normal border-transparent'
 												}`}
 										>
 											<a
@@ -482,8 +488,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 										<li
 											key={heading.id}
 											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
-													? 'duration-300 font-semibold border-blue-600'
-													: 'duration-300 font-normal border-transparent'
+												? 'duration-300 font-semibold border-blue-600'
+												: 'duration-300 font-normal border-transparent'
 												}`}
 										>
 											<a
@@ -509,8 +515,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
 									<div className={`grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
-											? 'md:grid-cols-3 md:gap-7'
-											: 'md:grid-cols-2 md:gap-10'
+										? 'md:grid-cols-3 md:gap-7'
+										: 'md:grid-cols-2 md:gap-10'
 										} gap-6`}>
 										{dataRelatedArray.slice(NoT, 50).map((item: any, index: number) => (
 											<RelatedProduct key={`${item.title}-${index}`} item={item} />
