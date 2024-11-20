@@ -139,7 +139,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		}
 
 		fetchData()
-	}, [post_id])
+	}, [])
 
 	let dataRelatedArray = [] as any
 	if (dataRelated?.Amazon) {
