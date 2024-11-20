@@ -146,8 +146,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		dataRelatedArray = Object.values(dataRelated?.Amazon)
 	}
 
-	console.log(dataRelatedArray)
-
 	const amzShortcode = amazonShortcode as any
 
 	// Handle click outside
