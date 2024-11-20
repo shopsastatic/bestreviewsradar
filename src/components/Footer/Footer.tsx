@@ -143,7 +143,7 @@ export default function Footer({ menuItems }: any) {
 					<div className="lg:col-span-2 space-y-6">
 						<div>
 							<Link href={"/"} className="block w-fit mb-4">
-								<img src="/images/logo-brr.png" width="160" alt="Logo Best Reviews Radar"></img>
+								<img src="/images/logo-brr.png" width="160" height={160} alt="Logo Best Reviews Radar"></img>
 							</Link>
 							<p className="text-gray-400 mb-6 text-[15px]">
 								Your trusted source for in-depth product reviews, comparisons, and buying guides. We help millions make confident purchasing decisions.
@@ -185,7 +185,7 @@ export default function Footer({ menuItems }: any) {
 						</div>
 
 						<div className="flex items-center gap-3 mt-4">
-							<img src="/images/us.png" width="30" alt="" />
+							<img src="/images/us.png" width="30" height={30} alt="" />
 							<span className="text-[#b6c4d2]">United States</span>
 						</div>
 					</div>
