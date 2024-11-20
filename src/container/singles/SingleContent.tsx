@@ -114,15 +114,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				const cacheKey = `related-data-${post_id}`
 				const cached = sessionStorage.getItem(cacheKey)
 
-				if (cached) {
-					const { data, timestamp } = JSON.parse(cached)
-					const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
+				// if (cached) {
+				// 	const { data, timestamp } = JSON.parse(cached)
+				// 	const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
 
-					if (!isExpired) {
-						setDataRelated(data)
-						return
-					}
-				}
+				// 	if (!isExpired) {
+				// 		setDataRelated(data)
+				// 		return
+				// 	}
+				// }
 
 				const { data } = await axios.get(
 					`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
