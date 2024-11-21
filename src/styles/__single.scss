@@ -12,6 +12,21 @@
   @apply text-base font-normal text-neutral-900 dark:text-neutral-100;
 }
 
+.content-gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 128px;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+}
+
 .large-width {
   max-width: 1200px;
   margin: auto;
@@ -34,6 +49,7 @@
   border-bottom-width: 2px;
   border-color: transparent;
   background-color: #fff;
+  padding-bottom: .5rem;
   margin-bottom: 30px;
   position: relative;
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -466,11 +482,62 @@ footer .container {
   transition: all .4s;
 }
 
+.accordion {
+  margin-bottom: 24px;
+}
+
+.accordion-container {
+  width: 90%;
+  max-width: 1240px;
+  margin: 0 auto;
+  border: 3px solid #e0e0e0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+
+.accordion-item {
+  width: 100%;
+}
+
+.accordion-trigger {
+  width: 100%;
+  display: block;
+  background-color: rgb(250, 250, 250);
+  color: rgb(0, 0, 0);
+  padding: 24px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  text-align: left;
+  border: none;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.accordion-icon {
+  transition: transform 0.5s;
+}
+
+.accordion-item[open] .accordion-icon {
+  transform: rotate(45deg);
+}
+
+.accordion-item:not(:first-of-type) .accordion-trigger {
+  border-top: 3px solid #eaeaea;
+}
+
+.accordion-content p {
+  margin: 24px;
+}
+
 .related-prod-image {
   transition: all .4s;
 }
 
-.related-prod-child:hover>.related-prod-image {
+.related-prod-child:hover related-prod-image {
   transform: scale(1.1);
   transition: all .4s;
 }
@@ -572,6 +639,7 @@ footer .container {
 .toggle-button {
   display: flex;
   color: #0a7ced;
+  padding-top: 1rem;
 }
 
 .toggle-button.mob {
@@ -592,12 +660,18 @@ footer .container {
 }
 
 @media (max-width: 767px) {
+  .prod-child {
+    padding-bottom: 0;
+    border-right-width: 0;
+  }
+
   .toggle-button {
     display: none;
   }
 
   .toggle-button.mob {
     display: flex;
+    padding-top: 0;
   }
 
   .prod-feature {
@@ -615,10 +689,6 @@ footer .container {
     position: absolute;
     top: 0;
     right: 0;
-  }
-
-  .prod-child {
-    border-right-width: 0;
   }
 
   .store-add {

@@ -187,6 +187,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		const initializeToggleButtons = (selector: string) => {
 			document.querySelectorAll(selector).forEach((button, index) => {
 				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
+				const listBgGradient = document.querySelectorAll(".bg-animate")[index] as HTMLElement
+
 				let isExpanded = false;
 
 				button.addEventListener('click', function (event) {
@@ -217,9 +219,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 					if (isExpanded) {
 						content.style.maxHeight = '276px';
+						listBgGradient.style.opacity = '1'
 						button.innerHTML = getButtonHTML('Show More');
 					} else {
 						content.style.maxHeight = content.scrollHeight + 'px';
+						listBgGradient.style.opacity = '0'
 						button.innerHTML = getButtonHTML('Show Less', true);
 					}
 
