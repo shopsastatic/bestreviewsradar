@@ -27,7 +27,9 @@ const RelatedProduct = memo(({ item }: { item: any }) => (
 		<div className='max-h-[94px] h-full m-auto mb-3'>
 			<img
 				loading='lazy'
-				className='related-prod-image mx-auto rounded-[8px] h-full'
+				width={94}
+				height={94}
+				className='related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain'
 				src={item?.img ?? "/"}
 				alt={item?.title}
 			/>

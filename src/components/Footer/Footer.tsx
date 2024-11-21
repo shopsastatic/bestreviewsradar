@@ -5,6 +5,7 @@ import { NcFooterMenuFieldsFragmentFragment } from '@/__generated__/graphql'
 import Link from 'next/link'
 import { ArrowRight, Shield, Globe, Heart, Award } from 'lucide-react'
 import { useState } from 'react'
+import Image from 'next/image'
 
 interface Props {
 	menuItems: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null
@@ -143,28 +144,19 @@ export default function Footer({ menuItems }: any) {
 					<div className="lg:col-span-2 space-y-6">
 						<div>
 							<Link href={"/"} className="block w-fit mb-4">
-								<img src="/images/logo-brr.png" width="160" height={160} alt="Logo Best Reviews Radar"></img>
+								<Image
+									src="/images/logo-brr.png"
+									alt="Logo Best Reviews Radar"
+									width={160}
+									height={160}
+									priority
+									className="mx-auto"
+								/>
 							</Link>
 							<p className="text-gray-400 mb-6 text-[15px]">
 								Your trusted source for in-depth product reviews, comparisons, and buying guides. We help millions make confident purchasing decisions.
 							</p>
 						</div>
-
-						{/* Contact Info */}
-						{/* <div className="space-y-4">
-				<div className="flex items-center gap-3">
-				  <Mail className="w-5 h-5 text-blue-500" />
-				  <span>contact@bestreviewsradar.com</span>
-				</div>
-				<div className="flex items-center gap-3">
-				  <Phone className="w-5 h-5 text-blue-500" />
-				  <span>1-800-REVIEWS</span>
-				</div>
-				<div className="flex items-center gap-3">
-				  <MapPin className="w-5 h-5 text-blue-500" />
-				  <span>123 Review Street, Tech City, TC 12345</span>
-				</div>
-			  </div> */}
 
 						{/* Awards */}
 						<div className="space-y-4 pt-6">
@@ -254,25 +246,6 @@ export default function Footer({ menuItems }: any) {
 								<span className="text-sm">User Trusted</span>
 							</div>
 						</div>
-
-						{/* Social Links */}
-						{/* <div className="flex justify-end gap-4">
-				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-				  <Facebook className="w-5 h-5" />
-				</a>
-				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-				  <Twitter className="w-5 h-5" />
-				</a>
-				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-				  <Instagram className="w-5 h-5" />
-				</a>
-				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-				  <Linkedin className="w-5 h-5" />
-				</a>
-				<a href="#" className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
-				  <Youtube className="w-5 h-5" />
-				</a>
-			  </div> */}
 					</div>
 				</div>
 			</div>
