@@ -52,7 +52,7 @@ const RelatedProduct = memo(({ item }: { item: any }) => (
 			)}
 			<div className='flex items-center gap-4'>
 				{item?.priceOld > 0 && (
-					<span className='text-sm line-through text-[#444]'>
+					<span className='text-sm line-through text-[#444] leading-6'>
 						${Number(item?.priceOld)?.toFixed(2)}
 					</span>
 				)}
