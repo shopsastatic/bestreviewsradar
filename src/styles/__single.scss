@@ -150,6 +150,17 @@
   background-color: #e0e0e0;
 }
 
+@keyframes slideDown {
+  from {
+      opacity: 0;
+      transform: translateY(-10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
 .skeleton-card::before {
   content: '';
   position: absolute;
