@@ -7,6 +7,9 @@ import { FragmentType, gql } from '@/__generated__'
 import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import { useQuery } from '@apollo/client'
+import useSWR from 'swr';
+import { request } from 'graphql-request';
+
 export interface MenuBarProps {
   menuItems?: any
   className?: string
@@ -22,12 +25,33 @@ const MENU_QUERY = gql(`
   }
 `)
 
+const fetcher = async () => {
+  const response = await request(process.env.NEXT_PUBLIC_WORDPRESS_URL + "/graphql", MENU_QUERY);
+  return response.sidebarMenuItems;
+};
+
+const useMenu = (revalidateTime = 3600) => {
+  const { data, error, mutate } = useSWR('menu', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    refreshInterval: revalidateTime * 1000,
+    dedupingInterval: revalidateTime * 1000,
+  });
+
+  return {
+    data,
+    loading: !error && !data,
+    error,
+    mutate
+  };
+};
+
 const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
   const [isVisible, setIsVisible] = useState(false)
   const pathname = usePathname()
   
   // Use the useQuery hook to fetch data
-  const { data, loading, error } = useQuery(MENU_QUERY)
+  const { data, loading } = useMenu(3600);
 
   useEffect(() => {
     setIsVisible(false)
@@ -35,12 +59,6 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
 
   const handleOpenMenu = () => setIsVisible(true)
   const handleCloseMenu = () => setIsVisible(false)
-
-  // Handle error state
-  if (error) {
-    console.error('Error fetching menu data:', error)
-    return <div>Error loading menu</div>
-  }
 
   const renderContent = () => {
     return (
@@ -74,7 +92,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
               <div className="flex min-h-full">
                 <div className="w-full max-w-sm overflow-hidden transition-all">
                   <NavMobile
-                    menuItems={data?.sidebarMenuItems?.nodes || []}
+                    menuItems={data?.nodes || []}
                     onClickClose={handleCloseMenu}
                   />
                 </div>

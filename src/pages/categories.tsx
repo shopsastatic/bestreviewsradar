@@ -19,21 +19,10 @@ const SkeletonCard = () => (
   <div className="skeleton-card rounded-xl shadow-sm overflow-hidden h-52 bg-gray-200 animate-pulse"></div>
 );
 
-const CATEGORIES = gql(`
-  query GetCategories {
-    categoryItems: menuItems(where: { location: CATEGORIES }, first: 200) {
-      nodes {
-        ...NcCategoryFieldsFragment
-      }
-    }
-  }
-`) as any
-
 const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
-  const { data, loading, error } = useQuery(CATEGORIES)
+  const categories = props.data.categoryItems
   function transformMenuItems(items: any) {
     const parentItems = items.filter((item: any) => !item.parentId);
-    console.log(data)
 
     return parentItems.map((parent: any) => {
       const children = items.filter((item: any) => item.parentId === parent.id);
@@ -56,8 +45,8 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
   }
   let topCategories = []
 
-  if (data) {
-    topCategories = transformMenuItems(data?.categoryItems?.nodes)
+  if (categories?.nodes.length > 0) {
+    topCategories = transformMenuItems(categories?.nodes)
   }
 
   function getLastPath(url: any) {
@@ -93,9 +82,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
         {/* Categories Grid */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading
-              ? Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
-              : topCategories.map((category: any) => (
+            {topCategories.map((category: any) => (
                 <div
                   key={category.id}
                   className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300"
@@ -162,9 +149,14 @@ Page.variables = () => {
 }
 
 Page.query = gql(`
-  query GetReadingListData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+  query GetCateData($headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
+    }
+    categoryItems: menuItems(where: { location: CATEGORIES }, first: 200) {
+      nodes {
+        ...NcCategoryFieldsFragment
+      }
     }
     primaryMenuItems: menuItems(where: { location: $headerLocation }, first: 80) {
       nodes {
