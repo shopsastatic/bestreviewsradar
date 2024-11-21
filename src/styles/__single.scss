@@ -150,6 +150,13 @@
   background-color: #e0e0e0;
 }
 
+.more-deals-btn {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border: 0px solid #f2f4f7;
+  border-top-width: 1px;
+}
+
 @keyframes slideDown {
   from {
       opacity: 0;
@@ -637,5 +644,11 @@ footer .container {
 
   .summary-content iframe {
     height: 300px;
+  }
+
+  .more-deals-btn {
+    border-bottom: 1px solid #f2f4f7;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
   }
 }

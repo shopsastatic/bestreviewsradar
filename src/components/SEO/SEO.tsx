@@ -21,7 +21,7 @@ const GET_SITE_SETTINGS = gql(`
 
 export default function SEO({ title, description, imageUrl, url, metaRobots }: any) {
   // Use useQuery hook to execute the query
-  const { data, loading, error } : any = useQuery(GET_SITE_SETTINGS);
+  const { data, loading, error }: any = useQuery(GET_SITE_SETTINGS);
   const router = useRouter();
 
   // Get WordPress settings
@@ -37,16 +37,16 @@ export default function SEO({ title, description, imageUrl, url, metaRobots }: a
     return null;
   }
 
-  if(metaRobots == "noindex") {
+  if (metaRobots == "noindex") {
     metaRobots = "noindex, nofollow";
-  }else {
+  } else {
     metaRobots = "index, follow";
   }
 
   return (
     <Head>
       <meta charSet="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
       <meta name="robots" content={metaRobots} />
       <link rel="canonical" href={url} />
       <title>{title}</title>
@@ -63,6 +63,11 @@ export default function SEO({ title, description, imageUrl, url, metaRobots }: a
       <meta name="twitter:image" content={imageUrl} />
       <meta itemProp="name" content={title} />
       <meta property="article:section" content="BestReviewsRadar" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="icon" href="/favicon.ico" />
+      <link rel="manifest" href="/site.webmanifest"></link>
     </Head>
   );
 }
