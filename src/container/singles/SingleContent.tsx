@@ -190,52 +190,69 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	useEffect(() => {
 		const handleLazyLoading = () => {
-			const lazyImages = document.querySelectorAll(".lazy-load-prod");
+			const BATCH_SIZE = 5;
+			const lazyImages = Array.from(document.querySelectorAll(".lazy-load-prod"));
+			let currentIndex = 0;
 	
 			const imageObserver = new IntersectionObserver((entries, observer) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						const img = entry.target as any;
+						const img = entry.target as HTMLImageElement;
 						const dataSrc = img.getAttribute("data-src");
 	
 						if (dataSrc) {
-							parseImageUrl(dataSrc).then((data: any) => {
-								img.src = data
-								img.setAttribute('data-src', data);
-								img.onload = () => {
+							parseImageUrl(dataSrc).then((data: string) => {
+								const tempImage = document.createElement('img');
+								tempImage.onload = () => {
+									img.src = data;
+									img.setAttribute('data-src', data);
 									img.style.opacity = "1";
 									img.parentElement?.classList.add("loaded");
-									img.parentElement?.classList.remove("prod-image-container")
+									img.parentElement?.classList.remove("prod-image-container");
 								};
-								img.onerror = () => {
-									if (img.src.includes('c_scale')) {
-										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
-										img.src = retryUrl;
-										
-										img.onerror = () => {
-											img.src = dataSrc;
-											img.parentElement?.classList.add("loaded");
-											img.parentElement?.classList.remove("prod-image-container");
-										};
+	
+								tempImage.onerror = () => {
+									if (data.includes('c_scale')) {
+										tempImage.src = data.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
 									} else {
 										img.src = dataSrc;
 										img.parentElement?.classList.add("loaded");
 										img.parentElement?.classList.remove("prod-image-container");
 									}
 								};
+	
+								tempImage.src = data;
 								observer.unobserve(img);
-							})
+							});
 						}
 					}
 				});
 			}, {
-				threshold: 0.1
+				threshold: 0.1,
+				rootMargin: '50px'
 			});
 	
-			lazyImages.forEach((img) => imageObserver.observe(img));
+			const observeNextBatch = () => {
+				const batch = lazyImages.slice(currentIndex, currentIndex + BATCH_SIZE);
+				if (batch.length === 0) return;
+	
+				batch.forEach(img => imageObserver.observe(img));
+				currentIndex += BATCH_SIZE;
+	
+				if (currentIndex < lazyImages.length) {
+					requestAnimationFrame(observeNextBatch);
+				}
+			};
+	
+			observeNextBatch();
+	
+			return () => {
+				imageObserver.disconnect();
+			};
 		};
-		handleLazyLoading()
-	}, [])
+	
+		handleLazyLoading();
+	}, []);
 
 	// Fetch related data
 	useEffect(() => {
@@ -244,15 +261,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				const cacheKey = `related-data-${post_id}`
 				const cached = sessionStorage.getItem(cacheKey)
 
-				// if (cached) {
-				// 	const { data, timestamp } = JSON.parse(cached)
-				// 	const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
+				if (cached) {
+					const { data, timestamp } = JSON.parse(cached)
+					const isExpired = Date.now() - timestamp > 1000 * 60 * 5
 
-				// 	if (!isExpired) {
-				// 		setDataRelated(data)
-				// 		return
-				// 	}
-				// }
+					if (!isExpired) {
+						setDataRelated(data)
+						return
+					}
+				}
 
 				const { data } = await axios.get(
 					`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
