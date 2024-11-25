@@ -208,9 +208,20 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									img.parentElement?.classList.remove("prod-image-container")
 								};
 								img.onerror = () => {
-									img.src = dataSrc;
-									img.parentElement?.classList.add("loaded");
-									img.parentElement?.classList.remove("prod-image-container");
+									if (img.src.includes('c_scale')) {
+										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+										img.src = retryUrl;
+										
+										img.onerror = () => {
+											img.src = dataSrc;
+											img.parentElement?.classList.add("loaded");
+											img.parentElement?.classList.remove("prod-image-container");
+										};
+									} else {
+										img.src = dataSrc;
+										img.parentElement?.classList.add("loaded");
+										img.parentElement?.classList.remove("prod-image-container");
+									}
 								};
 								observer.unobserve(img);
 							})
