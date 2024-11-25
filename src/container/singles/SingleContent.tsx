@@ -31,6 +31,20 @@ const parseImageUrl = async (url: string) => {
     }
 
     if (url.startsWith(imgDomain)) {
+        if (url.includes('/images/')) {
+            const [baseUrl, queryParams] = url.split('?');
+            
+            const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
+            if (matches && matches[1]) {
+                const fileName = matches[1];
+				const extension = url.split('.').pop()?.split('?')[0] || 'jpg';
+                let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
+                if (queryParams) {
+                    newUrl += `?${queryParams}`;
+                }
+                return newUrl;
+            }
+        }
         return url;
     }
 
