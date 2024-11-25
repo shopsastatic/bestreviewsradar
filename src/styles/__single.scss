@@ -173,6 +173,51 @@
   border-top-width: 1px;
 }
 
+.prod-image-container {
+  position: relative;
+  width: 150px; /* Kích thước cố định cho khung ảnh */
+  height: 150px;
+  background: #f0f0f0; /* Màu nền của skeleton */
+  overflow: hidden;
+  border-radius: 8px; /* Bo góc */
+}
+
+.lazy-load {
+  opacity: 0;
+  transition: opacity 0.5s ease; /* Hiệu ứng mờ dần khi ảnh tải xong */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Đảm bảo ảnh vừa khung */
+}
+
+.prod-image-container::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.prod-image-container.loaded::after {
+  display: none; /* Ẩn skeleton khi ảnh tải xong */
+}
+
+@keyframes skeleton-loading {
+  0% {
+      background-position: 100% 0;
+  }
+  100% {
+      background-position: -100% 0;
+  }
+}
+
+
 @keyframes slideDown {
   from {
       opacity: 0;
@@ -644,6 +689,20 @@ footer .container {
 
 .toggle-button.mob {
   display: none;
+}
+
+.banner-header {
+  background: url('https://images.bestproductsreviews.com/image/fetch/c_scale,f_auto/https://d1ttb1lnpo2lvz.cloudfront.net/a037fa6e/img/count-down-bg.png');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  margin: auto;
+  border-bottom: 2px solid #e69749;
+  overflow: hidden;
+  position: sticky;
+  height: 5rem;
 }
 
 @media (max-width: 1024px) {
