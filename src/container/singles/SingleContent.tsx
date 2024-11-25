@@ -24,7 +24,7 @@ interface CacheData {
 const parseImageUrl = async (url: string) => {
     const imgDomain = "https://img.bestreviewsradar.com/";
     const contentDomain = "https://content.bestreviewsradar.com/";
-    const replacementPath = "https://img.bestreviewsradar.com/image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/";
+    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
     if (!url || typeof url !== "string") {
         console.warn("Invalid URL input:", url);
@@ -35,28 +35,26 @@ const parseImageUrl = async (url: string) => {
         return url;
     }
 
+    // Nếu URL thuộc contentDomain
     if (url.startsWith(contentDomain)) {
-        const regex = /\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
         
-        if (regex.test(url)) {
-            const updatedUrl = url.replace(regex, replacementPath);
+        const updatedUrl = url.replace(regex, replacementPath);
 
-            try {
-                const response = await fetch(updatedUrl, { method: "HEAD" });
-                if (response.ok) {
-                    return updatedUrl;
-                }
-            } catch (error) {
-                console.error("Error validating URL:", error);
-                return url;
+        try {
+            const response = await fetch(updatedUrl, { method: "HEAD" });
+            if (response.ok) {
+                return updatedUrl;
             }
-        } else {
-            console.warn("URL does not match expected pattern:", url);
+        } catch (error) {
+            console.error("Error validating URL:", error);
+            return url; 
         }
     }
 
     return url;
 };
+
 
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
