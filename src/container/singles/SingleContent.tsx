@@ -21,88 +21,97 @@ interface CacheData {
 	timestamp: number;
 }
 
-const parseImageUrl = (url: string): string => {
-    const cache = new Map<string, string>();
-    const cacheKey = url;
-    
-    if (cache.has(cacheKey)) {
-        return cache.get(cacheKey)!;
-    }
-
-    if (!url || typeof url !== "string") return "/";
-
+const parseImageUrl = async (url: string) => {
     const imgDomain = "https://img.bestreviewsradar.com/";
     const contentDomain = "https://content.bestreviewsradar.com/";
-    let result = url;
+    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
-    if (url.startsWith(imgDomain) && url.includes('/images/')) {
-        const [baseUrl] = url.split('?');
-        const fileName = baseUrl.split('/').pop()?.replace(/(_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i, '') || '';
-        const extension = baseUrl.split('.').pop()?.toLowerCase() || 'jpg';
-        result = `${imgDomain}image/upload/w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
-    } else if (url.startsWith(contentDomain)) {
-        result = url.replace(
-            /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//,
-            `${imgDomain}image/upload/w_160,h_160/f_auto,q_auto/`
-        );
+    if (!url || typeof url !== "string") {
+        return "/";
     }
 
-    cache.set(cacheKey, result);
-    return result;
+    if (url.startsWith(imgDomain)) {
+        if (url.includes('/images/')) {
+            const [baseUrl, queryParams] = url.split('?');
+            
+            const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
+            if (matches && matches[1]) {
+                const fileName = matches[1];
+				const extension = url.split('.').pop()?.split('?')[0] || 'jpg';
+                let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
+                if (queryParams) {
+                    newUrl += `?${queryParams}`;
+                }
+                return newUrl;
+            }
+        }
+        return url;
+    }
+
+    if (url.startsWith(contentDomain)) {
+        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+        return url.replace(regex, replacementPath);
+    }
+
+    return url;
 };
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const imgRef = useRef<HTMLImageElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+	const [imageSrc, setImageSrc] = useState<string>("/");
+	const [isVisible, setIsVisible] = useState<boolean>(false);
+	const observerRef = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-        if (!item?.img) return;
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				if (entry.isIntersecting) {
+					setIsVisible(true);
+				}
+			},
+			{ threshold: 0.1 }
+		);
 
-        const observer = new IntersectionObserver(
-            async ([entry]) => {
-                if (entry.isIntersecting && !isLoaded) {
-                    const img = imgRef.current;
-                    if (!img) return;
+		if (observerRef.current) {
+			observer.observe(observerRef.current);
+		}
 
-                    try {
-                        const src = parseImageUrl(item.img);
-                        img.src = src;
-                        setIsLoaded(true);
-                    } catch (error) {
-                        console.error('Error loading image:', error);
-                    }
-                    observer.disconnect();
-                }
-            },
-            { threshold: 0.1, rootMargin: '50px' }
-        );
+		return () => {
+			if (observerRef.current) {
+				observer.unobserve(observerRef.current);
+			}
+		};
+	}, []);
 
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
-        }
+	useEffect(() => {
+		const fetchImageUrl = async () => {
+			if (isVisible && item?.img) {
+				const updatedUrl = await parseImageUrl(item.img);
+				setImageSrc(updatedUrl ?? "/");
+			}
+		};
 
-        return () => observer.disconnect();
-    }, [item?.img, isLoaded]);
+		fetchImageUrl();
+	}, [isVisible, item?.img]);
 
-    return (
-        <div ref={containerRef} className="col-span-1 related-prod-child">
-            <Link href={item.url ?? "/"}>
-                <div className="max-h-[94px] h-full m-auto mb-3 relative">
-                    {!isLoaded ? (
-                        <div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg" />
-                    ) : (
-                        <img
-                            ref={imgRef}
-                            loading="lazy"
-                            width={94}
-                            height={94}
-                            className="related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain"
-                            alt={item?.title || "Related product image"}
-                        />
-                    )}
-                </div>
-                <img
+	return (
+		<div ref={observerRef} className="col-span-1 related-prod-child">
+			<Link href={item.url ?? "/"}>
+				<div className="max-h-[94px] h-full m-auto mb-3 relative">
+					{imageSrc === "/" ? (
+						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
+					) : (
+						<img
+							loading="lazy"
+							width={94}
+							height={94}
+							className="related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain"
+							src={imageSrc}
+							alt={item?.title || "Related product image"}
+						/>
+					)}
+				</div>
+				<img
 					loading="lazy"
 					className="mx-auto !mb-10 max-w-[50px] md:max-w-[85px]"
 					src="/images/posts/amazon.webp"
@@ -139,128 +148,10 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 				>
 					View Deal
 				</button>
-            </Link>
-        </div>
-    );
+			</Link>
+		</div>
+	);
 });
-
-const useLazyLoading = () => {
-    useEffect(() => {
-        if (typeof window === 'undefined') return;
-
-        const imageQueue = new Set<HTMLImageElement>();
-        const processedImages = new WeakSet();
-        let isProcessing = false;
-
-        const processNextImage = async () => {
-            if (imageQueue.size === 0 || isProcessing) return;
-            isProcessing = true;
-
-            const img = imageQueue.values().next().value as any;
-            imageQueue.delete(img);
-
-            if (processedImages.has(img)) {
-                isProcessing = false;
-                return;
-            }
-
-            const dataSrc = img.getAttribute('data-src');
-            if (!dataSrc) {
-                isProcessing = false;
-                return;
-            }
-
-            try {
-                const newSrc = parseImageUrl(dataSrc);
-                img.src = newSrc;
-                img.style.opacity = '1';
-                img.parentElement?.classList.add('loaded');
-                img.parentElement?.classList.remove('prod-image-container');
-                processedImages.add(img);
-            } catch (error) {
-                console.error('Error loading image:', error);
-            }
-
-            isProcessing = false;
-            if (imageQueue.size > 0) {
-                requestAnimationFrame(processNextImage);
-            }
-        };
-
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target as HTMLImageElement;
-                        if (!processedImages.has(img)) {
-                            imageQueue.add(img);
-                            requestAnimationFrame(processNextImage);
-                        }
-                        observer.unobserve(img);
-                    }
-                });
-            },
-            {
-                threshold: 0.1,
-                rootMargin: '50px'
-            }
-        );
-
-        const images = document.querySelectorAll('.lazy-load-prod');
-        images.forEach(img => observer.observe(img));
-
-        return () => {
-            observer.disconnect();
-            imageQueue.clear();
-        };
-    }, []);
-};
-
-// const useRelatedData = (postId: string) => {
-//     const [data, setData] = useState<any>(null);
-    
-//     useEffect(() => {
-//         const controller = new AbortController();
-
-//         const fetchData = async () => {
-//             try {
-//                 const cacheKey = `related-data-${postId}`;
-//                 const cached = sessionStorage.getItem(cacheKey);
-
-//                 if (cached) {
-//                     const { data: cachedData, timestamp } = JSON.parse(cached);
-//                     if (Date.now() - timestamp < 300000) { // 5 minutes
-//                         setData(cachedData);
-//                         return;
-//                     }
-//                 }
-
-//                 const response = await fetch(
-//                     `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${postId}`,
-//                     { signal: controller.signal }
-//                 );
-                
-//                 if (!response.ok) throw new Error('Network response was not ok');
-                
-//                 const newData = await response.json();
-//                 setData(newData.data);
-                
-//                 sessionStorage.setItem(cacheKey, JSON.stringify({
-//                     data: newData.data,
-//                     timestamp: Date.now()
-//                 }));
-//             } catch (error: any) {
-//                 if (error.name === 'AbortError') return;
-//                 console.error("Error fetching data:", error);
-//             }
-//         };
-
-//         fetchData();
-//         return () => controller.abort();
-//     }, [postId]);
-
-//     return data;
-// };
 
 RelatedProduct.displayName = 'RelatedProduct'
 
@@ -297,44 +188,93 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const post_id = post?.databaseId
 
-	// Fetch related data
 	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const cacheKey = `related-data-${post_id}`
-	// 			const cached = sessionStorage.getItem(cacheKey)
-
-	// 			if (cached) {
-	// 				const { data, timestamp } = JSON.parse(cached)
-	// 				const isExpired = Date.now() - timestamp > 1000 * 60 * 5
-
-	// 				if (!isExpired) {
-	// 					setDataRelated(data)
-	// 					return
+	// 	const handleLazyLoading = () => {
+	// 		const lazyImages = document.querySelectorAll(".lazy-load-prod");
+	
+	// 		const imageObserver = new IntersectionObserver((entries, observer) => {
+	// 			entries.forEach((entry) => {
+	// 				if (entry.isIntersecting) {
+	// 					const img = entry.target as any;
+	// 					const dataSrc = img.getAttribute("data-src");
+	
+	// 					if (dataSrc) {
+	// 						parseImageUrl(dataSrc).then((data: any) => {
+	// 							img.src = data
+	// 							img.setAttribute('data-src', data);
+	// 							img.onload = () => {
+	// 								img.style.opacity = "1";
+	// 								img.parentElement?.classList.add("loaded");
+	// 								img.parentElement?.classList.remove("prod-image-container")
+	// 							};
+	// 							img.onerror = () => {
+	// 								if (img.src.includes('c_scale')) {
+	// 									const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+	// 									img.src = retryUrl;
+										
+	// 									img.onerror = () => {
+	// 										img.src = dataSrc;
+	// 										img.parentElement?.classList.add("loaded");
+	// 										img.parentElement?.classList.remove("prod-image-container");
+	// 									};
+	// 								} else {
+	// 									img.src = dataSrc;
+	// 									img.parentElement?.classList.add("loaded");
+	// 									img.parentElement?.classList.remove("prod-image-container");
+	// 								}
+	// 							};
+	// 							observer.unobserve(img);
+	// 						})
+	// 					}
 	// 				}
-	// 			}
-
-	// 			const { data } = await axios.get(
-	// 				`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
-	// 			)
-
-	// 			setDataRelated(data)
-	// 			sessionStorage.setItem(cacheKey, JSON.stringify({
-	// 				data,
-	// 				timestamp: Date.now()
-	// 			}))
-	// 		} catch (error) {
-	// 			console.error("Error fetching data:", error)
-	// 		}
-	// 	}
-
-	// 	fetchData()
+	// 			});
+	// 		}, {
+	// 			threshold: 0.1
+	// 		});
+	
+	// 		lazyImages.forEach((img) => imageObserver.observe(img));
+	// 	};
+	// 	handleLazyLoading()
 	// }, [])
 
-	// let dataRelatedArray = [] as any
-	// if (dataRelated?.Amazon) {
-	// 	dataRelatedArray = Object.values(dataRelated?.Amazon)
-	// }
+	// Fetch related data
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const cacheKey = `related-data-${post_id}`
+				const cached = sessionStorage.getItem(cacheKey)
+
+				// if (cached) {
+				// 	const { data, timestamp } = JSON.parse(cached)
+				// 	const isExpired = Date.now() - timestamp > 1000 * 60 * 5 // 5 mins
+
+				// 	if (!isExpired) {
+				// 		setDataRelated(data)
+				// 		return
+				// 	}
+				// }
+
+				const { data } = await axios.get(
+					`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
+				)
+
+				setDataRelated(data)
+				sessionStorage.setItem(cacheKey, JSON.stringify({
+					data,
+					timestamp: Date.now()
+				}))
+			} catch (error) {
+				console.error("Error fetching data:", error)
+			}
+		}
+
+		fetchData()
+	}, [])
+
+	let dataRelatedArray = [] as any
+	if (dataRelated?.Amazon) {
+		dataRelatedArray = Object.values(dataRelated?.Amazon)
+	}
 
 	const amzShortcode = amazonShortcode as any
 
@@ -632,20 +572,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		};
 	}, [activeHeading]);
 
-	useLazyLoading();
-
 	return (
 		<>
 			<div className='container'>
 				{renderAlert()}
 				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 				<ScrollTop />
-				{/* {router.query.gclid != undefined && (
+				{router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
-				)} */}
+				)}
 			</div>
 
-			{/* {headings && headings?.length > 0 && (
+			{headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -731,7 +669,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)} */}
+			)}
 
 			<div className="!my-0" ref={endedAnchorRef} />
 		</>
