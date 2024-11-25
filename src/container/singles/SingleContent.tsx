@@ -22,106 +22,107 @@ interface CacheData {
 }
 
 const parseImageUrl = async (url: string) => {
-    const imgDomain = "https://img.bestreviewsradar.com/";
-    const contentDomain = "https://content.bestreviewsradar.com/";
-    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
+	const imgDomain = "https://img.bestreviewsradar.com/";
+	const contentDomain = "https://content.bestreviewsradar.com/";
+	const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
-    if (!url || typeof url !== "string") {
-        console.warn("Invalid URL input:", url);
-        return "/";
-    }
+	if (!url || typeof url !== "string") {
+		console.warn("Invalid URL input:", url);
+		return "/";
+	}
 
-    if (url.startsWith(imgDomain)) {
-        return url;
-    }
+	if (url.startsWith(imgDomain)) {
+		return url;
+	}
 
-    // Nếu URL thuộc contentDomain
-    if (url.startsWith(contentDomain)) {
-        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
-        
-        const updatedUrl = url.replace(regex, replacementPath);
+	if (url.startsWith(contentDomain)) {
+		const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
 
-        try {
-            const response = await fetch(updatedUrl, { method: "HEAD" });
-            if (response.ok) {
-                return updatedUrl;
-            }
-        } catch (error) {
-            console.error("Error validating URL:", error);
-            return url; 
-        }
-    }
+		const updatedUrl = url.replace(regex, replacementPath);
 
-    return url;
+		try {
+			const response = await fetch(updatedUrl, { method: "HEAD" });
+			if (response.ok) {
+				return updatedUrl;
+			}
+		} catch (error) {
+			console.error("Error validating URL:", error);
+			return url;
+		}
+	}
+
+	return url;
 };
 
-
-
 const RelatedProduct = memo(({ item }: { item: any }) => {
-    const [imageSrc, setImageSrc] = useState<string>("/");
+	const [imageSrc, setImageSrc] = useState<string>("/");
 
-    useEffect(() => {
-        const fetchImageUrl = async () => {
-            if (item?.img) {
-                const updatedUrl = await parseImageUrl(item.img);
-                setImageSrc(updatedUrl ?? "/");
-            }
-        };
+	useEffect(() => {
+		const fetchImageUrl = async () => {
+			if (item?.img) {
+				const updatedUrl = await parseImageUrl(item.img);
+				setImageSrc(updatedUrl ?? "/");
+			}
+		};
 
-        fetchImageUrl();
-    }, [item?.img]);
+		fetchImageUrl();
+	}, [item?.img]);
 
-    return (
-        <Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
-            <div className='max-h-[94px] h-full m-auto mb-3'>
-                <img
-                    loading='lazy'
-                    width={94}
-                    height={94}
-                    className='related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain'
-                    src={imageSrc}
-                    alt={item?.title || "Related product image"}
-                />
-            </div>
-            <img
-                loading='lazy'
-                className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]'
-                src="/images/posts/amazon.webp"
-                alt="Amazon logo"
-            />
-            <div className='block w-fit my-3 mt-1'>
-                <p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
-            </div>
-            <span className='line-clamp-1 block mb-2 text-sm truncate'>
-                {item?.productDatas?.description}
-            </span>
-            <div className='box-price flex flex-wrap items-end gap-4'>
-                {item?.price > 0 && (
-                    <span className='font-bold text-base'>
-                        ${Number(item?.price)?.toFixed(2)}
-                    </span>
-                )}
-                <div className='flex items-center gap-4'>
-                    {item?.priceOld > 0 && (
-                        <span className='text-sm line-through text-[#444] leading-6'>
-                            ${Number(item?.priceOld)?.toFixed(2)}
-                        </span>
-                    )}
-                    {item?.percentageSaved > 0 && (
-                        <span className='text-sm text-red-700'>
-                            ({item?.percentageSaved}% OFF)
-                        </span>
-                    )}
-                </div>
-            </div>
-            <button
-                className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]"
-                aria-label="View Deal"
-            >
-                View Deal
-            </button>
-        </Link>
-    );
+	return (
+		<Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
+			<div className='max-h-[94px] h-full m-auto mb-3'>
+				{imageSrc === "/" ? (
+					<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
+				) : (
+					<img
+						loading="lazy"
+						width={94}
+						height={94}
+						className="related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain"
+						src={imageSrc}
+						alt={item?.title || "Related product image"}
+					/>
+				)}
+			</div>
+			<img
+				loading='lazy'
+				className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]'
+				src="/images/posts/amazon.webp"
+				alt="Amazon logo"
+			/>
+			<div className='block w-fit my-3 mt-1'>
+				<p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
+			</div>
+			<span className='line-clamp-1 block mb-2 text-sm truncate'>
+				{item?.productDatas?.description}
+			</span>
+			<div className='box-price flex flex-wrap items-end gap-4'>
+				{item?.price > 0 && (
+					<span className='font-bold text-base'>
+						${Number(item?.price)?.toFixed(2)}
+					</span>
+				)}
+				<div className='flex items-center gap-4'>
+					{item?.priceOld > 0 && (
+						<span className='text-sm line-through text-[#444] leading-6'>
+							${Number(item?.priceOld)?.toFixed(2)}
+						</span>
+					)}
+					{item?.percentageSaved > 0 && (
+						<span className='text-sm text-red-700'>
+							({item?.percentageSaved}% OFF)
+						</span>
+					)}
+				</div>
+			</div>
+			<button
+				className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]"
+				aria-label="View Deal"
+			>
+				View Deal
+			</button>
+		</Link>
+	);
 });
 
 RelatedProduct.displayName = 'RelatedProduct'
