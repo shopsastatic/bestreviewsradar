@@ -216,51 +216,51 @@ const useLazyLoading = () => {
     }, []);
 };
 
-const useRelatedData = (postId: string) => {
-    const [data, setData] = useState<any>(null);
+// const useRelatedData = (postId: string) => {
+//     const [data, setData] = useState<any>(null);
     
-    useEffect(() => {
-        const controller = new AbortController();
+//     useEffect(() => {
+//         const controller = new AbortController();
 
-        const fetchData = async () => {
-            try {
-                const cacheKey = `related-data-${postId}`;
-                const cached = sessionStorage.getItem(cacheKey);
+//         const fetchData = async () => {
+//             try {
+//                 const cacheKey = `related-data-${postId}`;
+//                 const cached = sessionStorage.getItem(cacheKey);
 
-                if (cached) {
-                    const { data: cachedData, timestamp } = JSON.parse(cached);
-                    if (Date.now() - timestamp < 300000) { // 5 minutes
-                        setData(cachedData);
-                        return;
-                    }
-                }
+//                 if (cached) {
+//                     const { data: cachedData, timestamp } = JSON.parse(cached);
+//                     if (Date.now() - timestamp < 300000) { // 5 minutes
+//                         setData(cachedData);
+//                         return;
+//                     }
+//                 }
 
-                const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${postId}`,
-                    { signal: controller.signal }
-                );
+//                 const response = await fetch(
+//                     `${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${postId}`,
+//                     { signal: controller.signal }
+//                 );
                 
-                if (!response.ok) throw new Error('Network response was not ok');
+//                 if (!response.ok) throw new Error('Network response was not ok');
                 
-                const newData = await response.json();
-                setData(newData.data);
+//                 const newData = await response.json();
+//                 setData(newData.data);
                 
-                sessionStorage.setItem(cacheKey, JSON.stringify({
-                    data: newData.data,
-                    timestamp: Date.now()
-                }));
-            } catch (error: any) {
-                if (error.name === 'AbortError') return;
-                console.error("Error fetching data:", error);
-            }
-        };
+//                 sessionStorage.setItem(cacheKey, JSON.stringify({
+//                     data: newData.data,
+//                     timestamp: Date.now()
+//                 }));
+//             } catch (error: any) {
+//                 if (error.name === 'AbortError') return;
+//                 console.error("Error fetching data:", error);
+//             }
+//         };
 
-        fetchData();
-        return () => controller.abort();
-    }, [postId]);
+//         fetchData();
+//         return () => controller.abort();
+//     }, [postId]);
 
-    return data;
-};
+//     return data;
+// };
 
 RelatedProduct.displayName = 'RelatedProduct'
 
@@ -298,43 +298,43 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const post_id = post?.databaseId
 
 	// Fetch related data
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const cacheKey = `related-data-${post_id}`
-				const cached = sessionStorage.getItem(cacheKey)
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const cacheKey = `related-data-${post_id}`
+	// 			const cached = sessionStorage.getItem(cacheKey)
 
-				if (cached) {
-					const { data, timestamp } = JSON.parse(cached)
-					const isExpired = Date.now() - timestamp > 1000 * 60 * 5
+	// 			if (cached) {
+	// 				const { data, timestamp } = JSON.parse(cached)
+	// 				const isExpired = Date.now() - timestamp > 1000 * 60 * 5
 
-					if (!isExpired) {
-						setDataRelated(data)
-						return
-					}
-				}
+	// 				if (!isExpired) {
+	// 					setDataRelated(data)
+	// 					return
+	// 				}
+	// 			}
 
-				const { data } = await axios.get(
-					`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
-				)
+	// 			const { data } = await axios.get(
+	// 				`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/cegg/v1/data/${post_id}`
+	// 			)
 
-				setDataRelated(data)
-				sessionStorage.setItem(cacheKey, JSON.stringify({
-					data,
-					timestamp: Date.now()
-				}))
-			} catch (error) {
-				console.error("Error fetching data:", error)
-			}
-		}
+	// 			setDataRelated(data)
+	// 			sessionStorage.setItem(cacheKey, JSON.stringify({
+	// 				data,
+	// 				timestamp: Date.now()
+	// 			}))
+	// 		} catch (error) {
+	// 			console.error("Error fetching data:", error)
+	// 		}
+	// 	}
 
-		fetchData()
-	}, [])
+	// 	fetchData()
+	// }, [])
 
-	let dataRelatedArray = [] as any
-	if (dataRelated?.Amazon) {
-		dataRelatedArray = Object.values(dataRelated?.Amazon)
-	}
+	// let dataRelatedArray = [] as any
+	// if (dataRelated?.Amazon) {
+	// 	dataRelatedArray = Object.values(dataRelated?.Amazon)
+	// }
 
 	const amzShortcode = amazonShortcode as any
 
@@ -640,12 +640,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				{renderAlert()}
 				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 				<ScrollTop />
-				{router.query.gclid != undefined && (
+				{/* {router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
-				)}
+				)} */}
 			</div>
 
-			{headings && headings?.length > 0 && (
+			{/* {headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -731,7 +731,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)}
+			)} */}
 
 			<div className="!my-0" ref={endedAnchorRef} />
 		</>
