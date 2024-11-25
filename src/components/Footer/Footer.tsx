@@ -5,7 +5,6 @@ import { NcFooterMenuFieldsFragmentFragment } from '@/__generated__/graphql'
 import Link from 'next/link'
 import { ArrowRight, Shield, Globe, Heart, Award } from 'lucide-react'
 import { useState } from 'react'
-import Image from 'next/image'
 
 interface Props {
 	menuItems: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null
@@ -144,7 +143,7 @@ export default function Footer({ menuItems }: any) {
 					<div className="lg:col-span-2 space-y-6">
 						<div>
 							<Link href={"/"} className="block w-fit mb-4">
-								<Image
+								<img
 									src="https://img.bestreviewsradar.com/images/f_auto,q_auto//v1732270282/logo-bestreviewsradar/logo-bestreviewsradar.png"
 									alt="Logo Best Reviews Radar"
 									width={160}
