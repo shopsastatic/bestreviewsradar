@@ -143,11 +143,11 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
           <div className="flex items-center">
             <Link href="/">
               <img
-                src="/images/logo-brr.png"
+                src="https://img.bestreviewsradar.com/images/f_auto,q_auto//v1732270282/logo-bestreviewsradar/logo-bestreviewsradar.png"
+                loading='lazy'
                 alt="Logo Best Reviews Radar"
                 width={140}
-                height={140}
-                className="h-auto"
+                height={'auto'}
               />
             </Link>
             <div className="items-center hidden md:flex">
@@ -185,9 +185,10 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
           <div className="flex justify-end items-center gap-2">
             <Link href="/">
               <img
-                src="/images/us.png"
+                src="https://img.bestreviewsradar.com/images/f_auto,q_auto/v1732520637/us/us.png"
                 className="w-[24px] h-[24px] md:h-[28px] md:w-[28px]"
                 alt="US flag"
+                loading='lazy'
               />
             </Link>
             <SearchIconBtn className="!text-white hidden max-[895px]:block" />

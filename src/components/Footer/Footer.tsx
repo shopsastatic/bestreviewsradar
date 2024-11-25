@@ -145,10 +145,11 @@ export default function Footer({ menuItems }: any) {
 						<div>
 							<Link href={"/"} className="block w-fit mb-4">
 								<Image
-									src="/images/logo-brr.png"
+									src="https://img.bestreviewsradar.com/images/f_auto,q_auto//v1732270282/logo-bestreviewsradar/logo-bestreviewsradar.png"
 									alt="Logo Best Reviews Radar"
 									width={160}
 									height={160}
+									loading='lazy'
 									priority
 									className="mx-auto"
 								/>
@@ -177,7 +178,7 @@ export default function Footer({ menuItems }: any) {
 						</div>
 
 						<div className="flex items-center gap-3 mt-4">
-							<img src="/images/us.png" width="30" height={30} alt="" />
+							<img src="https://img.bestreviewsradar.com/images/f_auto,q_auto/v1732520637/us/us.png" width="30" height={30} loading='lazy' alt="US flag" />
 							<span className="text-[#b6c4d2]">United States</span>
 						</div>
 					</div>
