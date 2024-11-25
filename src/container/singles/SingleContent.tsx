@@ -56,72 +56,98 @@ const parseImageUrl = async (url: string) => {
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
 	const [imageSrc, setImageSrc] = useState<string>("/");
+	const [isVisible, setIsVisible] = useState<boolean>(false);
+	const observerRef = useRef<HTMLDivElement | null>(null);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				if (entry.isIntersecting) {
+					setIsVisible(true);
+				}
+			},
+			{ threshold: 0.1 }
+		);
+
+		if (observerRef.current) {
+			observer.observe(observerRef.current);
+		}
+
+		return () => {
+			if (observerRef.current) {
+				observer.unobserve(observerRef.current);
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		const fetchImageUrl = async () => {
-			if (item?.img) {
+			if (isVisible && item?.img) {
 				const updatedUrl = await parseImageUrl(item.img);
 				setImageSrc(updatedUrl ?? "/");
 			}
 		};
 
 		fetchImageUrl();
-	}, [item?.img]);
+	}, [isVisible, item?.img]);
 
 	return (
-		<Link href={item.url ?? "/"} className='col-span-1 related-prod-child'>
-			<div className='max-h-[94px] h-full m-auto mb-3'>
-				{imageSrc === "/" ? (
-					<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
-				) : (
-					<img
-						loading="lazy"
-						width={94}
-						height={94}
-						className="related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain"
-						src={imageSrc}
-						alt={item?.title || "Related product image"}
-					/>
-				)}
-			</div>
-			<img
-				loading='lazy'
-				className='mx-auto !mb-10 max-w-[50px] md:max-w-[85px]'
-				src="/images/posts/amazon.webp"
-				alt="Amazon logo"
-			/>
-			<div className='block w-fit my-3 mt-1'>
-				<p className='font-bold line-clamp-2 text-base'>{item?.title}</p>
-			</div>
-			<span className='line-clamp-1 block mb-2 text-sm truncate'>
-				{item?.productDatas?.description}
-			</span>
-			<div className='box-price flex flex-wrap items-end gap-4'>
-				{item?.price > 0 && (
-					<span className='font-bold text-base'>
-						${Number(item?.price)?.toFixed(2)}
-					</span>
-				)}
-				<div className='flex items-center gap-4'>
-					{item?.priceOld > 0 && (
-						<span className='text-sm line-through text-[#444] leading-6'>
-							${Number(item?.priceOld)?.toFixed(2)}
-						</span>
-					)}
-					{item?.percentageSaved > 0 && (
-						<span className='text-sm text-red-700'>
-							({item?.percentageSaved}% OFF)
-						</span>
+		<div ref={observerRef} className="col-span-1 related-prod-child">
+			<Link href={item.url ?? "/"}>
+				<div className="max-h-[94px] h-full m-auto mb-3 relative">
+					{imageSrc === "/" ? (
+						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
+					) : (
+						<img
+							loading="lazy"
+							width={94}
+							height={94}
+							className="related-prod-image mx-auto rounded-lg max-w-24 w-full h-full object-contain"
+							src={imageSrc}
+							alt={item?.title || "Related product image"}
+						/>
 					)}
 				</div>
-			</div>
-			<button
-				className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]"
-				aria-label="View Deal"
-			>
-				View Deal
-			</button>
-		</Link>
+				<img
+					loading="lazy"
+					className="mx-auto !mb-10 max-w-[50px] md:max-w-[85px]"
+					src="/images/posts/amazon.webp"
+					alt="Amazon logo"
+				/>
+				<div className="block w-fit my-3 mt-1">
+					<p className="font-bold line-clamp-2 text-base">{item?.title}</p>
+				</div>
+				<span className="line-clamp-1 block mb-2 text-sm truncate">
+					{item?.productDatas?.description}
+				</span>
+				<div className="box-price flex flex-wrap items-end gap-4">
+					{item?.price > 0 && (
+						<span className="font-bold text-base">
+							${Number(item?.price)?.toFixed(2)}
+						</span>
+					)}
+					<div className="flex items-center gap-4">
+						{item?.priceOld > 0 && (
+							<span className="text-sm line-through text-[#444] leading-6">
+								${Number(item?.priceOld)?.toFixed(2)}
+							</span>
+						)}
+						{item?.percentageSaved > 0 && (
+							<span className="text-sm text-red-700">
+								({item?.percentageSaved}% OFF)
+							</span>
+						)}
+					</div>
+				</div>
+				<button
+					className="mt-3 bg-[#ff6b00] hover:bg-[#e06308] transition-all rounded-xl text-center text-sm w-full text-white font-semibold py-3 px-4 min-h-[44px]"
+					aria-label="View Deal"
+				>
+					View Deal
+				</button>
+			</Link>
+		</div>
 	);
 });
 
@@ -159,6 +185,37 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	}
 
 	const post_id = post?.databaseId
+
+	useEffect(() => {
+		const handleLazyLoading = () => {
+			const lazyImages = document.querySelectorAll(".lazy-load-prod");
+	
+			const imageObserver = new IntersectionObserver((entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const img = entry.target as any;
+						const dataSrc = img.getAttribute("data-src");
+	
+						if (dataSrc) {
+							parseImageUrl(dataSrc).then((data: any) => {
+								img.src = data
+								img.onload = () => {
+									img.style.opacity = "1";
+									img.parentElement?.classList.add("loaded");
+								};
+								observer.unobserve(img);
+							})
+						}
+					}
+				});
+			}, {
+				threshold: 0.1
+			});
+	
+			lazyImages.forEach((img) => imageObserver.observe(img));
+		};
+		handleLazyLoading()
+	}, [])
 
 	// Fetch related data
 	useEffect(() => {
