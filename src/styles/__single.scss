@@ -175,19 +175,19 @@
 
 .prod-image-container {
   position: relative;
-  width: 150px; /* Kích thước cố định cho khung ảnh */
-  height: 150px;
-  background: #f0f0f0; /* Màu nền của skeleton */
+  width: 94px;
+  height: 94px;
+  background: #f0f0f0;
   overflow: hidden;
-  border-radius: 8px; /* Bo góc */
+  border-radius: 8px;
 }
 
 .lazy-load {
   opacity: 0;
-  transition: opacity 0.5s ease; /* Hiệu ứng mờ dần khi ảnh tải xong */
+  transition: opacity 0.5s ease;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Đảm bảo ảnh vừa khung */
+  object-fit: cover;
 }
 
 .prod-image-container::after {
@@ -205,7 +205,7 @@
 }
 
 .prod-image-container.loaded::after {
-  display: none; /* Ẩn skeleton khi ảnh tải xong */
+  display: none;
 }
 
 @keyframes skeleton-loading {
