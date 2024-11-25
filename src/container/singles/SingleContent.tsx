@@ -202,6 +202,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								img.onload = () => {
 									img.style.opacity = "1";
 									img.parentElement?.classList.add("loaded");
+									img.parentElement?.classList.remove("prod-image-container")
 								};
 								observer.unobserve(img);
 							})
