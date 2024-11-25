@@ -195,12 +195,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					if (entry.isIntersecting) {
 						const img = entry.target as any;
 						const dataSrc = img.getAttribute("data-src");
-						console.log(dataSrc)
 	
 						if (dataSrc) {
 							parseImageUrl(dataSrc).then((data: any) => {
-								console.log(data)
 								img.src = data
+								img.setAttribute('data-src', data);
 								img.onload = () => {
 									img.style.opacity = "1";
 									img.parentElement?.classList.add("loaded");
