@@ -22,36 +22,24 @@ interface CacheData {
 }
 
 const parseImageUrl = async (url: string) => {
-	const imgDomain = "https://img.bestreviewsradar.com/";
-	const contentDomain = "https://content.bestreviewsradar.com/";
-	const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
+    const imgDomain = "https://img.bestreviewsradar.com/";
+    const contentDomain = "https://content.bestreviewsradar.com/";
+    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
-	if (!url || typeof url !== "string") {
-		console.warn("Invalid URL input:", url);
-		return "/";
-	}
+    if (!url || typeof url !== "string") {
+        return "/";
+    }
 
-	if (url.startsWith(imgDomain)) {
-		return url;
-	}
+    if (url.startsWith(imgDomain)) {
+        return url;
+    }
 
-	if (url.startsWith(contentDomain)) {
-		const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+    if (url.startsWith(contentDomain)) {
+        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+        return url.replace(regex, replacementPath);
+    }
 
-		const updatedUrl = url.replace(regex, replacementPath);
-
-		try {
-			const response = await fetch(updatedUrl, { method: "HEAD" });
-			if (response.ok) {
-				return updatedUrl;
-			}
-		} catch (error) {
-			console.error("Error validating URL:", error);
-			return url;
-		}
-	}
-
-	return url;
+    return url;
 };
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
@@ -197,15 +185,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						const dataSrc = img.getAttribute("data-src");
 	
 						if (dataSrc) {
-							console.log(dataSrc)
 							parseImageUrl(dataSrc).then((data: any) => {
-								console.log(data)
 								img.src = data
 								img.setAttribute('data-src', data);
 								img.onload = () => {
 									img.style.opacity = "1";
 									img.parentElement?.classList.add("loaded");
 									img.parentElement?.classList.remove("prod-image-container")
+								};
+								img.onerror = () => {
+									img.src = dataSrc;
+									img.parentElement?.classList.add("loaded");
+									img.parentElement?.classList.remove("prod-image-container");
 								};
 								observer.unobserve(img);
 							})
