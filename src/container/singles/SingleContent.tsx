@@ -26,26 +26,38 @@ const parseImageUrl = async (url: string) => {
     const contentDomain = "https://content.bestreviewsradar.com/";
     const replacementPath = "https://img.bestreviewsradar.com/image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/";
 
+    if (!url || typeof url !== "string") {
+        console.warn("Invalid URL input:", url);
+        return "/";
+    }
+
     if (url.startsWith(imgDomain)) {
         return url;
     }
 
     if (url.startsWith(contentDomain)) {
         const regex = /\/wp-content\/uploads\/\d{4}\/\d{2}\//;
-        const updatedUrl = url.replace(regex, replacementPath);
+        
+        if (regex.test(url)) {
+            const updatedUrl = url.replace(regex, replacementPath);
 
-        try {
-            const response = await fetch(updatedUrl, { method: 'HEAD' });
-            if (response.ok) {
-                return updatedUrl;
+            try {
+                const response = await fetch(updatedUrl, { method: "HEAD" });
+                if (response.ok) {
+                    return updatedUrl;
+                }
+            } catch (error) {
+                console.error("Error validating URL:", error);
+                return url;
             }
-        } catch (error) {
-			return url;
+        } else {
+            console.warn("URL does not match expected pattern:", url);
         }
     }
 
     return url;
 };
+
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
     const [imageSrc, setImageSrc] = useState<string>("/");
