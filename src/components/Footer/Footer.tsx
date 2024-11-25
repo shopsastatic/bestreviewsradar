@@ -150,7 +150,6 @@ export default function Footer({ menuItems }: any) {
 									width={160}
 									height={160}
 									loading='lazy'
-									priority
 									className="mx-auto"
 								/>
 							</Link>
