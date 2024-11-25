@@ -188,54 +188,54 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const post_id = post?.databaseId
 
-	// useEffect(() => {
-	// 	const handleLazyLoading = () => {
-	// 		const lazyImages = document.querySelectorAll(".lazy-load-prod");
+	useEffect(() => {
+		const handleLazyLoading = () => {
+			const lazyImages = document.querySelectorAll(".lazy-load-prod");
 	
-	// 		const imageObserver = new IntersectionObserver((entries, observer) => {
-	// 			entries.forEach((entry) => {
-	// 				if (entry.isIntersecting) {
-	// 					const img = entry.target as any;
-	// 					const dataSrc = img.getAttribute("data-src");
+			const imageObserver = new IntersectionObserver((entries, observer) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const img = entry.target as any;
+						const dataSrc = img.getAttribute("data-src");
 	
-	// 					if (dataSrc) {
-	// 						parseImageUrl(dataSrc).then((data: any) => {
-	// 							img.src = data
-	// 							img.setAttribute('data-src', data);
-	// 							img.onload = () => {
-	// 								img.style.opacity = "1";
-	// 								img.parentElement?.classList.add("loaded");
-	// 								img.parentElement?.classList.remove("prod-image-container")
-	// 							};
-	// 							img.onerror = () => {
-	// 								if (img.src.includes('c_scale')) {
-	// 									const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
-	// 									img.src = retryUrl;
+						if (dataSrc) {
+							parseImageUrl(dataSrc).then((data: any) => {
+								img.src = data
+								img.setAttribute('data-src', data);
+								img.onload = () => {
+									img.style.opacity = "1";
+									img.parentElement?.classList.add("loaded");
+									img.parentElement?.classList.remove("prod-image-container")
+								};
+								img.onerror = () => {
+									if (img.src.includes('c_scale')) {
+										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+										img.src = retryUrl;
 										
-	// 									img.onerror = () => {
-	// 										img.src = dataSrc;
-	// 										img.parentElement?.classList.add("loaded");
-	// 										img.parentElement?.classList.remove("prod-image-container");
-	// 									};
-	// 								} else {
-	// 									img.src = dataSrc;
-	// 									img.parentElement?.classList.add("loaded");
-	// 									img.parentElement?.classList.remove("prod-image-container");
-	// 								}
-	// 							};
-	// 							observer.unobserve(img);
-	// 						})
-	// 					}
-	// 				}
-	// 			});
-	// 		}, {
-	// 			threshold: 0.1
-	// 		});
+										img.onerror = () => {
+											img.src = dataSrc;
+											img.parentElement?.classList.add("loaded");
+											img.parentElement?.classList.remove("prod-image-container");
+										};
+									} else {
+										img.src = dataSrc;
+										img.parentElement?.classList.add("loaded");
+										img.parentElement?.classList.remove("prod-image-container");
+									}
+								};
+								observer.unobserve(img);
+							})
+						}
+					}
+				});
+			}, {
+				threshold: 0.1
+			});
 	
-	// 		lazyImages.forEach((img) => imageObserver.observe(img));
-	// 	};
-	// 	handleLazyLoading()
-	// }, [])
+			lazyImages.forEach((img) => imageObserver.observe(img));
+		};
+		handleLazyLoading()
+	}, [])
 
 	// Fetch related data
 	useEffect(() => {
