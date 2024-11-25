@@ -197,7 +197,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						const dataSrc = img.getAttribute("data-src");
 	
 						if (dataSrc) {
+							console.log(dataSrc)
 							parseImageUrl(dataSrc).then((data: any) => {
+								console.log(data)
 								img.src = data
 								img.setAttribute('data-src', data);
 								img.onload = () => {
