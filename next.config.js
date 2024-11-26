@@ -35,9 +35,9 @@ const nextConfig = {
   experimental: {
     typedRoutes: false,
     scrollRestoration: true,
-    optimizeCss: false, // Thêm để tối ưu CSS
-    legacyBrowsers: false, // Tắt support cho legacy browsers
-    browsersListForSwc: true, // Sử dụng browserslist config
+    optimizeCss: true, // Thêm để tối ưu CSS
+    // legacyBrowsers: false, // Tắt support cho legacy browsers
+    // browsersListForSwc: true, // Sử dụng browserslist config
   },
 
   // Tối ưu images
