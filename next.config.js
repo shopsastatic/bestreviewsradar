@@ -188,8 +188,8 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 20000,
-          maxSize: 70000,
+          minSize: 100000,
+          maxSize: 120000,
           cacheGroups: {
             framework: {
               name: 'framework',
