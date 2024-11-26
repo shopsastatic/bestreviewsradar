@@ -10,7 +10,8 @@
     "codegen": "graphql-codegen",
     "watch-codegen": "graphql-codegen -w",
     "wc": "graphql-codegen -w",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "analyze": "ANALYZE=true next build"
   },
   "prettier": "@epic-web/config/prettier",
   "dependencies": {
@@ -75,6 +76,7 @@
     "@epic-web/config": "^1.10.0",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
+    "@next/bundle-analyzer": "^15.0.3",
     "@parcel/watcher": "^2.4.1",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.0",

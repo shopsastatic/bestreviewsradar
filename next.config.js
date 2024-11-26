@@ -1,6 +1,8 @@
 const { withFaust, getWpHostname } = require('@faustwp/core')
 const { createSecureHeaders } = require('next-secure-headers')
-const path = require('path')
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
 /**
  * @type {import('next').NextConfig}
@@ -171,17 +173,6 @@ const nextConfig = {
 
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
-      if (process.env.ANALYZE === 'true') {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'server',
-            analyzerPort: 8888,
-            openAnalyzer: true
-          })
-        )
-      }
-
       config.optimization = {
         ...config.optimization,
         moduleIds: 'deterministic',
@@ -227,4 +218,4 @@ const nextConfig = {
   output: 'standalone',
 }
 
-module.exports = withFaust(nextConfig)
+module.exports = withFaust(withBundleAnalyzer(nextConfig))
