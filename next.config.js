@@ -211,17 +211,7 @@ const nextConfig = {
               name: 'commons',
               minChunks: 2,
               priority: 20,
-            },
-            shared: {
-              name(module, chunks) {
-                return crypto
-                  .createHash('sha1')
-                  .update(chunks.map(c => c.name).join('_'))
-                  .digest('hex');
-              },
-              priority: 10,
-              minChunks: 2,
-              reuseExistingChunk: true,
+              reuseExistingChunk: true
             },
           },
         },
