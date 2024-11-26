@@ -118,9 +118,13 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
+        headers: createSecureHeaders({
+          xssProtection: false,
+          frameGuard: [
+            'allow-from',
+            { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
+          ],
+        }),
       },
       {
         source: '/sitemap-0.xml',
