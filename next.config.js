@@ -198,11 +198,6 @@ const nextConfig = {
               test(module) {
                 return module.size() > 160000 && /node_modules[/\\]/.test(module.identifier());
               },
-              name(module) {
-                const hash = crypto.createHash('sha1');
-                hash.update(module.identifier());
-                return hash.digest('hex').substring(0, 8);
-              },
               priority: 30,
               minChunks: 1,
               reuseExistingChunk: true,
