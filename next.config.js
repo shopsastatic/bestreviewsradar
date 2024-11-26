@@ -188,7 +188,7 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 5000,
+          minSize: 20000,
           maxSize: 70000,
           cacheGroups: {
             framework: {
@@ -196,17 +196,10 @@ const nextConfig = {
               test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
               priority: 40,
               enforce: true,
-              reuseExistingChunk: true,
-            },
-            commons: {
-              name: 'commons',
-              minChunks: 2,
-              priority: 20,
-              reuseExistingChunk: true,
             },
             lib: {
               test(module) {
-                return module.size() > 50000 && /node_modules/.test(module.context)
+                return module.size() > 50000
               },
               name(module) {
                 const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
@@ -216,19 +209,14 @@ const nextConfig = {
               minChunks: 1,
               reuseExistingChunk: true,
             },
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss|sass)$/,
-              chunks: 'all',
-              priority: 50,
-              enforce: true,
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 20,
+              reuseExistingChunk: true,
             },
           },
         },
-        minimize: true,
-        minimizer: [
-          '...',
-        ],
       }
     }
 
