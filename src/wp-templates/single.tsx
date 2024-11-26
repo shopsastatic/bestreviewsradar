@@ -16,6 +16,10 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
+  if (props.loading) {
+    return <>Loading...</>;
+  }
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
