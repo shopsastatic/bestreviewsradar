@@ -16,11 +16,7 @@ function customColors(cssVar) {
 }
 
 module.exports = {
-  content: [
-    './pages/**/*.{js,jsx,ts,tsx}',
-    './components/**/*.{js,jsx,ts,tsx}',
-    './src/**/*.{js,jsx,ts,tsx}'
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: "selector",
   safelist: [
     {
