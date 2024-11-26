@@ -35,7 +35,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: false,
     scrollRestoration: true,
-    optimizeCss: true, // Thêm để tối ưu CSS
+    optimizeCss: false, // Thêm để tối ưu CSS
     legacyBrowsers: false, // Tắt support cho legacy browsers
     browsersListForSwc: true, // Sử dụng browserslist config
   },
