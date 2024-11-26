@@ -29,6 +29,9 @@ const nextConfig = {
   experimental: {
     typedRoutes: false,
     scrollRestoration: true,
+    optimizeCss: true,
+    legacyBrowsers: false,
+    browsersListForSwc: true, 
   },
 
   images: {
@@ -116,13 +119,20 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        headers: createSecureHeaders({
-          xssProtection: false,
-          frameGuard: [
-            'allow-from',
-            { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
-          ],
-        }),
+        headers: [
+          ...createSecureHeaders({
+            xssProtection: false,
+            frameGuard: [
+              'allow-from',
+              { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
+            ],
+          }),
+          // Thêm cache control headers
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          },
+        ],
       },
       {
         source: '/sitemap-0.xml',
@@ -178,7 +188,7 @@ const nextConfig = {
         runtimeChunk: 'single',
         splitChunks: {
           chunks: 'all',
-          minSize: 20000,
+          minSize: 5000,
           maxSize: 70000,
           cacheGroups: {
             framework: {
@@ -186,10 +196,17 @@ const nextConfig = {
               test: /[\\/]node_modules[\\/](react|react-dom|next|@next)[\\/]/,
               priority: 40,
               enforce: true,
+              reuseExistingChunk: true,
+            },
+            commons: {
+              name: 'commons',
+              minChunks: 2,
+              priority: 20,
+              reuseExistingChunk: true,
             },
             lib: {
               test(module) {
-                return module.size() > 50000
+                return module.size() > 50000 && /node_modules/.test(module.context)
               },
               name(module) {
                 const name = module.libIdent ? module.libIdent({ context: __dirname }) : ''
@@ -199,14 +216,19 @@ const nextConfig = {
               minChunks: 1,
               reuseExistingChunk: true,
             },
-            commons: {
-              name: 'commons',
-              minChunks: 2,
-              priority: 20,
-              reuseExistingChunk: true,
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss|sass)$/,
+              chunks: 'all',
+              priority: 50,
+              enforce: true,
             },
           },
         },
+        minimize: true,
+        minimizer: [
+          '...',
+        ],
       }
     }
 
