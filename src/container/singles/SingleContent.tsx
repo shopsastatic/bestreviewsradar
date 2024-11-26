@@ -22,38 +22,38 @@ interface CacheData {
 }
 
 const parseImageUrl = async (url: string) => {
-    const imgDomain = "https://img.bestreviewsradar.com/";
-    const contentDomain = "https://content.bestreviewsradar.com/";
-    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
+	const imgDomain = "https://img.bestreviewsradar.com/";
+	const contentDomain = "https://content.bestreviewsradar.com/";
+	const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
-    if (!url || typeof url !== "string") {
-        return "/";
-    }
+	if (!url || typeof url !== "string") {
+		return "/";
+	}
 
-    if (url.startsWith(imgDomain)) {
-        if (url.includes('/images/')) {
-            const [baseUrl, queryParams] = url.split('?');
-            
-            const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
-            if (matches && matches[1]) {
-                const fileName = matches[1];
+	if (url.startsWith(imgDomain)) {
+		if (url.includes('/images/')) {
+			const [baseUrl, queryParams] = url.split('?');
+
+			const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
+			if (matches && matches[1]) {
+				const fileName = matches[1];
 				const extension = url.split('.').pop()?.split('?')[0] || 'jpg';
-                let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
-                if (queryParams) {
-                    newUrl += `?${queryParams}`;
-                }
-                return newUrl;
-            }
-        }
-        return url;
-    }
+				let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
+				if (queryParams) {
+					newUrl += `?${queryParams}`;
+				}
+				return newUrl;
+			}
+		}
+		return url;
+	}
 
-    if (url.startsWith(contentDomain)) {
-        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
-        return url.replace(regex, replacementPath);
-    }
+	if (url.startsWith(contentDomain)) {
+		const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+		return url.replace(regex, replacementPath);
+	}
 
-    return url;
+	return url;
 };
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
@@ -83,15 +83,34 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 		};
 	}, []);
 
-	useEffect(() => {
-		const fetchImageUrl = async () => {
-			if (isVisible && item?.img) {
-				const updatedUrl = await parseImageUrl(item.img);
-				setImageSrc(updatedUrl ?? "/");
-			}
-		};
 
-		fetchImageUrl();
+	useEffect(() => {
+		if (isVisible && item?.img) {
+			const tempImg = new window.Image(200, 200);
+
+			const handleLoad = () => {
+				parseImageUrl(item.img).then(url => {
+					setImageSrc(url ?? "/");
+				});
+			};
+
+			const handleError = () => {
+				if (tempImg.src.includes('c_scale')) {
+					const retryUrl = tempImg.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+					tempImg.src = retryUrl;
+
+					tempImg.onerror = () => {
+						setImageSrc(item.img ?? "/");
+					};
+				} else {
+					setImageSrc(item.img ?? "/");
+				}
+			};
+
+			tempImg.onload = handleLoad;
+			tempImg.onerror = handleError;
+			tempImg.src = item.img;
+		}
 	}, [isVisible, item?.img]);
 
 	return (
@@ -191,13 +210,13 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
 		const handleLazyLoading = () => {
 			const lazyImages = document.querySelectorAll(".lazy-load-prod");
-	
+
 			const imageObserver = new IntersectionObserver((entries, observer) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						const img = entry.target as any;
 						const dataSrc = img.getAttribute("data-src");
-	
+
 						if (dataSrc) {
 							parseImageUrl(dataSrc).then((data: any) => {
 								img.src = data
@@ -211,7 +230,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									if (img.src.includes('c_scale')) {
 										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
 										img.src = retryUrl;
-										
+
 										img.onerror = () => {
 											img.src = dataSrc;
 											img.parentElement?.classList.add("loaded");
@@ -231,7 +250,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			}, {
 				threshold: 0.1
 			});
-	
+
 			lazyImages.forEach((img) => imageObserver.observe(img));
 		};
 		handleLazyLoading()
