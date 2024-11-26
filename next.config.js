@@ -27,8 +27,6 @@ const nextConfig = {
   },
 
   experimental: {
-    optimizeCss: true,
-    modern: true,
     typedRoutes: false,
     scrollRestoration: true,
   },
