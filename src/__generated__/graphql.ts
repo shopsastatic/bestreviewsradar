@@ -11889,6 +11889,8 @@ export type Post = ContentNode & DatabaseIdentifier & MenuItemLinkable & Node & 
   conditionalTags?: Maybe<ConditionalTags>;
   /** The content of the post. */
   content?: Maybe<Scalars['String']['output']>;
+  /** Content Egg data for the post */
+  contentEggData?: Maybe<Scalars['String']['output']>;
   /** Connection between the ContentNode type and the ContentType type */
   contentType?: Maybe<ContentNodeToContentTypeConnectionEdge>;
   /** The name of the Content Type the node belongs to */
