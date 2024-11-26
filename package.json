@@ -18,7 +18,6 @@
     "@faustwp/blocks": "^4.0.0",
     "@faustwp/cli": "^3.0.2",
     "@faustwp/core": "^3.0.1",
-    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@headlessui/react": "^2.0.4",
     "@heroicons/react": "^2.0.18",
     "@reduxjs/toolkit": "^2.2.3",
