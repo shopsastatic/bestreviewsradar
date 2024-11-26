@@ -27,6 +27,8 @@ const nextConfig = {
   },
 
   experimental: {
+    optimizeCss: true,
+    modern: true,
     typedRoutes: false,
     scrollRestoration: true,
   },
@@ -116,13 +118,9 @@ const nextConfig = {
     return [
       {
         source: '/:path*',
-        headers: createSecureHeaders({
-          xssProtection: false,
-          frameGuard: [
-            'allow-from',
-            { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
-          ],
-        }),
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
       },
       {
         source: '/sitemap-0.xml',
