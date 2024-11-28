@@ -212,6 +212,9 @@ const nextConfig = {
         chunkIds: 'deterministic',
         mangleExports: 'deterministic',
         concatenateModules: true,
+        usedExports: true,
+        sideEffects: true,
+        providedExports: true,
 
         splitChunks: {
           chunks: 'all',
