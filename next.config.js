@@ -21,7 +21,7 @@ const nextConfig = {
   optimizeFonts: true,
 
   compiler: {
-    swcMinify: true,
+    // swcMinify: true,
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
