@@ -39,7 +39,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: false,
     scrollRestoration: true,
-    optimizeCss: true,
+    optimizeCss: false,
     browsersListForSwc: true,
   },
 
