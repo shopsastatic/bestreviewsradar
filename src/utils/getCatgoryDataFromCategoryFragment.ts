@@ -23,12 +23,8 @@ export function getCatgoryDataFromCategoryFragment(
   );
 
   let featuredImageMeta: NcmazFcImageFieldsFragment | undefined | null = null;
-  featuredImageMeta = useFragment(
-    NC_IMAGE_MEDIA_FRAGMENT,
-    fullQuery.ncTaxonomyMeta?.featuredImage?.node
-  );
 
-  const data: NcmazFcCategoryFullFieldsFragmentFragment & {
+  const data: any & {
     featuredImageMeta: NcmazFcImageFieldsFragment | null | undefined;
     colorMeta: (string | null)[] | null | undefined;
   } = {
@@ -40,7 +36,6 @@ export function getCatgoryDataFromCategoryFragment(
     count: fullQuery.count || 0,
     ncTaxonomyMeta: fullQuery.ncTaxonomyMeta,
     featuredImageMeta,
-    colorMeta: fullQuery.ncTaxonomyMeta?.color,
   };
 
   return {
