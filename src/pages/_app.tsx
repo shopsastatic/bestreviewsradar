@@ -4,7 +4,7 @@ import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
 import dynamic from 'next/dynamic';
-// import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 // Styles
 import "@/styles/globals.css";
@@ -101,7 +101,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           `}</style>
 
         <main className={`${inter.variable} ${noto_san.variable}`}>
-          {/* <Component {...pageProps} key={router.asPath} /> */}
+          <Component {...pageProps} key={router.asPath} />
 
           {/* Wrap client-side only components */}
           <ClientOnly>
@@ -116,9 +116,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               }}
               containerClassName="text-sm"
             />
-            {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-              )} */}
+            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+            )}
           </ClientOnly>
         </main>
       </SiteWrapperProvider>
