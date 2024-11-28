@@ -4,7 +4,7 @@
   "version": "2.5.0",
   "scripts": {
     "dev": "npm run generate && concurrently \"faust dev\" \"npm run watch-codegen\"",
-    "build": "export NODE_OPTIONS='--max-old-space-size=4096' && faust build",
+    "build": "set export NODE_OPTIONS='--max-old-space-size=4096' && faust build",
     "generate": "faust generatePossibleTypes",
     "start": "faust start",
     "codegen": "graphql-codegen",
@@ -21,6 +21,7 @@
     "@faustwp/core": "^3.0.1",
     "@headlessui/react": "^2.0.4",
     "@heroicons/react": "^2.0.18",
+    "@next/third-parties": "^15.0.3",
     "@reduxjs/toolkit": "^2.2.3",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
