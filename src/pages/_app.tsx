@@ -72,8 +72,56 @@ function ClientOnly({ children }: { children: React.ReactNode }) {
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const faustConfig = {
+    preload: false,
+    caching: true,
+    ttl: 3600
+  };
 
   return (
-    1
+    <FaustProvider pageProps={{
+      ...pageProps,
+      config: faustConfig
+    }}>
+      <SiteWrapperProvider {...pageProps}>
+        <style jsx global>{`
+            :root {
+              --inter-font: ${inter.style.fontFamily};
+              --noto-font: ${noto_san.style.fontFamily};
+            }
+            html {
+              font-family: var(--inter-font);
+            }
+            html, body, .large-width, .prod-child {
+              font-family: var(--inter-font);
+            }
+            .heading-tag-text {
+              font-family: var(--noto-font);
+            }
+          `}</style>
+
+        <main className={`${inter.variable} ${noto_san.variable}`}>
+          <Component {...pageProps} key={router.asPath} />
+
+          {/* Wrap client-side only components */}
+          <ClientOnly>
+            <NextNProgress color="#818cf8" />
+            <Toaster
+              position="bottom-left"
+              toastOptions={{
+                style: {
+                  fontSize: "14px",
+                  borderRadius: "0.75rem",
+                },
+              }}
+              containerClassName="text-sm"
+            />
+            {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+              )} */}
+          </ClientOnly>
+        </main>
+      </SiteWrapperProvider>
+    </FaustProvider>
   );
 }
