@@ -3,6 +3,17 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
+    
+    const normalizedPath = pathname.replace(/\/$/, '')
+    
+    if (normalizedPath === '/reports') {
+        return NextResponse.rewrite(new URL('/404', request.url), {
+            status: 404,
+            headers: {
+                'X-Robots-Tag': 'noindex'
+            }
+        });
+    }
 
     if (pathname.includes('_next') ||
         pathname.includes('api') ||
@@ -31,7 +42,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        // Match tất cả ngoại trừ
         '/((?!api|_next/static|_next/image|favicon.ico|images|public|author|search).*)',
         '/:path*'
     ]

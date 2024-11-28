@@ -2,7 +2,6 @@ import { gql } from "@/__generated__";
 import {
   NcgeneralSettingsFieldsFragmentFragment,
 } from "@/__generated__/graphql";
-import { GET_POSTS_FIRST_COMMON } from "@/contains/contants";
 import React from "react";
 import { useRouter } from "next/router";
 import useHandleGetPostsArchivePage from "@/hooks/useHandleGetPostsArchivePage";
@@ -104,7 +103,7 @@ export async function getStaticPaths() {
 export function getStaticProps(ctx: GetStaticPropsContext) {
   return getNextStaticProps(ctx, {
     Page,
-    revalidate: 900,
+    revalidate: 3600,
   });
 }
 

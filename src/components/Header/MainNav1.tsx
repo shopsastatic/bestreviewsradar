@@ -5,7 +5,6 @@ import Navigation from '@/components/Navigation/Navigation';
 import MenuBar from '@/components/MenuBar/MenuBar';
 import { SearchIconBtn } from './HeaderSearch';
 import Link from 'next/link';
-import { NC_PRIMARY_MENU_QUERY_FRAGMENT } from '@/fragments/menu';
 import { FragmentType } from '@/__generated__';
 
 export interface Category {
@@ -108,7 +107,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
     debounceMs: DEBOUNCE_TIME
   }) as any;
 
-  const categoryResults = results?.categories
+  const categoryResults = results?.categories || results || []
 
   const handleSelect = (category: Category) => {
     router.push(`/${category.slug}`);
@@ -152,7 +151,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description }) => {
             </Link>
             <div className="items-center hidden md:flex">
               <MenuBar menuItems={menuItems} />
-            </div>
+          </div>
             <div ref={searchContainerRef} className="relative ml-10 hidden min-[895px]:block md:min-w-[400px] lg:min-w-[500px] xl:min-w-[700px]">
               <form onSubmit={handleSubmit} className="relative">
                 <input type="search" value={searchValue}
