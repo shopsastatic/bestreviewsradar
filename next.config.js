@@ -218,19 +218,19 @@ const nextConfig = {
           minSize: 20000,
           maxSize: 244000,
           cacheGroups: {
-            // styles: {
-            //   name: 'styles',
-            //   test: /\.(css|scss)$/,
-            //   chunks: 'all',
-            //   enforce: true,
-            // },
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss)$/,
+              chunks: 'all',
+              enforce: true,
+            },
             vendor: {
               test: /[\\/]node_modules[\\/]/,
-              name(module) {
-                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-                return `vendor.${packageName.replace('@', '')}`;
-              },
+              name: 'vendors',
               priority: 20,
+              chunks: 'all',
+              enforce: true,
+              reuseExistingChunk: true,
             },
             framework: {
               chunks: 'all',
