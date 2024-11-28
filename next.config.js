@@ -224,6 +224,14 @@ const nextConfig = {
           maxInitialRequests: 20,
           maxAsyncRequests: 20,
           cacheGroups: {
+            framework: {
+              name: 'framework',
+              test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+              priority: 40,
+              chunks: 'all',
+              maxSize: 40000,
+              enforce: true,
+            },
             styles: {
               name: 'styles',
               test: /\.(css|scss)$/,
