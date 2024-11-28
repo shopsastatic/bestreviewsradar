@@ -215,8 +215,11 @@ const nextConfig = {
 
         splitChunks: {
           chunks: 'all',
-          minSize: 20000,
+          minSize: 40000,
           maxSize: 244000,
+          minChunks: 2,
+          maxInitialRequests: 20,
+          maxAsyncRequests: 20,
           cacheGroups: {
             styles: {
               name: 'styles',
