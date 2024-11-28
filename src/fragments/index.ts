@@ -61,10 +61,10 @@ export const NC_CATEGORY_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 		}
       }
 	  ncTaxonomyMeta {
-		color
 		featuredImage {
 		  node {
-			...NcmazFcImageFields
+			altText
+			sourceUrl
 		  }
 		}
 	  }
@@ -101,7 +101,8 @@ export const GET_POSTS_ON_CATEGORY = gql(/* GraphQL */ `
 		}
 		featuredImage {
 			node {
-				...NcmazFcImageHasDetailFields
+				altText
+				sourceUrl
 			}
 		}
 	}
@@ -162,7 +163,8 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		}
 		featuredImage {
 			node {
-				...NcmazFcImageHasDetailFields
+				altText
+				sourceUrl
 			}
 		}
 	}
@@ -208,7 +210,8 @@ export const NC_POST_CARD_NOT_NCMAZGALLERY_FRAGMENT = gql(/* GraphQL */ `
 		}
 		featuredImage {
 			node {
-				...NcmazFcImageFields
+				altText
+				sourceUrl
 			}
 		}
 	}
@@ -236,7 +239,8 @@ export const NC_POST_CARD_NOT_NCMAZ_MEDIA_FRAGMENT = gql(/* GraphQL */ `
 		}
 		featuredImage {
 			node {
-				...NcmazFcImageFields
+				altText
+				sourceUrl
 			}
 		}
 	}
@@ -289,23 +293,17 @@ export const NC_USER_SHORT_FOR_POST_CARD_FRAGMENT = gql(/* GraphQL */ `
 		username
 		name
 		ncUserMeta {
-			color
-			facebookUrl
-			instagramUrl
-			linkedinUrl
 			ncBio
-			pinterestUrl
-			twitterUrl
-			youtubeUrl
-			tiktokUrl
 			featuredImage {
 				node {
-					...NcmazFcImageFields
+					altText
+					sourceUrl
 				}
 			}
 			backgroundImage {
 				node {
-					...NcmazFcImageFields
+					altText
+                    sourceUrl
 				}
 			}
 		}
@@ -328,23 +326,17 @@ export const NC_USER_FULL_FIELDS_FRAGMENT = gql(/* GraphQL */ `
 			areasOfExpertise
 		}
 		ncUserMeta {
-			color
-			facebookUrl
-			githubUrl
-			linkedinUrl
 			ncBio
-			pinterestUrl
-			twitterUrl
-			youtubeUrl
-			tiktokUrl
 			featuredImage {
 				node {
-					...NcmazFcImageFields
+					altText
+					sourceUrl
 				}
 			}
 			backgroundImage {
 				node {
-					...NcmazFcImageFields
+					altText
+					sourceUrl
 				}
 			}
 		}
