@@ -154,7 +154,7 @@ const nextConfig = {
             value: 'no-store, private, no-cache, must-revalidate'
           }
         ]
-      }
+      },
       {
         source: '/sitemap-0.xml',
         headers: [
