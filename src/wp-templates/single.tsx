@@ -8,9 +8,7 @@ import { getPostDataFromPostFragment } from "@/utils/getPostDataFromPostFragment
 import PageLayout from "@/container/PageLayout";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { useRouter } from "next/router";
-import SingleHeader from "@/container/singles/SingleHeader";
 import { useEffect, useState } from "react";
-import SingleContent from "@/container/singles/SingleContent";
 
 const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   const router = useRouter();
@@ -64,14 +62,6 @@ Component.variables = ({ databaseId }, ctx) => {
 
 Component.query = gql(`
   query GetPostSiglePage($databaseId: ID!,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
-    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
-    ...NcmazFcPostFullFields
-    }
-    categories(first:10, where: { orderby: COUNT, order: DESC }) {
-      nodes {
-        ...NcmazFcCategoryFullFieldsFragment
-      }
-    }
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
     }
