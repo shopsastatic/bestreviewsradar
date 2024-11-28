@@ -218,19 +218,18 @@ const nextConfig = {
 
         splitChunks: {
           chunks: 'all',
+          minSize: 40000,
+          maxSize: 244000,
+          minChunks: 2,
           maxInitialRequests: 10,
           maxAsyncRequests: 15,
-          minSize: 40000,
-          maxSize: 150000,
-          minChunks: 2,
           cacheGroups: {
             framework: {
               name: 'framework',
               test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
               priority: 40,
               chunks: 'all',
-              maxSize: 20000,
-              maxSize: 50000,
+              maxSize: 40000,
               enforce: true,
             },
             styles: {
