@@ -218,12 +218,12 @@ const nextConfig = {
           minSize: 20000,
           maxSize: 244000,
           cacheGroups: {
-            styles: {
-              name: 'styles',
-              test: /\.(css|scss)$/,
-              chunks: 'all',
-              enforce: true,
-            },
+            // styles: {
+            //   name: 'styles',
+            //   test: /\.(css|scss)$/,
+            //   chunks: 'all',
+            //   enforce: true,
+            // },
             vendor: {
               test: /[\\/]node_modules[\\/]/,
               name(module) {
