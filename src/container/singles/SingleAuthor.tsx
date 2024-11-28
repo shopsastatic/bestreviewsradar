@@ -1,8 +1,6 @@
 import { FragmentType } from "@/__generated__";
 import { NcmazFcUserFullFieldsFragment } from "@/__generated__/graphql";
-import Avatar from "@/components/Avatar/Avatar";
 import { NC_USER_FULL_FIELDS_FRAGMENT } from "@/fragments";
-import { getImageDataFromImageFragment } from "@/utils/getImageDataFromImageFragment";
 import getTrans from "@/utils/getTrans";
 import { getUserDataFromUserCardFragment } from "@/utils/getUserDataFromUserCardFragment";
 import Link from "next/link";
@@ -23,16 +21,6 @@ const SingleAuthor: FC<SingleAuthorProps> = ({ author: authorProp }) => {
   return (
     <div className="nc-SingleAuthor flex">
       <Link href={author?.uri || ""}>
-        <Avatar
-          imgUrl={
-            getImageDataFromImageFragment(
-              author?.ncUserMeta?.featuredImage?.node
-            ).sourceUrl
-          }
-          userName={author?.name || "T"}
-          sizeClass="h-12 w-12 text-lg sm:text-xl md:h-24 sm:w-24"
-          radius="rounded-2xl sm:rounded-3xl"
-        />
       </Link>
       <div className="flex flex-col ms-3 max-w-lg sm:ms-5">
         <span className="text-xs text-neutral-400 uppercase tracking-wider">

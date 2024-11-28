@@ -57,15 +57,6 @@ export default function AvatarDropdown({ className = '' }: Props) {
 		}
 		return (
 			<Link href={viewer.uri || ''} className="flex items-center">
-				<Avatar
-					imgUrl={
-						getImageDataFromImageFragment(
-							viewer?.ncUserMeta?.featuredImage?.node,
-						).sourceUrl || ''
-					}
-					userName={viewer?.name || ''}
-					sizeClass="w-12 h-12"
-				/>
 
 				<div className="ms-3 flex-grow">
 					<h4 className="font-semibold capitalize">{viewer?.name}</h4>

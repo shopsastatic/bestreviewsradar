@@ -81,10 +81,6 @@ const AuthorPostsChild: FaustPage<any> = props => {
 			<PageLayout
 				headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
 				footerMenuItems={props.data?.footerMenuItems?.nodes || []}
-				pageFeaturedImageUrl={
-					getImageDataFromImageFragment(ncUserMeta?.featuredImage?.node)
-						?.sourceUrl || null
-				}
 				pageTitle={name}
 				generalSettings={
 					props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
@@ -98,11 +94,6 @@ const AuthorPostsChild: FaustPage<any> = props => {
 								{/* Author Info */}
 								<div className="space-y-6">
 									<div className="flex items-center gap-6">
-										<img
-											src={user?.ncUserMeta?.featuredImage?.node?.sourceUrl}
-											alt={user?.name}
-											className="w-24 h-24 rounded-full object-cover"
-										/>
 										<div>
 											<h1 className="text-3xl font-bold mb-2">{user?.name}</h1>
 											<p className="text-gray-300">{user?.ncUserMeta?.ncBio}</p>

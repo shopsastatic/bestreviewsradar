@@ -17,15 +17,7 @@ export function getUserDataFromUserCardFragment(
   );
 
   let featuredImageMeta: NcmazFcImageFieldsFragment | undefined | null = null;
-  featuredImageMeta = useFragment(
-    NC_IMAGE_MEDIA_FRAGMENT,
-    query.ncUserMeta?.featuredImage?.node
-  );
   let bgImageMeta: NcmazFcImageFieldsFragment | undefined | null = null;
-  bgImageMeta = useFragment(
-    NC_IMAGE_MEDIA_FRAGMENT,
-    query.ncUserMeta?.backgroundImage?.node
-  );
 
   return {
     ...query,

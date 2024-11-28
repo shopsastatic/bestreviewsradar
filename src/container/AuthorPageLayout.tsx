@@ -221,10 +221,6 @@ const AuthorLayout: FC<Props> = ({ className = "", children, user }) => {
           <div className="relative bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 p-5 lg:p-8 rounded-3xl md:rounded-[40px] shadow-xl flex flex-col md:flex-row gap-2 sm:gap-5 md:gap-8 lg:gap-10 xl:gap-12">
             <Avatar
               userName={name || "t"}
-              imgUrl={
-                getImageDataFromImageFragment(ncUserMeta?.featuredImage?.node)
-                  .sourceUrl
-              }
               sizeClass="w-20 h-20 text-xl sm:text-3xl lg:text-4xl lg:w-36 lg:h-36 ring-4 ring-white dark:ring-0 shadow-2xl z-0"
               priority
               sizes="150px"
