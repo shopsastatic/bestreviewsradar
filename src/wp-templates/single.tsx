@@ -8,7 +8,9 @@ import { getPostDataFromPostFragment } from "@/utils/getPostDataFromPostFragment
 import PageLayout from "@/container/PageLayout";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import { useRouter } from "next/router";
+import SingleHeader from "@/container/singles/SingleHeader";
 import { useEffect, useState } from "react";
+import SingleContent from "@/container/singles/SingleContent";
 
 const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   const router = useRouter();
@@ -45,7 +47,8 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        1
+        <SingleHeader post={_post} />
+        <SingleContent post={_post} />
       </PageLayout>
     </>
   );
