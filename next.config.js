@@ -19,11 +19,18 @@ const nextConfig = {
   compress: true,
   productionBrowserSourceMaps: false,
   optimizeFonts: true,
+  optimizeServerReact: true,
 
   compiler: {
     swcMinify: true,
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
+    styledComponents: true,
+    emotion: true,
+    relay: {
+      src: './src',
+      artifactDirectory: './__generated__',
+    }
   },
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,
@@ -34,7 +41,7 @@ const nextConfig = {
     typedRoutes: false,
     scrollRestoration: true,
     optimizeCss: true,
-    browsersListForSwc: true, 
+    browsersListForSwc: true,
   },
 
   images: {
@@ -138,6 +145,15 @@ const nextConfig = {
         ],
       },
       {
+        source: '/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
         source: '/_next/static/:path*',
         headers: [
           {
@@ -189,23 +205,20 @@ const nextConfig = {
       }
     ]
   },
-
   webpack: (config, { dev, isServer }) => {
     if (!dev && !isServer) {
       config.optimization = {
         ...config.optimization,
         moduleIds: 'deterministic',
-        runtimeChunk: 'single',
+        chunkIds: 'deterministic',
+        mangleExports: 'deterministic',
+        concatenateModules: true,
+
         splitChunks: {
           chunks: 'all',
           minSize: 20000,
           maxSize: 244000,
-          minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
           cacheGroups: {
-            default: false,
-            vendors: false,
             // styles: {
             //   name: 'styles',
             //   test: /\.(css|scss)$/,
@@ -241,21 +254,22 @@ const nextConfig = {
               priority: 20,
               reuseExistingChunk: true
             },
-          },
-        },
-        usedExports: true
-      },
+          }
+        }
+      }
       config.plugins.push(
         new CompressionPlugin({
           test: /\.(js|css|html|svg)$/,
-          algorithm: 'gzip'
+          algorithm: 'gzip',
+          // Thêm các options sau
+          threshold: 10240, // Only compress files > 10kb
+          minRatio: 0.8, // Only compress if compression ratio is better than 0.8
+          compressionOptions: { level: 9 }, // Maximum compression
         })
       )
     }
-
     return config
   },
-
   distDir: '.next',
   output: 'standalone',
 }
