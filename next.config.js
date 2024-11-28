@@ -40,6 +40,7 @@ const nextConfig = {
     typedRoutes: false,
     scrollRestoration: true,
     optimizeCss: true,
+    optimizePackageImports: ['@faustwp/core', '@faustwp/blocks'],
     browsersListForSwc: true,
   },
 
@@ -274,10 +275,9 @@ const nextConfig = {
         new CompressionPlugin({
           test: /\.(js|css|html|svg)$/,
           algorithm: 'gzip',
-          // Thêm các options sau
-          threshold: 10240, // Only compress files > 10kb
-          minRatio: 0.8, // Only compress if compression ratio is better than 0.8
-          compressionOptions: { level: 9 }, // Maximum compression
+          threshold: 10240,
+          minRatio: 0.8,
+          compressionOptions: { level: 9 },
         })
       )
     }

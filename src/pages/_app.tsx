@@ -1,5 +1,5 @@
 import "../../faust.config";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
@@ -23,23 +23,26 @@ const inter = Inter({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--inter-font",
-  display: 'swap',
+  display: 'optional',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true
 });
 
 const noto_san = Noto_Sans({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--noto-font",
-  display: 'swap',
+  display: 'optional',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true
 });
 
 // Dynamic imports with ssr: false to avoid hydration issues
 const SiteWrapperProvider = dynamic(() => import("@/container/SiteWrapperProvider"), {
-  ssr: true
+  ssr: true,
+  loading: () => <div className="min-h-screen" />
 });
 
 const Toaster = dynamic(() => import("react-hot-toast").then(mod => mod.Toaster), {
@@ -57,21 +60,23 @@ const wpBlocksConfig = {
 };
 
 function ClientOnly({ children }: { children: React.ReactNode }) {
-  const [hasMounted, setHasMounted] = useState(false);
-
+  const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
-    setHasMounted(true);
+    setMounted(true);
+    return () => setMounted(false);
   }, []);
-
-  if (!hasMounted) {
-    return null;
-  }
-
-  return <>{children}</>;
+  
+  return mounted ? <>{children}</> : null;
 }
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+  const path = router.asPath;
+
+  const memoizedComponent = useMemo(() => (
+    <Component {...pageProps} />
+  ), [path, pageProps]);
 
   return (
     <FaustProvider pageProps={pageProps}>
@@ -86,14 +91,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               font-family: var(--inter-font);
             }
             html, body, .large-width, .prod-child {
-              font-family: var(--inter-font);
+              font-family: var(---font);
             }
             .heading-tag-text {
-              font-family: var(--noto-font);
+              font-family: var(--noto-finteront);
             }
           `}</style>
 
           <main className={`${inter.variable} ${noto_san.variable}`}>
+            {memoizedComponent}
             <Component {...pageProps} key={router.asPath} />
 
             {/* Wrap client-side only components */}
@@ -109,7 +115,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 }}
                 containerClassName="text-sm"
               />
-              {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+               {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
                 <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
               )} */}
             </ClientOnly>
