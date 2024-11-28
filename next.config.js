@@ -21,7 +21,7 @@ const nextConfig = {
   optimizeFonts: true,
 
   compiler: {
-    // swcMinify: true,
+    swcMinify: true,
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
@@ -244,13 +244,13 @@ const nextConfig = {
           },
         },
         usedExports: true
-      }
-      // config.plugins.push(
-      //   new CompressionPlugin({
-      //     test: /\.(js|css|html|svg)$/,
-      //     algorithm: 'gzip'
-      //   })
-      // )
+      },
+      config.plugins.push(
+        new CompressionPlugin({
+          test: /\.(js|css|html|svg)$/,
+          algorithm: 'gzip'
+        })
+      )
     }
 
     return config
