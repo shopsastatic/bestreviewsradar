@@ -26,7 +26,6 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
     styledComponents: true,
-    // emotion: true,
     relay: {
       src: './src',
       artifactDirectory: './__generated__',
@@ -219,20 +218,20 @@ const nextConfig = {
           minSize: 20000,
           maxSize: 244000,
           cacheGroups: {
-            // styles: {
-            //   name: 'styles',
-            //   test: /\.(css|scss)$/,
-            //   chunks: 'all',
-            //   enforce: true,
-            // },
-            // vendor: {
-            //   test: /[\\/]node_modules[\\/]/,
-            //   name(module) {
-            //     const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            //     return `vendor.${packageName.replace('@', '')}`;
-            //   },
-            //   priority: 20,
-            // },
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss)$/,
+              chunks: 'all',
+              enforce: true,
+            },
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module) {
+                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                return `vendor.${packageName.replace('@', '')}`;
+              },
+              priority: 20,
+            },
             framework: {
               chunks: 'all',
               name: 'framework',
