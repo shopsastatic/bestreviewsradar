@@ -1,10 +1,10 @@
 import "../../faust.config";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
 import dynamic from 'next/dynamic';
-// import { GoogleAnalytics } from '@next/third-parties/google'
+// import { GoogleAnalytics } from "nextjs-google-analytics";
 
 // Styles
 import "@/styles/globals.css";
@@ -23,26 +23,23 @@ const inter = Inter({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--inter-font",
-  display: 'optional',
+  display: 'swap',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
-  adjustFontFallback: true
 });
 
 const noto_san = Noto_Sans({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
-  variable: "--noto-font",
-  display: 'optional',
+  variable: "--noto-font", 
+  display: 'swap',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
-  adjustFontFallback: true
 });
 
 // Dynamic imports with ssr: false to avoid hydration issues
 const SiteWrapperProvider = dynamic(() => import("@/container/SiteWrapperProvider"), {
-  ssr: true,
-  loading: () => <div className="min-h-screen" />
+  ssr: true
 });
 
 const Toaster = dynamic(() => import("react-hot-toast").then(mod => mod.Toaster), {
@@ -60,23 +57,21 @@ const wpBlocksConfig = {
 };
 
 function ClientOnly({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  
+  const [hasMounted, setHasMounted] = useState(false);
+
   useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
+    setHasMounted(true);
   }, []);
-  
-  return mounted ? <>{children}</> : null;
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  return <>{children}</>;
 }
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const path = router.asPath;
-
-  const memoizedComponent = useMemo(() => (
-    <Component {...pageProps} />
-  ), [path, pageProps]);
 
   return (
     <FaustProvider pageProps={pageProps}>
@@ -91,17 +86,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               font-family: var(--inter-font);
             }
             html, body, .large-width, .prod-child {
-              font-family: var(---font);
+              font-family: var(--inter-font);
             }
             .heading-tag-text {
-              font-family: var(--noto-finteront);
+              font-family: var(--noto-font);
             }
           `}</style>
 
           <main className={`${inter.variable} ${noto_san.variable}`}>
-            {memoizedComponent}
             <Component {...pageProps} key={router.asPath} />
-
+            
             {/* Wrap client-side only components */}
             <ClientOnly>
               <NextNProgress color="#818cf8" />
@@ -115,9 +109,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 }}
                 containerClassName="text-sm"
               />
-               {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-                <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-              )} */}
+              {/* <GoogleAnalytics gaMeasurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} /> */}
             </ClientOnly>
           </main>
         </SiteWrapperProvider>
