@@ -62,6 +62,14 @@ Component.variables = ({ databaseId }, ctx) => {
 
 Component.query = gql(`
   query GetPostSiglePage($databaseId: ID!,$asPreview: Boolean = false, $headerLocation: MenuLocationEnum!, $footerLocation: MenuLocationEnum!) {
+    post(id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
+    ...NcmazFcPostFullFields
+    }
+    categories(first:10, where: { orderby: COUNT, order: DESC }) {
+      nodes {
+        ...NcmazFcCategoryFullFieldsFragment
+      }
+    }
     generalSettings {
       ...NcgeneralSettingsFieldsFragment
     }
