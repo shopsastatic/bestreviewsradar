@@ -26,7 +26,7 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
     styledComponents: true,
-    emotion: true,
+    // emotion: true,
     relay: {
       src: './src',
       artifactDirectory: './__generated__',
