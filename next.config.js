@@ -1,5 +1,6 @@
 const { withFaust, getWpHostname } = require('@faustwp/core')
 const { createSecureHeaders } = require('next-secure-headers')
+const CompressionPlugin = require('compression-webpack-plugin')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -20,6 +21,7 @@ const nextConfig = {
   optimizeFonts: true,
 
   compiler: {
+    swcMinify: true,
     removeConsole: process.env.NODE_ENV === 'production',
     reactRemoveProperties: process.env.NODE_ENV === 'production' ? { properties: ['^data-testid$', '^data-test$'] } : false,
   },
@@ -32,7 +34,6 @@ const nextConfig = {
     typedRoutes: false,
     scrollRestoration: true,
     optimizeCss: true,
-    legacyBrowsers: false,
     browsersListForSwc: true, 
   },
 
@@ -137,6 +138,24 @@ const nextConfig = {
         ],
       },
       {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, private, no-cache, must-revalidate'
+          }
+        ]
+      }
+      {
         source: '/sitemap-0.xml',
         headers: [
           {
@@ -187,6 +206,20 @@ const nextConfig = {
           cacheGroups: {
             default: false,
             vendors: false,
+            styles: {
+              name: 'styles',
+              test: /\.(css|scss)$/,
+              chunks: 'all',
+              enforce: true,
+            },
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module) {
+                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                return `vendor.${packageName.replace('@', '')}`;
+              },
+              priority: 20,
+            },
             framework: {
               chunks: 'all',
               name: 'framework',
@@ -210,7 +243,14 @@ const nextConfig = {
             },
           },
         },
-      }
+        usedExports: true
+      },
+      config.plugins.push(
+        new CompressionPlugin({
+          test: /\.(js|css|html|svg)$/,
+          algorithm: 'gzip'
+        })
+      )
     }
 
     return config
