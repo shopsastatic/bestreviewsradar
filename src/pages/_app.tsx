@@ -97,48 +97,29 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <FaustProvider pageProps={{
-      ...pageProps,
-      config: faustConfig
-    }}>
-      <SiteWrapperProvider {...pageProps}>
-        <style jsx global>{`
-            :root {
-              --inter-font: ${inter.style.fontFamily};
-              --noto-font: ${noto_san.style.fontFamily};
-            }
-            html {
-              font-family: var(--inter-font);
-            }
-            html, body, .large-width, .prod-child {
-              font-family: var(--inter-font);
-            }
-            .heading-tag-text {
-              font-family: var(--noto-font);
-            }
-          `}</style>
+    <FaustProvider pageProps={{...pageProps, config: faustConfig}}>
+    <SiteWrapperProvider {...pageProps}>
+      {/* Main content */}
+      <main className={`${inter.variable} ${noto_san.variable}`}>
+        <Component {...pageProps} key={router.asPath} />
+      </main>
 
-        <main className={`${inter.variable} ${noto_san.variable}`}>
-          <Component {...pageProps} key={router.asPath} />
-
-
-          {/* Wrap client-side only components */}
-          <ClientOnly>
-            <NextNProgress color="#818cf8" />
-            <Toaster
-              position="bottom-left"
-              toastOptions={{
-                style: {
-                  fontSize: "14px",
-                  borderRadius: "0.75rem",
-                },
-              }}
-              containerClassName="text-sm"
-            />
-            <DeferredAnalytics />
-          </ClientOnly>
-        </main>
-      </SiteWrapperProvider>
-    </FaustProvider>
+      {/* Third-party scripts loaded after main content */}
+      <ClientOnly>
+        <ThirdParty />
+        <NextNProgress color="#818cf8" />
+        <Toaster
+          position="bottom-left"
+          toastOptions={{
+            style: {
+              fontSize: "14px",
+              borderRadius: "0.75rem",
+            },
+          }}
+          containerClassName="text-sm"
+        />
+      </ClientOnly>
+    </SiteWrapperProvider>
+  </FaustProvider>
   );
 }
