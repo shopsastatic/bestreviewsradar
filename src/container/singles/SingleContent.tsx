@@ -576,14 +576,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		<>
 			<div className='container'>
 				{renderAlert()}
-				{/* <div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div> */}
+				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 				<ScrollTop />
 				{router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
 				)}
 			</div>
 
-			{/* {headings && headings?.length > 0 && (
+			{headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -669,7 +669,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)} */}
+			)}
 
 			<div className="!my-0" ref={endedAnchorRef} />
 		</>
