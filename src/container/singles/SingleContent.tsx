@@ -276,7 +276,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		dataRelatedArray = Object.values(dataRelated?.Amazon)
 	}
 
-	const amzShortcode = amazonShortcode as any
+	// const amzShortcode = amazonShortcode as any
 
 	// Handle click outside
 	const handleClickOutside = (event: MouseEvent) => {
@@ -576,7 +576,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		<>
 			<div className='container'>
 				{renderAlert()}
-				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
+				{/* <div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div> */}
 				<ScrollTop />
 				{router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
