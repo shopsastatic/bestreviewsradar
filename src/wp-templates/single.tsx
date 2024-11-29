@@ -36,7 +36,21 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
 
   return (
     <>
-      1
+      <PageLayout
+        headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
+        footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        pageFeaturedImageUrl={featuredImage?.sourceUrl}
+        pageTitle={seo?.title || title}
+        pageDescription={seo?.metaDesc || excerpt.replace(/<[^>]+>/g, '') || ""}
+        metaRobots={seo?.metaRobotsNoindex}
+        generalSettings={
+          props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
+        }
+      >
+        {/* <SingleHeader post={_post} />
+        <SingleContent post={_post} /> */}
+        1
+      </PageLayout>
     </>
   );
 };
