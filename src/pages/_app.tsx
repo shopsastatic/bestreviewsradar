@@ -17,6 +17,7 @@ import type { AppProps } from "next/app";
 import { WordPressBlocksProvider, fromThemeJson } from "@faustwp/blocks";
 import blocks from "@/wp-blocks";
 import themeJson from "../../theme.json";
+import { ThirdPartyScripts } from "@/components/ThirdPartyScripts";
 
 // Font configurations
 const inter = Inter({
@@ -106,7 +107,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
       {/* Third-party scripts loaded after main content */}
       <ClientOnly>
-        <ThirdParty />
+        <ThirdPartyScripts />
         <NextNProgress color="#818cf8" />
         <Toaster
           position="bottom-left"
