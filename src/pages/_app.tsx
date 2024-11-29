@@ -101,8 +101,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           `}</style>
 
         <main className={`${inter.variable} ${noto_san.variable}`}>
-          {/* <Component {...pageProps} key={router.asPath} /> */}
-          1
+          <Component {...pageProps} key={router.asPath} />
+
 
           {/* Wrap client-side only components */}
           <ClientOnly>
