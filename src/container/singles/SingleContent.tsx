@@ -584,7 +584,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 			</div>
 
-			{/* {headings && headings?.length > 0 && (
+			{headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && dataRelatedArray.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -645,7 +645,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					)}
 
 					<div className='col-span-8' ref={cRef}>
-						{dataRelatedArray.length > 0 && (
+						{/* {dataRelatedArray.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
@@ -659,7 +659,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									</div>
 								</div>
 							</>
-						)}
+						)} */}
 
 						{hydratedContent && (
 							<div
@@ -670,7 +670,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)} */}
+			)}
 
 			<div className="!my-0" ref={endedAnchorRef} />
 		</>
