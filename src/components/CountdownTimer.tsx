@@ -1,76 +1,98 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
+
+interface TimeState {
+    hours: number;
+    minutes: number;
+    seconds: number;
+}
+
+const INITIAL_TIME: TimeState = {
+    hours: 9,
+    minutes: 3,
+    seconds: 14
+};
+
+// Component hiển thị số đếm
+const TimeDigit = memo(({ value }: { value: number }) => (
+    <div className="flex space-x-1">
+        <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
+            {Math.floor(value / 10)}
+        </div>
+        <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
+            {value % 10}
+        </div>
+    </div>
+));
+
+TimeDigit.displayName = 'TimeDigit';
 
 const CountdownTimer = () => {
-    const initialTime = {
-        hours: 9,
-        minutes: 3,
-        seconds: 14
-    };
+    const getInitialTimeState = useCallback((): TimeState => {
+        try {
+            if (typeof window === 'undefined') return INITIAL_TIME;
 
-    const getInitialTimeState = () => {
-        const savedTime = localStorage.getItem('countdownTime');
-        const savedTimestamp = localStorage.getItem('countdownTimestamp');
-        
-        if (savedTime && savedTimestamp) {
-            const parsedTime = JSON.parse(savedTime);
+            const savedTime = localStorage.getItem('countdownTime');
+            const savedTimestamp = localStorage.getItem('countdownTimestamp');
+
+            if (!savedTime || !savedTimestamp) return INITIAL_TIME;
+
+            const parsedTime = JSON.parse(savedTime) as TimeState;
             const elapsedSeconds = Math.floor((Date.now() - parseInt(savedTimestamp)) / 1000);
-            
             const totalSeconds = parsedTime.hours * 3600 + parsedTime.minutes * 60 + parsedTime.seconds - elapsedSeconds;
-            
-            if (totalSeconds <= 0) {
-                return initialTime;
-            }
-            
+
+            if (totalSeconds <= 0) return INITIAL_TIME;
+
             return {
                 hours: Math.floor(totalSeconds / 3600),
                 minutes: Math.floor((totalSeconds % 3600) / 60),
                 seconds: totalSeconds % 60
             };
+        } catch (error) {
+            console.error('Error loading saved time:', error);
+            return INITIAL_TIME;
         }
-        
-        return initialTime;
-    };
+    }, []);
 
-    const [time, setTime] = useState(getInitialTimeState);
+    const [time, setTime] = useState<TimeState>(getInitialTimeState);
 
+    // Lưu thời gian vào localStorage
+    const saveTimeToStorage = useCallback((currentTime: TimeState) => {
+        try {
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('countdownTime', JSON.stringify(currentTime));
+                localStorage.setItem('countdownTimestamp', Date.now().toString());
+            }
+        } catch (error) {
+            console.error('Error saving time:', error);
+        }
+    }, []);
+
+    // Xử lý countdown
     useEffect(() => {
-        const saveTimeToStorage = () => {
-            localStorage.setItem('countdownTime', JSON.stringify(time));
-            localStorage.setItem('countdownTimestamp', Date.now().toString());
-        };
-
-        saveTimeToStorage();
-
-        const timer = setInterval(() => {
+        const updateTime = () => {
             setTime(prev => {
                 const totalSeconds = prev.hours * 3600 + prev.minutes * 60 + prev.seconds;
-                
-                if (totalSeconds <= 1) {
-                    return initialTime;
-                }
-                
-                if (prev.seconds > 0) {
-                    return { ...prev, seconds: prev.seconds - 1 };
-                } else if (prev.minutes > 0) {
-                    return {
-                        ...prev,
-                        minutes: prev.minutes - 1,
-                        seconds: 59
-                    };
-                } else if (prev.hours > 0) {
-                    return {
-                        hours: prev.hours - 1,
-                        minutes: 59,
-                        seconds: 59
-                    };
-                }
-                
-                return prev;
-            });
-        }, 1000);
 
+                if (totalSeconds <= 1) {
+                    const newTime = { ...INITIAL_TIME };
+                    saveTimeToStorage(newTime);
+                    return newTime;
+                }
+
+                const newTime = {
+                    hours: Math.floor((totalSeconds - 1) / 3600),
+                    minutes: Math.floor(((totalSeconds - 1) % 3600) / 60),
+                    seconds: (totalSeconds - 1) % 60
+                };
+
+                saveTimeToStorage(newTime);
+                return newTime;
+            });
+        };
+
+        const timer = setInterval(updateTime, 1000);
         return () => clearInterval(timer);
-    }, []);
+    }, [saveTimeToStorage]);
 
     return (
         <div className="flex flex-col items-center justify-center">
@@ -78,14 +100,7 @@ const CountdownTimer = () => {
                 <div className="flex items-start space-x-1 mt-2">
                     {/* Hours */}
                     <div className="flex flex-col items-center">
-                        <div className="flex space-x-1">
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {Math.floor(time.hours / 10)}
-                            </div>
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {time.hours % 10}
-                            </div>
-                        </div>
+                        <TimeDigit value={time.hours} />
                         <span className="text-gray-500 text-xs mt-1">Hours</span>
                     </div>
 
@@ -93,14 +108,7 @@ const CountdownTimer = () => {
 
                     {/* Minutes */}
                     <div className="flex flex-col items-center">
-                        <div className="flex space-x-1">
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {Math.floor(time.minutes / 10)}
-                            </div>
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {time.minutes % 10}
-                            </div>
-                        </div>
+                        <TimeDigit value={time.minutes} />
                         <span className="text-gray-500 text-xs mt-1">Min</span>
                     </div>
 
@@ -108,14 +116,7 @@ const CountdownTimer = () => {
 
                     {/* Seconds */}
                     <div className="flex flex-col items-center">
-                        <div className="flex space-x-1">
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {Math.floor(time.seconds / 10)}
-                            </div>
-                            <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-                                {time.seconds % 10}
-                            </div>
-                        </div>
+                        <TimeDigit value={time.seconds} />
                         <span className="text-gray-500 text-xs mt-1">Sec</span>
                     </div>
                 </div>

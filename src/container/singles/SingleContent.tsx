@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useEffect, useRef, useState, memo, useMemo } from 'react'
+import { FC, useEffect, useRef, useState, memo } from 'react'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
 import Alert from '@/components/Alert'
 import Link from 'next/link'
@@ -10,7 +10,6 @@ import Image from 'next/image'
 import debounce from 'lodash/debounce'
 import SinglePopup from '@/components/SinglePopup'
 import { useRouter } from 'next/router'
-import { useInView } from 'react-intersection-observer';
 
 // Types
 export interface SingleContentProps {
@@ -23,38 +22,38 @@ interface CacheData {
 }
 
 const parseImageUrl = async (url: string) => {
-	const imgDomain = "https://img.bestreviewsradar.com/";
-	const contentDomain = "https://content.bestreviewsradar.com/";
-	const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
+    const imgDomain = "https://img.bestreviewsradar.com/";
+    const contentDomain = "https://content.bestreviewsradar.com/";
+    const replacementPath = `${imgDomain}image/upload/c_scale,w_160,h_160,dpr_1.25/f_auto,q_auto/`;
 
-	if (!url || typeof url !== "string") {
-		return "/";
-	}
+    if (!url || typeof url !== "string") {
+        return "/";
+    }
 
-	if (url.startsWith(imgDomain)) {
-		if (url.includes('/images/')) {
-			const [baseUrl, queryParams] = url.split('?');
-
-			const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
-			if (matches && matches[1]) {
-				const fileName = matches[1];
+    if (url.startsWith(imgDomain)) {
+        if (url.includes('/images/')) {
+            const [baseUrl, queryParams] = url.split('?');
+            
+            const matches = baseUrl.match(/\/([^\/]+?)(?:_[a-f0-9]+)?\.(?:jpg|jpeg|png|gif)$/i);
+            if (matches && matches[1]) {
+                const fileName = matches[1];
 				const extension = url.split('.').pop()?.split('?')[0] || 'jpg';
-				let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
-				if (queryParams) {
-					newUrl += `?${queryParams}`;
-				}
-				return newUrl;
-			}
-		}
-		return url;
-	}
+                let newUrl = `${imgDomain}image/upload/c_scale,w_160,h_160/f_auto,q_auto/${fileName}.${extension}`;
+                if (queryParams) {
+                    newUrl += `?${queryParams}`;
+                }
+                return newUrl;
+            }
+        }
+        return url;
+    }
 
-	if (url.startsWith(contentDomain)) {
-		const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
-		return url.replace(regex, replacementPath);
-	}
+    if (url.startsWith(contentDomain)) {
+        const regex = /^https:\/\/content\.bestreviewsradar\.com\/wp-content\/uploads\/\d{4}\/\d{2}\//;
+        return url.replace(regex, replacementPath);
+    }
 
-	return url;
+    return url;
 };
 
 const RelatedProduct = memo(({ item }: { item: any }) => {
@@ -180,29 +179,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		amazonShortcode,
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
-
-	const AmazonContent = () => {
-		const [shouldRender, setShouldRender] = useState(false);
-
-		useEffect(() => {
-			// Đợi main content load xong và thêm delay nhỏ
-			const timer = setTimeout(() => {
-				setShouldRender(true);
-			}, 100); // delay 100ms
-
-			return () => clearTimeout(timer);
-		}, []);
-
-		if (!shouldRender || !amzShortcode?.amazonShortcode) return null;
-
-		return (
-			<div className="mt-4"> {/* Thêm margin để tách biệt với main content */}
-				<div dangerouslySetInnerHTML={{ __html: amzShortcode.amazonShortcode }} />
-			</div>
-		);
-	};
-
-
 	const [hydratedContent, setHydratedContent] = useState(content)
 
 	let NoT = numberOfToplist?.numberOfToplist as any
@@ -215,13 +191,13 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
 		const handleLazyLoading = () => {
 			const lazyImages = document.querySelectorAll(".lazy-load-prod");
-
+	
 			const imageObserver = new IntersectionObserver((entries, observer) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
 						const img = entry.target as any;
 						const dataSrc = img.getAttribute("data-src");
-
+	
 						if (dataSrc) {
 							parseImageUrl(dataSrc).then((data: any) => {
 								img.src = data
@@ -235,7 +211,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									if (img.src.includes('c_scale')) {
 										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
 										img.src = retryUrl;
-
+										
 										img.onerror = () => {
 											img.src = dataSrc;
 											img.parentElement?.classList.add("loaded");
@@ -255,7 +231,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			}, {
 				threshold: 0.1
 			});
-
+	
 			lazyImages.forEach((img) => imageObserver.observe(img));
 		};
 		handleLazyLoading()
@@ -600,7 +576,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		<>
 			<div className='container'>
 				{renderAlert()}
-				<AmazonContent/>
+				<div dangerouslySetInnerHTML={{ __html: amzShortcode?.amazonShortcode }}></div>
 				<ScrollTop />
 				{router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
@@ -668,7 +644,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					)}
 
 					<div className='col-span-8' ref={cRef}>
-						{/* {dataRelatedArray.length > 0 && (
+						{dataRelatedArray.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
@@ -682,7 +658,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									</div>
 								</div>
 							</>
-						)} */}
+						)}
 
 						{hydratedContent && (
 							<div

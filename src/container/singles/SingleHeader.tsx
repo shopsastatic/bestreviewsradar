@@ -105,7 +105,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     <>
       <div className="banner-header px-4 gap-2">
         <div className="flex justify-between md:justify-center items-center md:items-start gap-2 w-full md:w-fit">
-          <div className="flex flex-wrap flex-col md:flex-row items-start md:items-center gap-1 md:gap-2">
+          <div className="flex flex-wrap flex-col md:flex-row items-start md:items-center gap-1 md:gap-2 mt-1.5">
             <h5 className="text-sm md:text-lg">Black Friday Sale</h5>
             <span className="text-xs md:text-sm font-extralight text-gray-600">Today's deals end in</span>
           </div>
