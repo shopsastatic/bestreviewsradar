@@ -4,7 +4,6 @@ import { Inter, Noto_Sans } from "next/font/google";
 import { useRouter } from "next/router";
 import { FaustProvider } from "@faustwp/core";
 import dynamic from 'next/dynamic';
-import { GoogleAnalytics } from '@next/third-parties/google'
 
 // Styles
 import "@/styles/globals.css";
