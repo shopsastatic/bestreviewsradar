@@ -16,10 +16,10 @@ const INITIAL_TIME: TimeState = {
 const TimeDigit = memo(({ value }: { value: number }) => (
     <div className="flex space-x-1">
         <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-            {Math.floor(value / 10)}
+            {value < 10 ? '0' : String(Math.floor(value / 10))}
         </div>
         <div className="bg-orange-200 rounded px-2 text-base font-mono text-red-600">
-            {value % 10}
+            {value < 10 ? String(value) : String(value % 10)}
         </div>
     </div>
 ));
@@ -27,6 +27,9 @@ const TimeDigit = memo(({ value }: { value: number }) => (
 TimeDigit.displayName = 'TimeDigit';
 
 const CountdownTimer = () => {
+    const [mounted, setMounted] = useState(false);
+    const [time, setTime] = useState<TimeState>(INITIAL_TIME);
+
     const getInitialTimeState = useCallback((): TimeState => {
         try {
             if (typeof window === 'undefined') return INITIAL_TIME;
@@ -53,9 +56,12 @@ const CountdownTimer = () => {
         }
     }, []);
 
-    const [time, setTime] = useState<TimeState>(getInitialTimeState);
+    // Initialize client-side state after mount
+    useEffect(() => {
+        setMounted(true);
+        setTime(getInitialTimeState());
+    }, [getInitialTimeState]);
 
-    // Lưu thời gian vào localStorage
     const saveTimeToStorage = useCallback((currentTime: TimeState) => {
         try {
             if (typeof window !== 'undefined') {
@@ -67,8 +73,9 @@ const CountdownTimer = () => {
         }
     }, []);
 
-    // Xử lý countdown
     useEffect(() => {
+        if (!mounted) return;
+
         const updateTime = () => {
             setTime(prev => {
                 const totalSeconds = prev.hours * 3600 + prev.minutes * 60 + prev.seconds;
@@ -92,7 +99,12 @@ const CountdownTimer = () => {
 
         const timer = setInterval(updateTime, 1000);
         return () => clearInterval(timer);
-    }, [saveTimeToStorage]);
+    }, [mounted, saveTimeToStorage]);
+
+    // Return empty div for SSR
+    if (!mounted) {
+        return <div className="flex flex-col items-center justify-center" />;
+    }
 
     return (
         <div className="flex flex-col items-center justify-center">

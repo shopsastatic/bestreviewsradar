@@ -534,6 +534,22 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	useEffect(() => {
 		const handleScroll = debounce(() => {
 			const sections = cRef.current?.querySelectorAll('h2');
+			const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
+
+			if(dataRelatedArray.length > 0) {
+				Array.from(btn_link).map((btn: any, index: any) => {
+					let	org_link = 1;
+					if(btn.href.match(/0\.0\.0\.(\d+)/)) {
+						org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
+					}else {
+						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
+					}
+					if(org_link) {
+						btn.href = dataRelatedArray?.[org_link - 1]?.url
+					}
+				});
+			}
+			
 			if (!sections) return;
 
 			let currentActiveId = '';
