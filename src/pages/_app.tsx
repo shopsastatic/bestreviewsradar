@@ -13,7 +13,7 @@ import "@/styles/index.scss";
 import type { AppProps } from "next/app";
 
 // Providers & Config
-import { WordPressBlocksProvider, fromThemeJson } from "@faustwp/blocks";
+import {  fromThemeJson } from "@faustwp/blocks";
 import blocks from "@/wp-blocks";
 import themeJson from "../../theme.json";
 import { ThirdPartyScripts } from "@/components/ThirdPartyScripts";
