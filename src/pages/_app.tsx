@@ -78,6 +78,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     ttl: 3600
   };
 
+  const DeferredAnalytics = () => {
+    const [shouldLoad, setShouldLoad] = useState(false);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setShouldLoad(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }, []);
+
+    if (!shouldLoad) return null;
+
+    return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+    ) : null;
+  };
+
   return (
     <FaustProvider pageProps={{
       ...pageProps,
@@ -117,9 +135,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               }}
               containerClassName="text-sm"
             />
-            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-              <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-            )}
+            <DeferredAnalytics />
           </ClientOnly>
         </main>
       </SiteWrapperProvider>
