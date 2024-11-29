@@ -79,48 +79,50 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     ttl: 3600
   };
 
-  const DeferredAnalytics = () => {
-    const [shouldLoad, setShouldLoad] = useState(false);
-
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setShouldLoad(true);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }, []);
-
-    if (!shouldLoad) return null;
-
-    return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-    ) : null;
-  };
-
   return (
-    <FaustProvider pageProps={{...pageProps, config: faustConfig}}>
-    <SiteWrapperProvider {...pageProps}>
-      {/* Main content */}
-      <main className={`${inter.variable} ${noto_san.variable}`}>
-        <Component {...pageProps} key={router.asPath} />
-      </main>
+    <FaustProvider pageProps={{
+      ...pageProps,
+      config: faustConfig
+    }}>
+      <SiteWrapperProvider {...pageProps}>
+        <style jsx global>{`
+            :root {
+              --inter-font: ${inter.style.fontFamily};
+              --noto-font: ${noto_san.style.fontFamily};
+            }
+            html {
+              font-family: var(--inter-font);
+            }
+            html, body, .large-width, .prod-child {
+              font-family: var(--inter-font);
+            }
+            .heading-tag-text {
+              font-family: var(--noto-font);
+            }
+          `}</style>
 
-      {/* Third-party scripts loaded after main content */}
-      <ClientOnly>
-        <ThirdPartyScripts />
-        <NextNProgress color="#818cf8" />
-        <Toaster
-          position="bottom-left"
-          toastOptions={{
-            style: {
-              fontSize: "14px",
-              borderRadius: "0.75rem",
-            },
-          }}
-          containerClassName="text-sm"
-        />
-      </ClientOnly>
-    </SiteWrapperProvider>
-  </FaustProvider>
+        <main className={`${inter.variable} ${noto_san.variable}`}>
+          <Component {...pageProps} key={router.asPath} />
+
+          {/* Wrap client-side only components */}
+          <ClientOnly>
+            <NextNProgress color="#818cf8" />
+            <Toaster
+              position="bottom-left"
+              toastOptions={{
+                style: {
+                  fontSize: "14px",
+                  borderRadius: "0.75rem",
+                },
+              }}
+              containerClassName="text-sm"
+            />
+            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+              <ThirdPartyScripts />
+            )}
+          </ClientOnly>
+        </main>
+      </SiteWrapperProvider>
+    </FaustProvider>
   );
 }
