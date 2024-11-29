@@ -25,6 +25,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
   }, []);
 
   const _post = props.data?.post || {};
+  
   const IS_PREVIEW = router.pathname === "/preview";
 
   const {
