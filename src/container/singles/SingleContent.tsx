@@ -182,38 +182,25 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	} = getPostDataFromPostFragment(post || {})
 
 	const AmazonContent = () => {
-		const [chunks, setChunks] = useState<string[]>([]);
-		
+		const [shouldRender, setShouldRender] = useState(false);
+
 		useEffect(() => {
-		  if (amazonShortcode?.amazonShortcode) {
-			// Tách content thành chunks dựa trên thẻ HTML
-			const parser = new DOMParser();
-			const doc = parser.parseFromString(amazonShortcode.amazonShortcode, 'text/html');
-			const elements = Array.from(doc.body.children);
-			
-			// Mỗi chunk sẽ chứa 5 elements
-			const contentChunks = [];
-			for (let i = 0; i < elements.length; i += 5) {
-			  const chunk = elements.slice(i, i + 5);
-			  contentChunks.push(chunk.map(el => el.outerHTML).join(''));
-			}
-			
-			setChunks(contentChunks);
-		  }
-		}, [amazonShortcode]);
-	  
-		if (!chunks.length) return null;
-	  
+			// Đợi main content load xong và thêm delay nhỏ
+			const timer = setTimeout(() => {
+				setShouldRender(true);
+			}, 100); // delay 100ms
+
+			return () => clearTimeout(timer);
+		}, []);
+
+		if (!shouldRender || !amzShortcode?.amazonShortcode) return null;
+
 		return (
-		  <div>
-			{chunks.map((chunk, index) => (
-			  <div key={index}>
-				<div dangerouslySetInnerHTML={{ __html: chunk }} />
-			  </div>
-			))}
-		  </div>
+			<div className="mt-4"> {/* Thêm margin để tách biệt với main content */}
+				<div dangerouslySetInnerHTML={{ __html: amzShortcode.amazonShortcode }} />
+			</div>
 		);
-	  };
+	};
 
 
 	const [hydratedContent, setHydratedContent] = useState(content)
@@ -613,7 +600,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		<>
 			<div className='container'>
 				{renderAlert()}
-				<AmazonContent />
+				<AmazonContent/>
 				<ScrollTop />
 				{router.query.gclid != undefined && (
 					<SinglePopup prod={dataRelatedArray[0]} />
