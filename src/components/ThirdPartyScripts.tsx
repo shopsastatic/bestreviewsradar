@@ -1,3 +1,4 @@
+import Script from 'next/script';
 import { useState, useEffect } from 'react';
 
 export const ThirdPartyScripts = () => {
@@ -23,35 +24,24 @@ export const ThirdPartyScripts = () => {
         <>
             {/* Google Analytics với strategy lazyOnload */}
             {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-                <script
-                    async
-                    src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
-                    onLoad={() => {
-                        window.dataLayer = window.dataLayer || [];
-                        // Định nghĩa function gtag
-                        window.gtag = function (...args: any[]) {
-                            window.dataLayer!.push(arguments);
-                        };
-                        // Sử dụng gtag
-                        window.gtag('js', new Date());
-                        window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID);
-                    }}
-                />
-            )}
-
-            {/* Google Tag Manager */}
-            {process.env.NEXT_PUBLIC_GTM_ID && (
-                <script
-                    async
-                    src={`https://www.googletagmanager.com/gtm.js?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
-                    onLoad={() => {
-                        window.dataLayer = window.dataLayer || [];
-                        window.dataLayer.push({
-                            'gtm.start': new Date().getTime(),
-                            event: 'gtm.js'
-                        });
-                    }}
-                />
+                <>
+                    <Script
+                        strategy="afterInteractive"
+                        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+                    />
+                    <Script
+                        id="google-analytics"
+                        strategy="afterInteractive"
+                        dangerouslySetInnerHTML={{
+                            __html: `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
+                `
+                        }}
+                    />
+                </>
             )}
         </>
     );
