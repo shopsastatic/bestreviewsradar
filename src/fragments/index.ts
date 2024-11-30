@@ -137,9 +137,7 @@ export const NC_POST_FULL_FRAGMENT = gql(/* GraphQL */ `
 		excerpt
 		databaseId
 		title
-		amazonShortcode {
-			amazonShortcode
-		}
+		contentEggData
 		numberOfToplist {
 			numberOfToplist
 		}

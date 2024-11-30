@@ -55,10 +55,6 @@
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
-.prod-item .prod-child:last-child {
-  display: none;
-}
-
 .prod-child p:first-child:not(.title-desc) {
   display: none !important;
 }
