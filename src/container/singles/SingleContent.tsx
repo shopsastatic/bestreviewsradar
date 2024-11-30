@@ -978,9 +978,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 
 				<ScrollTop />
-				{router.query.gclid != undefined && (
+				{/* {router.query.gclid != undefined && (
 					<SinglePopup prod={amzData[0]} />
-				)}
+				)} */}
 			</div>
 
 			{headings && headings?.length > 0 && (
