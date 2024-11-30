@@ -79,8 +79,12 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 	useEffect(() => {
 		const fetchImageUrl = async () => {
 			if (isVisible && item?.img) {
-				const updatedUrl = await parseImageUrl(item.img);
-				setImageSrc(updatedUrl ?? "/");
+				try{
+					const updatedUrl = await parseImageUrl(item.img)
+					setImageSrc(updatedUrl ?? item?.img);
+				}catch(e) {
+					setImageSrc(item?.img);
+				}
 			}
 		};
 
@@ -171,6 +175,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		contentEggData,
 		numberOfToplist
 	} = getPostDataFromPostFragment(post || {})
+	
 	const amzData = JSON.parse(contentEggData) as any
 
 	const [hydratedContent, setHydratedContent] = useState(content)
@@ -978,9 +983,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 
 				<ScrollTop />
-				{/* {router.query.gclid != undefined && (
+				{router.query.gclid != undefined && (
 					<SinglePopup prod={amzData[0]} />
-				)} */}
+				)}
 			</div>
 
 			{headings && headings?.length > 0 && (

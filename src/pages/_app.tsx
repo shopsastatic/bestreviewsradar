@@ -116,9 +116,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               }}
               containerClassName="text-sm"
             />
-            {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
               <ThirdPartyScripts />
-            )} */}
+            )}
           </ClientOnly>
         </main>
       </SiteWrapperProvider>
