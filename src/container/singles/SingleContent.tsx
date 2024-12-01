@@ -187,54 +187,54 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const post_id = post?.databaseId
 
-	useEffect(() => {
-		const handleLazyLoading = () => {
-			const lazyImages = document.querySelectorAll(".lazy-load-prod");
+	// useEffect(() => {
+	// 	const handleLazyLoading = () => {
+	// 		const lazyImages = document.querySelectorAll(".lazy-load-prod");
 
-			const imageObserver = new IntersectionObserver((entries, observer) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const img = entry.target as any;
-						const dataSrc = img.getAttribute("data-src");
+	// 		const imageObserver = new IntersectionObserver((entries, observer) => {
+	// 			entries.forEach((entry) => {
+	// 				if (entry.isIntersecting) {
+	// 					const img = entry.target as any;
+	// 					const dataSrc = img.getAttribute("data-src");
 
-						if (dataSrc) {
-							parseImageUrl(dataSrc).then((data: any) => {
-								img.src = data
-								img.setAttribute('data-src', data);
-								img.onload = () => {
-									img.style.opacity = "1";
-									img.parentElement?.classList.add("loaded");
-									img.parentElement?.classList.remove("prod-image-container")
-								};
-								img.onerror = () => {
-									if (img.src.includes('c_scale')) {
-										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
-										img.src = retryUrl;
+	// 					if (dataSrc) {
+	// 						parseImageUrl(dataSrc).then((data: any) => {
+	// 							img.src = data
+	// 							img.setAttribute('data-src', data);
+	// 							img.onload = () => {
+	// 								img.style.opacity = "1";
+	// 								img.parentElement?.classList.add("loaded");
+	// 								img.parentElement?.classList.remove("prod-image-container")
+	// 							};
+	// 							img.onerror = () => {
+	// 								if (img.src.includes('c_scale')) {
+	// 									const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+	// 									img.src = retryUrl;
 
-										img.onerror = () => {
-											img.src = dataSrc;
-											img.parentElement?.classList.add("loaded");
-											img.parentElement?.classList.remove("prod-image-container");
-										};
-									} else {
-										img.src = dataSrc;
-										img.parentElement?.classList.add("loaded");
-										img.parentElement?.classList.remove("prod-image-container");
-									}
-								};
-								observer.unobserve(img);
-							})
-						}
-					}
-				});
-			}, {
-				threshold: 0.1
-			});
+	// 									img.onerror = () => {
+	// 										img.src = dataSrc;
+	// 										img.parentElement?.classList.add("loaded");
+	// 										img.parentElement?.classList.remove("prod-image-container");
+	// 									};
+	// 								} else {
+	// 									img.src = dataSrc;
+	// 									img.parentElement?.classList.add("loaded");
+	// 									img.parentElement?.classList.remove("prod-image-container");
+	// 								}
+	// 							};
+	// 							observer.unobserve(img);
+	// 						})
+	// 					}
+	// 				}
+	// 			});
+	// 		}, {
+	// 			threshold: 0.1
+	// 		});
 
-			lazyImages.forEach((img) => imageObserver.observe(img));
-		};
-		handleLazyLoading()
-	}, [])
+	// 		lazyImages.forEach((img) => imageObserver.observe(img));
+	// 	};
+	// 	handleLazyLoading()
+	// }, [])
 
 	// Handle click outside
 	const handleClickOutside = (event: MouseEvent) => {
@@ -244,119 +244,119 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	}
 
 	// Learn more button functionality
-	useEffect(() => {
-		const learnMoreBtn = document.getElementById('learnMoreBtn')
-		const learnMoreContent = document.getElementById('learnMoreContent')
+	// useEffect(() => {
+	// 	const learnMoreBtn = document.getElementById('learnMoreBtn')
+	// 	const learnMoreContent = document.getElementById('learnMoreContent')
 
-		const handleLearnMore = (event: any) => {
-			learnMoreContent?.classList.remove('hidden')
-			learnMoreContent?.classList.add('block')
-			event.stopPropagation()
-		}
+	// 	const handleLearnMore = (event: any) => {
+	// 		learnMoreContent?.classList.remove('hidden')
+	// 		learnMoreContent?.classList.add('block')
+	// 		event.stopPropagation()
+	// 	}
 
-		const handleClickOutsideLearnMore = (event: any) => {
-			if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
-				learnMoreContent?.classList.add('hidden')
-				learnMoreContent?.classList.remove('block')
-			}
-		}
+	// 	const handleClickOutsideLearnMore = (event: any) => {
+	// 		if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
+	// 			learnMoreContent?.classList.add('hidden')
+	// 			learnMoreContent?.classList.remove('block')
+	// 		}
+	// 	}
 
-		learnMoreBtn?.addEventListener('click', handleLearnMore)
-		document.addEventListener('click', handleClickOutsideLearnMore)
+	// 	learnMoreBtn?.addEventListener('click', handleLearnMore)
+	// 	document.addEventListener('click', handleClickOutsideLearnMore)
 
-		return () => {
-			learnMoreBtn?.removeEventListener('click', handleLearnMore)
-			document.removeEventListener('click', handleClickOutsideLearnMore)
-		}
-	}, [])
+	// 	return () => {
+	// 		learnMoreBtn?.removeEventListener('click', handleLearnMore)
+	// 		document.removeEventListener('click', handleClickOutsideLearnMore)
+	// 	}
+	// }, [])
 
 	// Toggle button functionality
-	useEffect(() => {
-		const initializeToggleButtons = (selector: string) => {
-			document.querySelectorAll(selector).forEach((button, index) => {
-				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
-				const listBgGradient = document.querySelectorAll(".bg-animate")[index] as HTMLElement
+	// useEffect(() => {
+	// 	const initializeToggleButtons = (selector: string) => {
+	// 		document.querySelectorAll(selector).forEach((button, index) => {
+	// 			let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
+	// 			const listBgGradient = document.querySelectorAll(".bg-animate")[index] as HTMLElement
 
-				let isExpanded = false;
+	// 			let isExpanded = false;
 
-				button.addEventListener('click', function (event) {
-					event.preventDefault();
-					event.stopPropagation();
+	// 			button.addEventListener('click', function (event) {
+	// 				event.preventDefault();
+	// 				event.stopPropagation();
 
-					const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
-            ${text}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="17"
-              height="17"
-              viewBox="0 0 16 16"
-              fill="none"
-              ${rotateIcon ? 'style="transform: rotate(180deg); transition: transform 0.3s ease;"' : ''}
-            >
-              <g id="Primary">
-                <path
-                  id="Vector (Stroke)"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
-                  fill="#1575d4"
-                />
-              </g>
-            </svg>
-          `;
+	// 				const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
+    //         ${text}
+    //         <svg
+    //           xmlns="http://www.w3.org/2000/svg"
+    //           width="17"
+    //           height="17"
+    //           viewBox="0 0 16 16"
+    //           fill="none"
+    //           ${rotateIcon ? 'style="transform: rotate(180deg); transition: transform 0.3s ease;"' : ''}
+    //         >
+    //           <g id="Primary">
+    //             <path
+    //               id="Vector (Stroke)"
+    //               fillRule="evenodd"
+    //               clipRule="evenodd"
+    //               d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+    //               fill="#1575d4"
+    //             />
+    //           </g>
+    //         </svg>
+    //       `;
 
-					if (isExpanded) {
-						content.style.maxHeight = '276px';
-						listBgGradient.style.opacity = '1'
-						button.innerHTML = getButtonHTML('Show More');
-					} else {
-						content.style.maxHeight = content.scrollHeight + 'px';
-						listBgGradient.style.opacity = '0'
-						button.innerHTML = getButtonHTML('Show Less', true);
-					}
+	// 				if (isExpanded) {
+	// 					content.style.maxHeight = '276px';
+	// 					listBgGradient.style.opacity = '1'
+	// 					button.innerHTML = getButtonHTML('Show More');
+	// 				} else {
+	// 					content.style.maxHeight = content.scrollHeight + 'px';
+	// 					listBgGradient.style.opacity = '0'
+	// 					button.innerHTML = getButtonHTML('Show Less', true);
+	// 				}
 
-					isExpanded = !isExpanded;
-				});
-			});
-		};
+	// 				isExpanded = !isExpanded;
+	// 			});
+	// 		});
+	// 	};
 
-		initializeToggleButtons('.toggle-button:not(.mob)');
-		initializeToggleButtons('.toggle-button.mob');
+	// 	initializeToggleButtons('.toggle-button:not(.mob)');
+	// 	initializeToggleButtons('.toggle-button.mob');
 
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, []);
+	// 	document.addEventListener('mousedown', handleClickOutside);
+	// 	return () => {
+	// 		document.removeEventListener('mousedown', handleClickOutside);
+	// 	};
+	// }, []);
 
 	// Progress indicator
-	useEffect(() => {
-		const handleProgressIndicator = () => {
-			const entryContent = contentRef.current as any;
-			const progressBarContent = progressRef.current;
+	// useEffect(() => {
+	// 	const handleProgressIndicator = () => {
+	// 		const entryContent = contentRef.current as any;
+	// 		const progressBarContent = progressRef.current;
 
-			if (!entryContent || !progressBarContent) return;
+	// 		if (!entryContent || !progressBarContent) return;
 
-			const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
-			let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-			let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
+	// 		const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
+	// 		let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+	// 		let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
 
-			progressBarContent.innerText = scrolled.toFixed(0) + '%';
-			setIsShowScrollToTop(scrolled >= 100);
-		};
+	// 		progressBarContent.innerText = scrolled.toFixed(0) + '%';
+	// 		setIsShowScrollToTop(scrolled >= 100);
+	// 	};
 
-		const debouncedProgressIndicator = debounce(() => {
-			requestAnimationFrame(handleProgressIndicator);
-		}, 100);
+	// 	const debouncedProgressIndicator = debounce(() => {
+	// 		requestAnimationFrame(handleProgressIndicator);
+	// 	}, 100);
 
-		handleProgressIndicator();
-		window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
+	// 	handleProgressIndicator();
+	// 	window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
 
-		return () => {
-			window.removeEventListener('scroll', debouncedProgressIndicator);
-			debouncedProgressIndicator.cancel();
-		};
-	}, []);
+	// 	return () => {
+	// 		window.removeEventListener('scroll', debouncedProgressIndicator);
+	// 		debouncedProgressIndicator.cancel();
+	// 	};
+	// }, []);
 
 	// Alert render
 	const renderAlert = () => {
@@ -388,163 +388,163 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	// Process content and extract headings
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
+	// useEffect(() => {
+	// 	if (typeof window === 'undefined') return;
 
-		const updateContentWithHeadings = () => {
-			const parser = new DOMParser();
-			const doc = parser.parseFromString(content, 'text/html');
-			const h2Elements = Array.from(doc.querySelectorAll('h2'));
+	// 	const updateContentWithHeadings = () => {
+	// 		const parser = new DOMParser();
+	// 		const doc = parser.parseFromString(content, 'text/html');
+	// 		const h2Elements = Array.from(doc.querySelectorAll('h2'));
 
-			h2Elements.forEach((heading) => {
-				const slugifiedText = slugify(heading.textContent || `heading`);
-				heading.id = `toc-${slugifiedText}`;
-			});
+	// 		h2Elements.forEach((heading) => {
+	// 			const slugifiedText = slugify(heading.textContent || `heading`);
+	// 			heading.id = `toc-${slugifiedText}`;
+	// 		});
 
-			const tables = Array.from(doc.querySelectorAll('table'));
-			tables.forEach((table) => {
-				let hasProsOrCons = false;
+	// 		const tables = Array.from(doc.querySelectorAll('table'));
+	// 		tables.forEach((table) => {
+	// 			let hasProsOrCons = false;
 
-				const firstRow = table.querySelector('tr');
-				if (firstRow) {
-					const tdElements = Array.from(firstRow.querySelectorAll('td'));
-					tdElements.forEach((td: any) => {
-						const text = td.textContent.toLowerCase();
-						if (text.includes('pros') || text.includes('cons')) {
-							hasProsOrCons = true;
-						}
-					});
-				}
+	// 			const firstRow = table.querySelector('tr');
+	// 			if (firstRow) {
+	// 				const tdElements = Array.from(firstRow.querySelectorAll('td'));
+	// 				tdElements.forEach((td: any) => {
+	// 					const text = td.textContent.toLowerCase();
+	// 					if (text.includes('pros') || text.includes('cons')) {
+	// 						hasProsOrCons = true;
+	// 					}
+	// 				});
+	// 			}
 
-				if (hasProsOrCons) {
-					const newDivWrapper = document.createElement('div');
-					newDivWrapper.classList.add('pros-cons-table');
+	// 			if (hasProsOrCons) {
+	// 				const newDivWrapper = document.createElement('div');
+	// 				newDivWrapper.classList.add('pros-cons-table');
 
-					const thead = table.querySelector('thead');
-					if (thead) {
-						const theadDiv = document.createElement('div');
-						theadDiv.classList.add('thead-wrapper');
+	// 				const thead = table.querySelector('thead');
+	// 				if (thead) {
+	// 					const theadDiv = document.createElement('div');
+	// 					theadDiv.classList.add('thead-wrapper');
 
-						Array.from(thead.querySelectorAll('th')).forEach((th) => {
-							const thDiv = document.createElement('div');
-							thDiv.classList.add('thead-cell');
-							thDiv.innerHTML = th.innerHTML;
-							theadDiv.appendChild(thDiv);
-						});
+	// 					Array.from(thead.querySelectorAll('th')).forEach((th) => {
+	// 						const thDiv = document.createElement('div');
+	// 						thDiv.classList.add('thead-cell');
+	// 						thDiv.innerHTML = th.innerHTML;
+	// 						theadDiv.appendChild(thDiv);
+	// 					});
 
-						newDivWrapper.appendChild(theadDiv);
-					}
+	// 					newDivWrapper.appendChild(theadDiv);
+	// 				}
 
-					const rows = Array.from(table.querySelectorAll('tbody tr'));
-					const columns = [] as any[];
+	// 				const rows = Array.from(table.querySelectorAll('tbody tr'));
+	// 				const columns = [] as any[];
 
-					rows.forEach((row) => {
-						const cells = Array.from(row.querySelectorAll('td'));
-						cells.forEach((cell, cellIndex) => {
-							if (!columns[cellIndex]) {
-								columns[cellIndex] = [];
-							}
+	// 				rows.forEach((row) => {
+	// 					const cells = Array.from(row.querySelectorAll('td'));
+	// 					cells.forEach((cell, cellIndex) => {
+	// 						if (!columns[cellIndex]) {
+	// 							columns[cellIndex] = [];
+	// 						}
 
-							if (cell.innerHTML) {
-								const icon = cellIndex === 0
-									? '<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>'
-									: '<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path></svg>';
-								columns[cellIndex].push(icon + cell.innerHTML);
-							}
-						});
-					});
+	// 						if (cell.innerHTML) {
+	// 							const icon = cellIndex === 0
+	// 								? '<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>'
+	// 								: '<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path></svg>';
+	// 							columns[cellIndex].push(icon + cell.innerHTML);
+	// 						}
+	// 					});
+	// 				});
 
-					columns.forEach((columnData) => {
-						const columnDiv = document.createElement('div');
-						columnDiv.classList.add('pros-cons-item');
+	// 				columns.forEach((columnData) => {
+	// 					const columnDiv = document.createElement('div');
+	// 					columnDiv.classList.add('pros-cons-item');
 
-						columnData.forEach((cellContent: string) => {
-							const cellDiv = document.createElement('div');
-							cellDiv.classList.add('cell');
-							cellDiv.innerHTML = cellContent;
-							columnDiv.appendChild(cellDiv);
-						});
+	// 					columnData.forEach((cellContent: string) => {
+	// 						const cellDiv = document.createElement('div');
+	// 						cellDiv.classList.add('cell');
+	// 						cellDiv.innerHTML = cellContent;
+	// 						columnDiv.appendChild(cellDiv);
+	// 					});
 
-						newDivWrapper.appendChild(columnDiv);
-					});
+	// 					newDivWrapper.appendChild(columnDiv);
+	// 				});
 
-					table.replaceWith(newDivWrapper);
-				}
-			});
+	// 				table.replaceWith(newDivWrapper);
+	// 			}
+	// 		});
 
-			const updatedContent = doc.body.innerHTML;
-			const headingData = [
-				{ id: 'toc-related-deal', text: 'Related Deals' },
-				...h2Elements.map((heading) => ({
-					id: heading.id,
-					text: heading.textContent || '',
-				}))
-			];
+	// 		const updatedContent = doc.body.innerHTML;
+	// 		const headingData = [
+	// 			{ id: 'toc-related-deal', text: 'Related Deals' },
+	// 			...h2Elements.map((heading) => ({
+	// 				id: heading.id,
+	// 				text: heading.textContent || '',
+	// 			}))
+	// 		];
 
-			setHeadings(headingData);
-			setHydratedContent(updatedContent);
-		};
+	// 		setHeadings(headingData);
+	// 		setHydratedContent(updatedContent);
+	// 	};
 
-		updateContentWithHeadings();
-	}, [content]);
+	// 	updateContentWithHeadings();
+	// }, [content]);
 
 	// Handle scroll for active heading
-	useEffect(() => {
-		const handleScroll = debounce(() => {
-			const sections = cRef.current?.querySelectorAll('h2');
-			const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
+	// useEffect(() => {
+	// 	const handleScroll = debounce(() => {
+	// 		const sections = cRef.current?.querySelectorAll('h2');
+	// 		const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
 
-			if (amzData.length > 0) {
-				Array.from(btn_link).map((btn: any, index: any) => {
-					let org_link = 1;
-					if (btn.href.match(/0\.0\.0\.(\d+)/)) {
-						org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
-					} else {
-						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
-					}
-					if (org_link) {
-						btn.href = amzData?.[org_link - 1]?.url
-					}
-				});
-			}
+	// 		if (amzData.length > 0) {
+	// 			Array.from(btn_link).map((btn: any, index: any) => {
+	// 				let org_link = 1;
+	// 				if (btn.href.match(/0\.0\.0\.(\d+)/)) {
+	// 					org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
+	// 				} else {
+	// 					org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
+	// 				}
+	// 				if (org_link) {
+	// 					btn.href = amzData?.[org_link - 1]?.url
+	// 				}
+	// 			});
+	// 		}
 
-			if (!sections) return;
+	// 		if (!sections) return;
 
-			let currentActiveId = '';
-			const sectionPositions = Array.from(sections).map((section: any) => ({
-				id: section.id,
-				top: section.getBoundingClientRect().top - 150
-			}));
+	// 		let currentActiveId = '';
+	// 		const sectionPositions = Array.from(sections).map((section: any) => ({
+	// 			id: section.id,
+	// 			top: section.getBoundingClientRect().top - 150
+	// 		}));
 
-			for (let i = 0; i < sectionPositions.length; i++) {
-				const currentSection = sectionPositions[i];
-				const nextSection = sectionPositions[i + 1];
+	// 		for (let i = 0; i < sectionPositions.length; i++) {
+	// 			const currentSection = sectionPositions[i];
+	// 			const nextSection = sectionPositions[i + 1];
 
-				if (nextSection) {
-					if (currentSection.top <= 0 && nextSection.top > 0) {
-						currentActiveId = currentSection.id;
-						break;
-					}
-				} else {
-					if (currentSection.top <= 0) {
-						currentActiveId = currentSection.id;
-					}
-				}
-			}
+	// 			if (nextSection) {
+	// 				if (currentSection.top <= 0 && nextSection.top > 0) {
+	// 					currentActiveId = currentSection.id;
+	// 					break;
+	// 				}
+	// 			} else {
+	// 				if (currentSection.top <= 0) {
+	// 					currentActiveId = currentSection.id;
+	// 				}
+	// 			}
+	// 		}
 
-			if (currentActiveId && currentActiveId !== activeHeading) {
-				setActiveHeading(currentActiveId);
-			}
-		}, 100);
+	// 		if (currentActiveId && currentActiveId !== activeHeading) {
+	// 			setActiveHeading(currentActiveId);
+	// 		}
+	// 	}, 100);
 
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		handleScroll();
+	// 	window.addEventListener('scroll', handleScroll, { passive: true });
+	// 	handleScroll();
 
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-			handleScroll.cancel();
-		};
-	}, [activeHeading]);
+	// 	return () => {
+	// 		window.removeEventListener('scroll', handleScroll);
+	// 		handleScroll.cancel();
+	// 	};
+	// }, [activeHeading]);
 
 	const calculateRating = (rateIndex: any) => {
 		let tag = "Very Good";
