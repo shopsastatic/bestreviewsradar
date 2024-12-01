@@ -9,23 +9,18 @@ module.exports = withFaust({
   reactStrictMode: true,
   experimental: {
     typedRoutes: false,
-    // Thêm optimize module
     optimizeCss: true,
-    // Tối ưu chunks
     granularChunks: true,
   },
-  // Cấu hình webpack
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Tối ưu chunk size
     config.optimization.splitChunks = {
       chunks: 'all',
-      maxInitialRequests: 25,
+      maxInitialRequests: 15,
       minSize: 20000,
       maxSize: 60000,
       cacheGroups: {
         default: false,
         vendors: false,
-        // Bundle core và framework
         framework: {
           chunks: 'all',
           name: 'framework',
@@ -33,7 +28,6 @@ module.exports = withFaust({
           priority: 40,
           enforce: true
         },
-        // Bundle các lib từ node_modules
         lib: {
           test(module) {
             return module.size() > 160000 &&
@@ -48,13 +42,11 @@ module.exports = withFaust({
           minChunks: 1,
           reuseExistingChunk: true
         },
-        // Bundle commons cho app
         commons: {
           name: 'commons',
           minChunks: 2,
           priority: 20
         },
-        // Bundle shared cho components
         shared: {
           name(module, chunks) {
             return 'shared-' +
@@ -67,7 +59,6 @@ module.exports = withFaust({
       }
     }
 
-    // Tối ưu bundle size
     config.optimization.minimize = true
 
     return config
@@ -153,7 +144,6 @@ module.exports = withFaust({
     ],
   },
 
-  // Cache và headers
   async headers() {
     return [
       {
@@ -166,14 +156,12 @@ module.exports = withFaust({
               { uri: process.env.NEXT_PUBLIC_WORDPRESS_URL },
             ],
           }),
-          // Thêm cache headers
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable'
           }
         ]
       },
-      // Cache cho static files
       {
         source: '/_next/static/:path*',
         headers: [
@@ -186,7 +174,6 @@ module.exports = withFaust({
     ]
   },
 
-  // Tối ưu production build
   poweredByHeader: false,
   generateEtags: true,
   compress: true,

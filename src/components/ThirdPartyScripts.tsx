@@ -13,7 +13,7 @@ export const ThirdPartyScripts = () => {
             } else {
                 setTimeout(() => {
                     setMainContentLoaded(true);
-                }, 2000);
+                }, 5000);
             }
         };
 
@@ -33,14 +33,14 @@ export const ThirdPartyScripts = () => {
             {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
                 <>
                     <Script
-                        strategy="lazyOnload"
+                        strategy="afterInteractive"
                         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
                         async
                         defer
                     />
                     <Script
                         id="google-analytics"
-                        strategy="lazyOnload"
+                        strategy="afterInteractive"
                         dangerouslySetInnerHTML={{
                             __html: `
                             window.dataLayer = window.dataLayer || [];
