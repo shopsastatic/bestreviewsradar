@@ -10,24 +10,12 @@ import { useQuery } from '@apollo/client'
 export interface MenuBarProps {
   menuItems?: any
   className?: string
+  sidebarMenuItems: any
 }
 
-const MENU_QUERY = gql(`
-  query GetMenuSideBar {
-    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
-      nodes {
-        ...NcSideBarMenuFieldsFragment
-      }
-    }
-  }
-`)
-
-const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
+const MenuBar: React.FC<MenuBarProps> = ({ className, sidebarMenuItems }) => {
   const [isVisible, setIsVisible] = useState(false)
   const pathname = usePathname()
-  
-  // Use the useQuery hook to fetch data
-  const { data, loading, error } = useQuery(MENU_QUERY)
 
   useEffect(() => {
     setIsVisible(false)
@@ -35,12 +23,6 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
 
   const handleOpenMenu = () => setIsVisible(true)
   const handleCloseMenu = () => setIsVisible(false)
-
-  // Handle error state
-  if (error) {
-    console.error('Error fetching menu data:', error)
-    return <div>Error loading menu</div>
-  }
 
   const renderContent = () => {
     return (
@@ -74,7 +56,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ className }) => {
               <div className="flex min-h-full">
                 <div className="w-full max-w-sm overflow-hidden transition-all">
                   <NavMobile
-                    menuItems={data?.sidebarMenuItems?.nodes || []}
+                    menuItems={sidebarMenuItems || []}
                     onClickClose={handleCloseMenu}
                   />
                 </div>

@@ -8,114 +8,18 @@ import {
 } from "@/__generated__/graphql";
 import { GET_CATEGORIES_FIRST_COMMON } from "@/contains/contants";
 import React from "react";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Empty from "@/components/Empty";
-import { useRouter } from "next/router";
-import { useLazyQuery } from "@apollo/client";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
-import errorHandling from "@/utils/errorHandling";
-import getTrans from "@/utils/getTrans";
 
 const Page: FaustPage<SearchPageQueryGetCategoriesBySearchQuery> = (props: any) => {
-  const router = useRouter();
-  const initCategories = props.data?.categories?.nodes;
-  const initPageInfo = props.data?.categories?.pageInfo;
-  const search = router.query.search?.[0] || "";
-  const T = getTrans();
-
-  const [getCategoriesBySearch, getCategoriesBySearchResult] = useLazyQuery(
-    gql(` 
-      query queryGetCategoriesBySearchOnSearchPage(
-        $first: Int
-        $search: String = ""
-        $after: String
-      ) {
-        categories(first: $first, after: $after, where: { search: $search}) {
-          nodes {
-            ...NcmazFcCategoryFullFieldsFragment
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-        }
-      }
-    `),
-    {
-      notifyOnNetworkStatusChange: true,
-      context: {
-        fetchOptions: {
-          method: process.env.NEXT_PUBLIC_SITE_API_METHOD || "GET",
-        },
-      },
-      variables: {
-        search,
-        first: GET_CATEGORIES_FIRST_COMMON,
-      },
-      onError: (error) => {
-        errorHandling(error);
-      },
-    }
-  );
-
-  const handleClickShowMore = () => {
-    if (!getCategoriesBySearchResult.called) {
-      return getCategoriesBySearch({
-        variables: {
-          search,
-          after: initPageInfo?.endCursor,
-        },
-      });
-    }
-
-    getCategoriesBySearchResult.fetchMore({
-      variables: {
-        search,
-        after: getCategoriesBySearchResult.data?.categories?.pageInfo.endCursor,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult || !fetchMoreResult.categories?.nodes) {
-          return prev;
-        }
-        return {
-          ...prev,
-          categories: {
-            ...prev.categories,
-            nodes: [
-              ...(prev.categories?.nodes || []),
-              ...(fetchMoreResult.categories?.nodes || []),
-            ],
-            pageInfo: fetchMoreResult.categories?.pageInfo,
-          },
-        };
-      },
-    });
-  };
 
   // data for render
-  let currentCats = (initCategories ||
-    []) as NcmazFcCategoryFullFieldsFragmentFragment[];
-  let hasNextPage = initPageInfo?.hasNextPage;
-  let loading = false;
-
-  if (getCategoriesBySearchResult.called) {
-    currentCats = [
-      ...(initCategories || []),
-      ...(getCategoriesBySearchResult.data?.categories?.nodes || []),
-    ] as NcmazFcCategoryFullFieldsFragmentFragment[];
-
-    hasNextPage =
-      getCategoriesBySearchResult.loading ||
-      getCategoriesBySearchResult.data?.categories?.pageInfo.hasNextPage ||
-      false;
-    loading = getCategoriesBySearchResult.loading;
-  }
 
   return (
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={null}
       pageTitle={"Search"}
       generalSettings={
@@ -173,6 +77,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
     # end common query

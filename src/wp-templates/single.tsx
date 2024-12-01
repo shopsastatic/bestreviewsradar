@@ -40,6 +40,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImage?.sourceUrl}
         pageTitle={seo?.title || title}
         pageDescription={seo?.metaDesc || excerpt.replace(/<[^>]+>/g, '') || ""}
@@ -85,6 +86,11 @@ Component.query = gql(`
     footerMenuItems: menuItems(where: {location:$footerLocation}, first: 20) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
   }

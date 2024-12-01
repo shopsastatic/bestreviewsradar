@@ -7,117 +7,16 @@ import {
 } from "@/__generated__/graphql";
 import { GET_USERS_FIRST_COMMON } from "@/contains/contants";
 import React from "react";
-import ButtonPrimary from "@/components/Button/ButtonPrimary";
-import Empty from "@/components/Empty";
-import { useRouter } from "next/router";
-import { getUserDataFromUserCardFragment } from "@/utils/getUserDataFromUserCardFragment";
-import { useLazyQuery } from "@apollo/client";
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from "@/contains/menu";
 import PageLayout from "@/container/PageLayout";
-import errorHandling from "@/utils/errorHandling";
-import getTrans from "@/utils/getTrans";
 
 const Page: FaustPage<SearchPageQueryGetUsersBySearchQuery> = (props: any) => {
-  const router = useRouter();
-  const initUsers = props.data?.users?.nodes;
-  const initPageInfo = props.data?.users?.pageInfo;
-  const _top10Categories =
-    (props.data?.categories?.nodes as any) || [];
-  const search = router.query.search?.[0] || "";
-  const T = getTrans();
-
-  const [getUsersBySearch, getUsersBySearchResult] = useLazyQuery(
-    gql(` 
-      query queryGetUsersBySearchOnSearchPage(
-        $first: Int
-        $search: String
-        $after: String
-      ) {
-        users(first: $first, after: $after, where: { search: $search }) {
-          nodes {
-            ...NcmazFcUserFullFields
-          }
-          pageInfo {
-            endCursor
-            hasNextPage
-          }
-        }
-      }
-    `),
-    {
-      notifyOnNetworkStatusChange: true,
-      context: {
-        fetchOptions: {
-          method: process.env.NEXT_PUBLIC_SITE_API_METHOD || "GET",
-        },
-      },
-      variables: {
-        search,
-        first: GET_USERS_FIRST_COMMON,
-      },
-      onError: (error) => {
-        errorHandling(error);
-      },
-    }
-  );
-
-  const handleClickShowMore = () => {
-    if (!getUsersBySearchResult.called) {
-      return getUsersBySearch({
-        variables: {
-          search,
-          after: initPageInfo?.endCursor,
-        },
-      });
-    }
-
-    getUsersBySearchResult.fetchMore({
-      variables: {
-        search,
-        after: getUsersBySearchResult.data?.users?.pageInfo.endCursor,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult || !fetchMoreResult.users?.nodes) {
-          return prev;
-        }
-
-        return {
-          ...prev,
-          users: {
-            ...prev.users,
-            nodes: [
-              ...(prev.users?.nodes || []),
-              ...(fetchMoreResult.users?.nodes || []),
-            ],
-            pageInfo: fetchMoreResult.users?.pageInfo,
-          },
-        };
-      },
-    });
-  };
-
-  // data for render
-  let currentUsers = initUsers || [];
-  let hasNextPage = initPageInfo?.hasNextPage;
-  let loading = false;
-
-  if (getUsersBySearchResult.called) {
-    currentUsers = [
-      ...(initUsers || []),
-      ...(getUsersBySearchResult.data?.users?.nodes || []),
-    ];
-
-    hasNextPage =
-      getUsersBySearchResult.loading ||
-      getUsersBySearchResult.data?.users?.pageInfo.hasNextPage ||
-      false;
-    loading = getUsersBySearchResult.loading;
-  }
 
   return (
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={null}
       pageTitle={"Search"}
       generalSettings={
@@ -179,6 +78,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
     # end common query

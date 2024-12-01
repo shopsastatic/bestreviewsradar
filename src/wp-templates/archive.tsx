@@ -29,6 +29,7 @@ const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={null}
         pageTitle={props.data.nodeByUri.__typename}
         generalSettings={
@@ -61,6 +62,7 @@ const Archive: FaustTemplate<PageArchiveGetArchiveQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={null}
         pageTitle={"Archive " + name}
         pageDescription={description || ""}
@@ -113,6 +115,11 @@ Archive.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
     # end common query for all page

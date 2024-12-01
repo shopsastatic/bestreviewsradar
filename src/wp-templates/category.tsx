@@ -53,6 +53,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
       <PageLayout
         headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
         footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+        sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
         pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
         pageTitle={props?.data?.category?.seo?.title ?? name}
         pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
@@ -69,6 +70,7 @@ const Category: FaustTemplate<PageCategoryGetCategoryQuery> = (props: any) => {
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={featuredImageMeta?.sourceUrl}
       pageTitle={props?.data?.category?.seo?.title ?? name}
       pageDescription={props?.data?.category?.seo?.metaDesc || description || ""}
@@ -116,6 +118,11 @@ query PageCategoryGetCategory($id: ID!, $headerLocation: MenuLocationEnum!, $foo
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 40) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
  }`);

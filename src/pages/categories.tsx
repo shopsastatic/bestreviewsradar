@@ -58,6 +58,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
     <PageLayout
       headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
       footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+      sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
       pageFeaturedImageUrl={null}
       pageTitle="Categories"
       generalSettings={
@@ -182,6 +183,11 @@ Page.query = gql(`
             }
           }
         }
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
   }

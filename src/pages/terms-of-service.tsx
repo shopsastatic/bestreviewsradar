@@ -5,17 +5,9 @@ import {
     GetReadingListPageQuery,
     NcgeneralSettingsFieldsFragmentFragment,
 } from '@/__generated__/graphql'
-import Heading from '@/components/Heading/Heading'
 import { FOOTER_LOCATION, PRIMARY_LOCATION } from '@/contains/menu'
 import { GetStaticPropsContext } from 'next'
-import { NC_SITE_SETTINGS } from '@/contains/site-settings'
 import {
-    Shield,
-    Lock,
-    Mail,
-    ArrowDown,
-    ExternalLink,
-    PrinterIcon,
     Scale
 } from 'lucide-react';
 
@@ -24,6 +16,7 @@ const Page: FaustPage<GetReadingListPageQuery> = (props: any) => {
         <PageLayout
             headerMenuItems={props.data?.primaryMenuItems?.nodes || []}
             footerMenuItems={props.data?.footerMenuItems?.nodes || []}
+            sidebarMenuItems={props.data?.sidebarMenuItems?.nodes || []}
             pageFeaturedImageUrl={null}
             pageTitle="Terms Of Service"
             generalSettings={
@@ -228,6 +221,11 @@ Page.query = gql(`
     footerMenuItems: menuItems(where: { location:  $footerLocation  }, first: 50) {
       nodes {
         ...NcFooterMenuFieldsFragment
+      }
+    }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
       }
     }
   }

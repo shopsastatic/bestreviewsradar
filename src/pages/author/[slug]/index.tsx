@@ -65,6 +65,11 @@ Page.query = gql(`
         ...NcFooterMenuFieldsFragment
       }
     }
+    sidebarMenuItems: menuItems(where: { location: MAIN_MENU }, first: 40) {
+      nodes {
+        ...NcSideBarMenuFieldsFragment
+      }
+    }
     # end common query for all page
   }
 `);

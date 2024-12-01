@@ -14,6 +14,7 @@ interface Props {
   children: React.ReactNode;
   pageTitle?: string | null | undefined;
   headerMenuItems?: any;
+  sidebarMenuItems?: any;
   footerMenuItems?: FragmentType<typeof NC_FOOTER_MENU_QUERY_FRAGMENT>[] | null;
   pageFeaturedImageUrl?: string | null | undefined;
   generalSettings?: NcgeneralSettingsFieldsFragmentFragment | null | undefined;
@@ -27,6 +28,7 @@ const PageLayout: FC<Props> = ({
   children,
   footerMenuItems,
   headerMenuItems,
+  sidebarMenuItems,
   pageFeaturedImageUrl,
   pageTitle,
   generalSettings,
@@ -50,6 +52,7 @@ const PageLayout: FC<Props> = ({
         siteTitle={generalSettings?.title}
         siteDescription={generalSettings?.description}
         menuItems={headerMenuItems || []}
+        sidebarMenuItems={sidebarMenuItems || []}
       />
 
       {children}

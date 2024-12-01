@@ -6,9 +6,10 @@ interface Props {
 	menuItems: any
 	siteTitle?: string | null
 	siteDescription?: string | null
+	sidebarMenuItems: any
 }
 
-const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
+const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle, sidebarMenuItems }) => {
 	//
 	useThemeMode()
 
@@ -18,6 +19,7 @@ const SiteHeader: FC<Props> = ({ menuItems, siteDescription, siteTitle }) => {
 		return (
 			<MainNav1
 				menuItems={menuItems}
+				sidebarMenuItems={sidebarMenuItems}
 				title={siteTitle}
 				description={siteDescription}
 			/>
