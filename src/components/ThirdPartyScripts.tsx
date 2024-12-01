@@ -5,40 +5,51 @@ export const ThirdPartyScripts = () => {
     const [mainContentLoaded, setMainContentLoaded] = useState(false);
 
     useEffect(() => {
-        // Đợi main content load xong
-        if (document.readyState === 'complete') {
-            setMainContentLoaded(true);
-        } else {
-            window.addEventListener('load', () => {
-                // Thêm delay nhỏ sau khi main content đã load
+        const loadScripts = () => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    setMainContentLoaded(true);
+                });
+            } else {
                 setTimeout(() => {
                     setMainContentLoaded(true);
-                }, 1000);
-            });
+                }, 2000);
+            }
+        };
+
+        if (document.readyState === 'complete') {
+            loadScripts();
+        } else {
+            window.addEventListener('load', loadScripts);
         }
+
+        return () => window.removeEventListener('load', loadScripts);
     }, []);
 
     if (!mainContentLoaded) return null;
 
     return (
         <>
-            {/* Google Analytics với strategy lazyOnload */}
             {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
                 <>
                     <Script
-                        strategy="afterInteractive"
+                        strategy="lazyOnload"
                         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`}
+                        async
+                        defer
                     />
                     <Script
                         id="google-analytics"
-                        strategy="afterInteractive"
+                        strategy="lazyOnload"
                         dangerouslySetInnerHTML={{
                             __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
-                `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}', {
+                                send_page_view: false  // Disable automatic page views
+                            });
+                        `
                         }}
                     />
                 </>
