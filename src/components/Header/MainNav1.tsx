@@ -195,6 +195,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description, sidebarMen
             <MenuBar
               menuItems={menuItems}
               className="p-0 ml-0 block md:hidden"
+              sidebarMenuItems={sidebarMenuItems}
             />
           </div>
         </div>
