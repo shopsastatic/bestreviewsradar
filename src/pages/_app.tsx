@@ -23,18 +23,20 @@ const inter = Inter({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--inter-font",
-  display: 'swap',
+  display: 'optional',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true,
 });
 
 const noto_san = Noto_Sans({
   weight: ["400", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--noto-font",
-  display: 'swap',
+  display: 'optional',
   preload: true,
   fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true,
 });
 
 // Dynamic imports with ssr: false to avoid hydration issues
