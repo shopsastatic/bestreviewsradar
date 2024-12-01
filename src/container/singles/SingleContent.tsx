@@ -807,21 +807,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					)}
 
 					<div className='col-span-8' ref={cRef}>
-						{amzData.length > 0 && (
-							<>
-								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
-								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className={`grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
-										? 'md:grid-cols-3 md:gap-7'
-										: 'md:grid-cols-2 md:gap-10'
-										} gap-6`}>
-										{amzData.slice(NoT, 50).map((item: any, index: number) => (
-											<RelatedProduct key={`${item.title}-${index}`} item={item} />
-										))}
-									</div>
-								</div>
-							</>
-						)}
+						
 
 						{hydratedContent && (
 							<div
