@@ -151,7 +151,7 @@ const MainNav1: FC<MainNav1Props> = ({ menuItems, title, description, sidebarMen
               />
             </Link>
             <div className="items-center hidden md:flex">
-              <MenuBar menuItems={menuItems} sideBarMenuItem={sidebarMenuItems} />
+              <MenuBar menuItems={menuItems} sidebarMenuItems={sidebarMenuItems} />
           </div>
             <div ref={searchContainerRef} className="relative ml-10 hidden min-[895px]:block md:min-w-[400px] lg:min-w-[500px] xl:min-w-[700px]">
               <form onSubmit={handleSubmit} className="relative">
