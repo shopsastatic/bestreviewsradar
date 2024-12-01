@@ -13,7 +13,7 @@ export const ThirdPartyScripts = () => {
                 // Thêm delay nhỏ sau khi main content đã load
                 setTimeout(() => {
                     setMainContentLoaded(true);
-                }, 500);
+                }, 1000);
             });
         }
     }, []);
