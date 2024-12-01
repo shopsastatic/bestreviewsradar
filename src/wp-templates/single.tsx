@@ -49,7 +49,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
           props.data?.generalSettings as NcgeneralSettingsFieldsFragmentFragment
         }
       >
-        <SingleHeader post={_post} />
+        {/* <SingleHeader post={_post} /> */}
       </PageLayout>
     </>
   );
