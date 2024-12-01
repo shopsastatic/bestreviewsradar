@@ -2,11 +2,7 @@
 import { memo } from 'react';
 import { ArrowUp } from 'lucide-react';
 
-interface ScrollTopProps {
-  visible: boolean;
-}
-
-const ScrollTop = memo(({ visible }: ScrollTopProps) => {
+const ScrollTop = memo(() => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -25,10 +21,6 @@ const ScrollTop = memo(({ visible }: ScrollTopProps) => {
         shadow-lg cursor-pointer z-50
         transition-all duration-300 ease-in-out
         hover:-translate-y-1 active:scale-95
-        ${visible
-          ? 'opacity-100 translate-y-0'
-          : 'opacity-0 translate-y-10 pointer-events-none'
-        }
       `}
     >
       <ArrowUp className="w-5 h-5" strokeWidth={2.5} />
