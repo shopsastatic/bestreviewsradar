@@ -48,12 +48,12 @@ const PageLayout: FC<Props> = ({
         url={url}
       />
 
-      {/* <SiteHeader
+      <SiteHeader
         siteTitle={generalSettings?.title}
         siteDescription={generalSettings?.description}
         menuItems={headerMenuItems || []}
         sidebarMenuItems={sidebarMenuItems || []}
-      /> */}
+      />
 
       {children}
 
