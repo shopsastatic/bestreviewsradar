@@ -749,6 +749,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					// 	index={index}
 					// 	counter={++counter}
 					// />
+					1
 				))}
 			</div>
 		)
