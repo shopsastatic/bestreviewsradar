@@ -50,7 +50,7 @@ const Component: FaustTemplate<GetPostSiglePageQuery> = (props: any) => {
         }
       >
         <SingleHeader post={_post} />
-        {/* <SingleContent post={_post} /> */}
+        <SingleContent post={_post} />
       </PageLayout>
     </>
   );
