@@ -57,7 +57,7 @@ const PageLayout: FC<Props> = ({
 
       {children}
 
-      {/* <Footer menuItems={footerMenuItems || []} /> */}
+      <Footer menuItems={footerMenuItems || []} />
     </>
   );
 };
