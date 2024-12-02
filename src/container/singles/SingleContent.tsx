@@ -152,9 +152,6 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 RelatedProduct.displayName = 'RelatedProduct'
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
-	return (
-		"1"
-	)
 	// Refs
 	const contentRef = useRef(null)
 	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
@@ -368,6 +365,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			handleScroll.cancel();
 		};
 	}, [activeHeading]);
+	return (
+		"33"
+	)
 
 	const calculateRating = (rateIndex: any) => {
 		let tag = "Very Good";
