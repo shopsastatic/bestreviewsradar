@@ -987,23 +987,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	let counter = 0;
 
 	return (
-		"33"
-	)
-
-	return (
 		<>
 			<div className='container'>
 				{renderAlert()}
 				{/* html */}
 				<ProductList amzData={amzData} NoT={NoT} />
-
 				<ScrollTop />
 				{/* {router.query.gclid != undefined && (
 					<SinglePopup prod={amzData[0]} />
 				)} */}
 			</div>
 
-			{headings && headings?.length > 0 && (
+			{/* {headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -1089,7 +1084,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)}
+			)} */}
 		</>
 	);
 };
