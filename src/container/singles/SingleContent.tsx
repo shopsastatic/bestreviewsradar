@@ -1,14 +1,13 @@
 'use client'
 
-import { memo, useCallback, useRef, useState, useEffect } from 'react'
+import { FC, useEffect, useRef, useState, memo } from 'react'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
-import dynamic from 'next/dynamic'
+import Alert from '@/components/Alert'
 import Link from 'next/link'
-import { debounce } from 'lodash'
-
-const Alert = dynamic(() => import('@/components/Alert'), { ssr: false })
-const ScrollTop = dynamic(() => import('@/components/ScrollTop'), { ssr: false })
-// const SinglePopup = dynamic(() => import('@/components/SinglePopup'), { ssr: false })
+import ScrollTop from '@/components/ScrollTop'
+import debounce from 'lodash/debounce'
+import SinglePopup from '@/components/SinglePopup'
+import { useRouter } from 'next/router'
 
 // Types
 export interface SingleContentProps {
@@ -50,52 +49,54 @@ const parseImageUrl = async (url: string) => {
 	return url;
 };
 
-const RelatedProduct = memo(({ item }: any) => {
-	const [imageSrc, setImageSrc] = useState("/")
-	const [isVisible, setIsVisible] = useState(false)
-	const elementRef = useRef(null)
+const RelatedProduct = memo(({ item }: { item: any }) => {
+	const [imageSrc, setImageSrc] = useState<string>("/");
+	const [isVisible, setIsVisible] = useState<boolean>(false);
+	const observerRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
-			([entry]) => entry.isIntersecting && setIsVisible(true),
-			{ threshold: 0.1, rootMargin: '50px' }
-		)
+			(entries) => {
+				const entry = entries[0];
+				if (entry.isIntersecting) {
+					setIsVisible(true);
+				}
+			},
+			{ threshold: 0.1 }
+		);
 
-		const element = elementRef.current
-		if (element) {
-			observer.observe(element)
+		if (observerRef.current) {
+			observer.observe(observerRef.current);
 		}
 
 		return () => {
-			if (element) {
-				observer.unobserve(element)
+			if (observerRef.current) {
+				observer.unobserve(observerRef.current);
 			}
-			observer.disconnect()
-		}
-	}, [])
+		};
+	}, []);
 
 	useEffect(() => {
-		const loadImage = async () => {
+		const fetchImageUrl = async () => {
 			if (isVisible && item?.img) {
-				try {
-					const newUrl = await parseImageUrl(item.img)
-					setImageSrc(newUrl)
-				} catch (error) {
-					console.error('Error loading image:', error)
-					setImageSrc(item.img)
+				try{
+					const updatedUrl = await parseImageUrl(item.img)
+					setImageSrc(updatedUrl ?? item?.img);
+				}catch(e) {
+					setImageSrc(item?.img);
 				}
 			}
-		}
+		};
 
-		loadImage()
-	}, [isVisible, item?.img])
+		fetchImageUrl();
+	}, [isVisible, item?.img]);
 
 	return (
-		<div ref={elementRef} className="col-span-1 related-prod-child">
+		<div ref={observerRef} className="col-span-1 related-prod-child">
 			<Link href={item.url ?? "/"}>
 				<div className="max-h-[94px] h-full m-auto mb-3 relative">
 					{imageSrc === "/" ? (
-						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg" />
+						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
 					) : (
 						<img
 							loading="lazy"
@@ -146,78 +147,99 @@ const RelatedProduct = memo(({ item }: any) => {
 				</button>
 			</Link>
 		</div>
-	)
-})
-
+	);
+});
 
 RelatedProduct.displayName = 'RelatedProduct'
 
-const SingleContent = ({ post }: any) => {
+const SingleContent: FC<SingleContentProps> = ({ post }) => {
+	const router = useRouter()
 	// Refs
-	const [state, setState] = useState({
-		showTooltip: false,
-		headings: [],
-		activeHeading: '',
-		isShowScrollToTop: false,
-		hydratedContent: ''
-	}) as any
+	const endedAnchorRef = useRef<HTMLDivElement>(null)
+	const progressRef = useRef<HTMLButtonElement>(null)
+	const contentRef = useRef(null)
+	const tooltipRef = useRef<HTMLDivElement>(null)
+	const [showTooltip, setShowTooltip] = useState(false)
+	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
+	const [activeHeading, setActiveHeading] = useState<string>('')
+	const cRef = useRef<HTMLDivElement>(null) as any
+	const relatedRef = useRef(null)
 
-	// Refs
-	const refs = {
-		content: useRef(null) as any,
-		tooltip: useRef(null) as any,
-		endedAnchor: useRef(null) as any,
-		progress: useRef(null) as any,
-		main: useRef(null) as any,
-		related: useRef(null) as any
-	}
-
-	const [activeHeading, setActiveHeading] = useState('')
+	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
 
 	// Get post data
-	const { content, status, date, contentEggData, numberOfToplist } = getPostDataFromPostFragment(post || {})
-	const amzData = JSON.parse(contentEggData)
-	const NoT = numberOfToplist?.numberOfToplist || 10
+	const {
+		content,
+		status,
+		date,
+		contentEggData,
+		numberOfToplist
+	} = getPostDataFromPostFragment(post || {})
+	
+	const amzData = JSON.parse(contentEggData) as any
+
+	const [hydratedContent, setHydratedContent] = useState(content)
+
+	let NoT = numberOfToplist?.numberOfToplist as any
+	if (!NoT) {
+		NoT = 10
+	}
+
+	const post_id = post?.databaseId
 
 	useEffect(() => {
-		const imageObserver = new IntersectionObserver(
-			(entries) => {
-				entries.forEach(async (entry) => {
+		const handleLazyLoading = () => {
+			const lazyImages = document.querySelectorAll(".lazy-load-prod");
+
+			const imageObserver = new IntersectionObserver((entries, observer) => {
+				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						const img = entry.target as any
-						const dataSrc = img.getAttribute("data-src")
+						const img = entry.target as any;
+						const dataSrc = img.getAttribute("data-src");
+
 						if (dataSrc) {
-							try {
-								const newSrc = await parseImageUrl(dataSrc)
-								img.src = newSrc
+							parseImageUrl(dataSrc).then((data: any) => {
+								img.src = data
+								img.setAttribute('data-src', data);
 								img.onload = () => {
-									img.style.opacity = "1"
-									img.parentElement?.classList.add("loaded")
+									img.style.opacity = "1";
+									img.parentElement?.classList.add("loaded");
 									img.parentElement?.classList.remove("prod-image-container")
-								}
-							} catch (e) {
-								console.error('Error loading image:', e)
-							}
+								};
+								img.onerror = () => {
+									if (img.src.includes('c_scale')) {
+										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+										img.src = retryUrl;
+
+										img.onerror = () => {
+											img.src = dataSrc;
+											img.parentElement?.classList.add("loaded");
+											img.parentElement?.classList.remove("prod-image-container");
+										};
+									} else {
+										img.src = dataSrc;
+										img.parentElement?.classList.add("loaded");
+										img.parentElement?.classList.remove("prod-image-container");
+									}
+								};
+								observer.unobserve(img);
+							})
 						}
-						imageObserver.unobserve(img)
 					}
-				})
-			},
-			{ threshold: 0.1, rootMargin: '50px' }
-		)
+				});
+			}, {
+				threshold: 0.1
+			});
 
-		document.querySelectorAll(".lazy-load-prod").forEach(img => imageObserver.observe(img))
-
-		return () => imageObserver.disconnect()
+			lazyImages.forEach((img) => imageObserver.observe(img));
+		};
+		handleLazyLoading()
 	}, [])
 
 	// Handle click outside
 	const handleClickOutside = (event: MouseEvent) => {
-		if (refs.tooltip.current && !refs.tooltip.current.contains(event.target as Node)) {
-			setState((prev: any) => ({
-				...prev,
-				showTooltip: false
-			}))
+		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+			setShowTooltip(false)
 		}
 	}
 
@@ -310,8 +332,8 @@ const SingleContent = ({ post }: any) => {
 	// Progress indicator
 	useEffect(() => {
 		const handleProgressIndicator = () => {
-			const entryContent = refs.content.current as any;
-			const progressBarContent = refs.progress.current as any;
+			const entryContent = contentRef.current as any;
+			const progressBarContent = progressRef.current;
 
 			if (!entryContent || !progressBarContent) return;
 
@@ -320,10 +342,7 @@ const SingleContent = ({ post }: any) => {
 			let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
 
 			progressBarContent.innerText = scrolled.toFixed(0) + '%';
-			setState((prev: any) => ({
-				...prev,
-				isShowScrollToTop: scrolled >= 100
-			}));
+			setIsShowScrollToTop(scrolled >= 100);
 		};
 
 		const debouncedProgressIndicator = debounce(() => {
@@ -338,6 +357,35 @@ const SingleContent = ({ post }: any) => {
 			debouncedProgressIndicator.cancel();
 		};
 	}, []);
+
+	// Alert render
+	const renderAlert = () => {
+		if (status === 'publish') return null;
+
+		if (status === 'future') {
+			return (
+				<Alert type="warning">
+					This post is scheduled. It will be published on {date}.
+				</Alert>
+			);
+		}
+
+		return (
+			<Alert type="warning">
+				This post is {status}. It will not be visible on the website until it is published.
+			</Alert>
+		);
+	};
+
+	// Slugify text
+	const slugify = (text: string) => {
+		return text
+			.toString()
+			.toLowerCase()
+			.trim()
+			.replace(/[\s\W-]+/g, '-')
+			.replace(/^-+|-+$/g, '');
+	};
 
 	// Process content and extract headings
 	useEffect(() => {
@@ -433,11 +481,8 @@ const SingleContent = ({ post }: any) => {
 				}))
 			];
 
-			setState((prev: any) => ({
-				...prev,
-				headings: headingData,
-				hydratedContent: updatedContent
-			}));
+			setHeadings(headingData);
+			setHydratedContent(updatedContent);
 		};
 
 		updateContentWithHeadings();
@@ -446,60 +491,60 @@ const SingleContent = ({ post }: any) => {
 	// Handle scroll for active heading
 	useEffect(() => {
 		const handleScroll = debounce(() => {
-			const sections = refs.main.current?.querySelectorAll('h2')
-			const btn_link = refs.main.current?.querySelectorAll('.amz-link-content a')
+			const sections = cRef.current?.querySelectorAll('h2');
+			const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
 
 			if (amzData.length > 0) {
-				Array.from(btn_link || []).forEach((btn: any, index: number) => {
-					let org_link = 1
+				Array.from(btn_link).map((btn: any, index: any) => {
+					let org_link = 1;
 					if (btn.href.match(/0\.0\.0\.(\d+)/)) {
 						org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
 					} else {
-						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop())
+						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
 					}
 					if (org_link) {
 						btn.href = amzData?.[org_link - 1]?.url
 					}
-				})
+				});
 			}
 
-			if (!sections) return
+			if (!sections) return;
 
-			let currentActiveId = ''
+			let currentActiveId = '';
 			const sectionPositions = Array.from(sections).map((section: any) => ({
 				id: section.id,
 				top: section.getBoundingClientRect().top - 150
-			}))
+			}));
 
 			for (let i = 0; i < sectionPositions.length; i++) {
-				const currentSection = sectionPositions[i]
-				const nextSection = sectionPositions[i + 1]
+				const currentSection = sectionPositions[i];
+				const nextSection = sectionPositions[i + 1];
 
 				if (nextSection) {
 					if (currentSection.top <= 0 && nextSection.top > 0) {
-						currentActiveId = currentSection.id
-						break
+						currentActiveId = currentSection.id;
+						break;
 					}
 				} else {
 					if (currentSection.top <= 0) {
-						currentActiveId = currentSection.id
+						currentActiveId = currentSection.id;
 					}
 				}
 			}
 
 			if (currentActiveId && currentActiveId !== activeHeading) {
-				setActiveHeading(currentActiveId)
+				setActiveHeading(currentActiveId);
 			}
-		}, 100)
+		}, 100);
 
-		window.addEventListener('scroll', handleScroll, { passive: true })
-		handleScroll()
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		handleScroll();
 
 		return () => {
-			window.removeEventListener('scroll', handleScroll)
-			handleScroll.cancel()
-		}
-	}, [activeHeading, amzData])
+			window.removeEventListener('scroll', handleScroll);
+			handleScroll.cancel();
+		};
+	}, [activeHeading]);
 
 	const calculateRating = (rateIndex: any) => {
 		let tag = "Very Good";
@@ -684,35 +729,6 @@ const SingleContent = ({ post }: any) => {
 		}
 
 		return result;
-	};
-
-	// Alert render
-	const renderAlert = () => {
-		if (status === 'publish') return null;
-
-		if (status === 'future') {
-			return (
-				<Alert type="warning">
-					This post is scheduled. It will be published on {date}.
-				</Alert>
-			);
-		}
-
-		return (
-			<Alert type="warning">
-				This post is {status}. It will not be visible on the website until it is published.
-			</Alert>
-		);
-	};
-
-	// Slugify text
-	const slugify = (text: string) => {
-		return text
-			.toString()
-			.toLowerCase()
-			.trim()
-			.replace(/[\s\W-]+/g, '-')
-			.replace(/^-+|-+$/g, '');
 	};
 
 	let counter = 0;
@@ -967,12 +983,12 @@ const SingleContent = ({ post }: any) => {
 				)}
 
 				<ScrollTop />
-				{/* {router.query.gclid != undefined && (
+				{router.query.gclid != undefined && (
 					<SinglePopup prod={amzData[0]} />
-				)} */}
+				)}
 			</div>
 
-			{/* {headings && headings?.length > 0 && (
+			{headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -1058,7 +1074,9 @@ const SingleContent = ({ post }: any) => {
 						)}
 					</div>
 				</div>
-			)} */}
+			)}
+
+			<div className="!my-0" ref={endedAnchorRef} />
 		</>
 	);
 };
