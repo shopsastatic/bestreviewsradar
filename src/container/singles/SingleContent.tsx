@@ -6,7 +6,6 @@ import Alert from '@/components/Alert'
 import Link from 'next/link'
 import ScrollTop from '@/components/ScrollTop'
 import debounce from 'lodash/debounce'
-import { useRouter } from 'next/router'
 
 // Types
 export interface SingleContentProps {
@@ -152,18 +151,12 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 RelatedProduct.displayName = 'RelatedProduct'
 
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
-	const router = useRouter()
 	// Refs
-	const progressRef = useRef<HTMLButtonElement>(null)
 	const contentRef = useRef(null)
-	const tooltipRef = useRef<HTMLDivElement>(null)
-	const [showTooltip, setShowTooltip] = useState(false)
 	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
 	const [activeHeading, setActiveHeading] = useState<string>('')
 	const cRef = useRef<HTMLDivElement>(null) as any
 	const relatedRef = useRef(null)
-
-	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
 
 	// Get post data
 	const {
@@ -181,13 +174,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	let NoT = numberOfToplist?.numberOfToplist as any
 	if (!NoT) {
 		NoT = 10
-	}
-
-	// Handle click outside
-	const handleClickOutside = (event: MouseEvent) => {
-		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
-			setShowTooltip(false)
-		}
 	}
 
 	// Alert render
