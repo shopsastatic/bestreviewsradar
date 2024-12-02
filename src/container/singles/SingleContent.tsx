@@ -606,52 +606,56 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	};
 
 	const ProductImage = memo(({ img, title, manufacturer }: any) => {
-		const [imageSrc, setImageSrc] = useState('/');
 		const imageRef = useRef<HTMLImageElement>(null);
 
+		const handleImageIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting && imageRef.current) {
+					const img = imageRef.current;
+
+					parseImageUrl(img.dataset.src || '').then((data) => {
+						img.src = data;
+						img.dataset.src = data;
+						img.style.opacity = "1";
+						img.parentElement?.classList.add("loaded");
+						img.parentElement?.classList.remove("prod-image-container");
+
+						img.onerror = handleImageError(img);
+					});
+				}
+			});
+		}, []);
+
+		const handleImageError = useCallback((img: HTMLImageElement) => () => {
+			if (img.src.includes('c_scale')) {
+				const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+				img.src = retryUrl;
+
+				img.onerror = () => {
+					img.src = img.dataset.src || '/';
+					img.parentElement?.classList.add("loaded");
+					img.parentElement?.classList.remove("prod-image-container");
+				};
+			}
+		}, []);
+
 		useEffect(() => {
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting && imageRef.current) {
-						const img = imageRef.current as any;
+			const observer = new IntersectionObserver(handleImageIntersection, {
+				threshold: 0.1,
+			});
 
-						parseImageUrl(img.getAttribute('data-src')).then((data: any) => {
-							img.src = data;
-							img.setAttribute('data-src', data);
-							img.style.opacity = "1";
-							img.parentElement?.classList.add("loaded");
-							img.parentElement?.classList.remove("prod-image-container");
-
-							img.onerror = () => {
-								if (img.src.includes('c_scale')) {
-									const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
-									img.src = retryUrl;
-
-									img.onerror = () => {
-										const originalSrc = img.getAttribute('data-src') || '/';
-										img.src = originalSrc;
-										img.parentElement?.classList.add("loaded");
-										img.parentElement?.classList.remove("prod-image-container");
-									};
-								}
-							};
-
-							observer.unobserve(img);
-						});
-					}
-				});
-			}, { threshold: 0.1 });
-
-			if (imageRef.current) {
-				observer.observe(imageRef.current);
+			const currentImage = imageRef.current;
+			if (currentImage) {
+				observer.observe(currentImage);
 			}
 
 			return () => {
-				if (imageRef.current) {
-					observer.unobserve(imageRef.current);
+				if (currentImage) {
+					observer.unobserve(currentImage);
 				}
+				observer.disconnect();
 			};
-		}, [img]);
+		}, [handleImageIntersection]);
 
 		return (
 			<div className="prod-feature col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col">
@@ -759,8 +763,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						<div className="flex justify-end lg:justify-end w-full">
 							<button className="check-price-button text-base flex flex-nowrap items-center gap-2 bg-[#ff6b00] hover:bg-[#e06308] transition-all text-white px-2.5 rounded-xl font-medium">
 								<span>Check Price</span>
-								<svg height="16" viewBox="0 -6.5 38 38" width="16" xmlns="http://www.w3.org/2000/svg">
-									<path d="m187.812138 38.5802109 10.513086 10.4240604.087896.0815708c.351763.3488153.55642.8088476.58688 1.3523806l-.001752.1827201c-.025518.4305489-.190058.84187-.514308 1.2104549l-.12268.1266231-10.549122 10.4617683c-.78015.7736145-2.041567.7736145-2.821717 0-.784816-.778241-.784816-2.0435318-.000063-2.8217102l7.283906-7.2241696-29.274794.0007198c-1.102402 0-1.99947-.8895527-1.99947-1.9910973s.897068-1.9910973 1.999445-1.9910973l29.039758-.0007193-7.048782-6.9897315c-.784816-.778241-.784816-2.0435318 0-2.8217728.78015-.7736145 2.041567-.7736145 2.821717 0z" fill="#fff" transform="translate(-161 -38)" />
+								<svg height={16} width={16} viewBox="0 0 38 25" fill="#fff">
+									<path d="M26.8.6l10.5 10.4c.4.3.6.8.6 1.4 0 .4-.2.8-.5 1.2L26.8 24c-.8.8-2 .8-2.8 0-.8-.8-.8-2 0-2.8l7.3-7.2H2c-1.1 0-2-.9-2-2s.9-2 2-2h29L24 3.4c-.8-.8-.8-2 0-2.8.8-.8 2-.8 2.8 0z" />
 								</svg>
 							</button>
 						</div>
@@ -803,20 +807,14 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			<div className={`h-tag ${counter === 4 ? 'sub' : ''} flex items-center absolute -top-[16px] -left-[6px]`}>
 				<div className={`${counter === 4 ? 'noicon-tag-left' : ''} w-[42px] h-[32px] flex justify-center items-center prod-heading-tag relative`}>
 					{counter === 1 && (
-						<svg xmlns="http://www.w3.org/2000/svg" className="mr-2" viewBox="0 0 576 512" width="16" height="16">
-							<path d="M226.5 168.8L287.9 42.3l61.4 126.5c4.6 9.5 13.6 16.1 24.1 17.7l137.4 20.3-99.8 98.8c-7.4 7.3-10.8 17.8-9 28.1l23.5 139.5L303 407.7c-9.4-5-20.7-5-30.2 0L150.2 473.2l23.5-139.5c1.7-10.3-1.6-20.7-9-28.1L65 206.8l137.4-20.3c10.5-1.5 19.5-8.2 24.1-17.7zM424.9 509.1c8.1 4.3 17.9 3.7 25.3-1.7s11.2-14.5 9.7-23.5L433.6 328.4 544.8 218.2c6.5-6.4 8.7-15.9 5.9-24.5s-10.3-14.9-19.3-16.3L378.1 154.8 309.5 13.5C305.5 5.2 297.1 0 287.9 0s-17.6 5.2-21.6 13.5L197.7 154.8 44.5 177.5c-9 1.3-16.5 7.6-19.3 16.3s-.5 18.1 5.9 24.5L142.2 328.4 116 483.9c-1.5 9 2.2 18.1 9.7 23.5s17.3 6 25.3 1.7l137-73.2 137 73.2z" fill="#FFFFFF"></path>
+						<svg viewBox="0 0 576 512" fill="#fff" className='mr-2' width={16} height={16}>
+							<path d="M227 169l61-127 61 127c5 9 14 16 24 18l138 20-100 99c-7 7-11 18-9 28l24 140-123-65c-9-5-21-5-30 0l-123 65 24-140c2-10-2-21-9-28l-100-99 138-20c10-2 19-9 24-18zM425 509c8 4 18 4 25-2s11-14 10-23l-26-156 111-110c7-6 9-16 6-24s-10-15-19-16l-153-23-69-141c-4-8-12-14-22-14s-18 6-22 14l-69 141-153 23c-9 1-16 8-19 16s-1 18 6 24l111 110-26 156c-1 9 2 18 10 23s17 6 25 2l137-73 137 73z" />
 						</svg>
 					)}
 
 					{counter === 2 && (
-						<svg xmlns="http://www.w3.org/2000/svg" className="mr-2" height="16" viewBox="0 0 512.007 512.007" width="16">
-							<g fill="#fff">
-								<path d="m510.025 139.609-85.333-102.4a8.547 8.547 0 0 0 -6.554-3.063h-324.267a8.524 8.524 0 0 0 -6.554 3.063l-85.333 102.4a8.512 8.512 0 0 0 -1.178 9.079 8.55 8.55 0 0 0 7.731 4.915h494.933a8.55 8.55 0 0 0 7.731-4.915 8.53 8.53 0 0 0 -1.176-9.079zm-483.268-3.072 71.108-85.333h316.271l71.108 85.333z"></path>
-								<path d="m263.898 39.402a8.535 8.535 0 0 0 -7.885-5.265h-162.133c-3.055 0-5.871 1.63-7.398 4.284s-1.519 5.905.026 8.55l59.733 102.4a8.541 8.541 0 0 0 6.272 4.164c.367.043.734.068 1.092.068a8.539 8.539 0 0 0 6.042-2.5l102.4-102.4a8.532 8.532 0 0 0 1.851-9.301zm-108.501 91.81-46.669-80.008h126.677z"></path>
-								<path d="m511.109 141.281a8.527 8.527 0 0 0 -7.646-4.753h-494.933a8.536 8.536 0 0 0 -7.646 4.753 8.537 8.537 0 0 0 .87 8.96l247.467 324.267c1.613 2.116 4.122 3.362 6.784 3.362s5.171-1.246 6.767-3.362l247.467-324.267a8.54 8.54 0 0 0 .87-8.96zm-255.104 313.993-230.221-301.67h460.442z"></path>
-								<path d="m264.146 466.76-102.4-324.267a8.538 8.538 0 0 0 -8.141-5.965h-145.067a8.536 8.536 0 0 0 -7.646 4.753 8.537 8.537 0 0 0 .87 8.96l247.467 324.267a8.517 8.517 0 0 0 6.784 3.362 8.297 8.297 0 0 0 3.925-.973 8.53 8.53 0 0 0 4.208-10.137zm-238.362-313.156h121.566l85.811 271.736zm399.753-115.183a8.52 8.52 0 0 0 -7.398-4.284h-162.134a8.53 8.53 0 0 0 -6.033 14.566l102.4 102.4a8.503 8.503 0 0 0 6.033 2.5c.367 0 .734-.026 1.101-.068a8.531 8.531 0 0 0 6.272-4.164l59.733-102.4a8.55 8.55 0 0 0 .026-8.55zm-68.924 92.791-80.009-80.008h126.677z"></path>
-								<path d="m511.126 141.299a8.527 8.527 0 0 0 -7.646-4.753h-145.067a8.53 8.53 0 0 0 -8.141 5.965l-102.4 324.267a8.539 8.539 0 0 0 4.207 10.138 8.493 8.493 0 0 0 3.925.956 8.574 8.574 0 0 0 6.784-3.345l247.467-324.267a8.54 8.54 0 0 0 .871-8.961zm-232.277 284.04 85.811-271.736h121.566z"></path>
-							</g>
+						<svg viewBox="0 0 512 512" className="mr-2" height="16">
+							<path fill="#fff" d="M510 140l-85-102a8.5 8.5 0 0 0-7-3H94a8.5 8.5 0 0 0-7 3L2 140a8.5 8.5 0 0 0 7 14h494a8.5 8.5 0 0 0 7-14zM27 137l71-85h316l71 85H27zm237-98a8.5 8.5 0 0 0-8-5H94a8.5 8.5 0 0 0-7 13l60 102a8.5 8.5 0 0 0 13 2l102-102a8.5 8.5 0 0 0 2-10zm-109 92-47-80h127l-80 80zm393 10a8.5 8.5 0 0 0-8-5H9a8.5 8.5 0 0 0-7 14l247 324a8.5 8.5 0 0 0 14 0l247-324a8.5 8.5 0 0 0-1-9zM256 455 26 153h460L256 455zm8 12L162 143a8.5 8.5 0 0 0-8-6H9a8.5 8.5 0 0 0-7 14l247 324a8.5 8.5 0 0 0 15-8zM26 154h122l86 272-208-272zm400-115a8.5 8.5 0 0 0-7-4H257a8.5 8.5 0 0 0-6 15l102 102a8.5 8.5 0 0 0 13-2l60-102a8.5 8.5 0 0 0 0-9zm-69 93l-80-80h127l-47 80zm154 9a8.5 8.5 0 0 0-8-5H358a8.5 8.5 0 0 0-8 6L248 466a8.5 8.5 0 0 0 15 8l247-324a8.5 8.5 0 0 0-1-9zm-232 284 86-272h122L279 425z" />
 						</svg>
 					)}
 
@@ -888,12 +886,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							<div className="features-details mt-3 grid grid-cols-1 gap-1.5">
 								{stringToArray(item.feats).map((feat: any, index: any) => (
 									<div key={index} className="col-span-1 flex items-start gap-2">
-										<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-[24px] h-[24px]" style={{ minWidth: "22px" }}>
-											<g transform="translate(12 12)">
-												<circle fill="#e8f0fe" r="10" />
-												<path d="m-5 0 3.33 3.33 6.67-6.66" fill="none" stroke="#326cbb" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
-											</g>
+
+										<svg viewBox="0 0 24 24" className="w-[24px] h-[24px]" style={{ minWidth: "22px" }}>
+											<circle cx="12" cy="12" r="10" fill="#e8f0fe" />
+											<path d="M7 12l3.33 3.33L17 8.67" fill="none" stroke="#326cbb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
 										</svg>
+
 										<span className="text-[#42495f]">{feat}</span>
 									</div>
 								))}
