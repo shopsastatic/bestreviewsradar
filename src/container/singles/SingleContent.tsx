@@ -6,6 +6,7 @@ import Alert from '@/components/Alert'
 import Link from 'next/link'
 import ScrollTop from '@/components/ScrollTop'
 import debounce from 'lodash/debounce'
+import { useRouter } from 'next/router'
 
 // Types
 export interface SingleContentProps {
@@ -73,6 +74,21 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 			}
 		};
 	}, []);
+
+	useEffect(() => {
+		const fetchImageUrl = async () => {
+			if (isVisible && item?.img) {
+				try {
+					const updatedUrl = await parseImageUrl(item.img)
+					setImageSrc(updatedUrl ?? item?.img);
+				} catch (e) {
+					setImageSrc(item?.img);
+				}
+			}
+		};
+
+		fetchImageUrl();
+	}, [isVisible, item?.img]);
 
 	return (
 		<div ref={observerRef} className="col-span-1 related-prod-child">
@@ -983,7 +999,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)} */}
 			</div>
 
-			{headings && headings?.length > 0 && (
+			{/* {headings && headings?.length > 0 && (
 				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
@@ -1069,7 +1085,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						)}
 					</div>
 				</div>
-			)}
+			)} */}
 		</>
 	);
 };
