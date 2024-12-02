@@ -880,6 +880,18 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 
 				<div ref={contentRef} className="max-h-content relative" style={{ maxHeight: '276px', transition: 'max-height 0.3s ease-in-out' }}>
+					{stringToArray(item.specs)?.length > 0 && pointToArray(item.specs_points)?.length > 0 && (
+						<div className="specs-container min-h-5 my-3 rounded-lg md:rounded-2xl p-4 bg-[#f0f6fd] grid grid-cols-1 gap-2">
+							{stringToArray(item.specs)?.map((spec: any, index: any) => (
+								<div key={index} className="flex items-center gap-2 col-span-1">
+									<span className="spec-point bg-white py-0.5 px-2.5 rounded font-medium min-w-11 flex justify-center">
+										{Number(pointToArray(item.specs_points)[index]).toFixed(1)}
+									</span>
+									<span className="text-[#42495f] font-medium">{spec}</span>
+								</div>
+							))}
+						</div>
+					)}
 					{stringToArray(item.feats)?.length > 0 && (
 						<div>
 							<h2 className="text-base">Why we love it</h2>
