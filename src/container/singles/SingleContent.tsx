@@ -1,13 +1,14 @@
 'use client'
 
-import { FC, useEffect, useRef, useState, memo } from 'react'
+import { memo, useCallback, useRef, useState, useEffect } from 'react'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
-import Alert from '@/components/Alert'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import ScrollTop from '@/components/ScrollTop'
-import debounce from 'lodash/debounce'
-import SinglePopup from '@/components/SinglePopup'
-import { useRouter } from 'next/router'
+import { debounce } from 'lodash'
+
+const Alert = dynamic(() => import('@/components/Alert'), { ssr: false })
+const ScrollTop = dynamic(() => import('@/components/ScrollTop'), { ssr: false })
+// const SinglePopup = dynamic(() => import('@/components/SinglePopup'), { ssr: false })
 
 // Types
 export interface SingleContentProps {
@@ -49,54 +50,52 @@ const parseImageUrl = async (url: string) => {
 	return url;
 };
 
-const RelatedProduct = memo(({ item }: { item: any }) => {
-	const [imageSrc, setImageSrc] = useState<string>("/");
-	const [isVisible, setIsVisible] = useState<boolean>(false);
-	const observerRef = useRef<HTMLDivElement | null>(null);
+const RelatedProduct = memo(({ item }: any) => {
+	const [imageSrc, setImageSrc] = useState("/")
+	const [isVisible, setIsVisible] = useState(false)
+	const elementRef = useRef(null)
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
-			(entries) => {
-				const entry = entries[0];
-				if (entry.isIntersecting) {
-					setIsVisible(true);
-				}
-			},
-			{ threshold: 0.1 }
-		);
+			([entry]) => entry.isIntersecting && setIsVisible(true),
+			{ threshold: 0.1, rootMargin: '50px' }
+		)
 
-		if (observerRef.current) {
-			observer.observe(observerRef.current);
+		const element = elementRef.current
+		if (element) {
+			observer.observe(element)
 		}
 
 		return () => {
-			if (observerRef.current) {
-				observer.unobserve(observerRef.current);
+			if (element) {
+				observer.unobserve(element)
 			}
-		};
-	}, []);
+			observer.disconnect()
+		}
+	}, [])
 
 	useEffect(() => {
-		const fetchImageUrl = async () => {
+		const loadImage = async () => {
 			if (isVisible && item?.img) {
 				try {
-					const updatedUrl = await parseImageUrl(item.img)
-					setImageSrc(updatedUrl ?? item?.img);
-				} catch (e) {
-					setImageSrc(item?.img);
+					const newUrl = await parseImageUrl(item.img)
+					setImageSrc(newUrl)
+				} catch (error) {
+					console.error('Error loading image:', error)
+					setImageSrc(item.img)
 				}
 			}
-		};
+		}
 
-		fetchImageUrl();
-	}, [isVisible, item?.img]);
+		loadImage()
+	}, [isVisible, item?.img])
 
 	return (
-		<div ref={observerRef} className="col-span-1 related-prod-child">
+		<div ref={elementRef} className="col-span-1 related-prod-child">
 			<Link href={item.url ?? "/"}>
 				<div className="max-h-[94px] h-full m-auto mb-3 relative">
 					{imageSrc === "/" ? (
-						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg"></div>
+						<div className="skeleton-card w-[94px] h-[94px] bg-gray-300 animate-pulse mx-auto rounded-lg" />
 					) : (
 						<img
 							loading="lazy"
@@ -147,45 +146,360 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 				</button>
 			</Link>
 		</div>
-	);
-});
+	)
+})
+
 
 RelatedProduct.displayName = 'RelatedProduct'
 
-const SingleContent: FC<SingleContentProps> = ({ post }) => {
-	const router = useRouter()
+const SingleContent = ({ post }: any) => {
 	// Refs
-	const endedAnchorRef = useRef<HTMLDivElement>(null)
-	const progressRef = useRef<HTMLButtonElement>(null)
-	const contentRef = useRef(null)
-	const tooltipRef = useRef<HTMLDivElement>(null)
-	const [showTooltip, setShowTooltip] = useState(false)
-	const [headings, setHeadings] = useState<{ id: string; text: string }[]>([])
-	const [activeHeading, setActiveHeading] = useState<string>('')
-	const cRef = useRef<HTMLDivElement>(null) as any
-	const relatedRef = useRef(null)
+	const [state, setState] = useState({
+		showTooltip: false,
+		headings: [],
+		activeHeading: '',
+		isShowScrollToTop: false,
+		hydratedContent: ''
+	}) as any
 
-	const [isShowScrollToTop, setIsShowScrollToTop] = useState<boolean>(false)
-
-	// Get post data
-	const {
-		content,
-		status,
-		date,
-		contentEggData,
-		numberOfToplist
-	} = getPostDataFromPostFragment(post || {})
-
-	const amzData = JSON.parse(contentEggData) as any
-
-	const [hydratedContent, setHydratedContent] = useState(content)
-
-	let NoT = numberOfToplist?.numberOfToplist as any
-	if (!NoT) {
-		NoT = 10
+	// Refs
+	const refs = {
+		content: useRef(null) as any,
+		tooltip: useRef(null) as any,
+		endedAnchor: useRef(null) as any,
+		progress: useRef(null) as any,
+		main: useRef(null) as any,
+		related: useRef(null) as any
 	}
 
-	const post_id = post?.databaseId
+	const [activeHeading, setActiveHeading] = useState('')
+
+	// Get post data
+	const { content, status, date, contentEggData, numberOfToplist } = getPostDataFromPostFragment(post || {})
+	const amzData = JSON.parse(contentEggData)
+	const NoT = numberOfToplist?.numberOfToplist || 10
+
+	useEffect(() => {
+		const imageObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach(async (entry) => {
+					if (entry.isIntersecting) {
+						const img = entry.target as any
+						const dataSrc = img.getAttribute("data-src")
+						if (dataSrc) {
+							try {
+								const newSrc = await parseImageUrl(dataSrc)
+								img.src = newSrc
+								img.onload = () => {
+									img.style.opacity = "1"
+									img.parentElement?.classList.add("loaded")
+									img.parentElement?.classList.remove("prod-image-container")
+								}
+							} catch (e) {
+								console.error('Error loading image:', e)
+							}
+						}
+						imageObserver.unobserve(img)
+					}
+				})
+			},
+			{ threshold: 0.1, rootMargin: '50px' }
+		)
+
+		document.querySelectorAll(".lazy-load-prod").forEach(img => imageObserver.observe(img))
+
+		return () => imageObserver.disconnect()
+	}, [])
+
+	// Handle click outside
+	const handleClickOutside = (event: MouseEvent) => {
+		if (refs.tooltip.current && !refs.tooltip.current.contains(event.target as Node)) {
+			setState((prev: any) => ({
+				...prev,
+				showTooltip: false
+			}))
+		}
+	}
+
+	// Learn more button functionality
+	useEffect(() => {
+		const learnMoreBtn = document.getElementById('learnMoreBtn')
+		const learnMoreContent = document.getElementById('learnMoreContent')
+
+		const handleLearnMore = (event: any) => {
+			learnMoreContent?.classList.remove('hidden')
+			learnMoreContent?.classList.add('block')
+			event.stopPropagation()
+		}
+
+		const handleClickOutsideLearnMore = (event: any) => {
+			if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
+				learnMoreContent?.classList.add('hidden')
+				learnMoreContent?.classList.remove('block')
+			}
+		}
+
+		learnMoreBtn?.addEventListener('click', handleLearnMore)
+		document.addEventListener('click', handleClickOutsideLearnMore)
+
+		return () => {
+			learnMoreBtn?.removeEventListener('click', handleLearnMore)
+			document.removeEventListener('click', handleClickOutsideLearnMore)
+		}
+	}, [])
+
+	// Toggle button functionality
+	useEffect(() => {
+		const initializeToggleButtons = (selector: string) => {
+			document.querySelectorAll(selector).forEach((button, index) => {
+				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
+				const listBgGradient = document.querySelectorAll(".bg-animate")[index] as HTMLElement
+
+				let isExpanded = false;
+
+				button.addEventListener('click', function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
+            ${text}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="17"
+              height="17"
+              viewBox="0 0 16 16"
+              fill="none"
+              ${rotateIcon ? 'style="transform: rotate(180deg); transition: transform 0.3s ease;"' : ''}
+            >
+              <g id="Primary">
+                <path
+                  id="Vector (Stroke)"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+                  fill="#1575d4"
+                />
+              </g>
+            </svg>
+          `;
+
+					if (isExpanded) {
+						content.style.maxHeight = '276px';
+						listBgGradient.style.opacity = '1'
+						button.innerHTML = getButtonHTML('Show More');
+					} else {
+						content.style.maxHeight = content.scrollHeight + 'px';
+						listBgGradient.style.opacity = '0'
+						button.innerHTML = getButtonHTML('Show Less', true);
+					}
+
+					isExpanded = !isExpanded;
+				});
+			});
+		};
+
+		initializeToggleButtons('.toggle-button:not(.mob)');
+		initializeToggleButtons('.toggle-button.mob');
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
+
+	// Progress indicator
+	useEffect(() => {
+		const handleProgressIndicator = () => {
+			const entryContent = refs.content.current as any;
+			const progressBarContent = refs.progress.current as any;
+
+			if (!entryContent || !progressBarContent) return;
+
+			const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
+			let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+			let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
+
+			progressBarContent.innerText = scrolled.toFixed(0) + '%';
+			setState((prev: any) => ({
+				...prev,
+				isShowScrollToTop: scrolled >= 100
+			}));
+		};
+
+		const debouncedProgressIndicator = debounce(() => {
+			requestAnimationFrame(handleProgressIndicator);
+		}, 100);
+
+		handleProgressIndicator();
+		window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
+
+		return () => {
+			window.removeEventListener('scroll', debouncedProgressIndicator);
+			debouncedProgressIndicator.cancel();
+		};
+	}, []);
+
+	// Process content and extract headings
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
+		const updateContentWithHeadings = () => {
+			const parser = new DOMParser();
+			const doc = parser.parseFromString(content, 'text/html');
+			const h2Elements = Array.from(doc.querySelectorAll('h2'));
+
+			h2Elements.forEach((heading) => {
+				const slugifiedText = slugify(heading.textContent || `heading`);
+				heading.id = `toc-${slugifiedText}`;
+			});
+
+			const tables = Array.from(doc.querySelectorAll('table'));
+			tables.forEach((table) => {
+				let hasProsOrCons = false;
+
+				const firstRow = table.querySelector('tr');
+				if (firstRow) {
+					const tdElements = Array.from(firstRow.querySelectorAll('td'));
+					tdElements.forEach((td: any) => {
+						const text = td.textContent.toLowerCase();
+						if (text.includes('pros') || text.includes('cons')) {
+							hasProsOrCons = true;
+						}
+					});
+				}
+
+				if (hasProsOrCons) {
+					const newDivWrapper = document.createElement('div');
+					newDivWrapper.classList.add('pros-cons-table');
+
+					const thead = table.querySelector('thead');
+					if (thead) {
+						const theadDiv = document.createElement('div');
+						theadDiv.classList.add('thead-wrapper');
+
+						Array.from(thead.querySelectorAll('th')).forEach((th) => {
+							const thDiv = document.createElement('div');
+							thDiv.classList.add('thead-cell');
+							thDiv.innerHTML = th.innerHTML;
+							theadDiv.appendChild(thDiv);
+						});
+
+						newDivWrapper.appendChild(theadDiv);
+					}
+
+					const rows = Array.from(table.querySelectorAll('tbody tr'));
+					const columns = [] as any[];
+
+					rows.forEach((row) => {
+						const cells = Array.from(row.querySelectorAll('td'));
+						cells.forEach((cell, cellIndex) => {
+							if (!columns[cellIndex]) {
+								columns[cellIndex] = [];
+							}
+
+							if (cell.innerHTML) {
+								const icon = cellIndex === 0
+									? '<svg width="20" viewBox="0 0 24 24" fill="#358b15" xmlns="http://www.w3.org/2000/svg" focusable="false"><title>Checkmark Icon</title><path d="M8.982 18.477a.976.976 0 0 1-.658-.266l-5.056-5.055a.926.926 0 0 1 0-1.305.927.927 0 0 1 1.305 0L8.97 16.25 19.427 5.792a.926.926 0 0 1 1.305 0 .926.926 0 0 1 0 1.304L9.628 18.2a.906.906 0 0 1-.658.265l.012.012Z" class="icon-base"></path></svg>'
+									: '<svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.62252 7.17879L7.41279 5.38672L18.7265 16.7004L16.8 18.5995L5.62252 7.17879Z" fill="#D71919"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16.9344 5.50932L18.7265 7.29959L7.41281 18.6133L5.51375 16.6868L16.9344 5.50932Z" fill="#D71919"></path></svg>';
+								columns[cellIndex].push(icon + cell.innerHTML);
+							}
+						});
+					});
+
+					columns.forEach((columnData) => {
+						const columnDiv = document.createElement('div');
+						columnDiv.classList.add('pros-cons-item');
+
+						columnData.forEach((cellContent: string) => {
+							const cellDiv = document.createElement('div');
+							cellDiv.classList.add('cell');
+							cellDiv.innerHTML = cellContent;
+							columnDiv.appendChild(cellDiv);
+						});
+
+						newDivWrapper.appendChild(columnDiv);
+					});
+
+					table.replaceWith(newDivWrapper);
+				}
+			});
+
+			const updatedContent = doc.body.innerHTML;
+			const headingData = [
+				{ id: 'toc-related-deal', text: 'Related Deals' },
+				...h2Elements.map((heading) => ({
+					id: heading.id,
+					text: heading.textContent || '',
+				}))
+			];
+
+			setState((prev: any) => ({
+				...prev,
+				headings: headingData,
+				hydratedContent: updatedContent
+			}));
+		};
+
+		updateContentWithHeadings();
+	}, [content]);
+
+	// Handle scroll for active heading
+	useEffect(() => {
+		const handleScroll = debounce(() => {
+			const sections = refs.main.current?.querySelectorAll('h2')
+			const btn_link = refs.main.current?.querySelectorAll('.amz-link-content a')
+
+			if (amzData.length > 0) {
+				Array.from(btn_link || []).forEach((btn: any, index: number) => {
+					let org_link = 1
+					if (btn.href.match(/0\.0\.0\.(\d+)/)) {
+						org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
+					} else {
+						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop())
+					}
+					if (org_link) {
+						btn.href = amzData?.[org_link - 1]?.url
+					}
+				})
+			}
+
+			if (!sections) return
+
+			let currentActiveId = ''
+			const sectionPositions = Array.from(sections).map((section: any) => ({
+				id: section.id,
+				top: section.getBoundingClientRect().top - 150
+			}))
+
+			for (let i = 0; i < sectionPositions.length; i++) {
+				const currentSection = sectionPositions[i]
+				const nextSection = sectionPositions[i + 1]
+
+				if (nextSection) {
+					if (currentSection.top <= 0 && nextSection.top > 0) {
+						currentActiveId = currentSection.id
+						break
+					}
+				} else {
+					if (currentSection.top <= 0) {
+						currentActiveId = currentSection.id
+					}
+				}
+			}
+
+			if (currentActiveId && currentActiveId !== activeHeading) {
+				setActiveHeading(currentActiveId)
+			}
+		}, 100)
+
+		window.addEventListener('scroll', handleScroll, { passive: true })
+		handleScroll()
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+			handleScroll.cancel()
+		}
+	}, [activeHeading, amzData])
 
 	const calculateRating = (rateIndex: any) => {
 		let tag = "Very Good";
@@ -745,8 +1059,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					</div>
 				</div>
 			)} */}
-
-			<div className="!my-0" ref={endedAnchorRef} />
 		</>
 	);
 };
