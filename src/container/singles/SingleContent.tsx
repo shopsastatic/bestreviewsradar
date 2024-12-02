@@ -365,9 +365,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			handleScroll.cancel();
 		};
 	}, [activeHeading]);
-	return (
-		"33"
-	)
 
 	const calculateRating = (rateIndex: any) => {
 		let tag = "Very Good";
@@ -988,6 +985,10 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	}
 
 	let counter = 0;
+
+	return (
+		"33"
+	)
 
 	return (
 		<>
