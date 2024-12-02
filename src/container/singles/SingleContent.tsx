@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, useEffect, useRef, useState, memo } from 'react'
+import { FC, useEffect, useRef, useState, memo, useCallback } from 'react'
 import { getPostDataFromPostFragment } from '@/utils/getPostDataFromPostFragment'
 import Alert from '@/components/Alert'
 import Link from 'next/link'
@@ -183,176 +183,12 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		NoT = 10
 	}
 
-	useEffect(() => {
-		const handleLazyLoading = () => {
-			const lazyImages = document.querySelectorAll(".lazy-load-prod");
-
-			const imageObserver = new IntersectionObserver((entries, observer) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						const img = entry.target as any;
-						const dataSrc = img.getAttribute("data-src");
-
-						if (dataSrc) {
-							parseImageUrl(dataSrc).then((data: any) => {
-								img.src = data
-								img.setAttribute('data-src', data);
-								img.onload = () => {
-									img.style.opacity = "1";
-									img.parentElement?.classList.add("loaded");
-									img.parentElement?.classList.remove("prod-image-container")
-								};
-								img.onerror = () => {
-									if (img.src.includes('c_scale')) {
-										const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
-										img.src = retryUrl;
-
-										img.onerror = () => {
-											img.src = dataSrc;
-											img.parentElement?.classList.add("loaded");
-											img.parentElement?.classList.remove("prod-image-container");
-										};
-									} else {
-										img.src = dataSrc;
-										img.parentElement?.classList.add("loaded");
-										img.parentElement?.classList.remove("prod-image-container");
-									}
-								};
-								observer.unobserve(img);
-							})
-						}
-					}
-				});
-			}, {
-				threshold: 0.1
-			});
-
-			lazyImages.forEach((img) => imageObserver.observe(img));
-		};
-		handleLazyLoading()
-	}, [])
-
 	// Handle click outside
 	const handleClickOutside = (event: MouseEvent) => {
 		if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
 			setShowTooltip(false)
 		}
 	}
-
-	// Learn more button functionality
-	useEffect(() => {
-		const learnMoreBtn = document.getElementById('learnMoreBtn')
-		const learnMoreContent = document.getElementById('learnMoreContent')
-
-		const handleLearnMore = (event: any) => {
-			learnMoreContent?.classList.remove('hidden')
-			learnMoreContent?.classList.add('block')
-			event.stopPropagation()
-		}
-
-		const handleClickOutsideLearnMore = (event: any) => {
-			if (!learnMoreContent?.contains(event.target) && !learnMoreBtn?.contains(event.target)) {
-				learnMoreContent?.classList.add('hidden')
-				learnMoreContent?.classList.remove('block')
-			}
-		}
-
-		learnMoreBtn?.addEventListener('click', handleLearnMore)
-		document.addEventListener('click', handleClickOutsideLearnMore)
-
-		return () => {
-			learnMoreBtn?.removeEventListener('click', handleLearnMore)
-			document.removeEventListener('click', handleClickOutsideLearnMore)
-		}
-	}, [])
-
-	// Toggle button functionality
-	useEffect(() => {
-		const initializeToggleButtons = (selector: string) => {
-			document.querySelectorAll(selector).forEach((button, index) => {
-				let content = document.querySelectorAll('.max-h-content')[index] as HTMLElement;
-				const listBgGradient = document.querySelectorAll(".bg-animate")[index] as HTMLElement
-
-				let isExpanded = false;
-
-				button.addEventListener('click', function (event) {
-					event.preventDefault();
-					event.stopPropagation();
-
-					const getButtonHTML = (text: string, rotateIcon: boolean = false) => `
-            ${text}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="17"
-              height="17"
-              viewBox="0 0 16 16"
-              fill="none"
-              ${rotateIcon ? 'style="transform: rotate(180deg); transition: transform 0.3s ease;"' : ''}
-            >
-              <g id="Primary">
-                <path
-                  id="Vector (Stroke)"
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
-                  fill="#1575d4"
-                />
-              </g>
-            </svg>
-          `;
-
-					if (isExpanded) {
-						content.style.maxHeight = '276px';
-						listBgGradient.style.opacity = '1'
-						button.innerHTML = getButtonHTML('Show More');
-					} else {
-						content.style.maxHeight = content.scrollHeight + 'px';
-						listBgGradient.style.opacity = '0'
-						button.innerHTML = getButtonHTML('Show Less', true);
-					}
-
-					isExpanded = !isExpanded;
-				});
-			});
-		};
-
-		initializeToggleButtons('.toggle-button:not(.mob)');
-		initializeToggleButtons('.toggle-button.mob');
-
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, []);
-
-	// Progress indicator
-	useEffect(() => {
-		const handleProgressIndicator = () => {
-			const entryContent = contentRef.current as any;
-			const progressBarContent = progressRef.current;
-
-			if (!entryContent || !progressBarContent) return;
-
-			const totalEntryH = entryContent.offsetTop + entryContent.offsetHeight;
-			let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-			let scrolled = totalEntryH ? (winScroll / totalEntryH) * 100 : 0;
-
-			progressBarContent.innerText = scrolled.toFixed(0) + '%';
-			setIsShowScrollToTop(scrolled >= 100);
-		};
-
-		const debouncedProgressIndicator = debounce(() => {
-			requestAnimationFrame(handleProgressIndicator);
-		}, 100);
-
-		handleProgressIndicator();
-		window.addEventListener('scroll', debouncedProgressIndicator, { passive: true });
-
-		return () => {
-			window.removeEventListener('scroll', debouncedProgressIndicator);
-			debouncedProgressIndicator.cancel();
-		};
-	}, []);
 
 	// Alert render
 	const renderAlert = () => {
@@ -771,33 +607,66 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 
 	const ProductImage = memo(({ img, title, manufacturer }: any) => {
 		const [imageSrc, setImageSrc] = useState('/');
-		const imageRef = useRef(null);
+		const imageRef = useRef<HTMLImageElement>(null);
 
 		useEffect(() => {
-			if (!imageRef.current) return;
-
 			const observer = new IntersectionObserver((entries) => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
-						parseImageUrl(img).then(url => {
-							setImageSrc(url);
+				entries.forEach((entry) => {
+					if (entry.isIntersecting && imageRef.current) {
+						const img = imageRef.current as any;
+
+						parseImageUrl(img.getAttribute('data-src')).then((data: any) => {
+							img.src = data;
+							img.setAttribute('data-src', data);
+							img.style.opacity = "1";
+							img.parentElement?.classList.add("loaded");
+							img.parentElement?.classList.remove("prod-image-container");
+
+							img.onerror = () => {
+								if (img.src.includes('c_scale')) {
+									const retryUrl = img.src.replace(/c_scale,w_160,h_160/g, 'w_160,h_160');
+									img.src = retryUrl;
+
+									img.onerror = () => {
+										const originalSrc = img.getAttribute('data-src') || '/';
+										img.src = originalSrc;
+										img.parentElement?.classList.add("loaded");
+										img.parentElement?.classList.remove("prod-image-container");
+									};
+								}
+							};
+
+							observer.unobserve(img);
 						});
 					}
 				});
-			});
+			}, { threshold: 0.1 });
 
-			observer.observe(imageRef.current);
-			return () => observer.disconnect();
+			if (imageRef.current) {
+				observer.observe(imageRef.current);
+			}
+
+			return () => {
+				if (imageRef.current) {
+					observer.unobserve(imageRef.current);
+				}
+			};
 		}, [img]);
 
 		return (
 			<div className="prod-feature col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col">
 				<div className="prod-image-container">
-					<img className="lazy-load-prod prod-image" data-src={img} src={imageSrc ?? "/"} alt={title} />
+					<img
+						ref={imageRef}
+						className="lazy-load-prod prod-image opacity-0 transition-opacity duration-300"
+						data-src={img}
+						src="/"
+						alt={title}
+					/>
 				</div>
 				<p className="mt-4 text-sm text-center text-[#615b5b]">{manufacturer}</p>
 			</div>
-		)
+		);
 	});
 
 	const ProductRating = memo(({ rating, counter }: any) => (
@@ -822,7 +691,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						{item.cusDescContent1 && (
 							<div className="main-highlight-item col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4">
 								<div>
-									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512" fill-rule="evenodd" width="20" height="24" viewBox="0 0 32 32">
+									<svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512" fill-rule="evenodd" width="20" height="24" viewBox="0 0 32 32">
 										<path d="m26.58 6.834a13.95 13.95 0 0 1 3.42 9.166c0 7.726-6.274 14-14 14s-14-6.274-14-14 6.274-14 14-14a13.95 13.95 0 0 1 9.166 3.42l1.834-1.834v-1.586a1 1 0 0 1 2 0v1h1a1 1 0 0 1 0 2h-1.586zm-2.832.004a11.956 11.956 0 0 0 -7.748-2.838c-6.622 0-12 5.378-12 12s5.378 12 12 12 12-5.378 12-12c0-2.952-1.068-5.656-2.838-7.748l-2.132 2.132a8.96 8.96 0 0 1 1.97 5.616c0 4.968-4.032 9-9 9s-9-4.032-9-9 4.032-9 9-9a8.96 8.96 0 0 1 5.616 1.97zm-3.556 3.556a7.003 7.003 0 0 0 -11.192 5.606c0 3.864 3.136 7 7 7a7.003 7.003 0 0 0 5.606-11.192l-1.436 1.436c.524.79.83 1.738.83 2.756 0 2.76-2.24 5-5 5s-5-2.24-5-5 2.24-5 5-5c1.018 0 1.966.306 2.756.83zm-2.898 2.898a3.001 3.001 0 1 0 -1.294 5.708 3.001 3.001 0 0 0 2.708-4.294l-2 2.002c-.392.39-1.024.39-1.416 0a1.003 1.003 0 0 1 0-1.416z" fill="#07499e"></path>
 									</svg>
 								</div>
@@ -836,7 +705,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						{item.cusDescContent2 && (
 							<div className="main-highlight-item col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4">
 								<div>
-									<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512" fill-rule="evenodd" width="24" height="24" viewBox="0 0 32 32">
+									<svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 512 512" fill-rule="evenodd" width="24" height="24" viewBox="0 0 32 32">
 										<path d="m11.116 27.007v-3.607a.997.997 0 0 0 -.4-.8l-.01-.007a8.613 8.613 0 0 1 -3.341-6.839c0-4.83 3.921-8.752 8.752-8.752s8.752 3.921 8.752 8.752a8.743 8.743 0 0 1 -3.311 6.855l-.022.016a.971.971 0 0 0 -.387.774v.033c-.03.946-.03 2.394-.03 3.575a3.004 3.004 0 0 1 -3.002 3h-4a3.001 3.001 0 0 1 -3.001-3zm8.06-4.001a2.977 2.977 0 0 1 1.15-1.974 6.74 6.74 0 0 0 2.543-5.278c0-3.726-3.026-6.752-6.752-6.752s-6.752 3.026-6.752 6.752a6.62 6.62 0 0 0 2.562 5.255 2.995 2.995 0 0 1 1.163 1.997zm-6.767-5.795a1.001 1.001 0 0 1 1.415-1.414l1.21 1.21 3.303-4.129a1.001 1.001 0 0 1 1.562 1.25l-4.002 5.002a.998.998 0 0 1 -1.488.081zm.707 7.795v2.001a1 1 0 0 0 1.001 1h4a1.001 1.001 0 0 0 1.001-1c0-.63 0-1.334.004-2.001zm2.001-23.005a1 1 0 0 1 2 0v2a1 1 0 1 1 -2 0zm12.003 15.004a1 1 0 0 1 0-2.002h2.001a1.001 1.001 0 0 1 0 2.002zm-24.007 0a1 1 0 0 1 0-2.002h2.001a1.001 1.001 0 0 1 0 2.002zm23.007-12.418a1.001 1.001 0 0 1 1.414 1.415l-1.414 1.413a.999.999 0 1 1 -1.415-1.413zm-21.42 1.415a1.001 1.001 0 0 1 1.414-1.415l1.416 1.415a1 1 0 1 1 -1.415 1.413z" fill="#07499e"></path>
 									</svg>
 								</div>
@@ -981,41 +850,99 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		)
 	})
 
-	const ProductContent = ({ item }: any) => {
+	const ProductContent = memo(({ item }: any) => {
 		const [isExpanded, setIsExpanded] = useState(false);
+		const contentRef = useRef<HTMLDivElement>(null);
+		const gradientRef = useRef<HTMLDivElement>(null);
 
-		const handleToggle = () => {
+		const toggleContent = useCallback((e: any) => {
+			e.preventDefault()
+			if (!contentRef.current || !gradientRef.current) return;
+
+			if (isExpanded) {
+				contentRef.current.style.maxHeight = '276px';
+				gradientRef.current.style.opacity = '1';
+			} else {
+				contentRef.current.style.maxHeight = contentRef.current.scrollHeight + 'px';
+				gradientRef.current.style.opacity = '0';
+			}
 			setIsExpanded(!isExpanded);
-		}
+		}, [isExpanded]);
+
 		return (
 			<div className="col-span-1 md:col-span-4 pt-5 pb-0">
-				<h2 className="text-[#3e434a] text-base font-semibold line-clamp-2">{item.title}</h2>
+				<h2 className="text-[#3e434a] text-base font-semibold line-clamp-2">
+					{item.title}
+				</h2>
+
 				{item.percentageSaved && (
-					<p className="discount-tag w-fit text-sm text-white p-2 py-1 mt-2 rounded">-{item.percentageSaved}%</p>
+					<p className="discount-tag w-fit text-sm text-white p-2 py-1 mt-2 rounded">
+						-{item.percentageSaved}%
+					</p>
 				)}
-				<div className="max-h-content relative">
-					{/* specifications */}
+
+				<div ref={contentRef} className="max-h-content relative" style={{ maxHeight: '276px', transition: 'max-height 0.3s ease-in-out' }}>
+					{stringToArray(item.feats)?.length > 0 && (
+						<div>
+							<h2 className="text-base">Why we love it</h2>
+							<div className="features-details mt-3 grid grid-cols-1 gap-1.5">
+								{stringToArray(item.feats).map((feat: any, index: any) => (
+									<div key={index} className="col-span-1 flex items-start gap-2">
+										<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-[24px] h-[24px]" style={{ minWidth: "22px" }}>
+											<g transform="translate(12 12)">
+												<circle fill="#e8f0fe" r="10" />
+												<path d="m-5 0 3.33 3.33 6.67-6.66" fill="none" stroke="#326cbb" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+											</g>
+										</svg>
+										<span className="text-[#42495f]">{feat}</span>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
 
 					<ProductHighlights item={item} />
 
-					<div className="bg-animate absolute bottom-0 left-0 right-0 h-6"
-						style={{ background: "linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0) 100%)" }}>
-					</div>
+					<div
+						ref={gradientRef}
+						className="bg-animate absolute bottom-0 left-0 right-0 h-6"
+						style={{
+							background: "linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0) 100%)",
+							transition: 'opacity 0.3s ease-in-out'
+						}}
+					/>
 				</div>
 
-				<button onClick={handleToggle} className="toggle-button w-full text-base m-auto md:w-fit flex items-center gap-1 mt-2.5 mb-2.5 md:mt-2 py-2 justify-center md:justify-start">
-					Show More
-					<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 16 16" fill="none">
-						<path fillRule="evenodd" clipRule="evenodd" d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z" fill="#1575d4" />
+				<button
+					onClick={toggleContent}
+					className="toggle-button w-full text-base m-auto md:w-fit flex items-center gap-1 mt-2.5 mb-2.5 md:mt-2 py-2 justify-center md:justify-start"
+				>
+					{isExpanded ? 'Show Less' : 'Show More'}
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="17" height="17"
+						viewBox="0 0 16 16"
+						fill="none"
+						style={{
+							transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+							transition: 'transform 0.3s ease'
+						}}
+					>
+						<path
+							fillRule="evenodd"
+							clipRule="evenodd"
+							d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z"
+							fill="#1575d4"
+						/>
 					</svg>
 				</button>
 			</div>
-		)
-	}
+		);
+	});
 
 	const ProductItem = ({ item, index, counter }: any) => {
 		return (
-			<div className="prod-item mt-8">
+			<div className="prod-item mt-8" key={index}>
 				<a href={item?.url || "/"} target="_blank" className={`prod-child prod-item-${counter} cursor-pointer grid grid-cols-1 md:grid-cols-10 bg-white rounded-2xl gap-x-3 md:gap-x-7 px-4 md:px-0`}>
 					{counter <= 4 && <ProductTag counter={counter} />}
 					<CounterBadge counter={counter} />
