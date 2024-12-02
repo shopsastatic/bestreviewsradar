@@ -7,7 +7,6 @@ import Link from 'next/link'
 import ScrollTop from '@/components/ScrollTop'
 import debounce from 'lodash/debounce'
 import { useRouter } from 'next/router'
-import LearnMore from '@/components/LearnMoreFunc'
 
 // Types
 export interface SingleContentProps {
@@ -485,26 +484,27 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		updateContentWithHeadings();
 	}, [content]);
 
-	// Handle scroll for active heading
+
 	useEffect(() => {
 		const handleScroll = debounce(() => {
 			const sections = cRef.current?.querySelectorAll('h2');
 			const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
 
-			if (amzData.length > 0) {
-				Array.from(btn_link).map((btn: any, index: any) => {
-					let org_link = 1;
-					if (btn.href.match(/0\.0\.0\.(\d+)/)) {
-						org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
-					} else {
-						org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
-					}
-					if (org_link) {
-						btn.href = amzData?.[org_link - 1]?.url
-					}
-				});
+			if (Array.from(btn_link).length > 0) {
+				if (amzData.length > 0) {
+					Array.from(btn_link).map((btn: any, index: any) => {
+						let org_link = 1;
+						if (btn.href.match(/0\.0\.0\.(\d+)/)) {
+							org_link = Number(btn.href.match(/0\.0\.0\.(\d+)/)?.[1])
+						} else {
+							org_link = Number(btn.href.replace(/\/$/, '').split('/').pop());
+						}
+						if (org_link) {
+							btn.href = amzData?.[org_link - 1]?.url
+						}
+					});
+				}
 			}
-
 			if (!sections) return;
 
 			let currentActiveId = '';
@@ -710,6 +710,47 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			.filter((line: any) => line.length > 0);
 	};
 
+	const LearnMore = memo(() => {
+		const [show, setShow] = useState(false)
+		const contentRef = useRef() as any
+		const btnRef = useRef() as any
+
+		useEffect(() => {
+			const handleClick = (e: any) => {
+				if (!contentRef.current?.contains(e.target) && !btnRef.current?.contains(e.target)) {
+					setShow(false)
+				}
+			}
+
+			document.addEventListener('click', handleClick, { passive: true })
+			return () => document.removeEventListener('click', handleClick)
+		}, [])
+
+		return (
+			<div className="how-it-work">
+				<span className="text-sm text-center block text-[#444]">
+					Wondering how we select the best products for you?
+					<strong
+						ref={btnRef}
+						onClick={(e) => {
+							e.stopPropagation()
+							setShow(true)
+						}}
+						className="relative font-normal ml-1 text-sm underline underline-offset-2 cursor-pointer select-none"
+					>
+						<span>Learn More</span>
+						<span
+							ref={contentRef}
+							className={`${show ? 'block' : 'hidden'} absolute z-20 max-[350px]:-right-[35%] max-[490px]:-right-[100%] right-0 pt-2 mt-6 p-4 bg-white text-xs text-left font-normal leading-5 border border-gray-300 shadow-lg rounded-md w-64 md:w-72`}
+						>
+							Our rankings come from analyzing thousands of customer reviews, looking at factors like product quality, brand reputation, and merchant service. These rankings aim to help guide your shopping choices. By using our recommendations, you'll find the best available prices. We may receive a commission on purchases, at no extra cost to you, which supports our work.
+						</span>
+					</strong>
+				</span>
+			</div>
+		)
+	})
+
 	const processDescription = (desc: any) => {
 		if (!desc) return [];
 
@@ -728,14 +769,36 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 		return result;
 	};
 
-	const ProductImage = memo(({ img, title, manufacturer }: any) => (
-		<div className="prod-feature col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col">
-			<div className="prod-image-container">
-				<img className="lazy-load-prod prod-image" data-src={img} src="/" alt={title} />
+	const ProductImage = memo(({ img, title, manufacturer }: any) => {
+		const [imageSrc, setImageSrc] = useState('/');
+		const imageRef = useRef(null);
+
+		useEffect(() => {
+			if (!imageRef.current) return;
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						parseImageUrl(img).then(url => {
+							setImageSrc(url);
+						});
+					}
+				});
+			});
+
+			observer.observe(imageRef.current);
+			return () => observer.disconnect();
+		}, [img]);
+
+		return (
+			<div className="prod-feature col-span-1 md:col-span-3 p-4 pt-10 pb-0 md:pb-10 flex justify-center items-center flex-col">
+				<div className="prod-image-container">
+					<img className="lazy-load-prod prod-image" data-src={img} src={imageSrc ?? "/"} alt={title} />
+				</div>
+				<p className="mt-4 text-sm text-center text-[#615b5b]">{manufacturer}</p>
 			</div>
-			<p className="mt-4 text-sm text-center text-[#615b5b]">{manufacturer}</p>
-		</div>
-	))
+		)
+	});
 
 	const ProductRating = memo(({ rating, counter }: any) => (
 		<div className="heading-poligon">
@@ -746,8 +809,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	))
 
 	const ProductHighlights = memo(({ item }: any) => {
-		if (!item.cusDescContent1 && !item.cusDescContent2 && !item.cusDescContent3 && !item.description) {
-			return null
+		if (!item?.cusDescContent1 && !item?.cusDescContent2 &&
+			!item?.cusDescContent3 && !item?.description) {
+			return null;
 		}
 
 		return (
@@ -808,7 +872,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 			</div>
 		)
-	})
+	});
 
 	const ProductButtons = memo(({ item }: any) => {
 		return (
@@ -875,7 +939,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						</svg>
 					)}
 
-					{/* Icon cho counter 2 - Best Value */}
 					{counter === 2 && (
 						<svg xmlns="http://www.w3.org/2000/svg" className="mr-2" height="16" viewBox="0 0 512.007 512.007" width="16">
 							<g fill="#fff">
@@ -888,7 +951,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 						</svg>
 					)}
 
-					{/* Icon cho counter 3 - Best for Cashback */}
 					{counter === 3 && (
 						<svg xmlns="http://www.w3.org/2000/svg" className="mr-2" fill="#fff" height="16" width="16" version="1.1" viewBox="0 0 512.001 512.001">
 							<g>
@@ -920,6 +982,11 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	})
 
 	const ProductContent = ({ item }: any) => {
+		const [isExpanded, setIsExpanded] = useState(false);
+
+		const handleToggle = () => {
+			setIsExpanded(!isExpanded);
+		}
 		return (
 			<div className="col-span-1 md:col-span-4 pt-5 pb-0">
 				<h2 className="text-[#3e434a] text-base font-semibold line-clamp-2">{item.title}</h2>
@@ -928,104 +995,15 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 				<div className="max-h-content relative">
 					{/* specifications */}
-					{stringToArray(item.specs)?.length > 0 && pointToArray(item.specs_points)?.length > 0 && (
-						<div className="specs-container min-h-5 my-3 rounded-lg md:rounded-2xl p-4 bg-[#f0f6fd] grid grid-cols-1 gap-2">
-							{stringToArray(item.specs)?.map((spec: any, index: any) => (
-								<div key={index} className="flex items-center gap-2 col-span-1">
-									<span className="spec-point bg-white py-0.5 px-2.5 rounded font-medium min-w-11 flex justify-center">
-										{Number(pointToArray(item.specs_points)[index]).toFixed(1)}
-									</span>
-									<span className="text-[#42495f] font-medium">{spec}</span>
-								</div>
-							))}
-						</div>
-					)}
 
-					{/* features */}
-					{stringToArray(item.feats)?.length > 0 && (
-						<div>
-							<h2 className="text-base">Why we love it</h2>
-							<div className="features-details mt-3 grid grid-cols-1 gap-1.5">
-								{stringToArray(item.feats).map((feat: any, index: any) => (
-									<div key={index} className="col-span-1 flex items-start gap-2">
-										<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-[24px] h-[24px]" style={{ minWidth: "22px" }}>
-											<g transform="translate(12 12)">
-												<circle fill="#e8f0fe" r="10" />
-												<path d="m-5 0 3.33 3.33 6.67-6.66" fill="none" stroke="#326cbb" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
-											</g>
-										</svg>
-										<span className="text-[#42495f]">{feat}</span>
-									</div>
-								))}
-							</div>
-						</div>
-					)}
-
-					{(item.cusDescContent1 || item.cusDescContent2 || item.cusDescContent3 || item.description) && (
-						<div className="prod-content mt-4">
-							<h2 className="mb-3 text-[#333] text-base">Main highlights</h2>
-							{(item.cusDescContent1 || item.cusDescContent2 || item.cusDescContent3) ? (
-								<div className="grid gap-4">
-									{item.cusDescContent1 && (
-										<div className="main-highlight-item col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4">
-											<div>
-												<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512" fill-rule="evenodd" width="20" height="24" viewBox="0 0 32 32">
-													<path d="m26.58 6.834a13.95 13.95 0 0 1 3.42 9.166c0 7.726-6.274 14-14 14s-14-6.274-14-14 6.274-14 14-14a13.95 13.95 0 0 1 9.166 3.42l1.834-1.834v-1.586a1 1 0 0 1 2 0v1h1a1 1 0 0 1 0 2h-1.586zm-2.832.004a11.956 11.956 0 0 0 -7.748-2.838c-6.622 0-12 5.378-12 12s5.378 12 12 12 12-5.378 12-12c0-2.952-1.068-5.656-2.838-7.748l-2.132 2.132a8.96 8.96 0 0 1 1.97 5.616c0 4.968-4.032 9-9 9s-9-4.032-9-9 4.032-9 9-9a8.96 8.96 0 0 1 5.616 1.97zm-3.556 3.556a7.003 7.003 0 0 0 -11.192 5.606c0 3.864 3.136 7 7 7a7.003 7.003 0 0 0 5.606-11.192l-1.436 1.436c.524.79.83 1.738.83 2.756 0 2.76-2.24 5-5 5s-5-2.24-5-5 2.24-5 5-5c1.018 0 1.966.306 2.756.83zm-2.898 2.898a3.001 3.001 0 1 0 -1.294 5.708 3.001 3.001 0 0 0 2.708-4.294l-2 2.002c-.392.39-1.024.39-1.416 0a1.003 1.003 0 0 1 0-1.416z" fill="#07499e"></path>
-												</svg>
-											</div>
-											<div>
-												<p className="title-desc mb-1.5 font-semibold">{item.cusDescTitle1 || "Key Features"}</p>
-												<span>{item.cusDescContent1}</span>
-											</div>
-										</div>
-									)}
-
-									{item.cusDescContent2 && (
-										<div className="main-highlight-item col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4">
-											<div>
-												<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512" fill-rule="evenodd" width="24" height="24" viewBox="0 0 32 32">
-													<path d="m11.116 27.007v-3.607a.997.997 0 0 0 -.4-.8l-.01-.007a8.613 8.613 0 0 1 -3.341-6.839c0-4.83 3.921-8.752 8.752-8.752s8.752 3.921 8.752 8.752a8.743 8.743 0 0 1 -3.311 6.855l-.022.016a.971.971 0 0 0 -.387.774v.033c-.03.946-.03 2.394-.03 3.575a3.004 3.004 0 0 1 -3.002 3h-4a3.001 3.001 0 0 1 -3.001-3zm8.06-4.001a2.977 2.977 0 0 1 1.15-1.974 6.74 6.74 0 0 0 2.543-5.278c0-3.726-3.026-6.752-6.752-6.752s-6.752 3.026-6.752 6.752a6.62 6.62 0 0 0 2.562 5.255 2.995 2.995 0 0 1 1.163 1.997zm-6.767-5.795a1.001 1.001 0 0 1 1.415-1.414l1.21 1.21 3.303-4.129a1.001 1.001 0 0 1 1.562 1.25l-4.002 5.002a.998.998 0 0 1 -1.488.081zm.707 7.795v2.001a1 1 0 0 0 1.001 1h4a1.001 1.001 0 0 0 1.001-1c0-.63 0-1.334.004-2.001zm2.001-23.005a1 1 0 0 1 2 0v2a1 1 0 1 1 -2 0zm12.003 15.004a1 1 0 0 1 0-2.002h2.001a1.001 1.001 0 0 1 0 2.002zm-24.007 0a1 1 0 0 1 0-2.002h2.001a1.001 1.001 0 0 1 0 2.002zm23.007-12.418a1.001 1.001 0 0 1 1.414 1.415l-1.414 1.413a.999.999 0 1 1 -1.415-1.413zm-21.42 1.415a1.001 1.001 0 0 1 1.414-1.415l1.416 1.415a1 1 0 1 1 -1.415 1.413z" fill="#07499e"></path>
-												</svg>
-											</div>
-											<div>
-												<p className="title-desc mb-1.5 font-semibold">{item.cusDescTitle2 || "Ideal Uses Cases"}</p>
-												<span>{item.cusDescContent2}</span>
-											</div>
-										</div>
-									)}
-
-									{item.cusDescContent3 && (
-										<div className="main-highlight-item col-span-1 flex items-start gap-2 border-b border-[#e2e2e2] pb-4">
-											<div>
-												<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 512 512" fill-rule="evenodd" width="22" height="22" viewBox="0 0 32 32">
-													<path d="m23.922 12.093s-1.735-1.171-3.123-2.752c-1.037-1.181-1.84-2.594-1.84-3.93 0-1.886 1.515-3.41 3.373-3.41.816 0 1.565.293 2.149.782a3.338 3.338 0 0 1 2.149-.783c1.858 0 3.374 1.524 3.374 3.41 0 1.336-.805 2.749-1.841 3.93-1.388 1.58-3.123 2.752-3.123 2.752a.998.998 0 0 1 -1.118 0zm.559-2.066c.553-.425 1.426-1.147 2.18-2.006.702-.8 1.344-1.706 1.344-2.61 0-.775-.612-1.41-1.375-1.41-.55 0-1.023.332-1.244.805a.999.999 0 0 1 -1.81 0 1.376 1.376 0 0 0 -1.244-.805c-.763 0-1.376.635-1.376 1.41 0 .904.643 1.81 1.344 2.61.755.86 1.627 1.581 2.18 2.006zm-12.517-5.027a6 6 0 0 1 0 12 6 6 0 0 1 0-12zm0 2a4 4 0 0 0 0 8 4 4 0 0 0 0-8zm4.996 12a5.002 5.002 0 0 1 4.996 5v3a3.002 3.002 0 0 1 -2.998 3h-13.988a2.996 2.996 0 0 1 -2.997-3v-3a4.994 4.994 0 0 1 4.996-5zm0 2h-9.991a2.996 2.996 0 0 0 -2.998 3v3a1.001 1.001 0 0 0 1 1h13.987a1 1 0 0 0 .999-1v-3a2.997 2.997 0 0 0 -2.997-3z" fill="#07499e"></path>
-												</svg>
-											</div>
-											<div>
-												<p className="title-desc mb-1.5 font-semibold">{item.cusDescTitle3 || "Customer Praise"}</p>
-												<span>{item.cusDescContent3}</span>
-											</div>
-										</div>
-									)}
-								</div>
-							) : (
-								processDescription(item.description)?.length > 0 && (
-									<ul>
-										{processDescription(item.description).map((desc: any, index: any) => (
-											<li key={index}>{desc}</li>
-										))}
-									</ul>
-								)
-							)}
-						</div>
-					)}
+					<ProductHighlights item={item} />
 
 					<div className="bg-animate absolute bottom-0 left-0 right-0 h-6"
 						style={{ background: "linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0) 100%)" }}>
 					</div>
 				</div>
 
-				<button className="toggle-button w-full text-base m-auto md:w-fit flex items-center gap-1 mt-2.5 mb-2.5 md:mt-2 py-2 justify-center md:justify-start">
+				<button onClick={handleToggle} className="toggle-button w-full text-base m-auto md:w-fit flex items-center gap-1 mt-2.5 mb-2.5 md:mt-2 py-2 justify-center md:justify-start">
 					Show More
 					<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 16 16" fill="none">
 						<path fillRule="evenodd" clipRule="evenodd" d="M3.98043 5.64645C4.17569 5.45118 4.49228 5.45118 4.68754 5.64645L8.33398 9.29289L11.9804 5.64645C12.1757 5.45118 12.4923 5.45118 12.6875 5.64645C12.8828 5.84171 12.8828 6.15829 12.6875 6.35355L8.68754 10.3536C8.49228 10.5488 8.17569 10.5488 7.98043 10.3536L3.98043 6.35355C3.78517 6.15829 3.78517 5.84171 3.98043 5.64645Z" fill="#1575d4" />

@@ -12,11 +12,7 @@ module.exports = withFaust({
     optimizeCss: true,
     granularChunks: true,
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' ? {
-      exclude: ['error', 'warn'],
-    } : false,
-  },
+  
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.optimization.splitChunks = {
       chunks: 'all',
