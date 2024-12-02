@@ -6,8 +6,8 @@ import Alert from '@/components/Alert'
 import Link from 'next/link'
 import ScrollTop from '@/components/ScrollTop'
 import debounce from 'lodash/debounce'
-import SinglePopup from '@/components/SinglePopup'
 import { useRouter } from 'next/router'
+import LearnMore from '@/components/LearnMoreFunc'
 
 // Types
 export interface SingleContentProps {
@@ -155,7 +155,6 @@ RelatedProduct.displayName = 'RelatedProduct'
 const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	const router = useRouter()
 	// Refs
-	const endedAnchorRef = useRef<HTMLDivElement>(null)
 	const progressRef = useRef<HTMLButtonElement>(null)
 	const contentRef = useRef(null)
 	const tooltipRef = useRef<HTMLDivElement>(null)
@@ -184,8 +183,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 	if (!NoT) {
 		NoT = 10
 	}
-
-	const post_id = post?.databaseId
 
 	useEffect(() => {
 		const handleLazyLoading = () => {
@@ -965,17 +962,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								</a>
 
 								{counter === 1 && (
-									<div className="how-it-work">
-										<span className="text-sm text-center block text-[#444]">
-											Wondering how we select the best products for you?
-											<strong className="relative font-normal ml-1 text-sm underline underline-offset-2 cursor-pointer select-none" id="learnMoreBtn">
-												<span>Learn More</span>
-												<span id="learnMoreContent" className="hidden absolute z-20 max-[350px]:-right-[35%] max-[490px]:-right-[100%] right-0 pt-2 mt-6 p-4 bg-white text-xs text-left font-normal leading-5 border border-gray-300 shadow-lg rounded-md w-64 md:w-72">
-													Our rankings come from analyzing thousands of customer reviews, looking at factors like product quality, brand reputation, and merchant service. These rankings aim to help guide your shopping choices. By using our recommendations, you'll find the best available prices. We may receive a commission on purchases, at no extra cost to you, which supports our work.
-												</span>
-											</strong>
-										</span>
-									</div>
+									<LearnMore />
 								)}
 							</div>
 						))}
@@ -983,9 +970,9 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 				)}
 
 				<ScrollTop />
-				{router.query.gclid != undefined && (
+				{/* {router.query.gclid != undefined && (
 					<SinglePopup prod={amzData[0]} />
-				)}
+				)} */}
 			</div>
 
 			{headings && headings?.length > 0 && (
@@ -1075,8 +1062,6 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					</div>
 				</div>
 			)}
-
-			<div className="!my-0" ref={endedAnchorRef} />
 		</>
 	);
 };
