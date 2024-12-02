@@ -74,21 +74,6 @@ const RelatedProduct = memo(({ item }: { item: any }) => {
 		};
 	}, []);
 
-	useEffect(() => {
-		const fetchImageUrl = async () => {
-			if (isVisible && item?.img) {
-				try {
-					const updatedUrl = await parseImageUrl(item.img)
-					setImageSrc(updatedUrl ?? item?.img);
-				} catch (e) {
-					setImageSrc(item?.img);
-				}
-			}
-		};
-
-		fetchImageUrl();
-	}, [isVisible, item?.img]);
-
 	return (
 		<div ref={observerRef} className="col-span-1 related-prod-child">
 			<Link href={item.url ?? "/"}>
@@ -990,7 +975,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			<div className='container'>
 				{renderAlert()}
 				{/* html */}
-				<ProductList amzData={amzData} NoT={NoT} />
+				{/* <ProductList amzData={amzData} NoT={NoT} /> */}
 
 				<ScrollTop />
 				{/* {router.query.gclid != undefined && (
