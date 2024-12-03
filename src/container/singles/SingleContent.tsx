@@ -805,7 +805,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 									</div>
 									<div className="col-span-1 md:col-span-4 pt-5 pb-0">
 										<h2 className="text-[#3e434a] text-base font-semibold line-clamp-2">{item.title}</h2>
-										{item.percentageSaved && (
+										{item.percentageSaved > 0 && (
 											<p className="discount-tag w-fit text-sm text-white p-2 py-1 mt-2 rounded">-{item.percentageSaved}%</p>
 										)}
 										<div className="max-h-content relative">
