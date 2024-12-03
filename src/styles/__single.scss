@@ -715,6 +715,10 @@ blockquote{
   background:#EDEDED;
 }
 
+blockquote p {
+  margin-bottom: 0 !important;
+}
+
 blockquote::before{
   font-family:Arial;
   content: "\201C";
