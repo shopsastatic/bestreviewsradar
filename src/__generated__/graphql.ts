@@ -7577,8 +7577,12 @@ export type CreateUserInput = {
   nickname?: InputMaybe<Scalars['String']['input']>;
   /** A string that contains the plain text password for the user. */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will refresh the users JWT secret. */
+  refreshJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** The date the user registered. Format is Y-m-d H:i:s. */
   registered?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will revoke the users JWT secret. If false, this will unrevoke the JWT secret AND issue a new one. To revoke, the user must have proper capabilities to edit users JWT secrets. */
+  revokeJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** A string for whether to enable the rich editor or not. False if not empty. */
   richEditing?: InputMaybe<Scalars['String']['input']>;
   /** An array of roles to be assigned to the user. */
@@ -9267,6 +9271,29 @@ export type HierarchicalTermNodeEnqueuedStylesheetsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Input for the login mutation. */
+export type LoginInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The plain-text password for the user logging in. */
+  password: Scalars['String']['input'];
+  /** The username used for login. Typically a unique or email address depending on specific configuration */
+  username: Scalars['String']['input'];
+};
+
+/** The payload for the login mutation. */
+export type LoginPayload = {
+  __typename?: 'LoginPayload';
+  /** JWT Token that can be used in future requests for Authentication */
+  authToken?: Maybe<Scalars['String']['output']>;
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** A JWT token that can be used in future requests to get a refreshed jwtAuthToken. If the refresh token used in a request is revoked or otherwise invalid, a valid Auth token will NOT be issued in the response headers. */
+  refreshToken?: Maybe<Scalars['String']['output']>;
+  /** The user that was logged in */
+  user?: Maybe<User>;
+};
+
 /** A block used for editing the site */
 export type MailpoetSubscriptionFormBlock = EditorBlock & PageEditorBlock & {
   __typename?: 'MailpoetSubscriptionFormBlock';
@@ -10107,7 +10134,9 @@ export enum MenuLocationEnum {
   /** Put the menu in the main_menu location */
   MainMenu = 'MAIN_MENU',
   /** Put the menu in the primary location */
-  Primary = 'PRIMARY'
+  Primary = 'PRIMARY',
+  /** Put the menu in the primary-menu location */
+  PrimaryMenu = 'PRIMARY_MENU'
 }
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
@@ -13281,6 +13310,23 @@ export type RebuildNextjsButton_Fields = {
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
+/** Input for the refreshJwtAuthToken mutation. */
+export type RefreshJwtAuthTokenInput = {
+  /** This is an ID that can be passed to a mutation by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** A valid, previously issued JWT refresh token. If valid a new Auth token will be provided. If invalid, expired, revoked or otherwise invalid, a new AuthToken will not be provided. */
+  jwtRefreshToken: Scalars['String']['input'];
+};
+
+/** The payload for the refreshJwtAuthToken mutation. */
+export type RefreshJwtAuthTokenPayload = {
+  __typename?: 'RefreshJwtAuthTokenPayload';
+  /** JWT Token that can be used in future requests for Authentication */
+  authToken?: Maybe<Scalars['String']['output']>;
+  /** If a &#039;clientMutationId&#039; input is provided to the mutation, it will be returned as output on the mutation. This ID can be used by the client to track the progress of mutations and catch possible duplicate mutation submissions. */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+};
+
 /** Input for the registerUser mutation. */
 export type RegisterUserInput = {
   /** User's AOL IM account. */
@@ -13307,8 +13353,12 @@ export type RegisterUserInput = {
   nickname?: InputMaybe<Scalars['String']['input']>;
   /** A string that contains the plain text password for the user. */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will refresh the users JWT secret. */
+  refreshJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** The date the user registered. Format is Y-m-d H:i:s. */
   registered?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will revoke the users JWT secret. If false, this will unrevoke the JWT secret AND issue a new one. To revoke, the user must have proper capabilities to edit users JWT secrets. */
+  revokeJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** A string for whether to enable the rich editor or not. False if not empty. */
   richEditing?: InputMaybe<Scalars['String']['input']>;
   /** A string that contains the user's username. */
@@ -13431,6 +13481,8 @@ export type RootMutation = {
   generateAuthorizationCode?: Maybe<GenerateAuthorizationCodePayload>;
   /** Increase the count. */
   increaseCount?: Maybe<Scalars['Int']['output']>;
+  /** Login a user. Request for an authToken and User details in response */
+  login?: Maybe<LoginPayload>;
   /** The ncmazFaustAddSentMessContactForm mutation */
   ncmazFaustAddSentMessContactForm?: Maybe<NcmazFaustAddSentMessContactFormPayload>;
   /** The ncmazFaustAddSubscriberToMailpoet mutation */
@@ -13441,6 +13493,8 @@ export type RootMutation = {
   ncmazFaustDeleteAccountByNonce?: Maybe<NcmazFaustDeleteAccountByNoncePayload>;
   /** The ncmazFaustUpdateUserReactionPostCount mutation */
   ncmazFaustUpdateUserReactionPostCount?: Maybe<NcmazFaustUpdateUserReactionPostCountPayload>;
+  /** Use a valid JWT Refresh token to retrieve a new JWT Auth Token */
+  refreshJwtAuthToken?: Maybe<RefreshJwtAuthTokenPayload>;
   /** The registerUser mutation */
   registerUser?: Maybe<RegisterUserPayload>;
   /** The resetUserPassword mutation */
@@ -13635,6 +13689,12 @@ export type RootMutationIncreaseCountArgs = {
 
 
 /** The root mutation */
+export type RootMutationLoginArgs = {
+  input: LoginInput;
+};
+
+
+/** The root mutation */
 export type RootMutationNcmazFaustAddSentMessContactFormArgs = {
   input: NcmazFaustAddSentMessContactFormInput;
 };
@@ -13661,6 +13721,12 @@ export type RootMutationNcmazFaustDeleteAccountByNonceArgs = {
 /** The root mutation */
 export type RootMutationNcmazFaustUpdateUserReactionPostCountArgs = {
   input: NcmazFaustUpdateUserReactionPostCountInput;
+};
+
+
+/** The root mutation */
+export type RootMutationRefreshJwtAuthTokenArgs = {
+  input: RefreshJwtAuthTokenInput;
 };
 
 
@@ -18243,8 +18309,12 @@ export type UpdateUserInput = {
   nickname?: InputMaybe<Scalars['String']['input']>;
   /** A string that contains the plain text password for the user. */
   password?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will refresh the users JWT secret. */
+  refreshJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** The date the user registered. Format is Y-m-d H:i:s. */
   registered?: InputMaybe<Scalars['String']['input']>;
+  /** If true, this will revoke the users JWT secret. If false, this will unrevoke the JWT secret AND issue a new one. To revoke, the user must have proper capabilities to edit users JWT secrets. */
+  revokeJwtUserSecret?: InputMaybe<Scalars['Boolean']['input']>;
   /** A string for whether to enable the rich editor or not. False if not empty. */
   richEditing?: InputMaybe<Scalars['String']['input']>;
   /** An array of roles to be assigned to the user. */
@@ -18334,12 +18404,22 @@ export type User = Commenter & DatabaseIdentifier & Node & UniformResourceIdenti
   isContentNode: Scalars['Boolean']['output'];
   /** Whether the node represents the front page. */
   isFrontPage: Scalars['Boolean']['output'];
+  /** Whether the JWT User secret has been revoked. If the secret has been revoked, auth tokens will not be issued until an admin, or user with proper capabilities re-issues a secret for the user. */
+  isJwtAuthSecretRevoked: Scalars['Boolean']['output'];
   /** Whether  the node represents the blog page. */
   isPostsPage: Scalars['Boolean']['output'];
   /** Whether the object is restricted from the current viewer */
   isRestricted?: Maybe<Scalars['Boolean']['output']>;
   /** Whether the node is a Term */
   isTermNode: Scalars['Boolean']['output'];
+  /** The expiration for the JWT Token for the user. If not set custom for the user, it will use the default sitewide expiration setting */
+  jwtAuthExpiration?: Maybe<Scalars['String']['output']>;
+  /** A JWT token that can be used in future requests for authentication/authorization */
+  jwtAuthToken?: Maybe<Scalars['String']['output']>;
+  /** A JWT token that can be used in future requests to get a refreshed jwtAuthToken. If the refresh token used in a request is revoked or otherwise invalid, a valid Auth token will NOT be issued in the response headers. */
+  jwtRefreshToken?: Maybe<Scalars['String']['output']>;
+  /** A unique secret tied to the users JWT token that can be revoked or refreshed. Revoking the secret prevents JWT tokens from being issued to the user. Refreshing the token invalidates previously issued tokens, but allows new tokens to be issued. */
+  jwtUserSecret?: Maybe<Scalars['String']['output']>;
   /** Last name of the user. This is equivalent to the WP_User-&gt;user_last_name property. */
   lastName?: Maybe<Scalars['String']['output']>;
   /** The preferred language locale set for the user. Value derived from get_user_locale(). */
