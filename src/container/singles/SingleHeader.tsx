@@ -103,7 +103,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 
   return (
     <>
-      <div className="banner-header sticky top-0 z-50 px-4 gap-2">
+      <div className="banner-header sticky top-0 z-10 px-4 gap-2">
         <div className="flex bg-[#f1f8ffd4] px-0 md:px-4 rounded-lg justify-between md:justify-center items-center md:items-start gap-2 w-full md:w-fit">
           <div className="flex flex-wrap flex-col md:flex-row items-start md:items-center gap-1 md:gap-2 mt-1.5">
             <h5 className="text-sm md:text-lg">Christmas Sale</h5>
