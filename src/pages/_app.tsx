@@ -18,6 +18,11 @@ import blocks from "@/wp-blocks";
 import themeJson from "../../theme.json";
 import { ThirdPartyScripts } from "@/components/ThirdPartyScripts";
 
+const GoogleAnalytics = dynamic(() => 
+  import("nextjs-google-analytics").then(mod => mod.GoogleAnalytics), {
+  ssr: false
+});
+
 // Font configurations
 const inter = Inter({
   weight: ["400", "600", "700", "800"],
@@ -118,9 +123,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
               }}
               containerClassName="text-sm"
             />
-            {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
+            {/* {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
               <ThirdPartyScripts />
-            )}
+            )} */}
+            <GoogleAnalytics trackPageViews />
           </ClientOnly>
         </main>
       </SiteWrapperProvider>
