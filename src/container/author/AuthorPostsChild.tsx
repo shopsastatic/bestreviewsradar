@@ -200,7 +200,7 @@ const AuthorPostsChild: FaustPage<any> = props => {
 													)}
 
 												</div>
-												<p className="text-gray-600 mb-4">{article.excerpt}</p>
+												<div className="text-gray-600 mb-4" dangerouslySetInnerHTML={{__html: article.excerpt}}></div>
 												<div className="flex justify-between text-sm text-gray-500">
 													<div className="flex gap-4">
 														<div className="flex gap-1">
