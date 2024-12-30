@@ -9,7 +9,7 @@ module.exports = withFaust({
   reactStrictMode: true,
   experimental: {
     typedRoutes: false,
-    optimizeCss: true,
+    // optimizeCss: true,
     granularChunks: true,
   },
   
