@@ -30,16 +30,16 @@ async function getAllWPContent(after = null, acc: any[] = []) {
 		query: SITEMAP_QUERY,
 		variables: {
 			after,
-			noCache: true,
+			// noCache: true,
 		},
 		fetchPolicy: 'no-cache',
-		context: {
-			headers: {
-				'Cache-Control': 'no-cache',
-				'Pragma': 'no-cache'
-			},
-			uri: `https://content.bestreviewsradar.com/index.php?graphql&noCache=${Date.now()}`
-		},
+		// context: {
+		// 	headers: {
+		// 		'Cache-Control': 'no-cache',
+		// 		'Pragma': 'no-cache'
+		// 	},
+		// 	uri: `https://content.bestreviewsradar.com/index.php?graphql&noCache=${Date.now()}`
+		// },
 	})
 
 	acc = [...acc, ...data.contentNodes.nodes]
@@ -56,12 +56,12 @@ export default function WPSitemap() { }
 
 // collect all the post
 export const getServerSideProps: GetServerSideProps = async ctx => {
-	ctx.res.setHeader(
-		'Cache-Control',
-		'no-store, no-cache, must-revalidate, proxy-revalidate'
-	)
-	ctx.res.setHeader('Pragma', 'no-cache')
-	ctx.res.setHeader('Expires', '0')
+	// ctx.res.setHeader(
+	// 	'Cache-Control',
+	// 	'no-store, no-cache, must-revalidate, proxy-revalidate'
+	// )
+	// ctx.res.setHeader('Pragma', 'no-cache')
+	// ctx.res.setHeader('Expires', '0')
 
 	const nodes = await getAllWPContent()
 
