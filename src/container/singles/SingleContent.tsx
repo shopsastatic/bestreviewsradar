@@ -987,7 +987,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			</div>
 
 			{headings && headings?.length > 0 && (
-				<div className={`large-width p-5 grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
+				<div className={`large-width p-5 grid grid-cols-1 ${headings?.length === 1 && amzData?.length > 0
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
 					} mt-20`}>
