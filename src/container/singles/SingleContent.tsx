@@ -492,7 +492,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 			const sections = cRef.current?.querySelectorAll('h2');
 			const btn_link = cRef.current?.querySelectorAll('.amz-link-content a');
 
-			if (amzData.length > 0) {
+			if (amzData?.length > 0) {
 				Array.from(btn_link).map((btn: any, index: any) => {
 					let org_link = 1;
 					if (btn.href.match(/0\.0\.0\.(\d+)/)) {
@@ -991,8 +991,8 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 					? 'lg-grid-cols-1'
 					: 'lg:grid-cols-12'
 					} mt-20`}>
-					{((headings.length > 1 && amzData.length > 0) ||
-						(headings.length > 1 && amzData.length === 0)) && (
+					{((headings?.length > 1 && amzData?.length > 0) ||
+						(headings?.length > 1 && amzData?.length === 0)) && (
 							<div className='article_menu col-span-3 mb-10 lg:mb-0 flex flex-col lg:block justify-between lg:sticky top-0 h-fit p-5 md:p-2 md:pt-0 rounded lg:shadow-none'>
 								{headings?.length > 0 && (
 									<p className='pb-0 lg:pb-4 border-0 lg:border-b border-[#999] uppercase font-semibold'>
@@ -1001,7 +1001,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								)}
 
 								<ul className='mt-4 flex-col gap-6 hidden lg:flex'>
-									{headings.map((heading) => (
+									{headings?.map((heading) => (
 										<li
 											key={heading.id}
 											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
@@ -1021,7 +1021,7 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 								</ul>
 
 								<ul className='mt-4 flex-col gap-5 flex lg:hidden'>
-									{headings.map((heading) => (
+									{headings?.map((heading) => (
 										<li
 											key={heading.id}
 											className={`border-l-2 transition-[padding-left, border-color, color] ${activeHeading === heading.id
@@ -1042,20 +1042,20 @@ const SingleContent: FC<SingleContentProps> = ({ post }) => {
 							</div>
 						)}
 
-					{(headings.length > 0 && amzData.length == 0 || headings.length > 1 && amzData.length > 0) && (
+					{(headings?.length > 0 && amzData?.length == 0 || headings?.length > 1 && amzData?.length > 0) && (
 						<div></div>
 					)}
 
 					<div className='col-span-8' ref={cRef}>
-						{amzData.length > 0 && (
+						{amzData?.length > 0 && (
 							<>
 								<h2 className='mb-10' id='toc-related-deal'>Related deals you might like</h2>
 								<div className='related-products mb-14 pr-0 lg:pr-4' ref={relatedRef}>
-									<div className={`grid grid-cols-1 ${headings.length === 1 && amzData.length > 0
+									<div className={`grid grid-cols-1 ${headings?.length === 1 && amzData?.length > 0
 										? 'md:grid-cols-3 md:gap-7'
 										: 'md:grid-cols-2 md:gap-10'
 										} gap-6`}>
-										{amzData.slice(NoT, 50).map((item: any, index: number) => (
+										{amzData?.slice(NoT, 50).map((item: any, index: number) => (
 											<RelatedProduct key={`${item.title}-${index}`} item={item} />
 										))}
 									</div>
