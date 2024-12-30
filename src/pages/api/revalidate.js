@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     for (const path of paths) {
       await res.revalidate(path);
       
-      const url = `https://your-domain.com${path}`;
+      const url = `https://bestreviewsradar.com${path}`;
       await fetch(url, {
         headers: {
           'Cache-Control': 'no-cache',
