@@ -1,5 +1,3 @@
-import CookiestBoxPopover from '@/components/CookiestBoxPopover'
-
 export function SiteWrapperChild({
 	...props
 }: {
@@ -7,8 +5,6 @@ export function SiteWrapperChild({
 }) {
 
 	return (
-		<div>
-			<CookiestBoxPopover></CookiestBoxPopover>
-		</div>
+		<div></div>
 	)
 }
