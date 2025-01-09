@@ -3,6 +3,20 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
+
+    const sitemapFiles = [
+        '/post-sitemap.xml',
+        '/post-sitemap2.xml',
+        '/post-sitemap3.xml',
+        '/post-sitemap4.xml',
+        '/page-sitemap.xml'
+    ]
+
+    if (sitemapFiles.includes(pathname)) {
+        const url = request.nextUrl.clone()
+        url.hostname = 'content.bestreviewsradar.com'
+        return NextResponse.redirect(url, 301)
+    }
     
     const normalizedPath = pathname.replace(/\/$/, '')
     
