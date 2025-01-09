@@ -226,7 +226,7 @@ Page.query = gql(`
       nodes {
         ...NcSideBarMenuFieldsFragment
       }
-    } 
+    }
     # thêm truy vấn để lấy danh mục cha
     categories(where: { parent: null }, first: 50) {
       nodes {
