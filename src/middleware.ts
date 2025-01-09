@@ -59,6 +59,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
+        '/(.*).xml',
+        '/(.*).xsl',
         '/((?!api|_next/static|_next/image|favicon.ico|images|public|author|search).*)',
         '/:path*'
     ]
