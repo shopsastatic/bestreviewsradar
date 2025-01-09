@@ -15,9 +15,8 @@ export function middleware(request: NextRequest) {
 
     // Kiểm tra nếu URL hiện tại nằm trong danh sách
     if (sitemapUrls.includes(pathname)) {
-        console.log("khop")
         const targetUrl = `https://content.bestreviewsradar.com${pathname}`
-        return NextResponse.redirect(new URL(targetUrl), 301)
+        return NextResponse.redirect(targetUrl, 301)
     }
     
     
