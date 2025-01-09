@@ -17,8 +17,8 @@ export function middleware(request: NextRequest) {
     // Kiểm tra nếu URL hiện tại nằm trong danh sách
     if (sitemapUrls.includes(pathname)) {
         const targetUrl = `https://content.bestreviewsradar.com${pathname}`
-        // return NextResponse.redirect(targetUrl, 301)
-        return NextResponse.rewrite(targetUrl)
+        return NextResponse.redirect(targetUrl, 301)
+        // return NextResponse.rewrite(targetUrl)
     }
     
     
@@ -59,8 +59,6 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/(.*).xml',
-        '/(.*).xsl',
         '/((?!api|_next/static|_next/image|favicon.ico|images|public|author|search).*)',
         '/:path*'
     ]
