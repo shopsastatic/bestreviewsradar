@@ -1,26 +1,26 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Chuyển thành Set để sử dụng .has()
-const sitemapFiles = new Set([
-    '/post-sitemap.xml',
-    '/post-sitemap2.xml',
-    '/post-sitemap3.xml',
-    '/post-sitemap4.xml',
-    '/page-sitemap.xml'
-]);
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname
-    
-    // Bây giờ có thể sử dụng .has() vì sitemapFiles là Set
-    if (sitemapFiles.has(pathname)) {
-        const url = request.nextUrl.clone();
-        url.hostname = 'content.bestreviewsradar.com';
-        return NextResponse.redirect(url, 301);
+
+    const sitemapUrls = [
+        '/post-sitemap.xml',
+        '/post-sitemap2.xml',
+        '/post-sitemap3.xml',
+        '/post-sitemap4.xml',
+        '/page-sitemap.xml'
+    ]
+
+    // Kiểm tra nếu URL hiện tại nằm trong danh sách
+    if (sitemapUrls.includes(pathname)) {
+        console.log("khop")
+        const targetUrl = `https://content.bestreviewsradar.com${pathname}`
+        return NextResponse.redirect(new URL(targetUrl), 301)
     }
     
-    // Rest of the code remains the same
+    
     const normalizedPath = pathname.replace(/\/$/, '')
     
     if (normalizedPath === '/reports') {
