@@ -10,7 +10,8 @@ export function middleware(request: NextRequest) {
         '/post-sitemap2.xml',
         '/post-sitemap3.xml',
         '/post-sitemap4.xml',
-        '/page-sitemap.xml'
+        '/page-sitemap.xml',
+        '/sitemap_index.xml'
     ]
 
     // Kiểm tra nếu URL hiện tại nằm trong danh sách
